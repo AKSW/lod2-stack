@@ -1,0 +1,7 @@
+This keyring is used as a trusted keyring for the LOD2 package
+repository.
+
+to modify the pubring.gpg try:
+  gpg --homedir ./ --import xxx.asc
+in this directory.
+

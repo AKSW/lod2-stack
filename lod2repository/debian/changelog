@@ -1,0 +1,17 @@
+lod2repository (1.2) lod2; urgency=low
+
+  * apt list updated
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Tue, 22 Mar 2011 15:30:27 +0100
+
+lod2repository (1.1) lod2; urgency=low
+
+  * New maintainer key: Norman Heino
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Tue, 22 Mar 2011 13:46:44 +0100
+
+lod2repository (1.0-1) lod2; urgency=low
+
+  * Initial release (one key, simple repository design)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Mon, 21 Mar 2011 13:57:00 +0100
