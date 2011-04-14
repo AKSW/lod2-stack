@@ -1,0 +1,311 @@
+LOD2 Demonstrator Development Installation Guide
+================================================
+Bert Van Nuffelen <bert.van.nuffelen@tenforce.be>
+v1.0, march 2011: Initial version
+:Author Initials: BVN
+:toc:
+:icons:
+:numbered:
+:website: http://stack.lod2.eu/
+
+The demonstrator installation guide describes how to get, compile, install and
+deploy the LOD2 demonstrator.
+The early version of the demonstrator is the delivery of Workpackage WP1.4.
+
+
+Required software
+-----------------
+
+This section describes the setup of the necessary software to get the demonstrator 
+working.
+
+
+Java
+~~~~
+The programming language Java. We install version 1.6.
+
+	sudo apt-get install openjdk-6-jdk
+
+An alternative is 
+	
+	sudo apt-get install sun-java6-jdk
+
+Apache Tomcat 6
+~~~~~~~~~~~~~~~
+A popular servet container of which we install version 6.
+
+	sudo apt-get install tomcat6
+	sudo apt-get install tomcat6-admin
+
+In order to access the tomcat manager page an administrator has to be defined.
+Edit the tomcat-users.xml file:
+
+	sudo vim /etc/tomcat6/tomcat-users.xml
+
+and add the next 2 lines
+
+	<role rolename="manager"/>
+	<user username="admin" password="admin" roles="manager"/>
+
+Adapt the username and password to your conventions.
+
+Restart tomcat 
+
+	sudo service tomcat6 restart
+
+to make the changes have effect.
+
+Some installation locations:
+	
+* tomcat server : /usr/share/tomcat6
+* tomcat webspace : /var/lib/tomcat6
+
+
+Apache Maven
+~~~~~~~~~~~~
+An easy to use build system.
+
+	sudo apt-get install maven2
+
+Apache Subversion
+~~~~~~~~~~~~~~~~~
+Subversion is an open source version control system. 
+
+	sudo apt-get install subversion
+	
+
+Eclipse
+~~~~~~~
+A IDE for software development.
+
+	sudo apt-get install eclipse
+
+[NOTE]
+Per default the latest version Galileo is installed. 
+However it seems that many plugins for popular other tools do have problems.
+
+
+OpenRDF framework
+~~~~~~~~~~~~~~~~~
+Download the openRDF developers kit from http://sourceforge.net/projects/sesame/files/Sesame%202/2.3.3/openrdf-sesame-2.3.3-sdk.tar.gz.
+Unpack and deploy the wars in tomcat.
+
+
+Vaadin plugin
+^^^^^^^^^^^^^
+Vaadin is a JAVA framework to build web applications.
+See http://vaadin.com/.
+
+
+
+Maven plugin
+^^^^^^^^^^^^
+The installation in the Galileo version did not succeed yet. 
+
+
+Installing the LOD2 stack components
+------------------------------------
+
+The LOD2 consortium has tried to collect all components together in one repository.
+All the components are present as debian packages footnote:[Poolparty is not distributed via these package system.].
+
+Installation of the LOD2 repository
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Browse to stack.lod2.eu.
+Select the http://stack.lod2.eu/deb/lod2/lod2repository_1.2_all.deb.
+Let the Ubutu package manager install it. This updates the package repository description.
+
+Update now the repository content.
+	
+	sudo apt-get update
+
+
+Installation of the individual LOD2 components
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As for now one has to install the components individually.
+
+Virtuoso 
+^^^^^^^^
+Virtuoso is an RDF database.
+
+	sudo apt-get install virtuoso-opensource
+
+During the installing you will be asked to set the dba (root) password of the virtuoso database.
+
+Ontowiki
+^^^^^^^^
+An ontological authoring tool of RDF based knowledge.
+
+	sudo apt-get install ontowiki
+
+After installation ontowiki is accessible locally in your browser as
+
+	http://localhost/ontowiki
+
+
+NOTE: For the moment the mysql version of ontowiki is installed. This should be replaced with virtuoso
+variant.
+
+
+
+Setting up a demonstrator project from scratch
+----------------------------------------------
+
+The project setup, build process and dependency management is done via Maven (http://maven.apache.org/).
+
+Creating an Hello World Vaadin application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The userguide for setting up a Vaadin Maven project is http://vaadin.com/wiki/-/wiki/Main/Using%20Vaadin%20with%20Maven.
+
+The following maven call will create a hello world vaadin application
+
+	mvn archetype:generate -DarchetypeGroupId=com.vaadin -DarchetypeArtifactId=vaadin-archetype-clean -DarchetypeVersion=LATEST -DgroupId=eu.lod2 -DartifactId=lod2demo -Dversion=1.0 -Dpackaging=war
+
+In the setup some dependencies have to be resovled manually by publishing
+som jars in your local maven repository.
+
+
+Installation of the OpenRDF workbench
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This is a workbench to inspect RDF stores with a SPAQRL interface. 
+It shows that the LOD2 component virtuoso can be accessed via other 
+RDF frontends.
+
+Secondly the installation opens the access to the database via one of the 
+defacto standard API's for RDF applications.
+
+Activating the openrdf-sesame repository server in tomcat requires to 
+setup the log directory. According to the manual the following property
+should be adapted:
+   -Dinfo.aduna.platform.appdata.basedir=/my/log/directory.
+
+in JAVA_OPTS or CATALINA_OPTS
+
+I could not get it working hence I adopted the following solution.
+I created in the logs directory of the deployment space of tomcat6
+
+	cd /var/libs/tomcat6/logs 
+
+a new directory 
+	
+	sudo mkdir .aduna
+
+make the directory public accessible
+	
+	sudo chmod 777 .aduna
+
+make a link from the tomcat6 server location
+
+	cd /usr/share/tomcat6
+	sudo ln -s /var/libs/tomcat6/logs/.aduna
+
+
+
+
+Activating Virtuoso in the OpenRDF sesame workbench
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The extended manual is found at 
+
+	http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSesame2HttpRepository
+
+Download location: 
+http://www.openlinksw.com/dataspace/dav/wiki/Main/VOSDownload
+
+Bassically it consists of the following operations: 
+NOTE: to be checked the directories.
+
+. download the virtuoso jars or find them in the distribution packages
+. copy some jars to the tomcat webapps openrdf-sesame and openrdf-workbench
+   
+	virt_sesame2.jar
+	virtjdbc3.jar 
+
+	to the WEB-INF/libs/
+
+. copy xlst scripts with configuration information to the openrdf-sesame webapp
+
+	cp create.xlst
+	   create-virtuoso.xlst 
+
+	to WEB-INF/transformations
+
+
+
+
+Activating Virtuoso Sesame drivers in Maven project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add the following dependencies to the pom.xml
+
+		<dependency>
+			<groupId>virtuoso.sesame2</groupId>
+			<artifactId>driver</artifactId>
+			<version>2.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>virtuoso</groupId>
+			<artifactId>jdbc3</artifactId>
+			<version>3.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
+The files have to be registered manually in your maven repository.
+
+	mvn install:install-file -DgroupId=virtuoso.sesame2 -DartifactId=driver -Dversion=2.0 -Dpackaging=jar -Dfile=../libs/virt_sesame2.jar
+	mvn install:install-file -DgroupId=virtuoso -DartifactId=jdbc3 -Dversion=2.0 -Dpackaging=jar -Dfile=../libs/virt_jdbc3.jar
+
+
+ 
+Supporting Tomcat deployment with Maven
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Extend the pom.xml with the following plugin
+
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>tomcat-maven-plugin</artifactId>
+		<!--<version>1.0-beta-1</version>-->
+		<version>LATEST</version>
+		<configuration>
+			<server>tomcat6</server>
+			<url>http://localhost:8080/manager</url>
+		</configuration>
+	</plugin>
+
+It requires the tomcat server to be defined in your local maven settings as a server
+
+In 
+	.m2/settings.xml
+
+add the server specification
+
+	<server>
+        	<id>tomcat6</id>
+        	<username>admin</username>
+        	<password>admin</password>
+        </server>
+
+
+This allows you to (re)deploy your application in tomcat.
+
+	mvn tomcat:deploy    // first time
+ 	mvn tomcat:redeploy  // when the project has been already been deployed.
+
+
+
+
+Supporting Vaadin AddOns with Maven
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Vaadin allows to extend the default widget set by custom build addons. Vaadin offers a Vaadin AddOn repository.
+In order to get them working via only Maven some conventions should be known.
+The online information demonstrates the Eclipse usage.
+
+
+
+
+
+
+
