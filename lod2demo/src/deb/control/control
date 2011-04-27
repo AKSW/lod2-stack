@@ -1,0 +1,9 @@
+Package: lod2demo
+Version: 0.0.1
+Section: misc
+Priority: optional
+Architecture: all
+Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki, virtuoso-opensource
+Maintainer: Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
+Description: The LOD2 demonstrator application
+Distribution: development
