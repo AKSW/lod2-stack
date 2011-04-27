@@ -378,6 +378,13 @@ These import dependencies allow you to declare the project dependencies
     ...
   </dependencies>
 
+The Sesame openRDF library depends on the slf4j logger library.
+The maven repository is
+
+    <repository>
+      <id>slf4j</id>
+      <url>http://repo2.maven.org/maven2/org/slf4j/</url>
+    </repository>
 
 Supporting Vaadin AddOns with Maven
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
