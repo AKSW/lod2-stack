@@ -1,0 +1,96 @@
+LOD2 VMWare Setup Guide
+=======================
+Bert Van Nuffelen <bert.van.nuffelen@tenforce.be>
+v1.0, march 2011: Initial version
+:Author Initials: BVN
+:toc:
+:icons:
+:numbered:
+:website: http://stack.lod2.eu/
+
+
+The VMWare Setup Guide describes how a virtual machine can be created which
+can host the LOD2 stack.
+The description is for a Windows 7 host and an ubuntu 10 guest situation.
+
+Virtual Machine creation
+------------------------
+The LOD2 stack has been verified on an Ubuntu 10 machine.
+The minimal hardware requirements are 512MB RAM and 20 GB disk.
+
+The iso image used to develop this installation guide with is:
+
+	ubuntu-10.10-desktop-i386.iso
+
+After the creation follow the instructions to upgrade the ubuntu distribution
+to the most recent version. 
+
+Additional software
+-------------------
+To ease your work on the LOD2 machine the following software is useful.
+
+text editor
+~~~~~~~~~~~
+(optional) install the VIM editor
+
+	sudo apt-get install vim
+	sudo apt-get install vim-gnome
+        sudo apt-get install vim-addon-manager
+	vim-addons -y /usr/share/vim/addons/ install asciidoc
+
+
+fileformats
+~~~~~~~~~~~
+convert between dos and unix text files
+
+	sudo apt-get install dos2unix
+
+document management
+~~~~~~~~~~~~~~~~~~~
+asciidoc is a tool for layout ascii texts documents nicely.
+
+	sudo apt-get install asciidoc
+
+unoconv is a general converter between document formats.
+
+	sudo apt-get install unoconv
+
+	sudo apt-get install docbook2odf
+
+Accessing host directories
+--------------------------
+This are some notes to get Windows7 host directories accessible in the ubuntu guest.
+
+1. In options of the VM machine settings > options > shared folder.
+   This is a label <LABEL> to the directory on the host mahcine that will be accessible in the VM client machine.
+
+2. install the vm client tools in the client
+
+	sudo apt-get install open-vm-tools
+	sudo apt-get install open-vm-dkms
+
+3. mount the directory.
+
+	sudo mkdir /mnt/<DIR>
+	sudo mount -t vmhgfs .host:/<LABEL> /mnt/<DIR>
+
+
+Processing asciidoc documents
+-----------------------------
+This guide is processable by _asciidoc_. 
+If installed then 
+
+	a2x -f pdf <file> 
+
+will result in a pdf version of the document.
+
+Converting to MSword
+
+	a2x -f docbook -d article <filename>.txt
+	docbook2odf -f --params generate.meta=0 -o <filename>.odt <filename>.xml
+	unoconv -f doc <filename>.odt
+
+
+
+	
+
