@@ -295,6 +295,88 @@ This allows you to (re)deploy your application in tomcat.
  	mvn tomcat:redeploy  // when the project has been already been deployed.
 
 
+Accessing the Maven repository of openRDF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This section decribes how the Sesame API can be integrated in the maven project by adding the 
+following configuration to the project's pom.xml.
+
+The Aduna maven repository containing the openRDF Sesame API is
+
+    <repository>
+      <id>openRDF</id>
+      <url>http://repo.aduna-software.org/maven2</url>
+    </repository>
+
+The Aduna maven repository is structured so that one first has to import the dependencies before 
+declaring the use of it. The section <dependencyManagement> has to be before the <dependencies> tag.
+
+  <dependencyManagement>
+    <!-- For Sesame dependency one requires to import first the pom dependencies -->
+    <dependencies>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-model</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-query</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-queryalgebra-evaluation</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-repository</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-rio-api</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-rio-rdfxml</artifactId>
+        <version>2.3.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+These import dependencies allow you to declare the project dependencies
+
+  <dependencies>
+    ...
+    <dependency>
+      <groupId>org.openrdf.sesame</groupId>
+      <artifactId>sesame-repository-api</artifactId>
+      <version>2.3.3</version>
+    </dependency>
+    ...
+  </dependencies>
 
 
 Supporting Vaadin AddOns with Maven
