@@ -17,11 +17,14 @@ package eu.lod2;
 
 import java.net.*;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.io.*;
+import java.io.UnsupportedEncodingException;
 
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
@@ -62,6 +65,9 @@ public class QueryingTab extends CustomComponent
 	// reference to the global internal state
 	private LOD2DemoState state;
 
+	// reference to the resource of the ontowiki query;
+	private Link ontowikiquerylink;
+
 	public QueryingTab(LOD2DemoState st) {
 
 		// The internal state and 
@@ -92,8 +98,20 @@ public class QueryingTab extends CustomComponent
 		});
 		okbutton.setDescription("View the result from the SPARQL query: 'select * from <graphname> where {?s ?p ?o.} LIMIT 100'");
 		//								okbutton.addListener(this); // react to tclicks
+		
+		ExternalResource ontowikiquery = new ExternalResource("http://localhost/ontowiki/queries/editor/?query=&m=http://mytest.com");
+
+		ontowikiquerylink = new Link("Query via Ontowiki", ontowikiquery);
+		ontowikiquerylink.setTargetName("_blank");
+		ontowikiquerylink.setTargetBorder(Link.TARGET_BORDER_NONE);
+		ontowikiquerylink.setEnabled(false);
+		ThemeResource ontoWikiIcon = new ThemeResource("app_images/OntoWiki.logo.png");
+		ontowikiquerylink.setIcon(ontoWikiIcon);
+
 		t2f.getFooter().addComponent(okbutton);
 		t2ffooterlayout.setComponentAlignment(okbutton, Alignment.TOP_RIGHT);
+		t2f.getFooter().addComponent(ontowikiquerylink);
+		t2ffooterlayout.setComponentAlignment(ontowikiquerylink, Alignment.TOP_RIGHT);
 
 		queryingTab.addComponent(t2f);
 
@@ -101,11 +119,14 @@ public class QueryingTab extends CustomComponent
 
 		VerticalLayout t2ComponentsContent = new VerticalLayout();
 
-		Link t2l = new Link("Query via Ontowiki",
-				new ExternalResource("http://localhost/ontowiki/"));
-		t2l.setTargetName("_blank");
-		t2l.setTargetBorder(Link.TARGET_BORDER_NONE);
-		t2ComponentsContent.addComponent(t2l);
+		// dummy request
+		ExternalResource ontowikiquery2 = new ExternalResource("http://localhost/ontowiki/queries/editor/?query=&m=");
+		Link ontowikiquerylink2 = new Link("Query via Ontowiki", ontowikiquery2);
+		ontowikiquerylink2.setTargetName("_blank");
+		ontowikiquerylink2.setTargetBorder(Link.TARGET_BORDER_NONE);
+		ThemeResource ontoWikiIcon2 = new ThemeResource("app_images/OntoWiki.logo.png");
+		ontowikiquerylink2.setIcon(ontoWikiIcon2);
+		t2ComponentsContent.addComponent(ontowikiquerylink2);
 
 		t2components.setContent(t2ComponentsContent);
 		queryingTab.addComponent(t2components);
@@ -164,7 +185,36 @@ public class QueryingTab extends CustomComponent
 	public void textChange(TextChangeEvent event) {
 		
 		state.setCurrentGraph(event.getText());
+		/*
+		final String Query = "SELECT * where {?s ?p ?o.} LIMIT 20";
+		String Encoded = "";
+		try {
+			Encoded = URLEncoder.encode(Query, "UTF-8");
+		} catch (UnsupportedEncodingException e) { 
+			Encoded = "error";
+			e.printStackTrace();
+		};
+		ExternalResource ontowikiquery = new ExternalResource("http://localhost/ontowiki/queries/editor/?query=" + Encoded + "&m=" + event.getText() );
+		ontowikiquerylink.setResource(ontowikiquery);
+		*/
 
+        if (state.getCurrentGraph() == null || state.getCurrentGraph().equals("")) {
+            ontowikiquerylink.setEnabled(false);
+        } else {    
+	    final String query = "SELECT * where {?s ?p ?o.} LIMIT 20";
+            String encoded = "";
+            try {
+                encoded = URLEncoder.encode(query, "UTF-8");
+                String encodedGraph = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
+                ExternalResource o = new ExternalResource(
+                    "http://localhost/ontowiki/queries/editor/?query=" + encoded + "&m=" + encodedGraph);
+                ontowikiquerylink.setResource(o);
+                ontowikiquerylink.setEnabled(true);
+            } catch (UnsupportedEncodingException e) { 
+                ontowikiquerylink.setEnabled(false);
+                e.printStackTrace();
+            };
+        };
 		
 	}
 };

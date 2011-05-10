@@ -39,6 +39,9 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
 
+import org.restlet.resource.ClientResource;
+import org.restlet.data.MediaType;
+
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
@@ -48,10 +51,18 @@ import eu.lod2.LOD2DemoState;
  */
 //@SuppressWarnings("serial")
 public class ExtractionTab extends CustomComponent
+	implements TextChangeListener 
 {
 
 	// reference to the global internal state
 	private LOD2DemoState state;
+
+    // 
+    private Button annotateButton;
+    private Label annotatedTextField;
+
+    private String textToAnnotate;
+    private String annotatedText;
 
 	public ExtractionTab(LOD2DemoState st) {
 
@@ -59,6 +70,39 @@ public class ExtractionTab extends CustomComponent
 		state = st;
 
 		VerticalLayout extractionTab = new VerticalLayout();
+
+        // add a form widget to annotate text with Online Spotlight 
+        Form t2f = new Form();
+        t2f.setCaption("Annotate plain text");
+
+        TextArea textToAnnotateField = new TextArea("text:");
+        textToAnnotateField.setImmediate(false);
+        textToAnnotateField.addListener(this);
+        textToAnnotateField.setColumns(50);
+        textToAnnotateField.setRows(10);
+		t2f.getLayout().addComponent(textToAnnotateField);
+
+        annotatedTextField = new Label("annotated text", Label.CONTENT_XHTML);
+		t2f.getLayout().addComponent(annotatedTextField);
+
+        // initialize the footer area of the form
+        HorizontalLayout t2ffooterlayout = new HorizontalLayout();
+        t2f.setFooter(t2ffooterlayout);
+
+		annotateButton = new Button("Annotate with Spotlight", new ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				annotateText(event);
+			}
+		});
+		annotateButton.setDescription("Annotate the text with Spotlight");
+        annotateButton.setEnabled(false);
+
+        t2f.getFooter().addComponent(annotateButton);
+
+        extractionTab.addComponent(t2f);
+        
+
+
 
 		final Panel panel = new Panel("External components interfaces");
 
@@ -83,6 +127,7 @@ public class ExtractionTab extends CustomComponent
         t1l3.setTargetBorder(Link.TARGET_BORDER_NONE);
         panelContent.addComponent(t1l3);
 
+
 		panel.setContent(panelContent);
 		extractionTab.addComponent(panel);
 
@@ -91,6 +136,45 @@ public class ExtractionTab extends CustomComponent
 		setCompositionRoot(extractionTab);
 	}
 
+	public void textChange(TextChangeEvent event) {
+		
+		textToAnnotate = event.getText();
+        if (textToAnnotate == null || textToAnnotate.equals("")) {
+            annotateButton.setEnabled(false);
+        } else {    
+            String encoded = "";
+            try {
+                encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
+                annotateButton.setEnabled(true);
+            } catch (UnsupportedEncodingException e) { 
+                annotateButton.setEnabled(false);
+                e.printStackTrace();
+            };
+        };
+		
+	}
+
+	private void annotateText(ClickEvent event) {
+        try {
+            String encoded = "";
+            encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
+            ClientResource restcall = new ClientResource(
+                        "http://spotlight.dbpedia.org/rest/annotate?text=" + encoded + "&confidence=0.4&support=20");
+
+//            String result = restcall.get().getText();  
+//            String result = restcall.get(MediaType.APPLICATION_XHTML).getText();  
+            String result = restcall.get(MediaType.TEXT_XML).getText();  
+            annotatedTextField.setValue(result);
+         } catch (UnsupportedEncodingException e) { 
+                annotateButton.setEnabled(false);
+                e.printStackTrace();
+         } catch (IOException e) { 
+                annotateButton.setEnabled(false);
+                e.printStackTrace();
+        };
+            
+	};
+    
 
 };
 

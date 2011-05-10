@@ -2,4 +2,33 @@
 
 .v-app {
     background: white;
+    font-family:'Droid Sans', Arial, sans-serif; font-weight:normal; font-style:normal;
+    line-height:1.5;
+    font-size:0.875em;
+    background-image: url("/lod2demo/VAADIN/themes/lod2/app-images/LOD2.logo.jpg");
+}
+
+.slagzin {
+    font-family:"Droid Sans", Arial, sans-serif; 
+    font-weight:normal;
+    font-style:normal;
+	font-size:1.8em;
+    line-height:1.5;
+    z-index: 100;
+    color:#000 !important;
+}
+
+.v-embedded-lod2logo {
+    z-index: 1;
+}
+
+.slagzin_image {
+    font-family:"Droid Sans", Arial, sans-serif; font-weight:normal; font-style:normal;
+	font-size:1.4em;
+    line-height:1.5;
+    background: url("/lod2demo/VAADIN/themes/lod2/app-images/LOD2.logo.jpg");
+}
+
+.v-icon {
+	height: 20px
 }

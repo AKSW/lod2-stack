@@ -18,11 +18,14 @@ package eu.lod2;
 
 import java.net.*;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.io.*;
+import java.io.UnsupportedEncodingException;
 
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
@@ -48,37 +51,95 @@ import eu.lod2.LOD2DemoState;
  */
 //@SuppressWarnings("serial")
 public class AuthoringTab extends CustomComponent
+	implements TextChangeListener 
 {
 
-	// reference to the global internal state
-	private LOD2DemoState state;
+    // reference to the global internal state
+    private LOD2DemoState state;
 
-	public AuthoringTab(LOD2DemoState st) {
+    private String resourceToEdit;
+    private Link   ontowikil;
 
-		// The internal state and 
-		state = st;
+    public AuthoringTab(LOD2DemoState st) {
 
-		VerticalLayout authoringTab = new VerticalLayout();
+        // The internal state and 
+        state = st;
 
-		final Panel panel = new Panel("External components interfaces");
+        VerticalLayout authoringTab = new VerticalLayout();
 
-		VerticalLayout panelContent = new VerticalLayout();
+        // add a form widget to edit with OntoWiki (or other editor) a specific resource
+        Form t2f = new Form();
+        t2f.setCaption("Edit resource content");
+
+        TextField resToEdit = new TextField("Resource:");
+        resToEdit.setImmediate(false);
+        resToEdit.addListener(this);
+        resToEdit.setColumns(50);
+		t2f.getLayout().addComponent(resToEdit);
+
+        // initialize the footer area of the form
+        HorizontalLayout t2ffooterlayout = new HorizontalLayout();
+        t2f.setFooter(t2ffooterlayout);
+
+        ontowikil = new Link("Edit with Ontowiki",
+                new ExternalResource("http://localhost/ontowiki/view/?r=&m=http://mytest.com"));
+        ontowikil.setTargetName("_blank");
+        ontowikil.setTargetBorder(Link.TARGET_BORDER_NONE);
+        ThemeResource ontoWikiIconl = new ThemeResource("app_images/OntoWiki.logo.png");
+        ontowikil.setIcon(ontoWikiIconl);
+        ontowikil.setEnabled(false);
+
+
+        t2f.getFooter().addComponent(ontowikil);
+        t2ffooterlayout.setComponentAlignment(ontowikil, Alignment.TOP_RIGHT);
+
+        authoringTab.addComponent(t2f);
+
+        final Panel panel = new Panel("External components interfaces");
+
+        VerticalLayout panelContent = new VerticalLayout();
 
         Link l = new Link("Ontowiki",
-                new ExternalResource("http://localhost/ontowiki"));
+                new ExternalResource("http://localhost/ontowiki/view/?r=&m=http://mytest.com"));
         l.setTargetName("_blank");
         l.setTargetBorder(Link.TARGET_BORDER_NONE);
+        ThemeResource ontoWikiIcon = new ThemeResource("app_images/OntoWiki.logo.png");
+        l.setIcon(ontoWikiIcon);
         panelContent.addComponent(l);
 
 
-		panel.setContent(panelContent);
-		authoringTab.addComponent(panel);
+        panel.setContent(panelContent);
+        authoringTab.addComponent(panel);
 
 
-		// The composition root MUST be set
-		setCompositionRoot(authoringTab);
+        // The composition root MUST be set
+        setCompositionRoot(authoringTab);
+    }
+
+	public void textChange(TextChangeEvent event) {
+		
+		resourceToEdit = event.getText();
+        if (resourceToEdit == null || resourceToEdit.equals("")) {
+            ontowikil.setEnabled(false);
+        } else {    
+        if (state.getCurrentGraph() == null || state.getCurrentGraph().equals("")) {
+            ontowikil.setEnabled(false);
+        } else {    
+            String Encoded = "";
+            try {
+                Encoded = URLEncoder.encode(resourceToEdit, "UTF-8");
+                String encodedGraph = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
+                ExternalResource o = new ExternalResource(
+                    "http://localhost/ontowiki/view/?r=" + Encoded + "&m=" + encodedGraph);
+                ontowikil.setResource(o);
+                ontowikil.setEnabled(true);
+            } catch (UnsupportedEncodingException e) { 
+                ontowikil.setEnabled(false);
+                e.printStackTrace();
+            };
+        };
+        };
+		
 	}
 
-
-};
-
+}

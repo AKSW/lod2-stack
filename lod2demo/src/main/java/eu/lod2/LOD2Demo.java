@@ -57,8 +57,22 @@ public class LOD2Demo extends Application
 	final Window mainWindow = new Window("LOD2 Prototype");
 	setTheme("lod2");
 
-	Label label = new Label("Welcome to the LOD2 stack demonstrator.");
-	mainWindow.addComponent(label);
+
+	AbsoluteLayout welcome = new AbsoluteLayout();
+	welcome.setWidth("99%");
+        welcome.setHeight("154px");
+	Embedded lod2logo = new Embedded("", new ThemeResource("app_images/LOD2.logo.jpg"));
+	lod2logo.setMimeType("image/jpeg");
+	lod2logo.addStyleName("lod2logo");
+	Label slagzin = new Label("<i>Creating Knowledge out of Interlinked Data</i>");
+	slagzin.setContentMode(Label.CONTENT_XHTML);
+	welcome.addComponent(lod2logo, "top:10px; left:10px");
+	welcome.addComponent(slagzin, "top:20px; left:180px");
+//	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
+	slagzin.addStyleName("slagzin");
+
+        mainWindow.addComponent(welcome);
+
 
 	HorizontalLayout scenario = new HorizontalLayout();
 	Embedded usecaseimg = new Embedded("", new ThemeResource("app_images/usecases_stream.png"));

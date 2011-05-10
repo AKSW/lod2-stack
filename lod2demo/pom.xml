@@ -195,7 +195,12 @@
 		<repository>
 			<id>Jena</id>
 			<url>http://openjena.org/repo</url>
-		</repository>
+        </repository>
+        <repository>  
+   <id>maven-restlet</id>  
+   <name>Public online Restlet repository</name>  
+   <url>http://maven.restlet.org</url>  
+</repository>  
 		<!--
 		<repository>
 			<id>The Buzz Media Maven Repository</id>
@@ -381,6 +386,11 @@
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>codelabel</artifactId>
 			<version>1.0</version>
+        </dependency>
+		<dependency>
+			<groupId>org.restlet.jee</groupId>
+			<artifactId>org.restlet</artifactId>
+			<version>LATEST</version>
 		</dependency>
 		<!--
 		<dependency>
