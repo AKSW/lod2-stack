@@ -133,7 +133,7 @@ public class OnlineToolsTab extends CustomComponent
 
 
 		/* The online resources link page */
-		final Panel panel = new Panel("External components interfaces");
+		final Panel panel = new Panel("LOD2 online components");
 
 		VerticalLayout panelContent = new VerticalLayout();
 

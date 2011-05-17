@@ -47,6 +47,7 @@ import org.openrdf.query.parser.sparql.SPARQLParser;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.model.impl.*;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
@@ -67,6 +68,10 @@ public class QueryingTab extends CustomComponent
 
 	// reference to the resource of the ontowiki query;
 	private Link ontowikiquerylink;
+	//
+	// queryform
+	private String querygraph = "";
+	private TextField graphname;
 
 	public QueryingTab(LOD2DemoState st) {
 
@@ -76,9 +81,16 @@ public class QueryingTab extends CustomComponent
 		VerticalLayout queryingTab = new VerticalLayout();
 
 		Form t2f = new Form();
-		t2f.setCaption("Information source Querying");
+		t2f.setCaption("Information Source Querying");
 
-		TextField graphname = new TextField("repository graph name:");
+		graphname = new TextField("repository graph name:");
+/*		if (state == null | state.getCurrentGraph() == null | state.getCurrentGraph().equals("")) {
+			graphname.setValue("");
+		} else {
+			graphname.setValue(state.getCurrentGraph());
+		};
+		*/
+
 		// configure & add to layout
 		graphname.setImmediate(true);
 		graphname.addListener(this);
@@ -114,14 +126,15 @@ public class QueryingTab extends CustomComponent
 		t2ffooterlayout.setComponentAlignment(ontowikiquerylink, Alignment.TOP_RIGHT);
 
 		queryingTab.addComponent(t2f);
+		queryingTab.addComponent(sparqlResult);
 
-		final Panel t2components = new Panel("External components interfaces");
+		final Panel t2components = new Panel("LOD2 components interfaces");
 
 		VerticalLayout t2ComponentsContent = new VerticalLayout();
 
 		// dummy request
 		ExternalResource ontowikiquery2 = new ExternalResource("http://localhost/ontowiki/queries/editor/?query=&m=");
-		Link ontowikiquerylink2 = new Link("Query via Ontowiki", ontowikiquery2);
+		Link ontowikiquerylink2 = new Link("Ontowiki", ontowikiquery2);
 		ontowikiquerylink2.setTargetName("_blank");
 		ontowikiquerylink2.setTargetBorder(Link.TARGET_BORDER_NONE);
 		ThemeResource ontoWikiIcon2 = new ThemeResource("app_images/OntoWiki.logo.png");
@@ -130,8 +143,6 @@ public class QueryingTab extends CustomComponent
 
 		t2components.setContent(t2ComponentsContent);
 		queryingTab.addComponent(t2components);
-		// put result panel at the bottom
-		queryingTab.addComponent(sparqlResult);
 
 		// The composition root MUST be set
 		setCompositionRoot(queryingTab);
@@ -142,7 +153,7 @@ public class QueryingTab extends CustomComponent
 		try {
 			RepositoryConnection con = state.getRdfStore().getConnection();
 
-			if (state.getCurrentGraph() == null | state.getCurrentGraph().equals("")) {
+			if (querygraph.equals("")) {
 
 				sparqlResult.removeAllComponents();
 				getWindow().showNotification("No query issued.");
@@ -151,22 +162,43 @@ public class QueryingTab extends CustomComponent
 				//Initialize the result page
 				sparqlResult.removeAllComponents();
 
-				String query = "select * from <" + state.getCurrentGraph() + "> where {?s ?p ?o} LIMIT 100";
+				String query = "select * from <" + querygraph + "> where {?s ?p ?o} LIMIT 100";
 				TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 				TupleQueryResult result = tupleQuery.evaluate();
-
+			
+				String statements = "";
 				while (result.hasNext()) {
 					BindingSet bindingSet = result.next();
 					Value valueOfS = bindingSet.getValue("s");
 					Value valueOfP = bindingSet.getValue("p");
 					Value valueOfO = bindingSet.getValue("o");
 
-					String triple = "<" + valueOfS.stringValue() + ">  <" + valueOfP.stringValue() + "> '" + valueOfO.stringValue() + "'"; 
+					String objectType = "";
+					String objectString = "";
+				        if (valueOfO instanceof LiteralImpl) {
+						objectType = "literal";
+						LiteralImpl literalO = (LiteralImpl) valueOfO;
+						objectString = "\"" + literalO.getLabel() + "\" ^^ <" + literalO.getDatatype() + ">";
 
-					sparqlResult.addComponent(new Label(triple));
+					};	
+				        if (valueOfO instanceof URIImpl) {
+						objectType = "resource";
+						objectString = "<" + valueOfO.stringValue() + ">";
+					};	
+
+					String triple = "<" + valueOfS.stringValue() + ">  <" + valueOfP.stringValue() + "> " + 
+							objectString; 
+
+					statements = statements + "\n" + triple;
+
 
 					// do something interesting with the values here...
 				}
+				TextArea resultArea = new TextArea("", statements);
+				resultArea.setReadOnly(true);
+				resultArea.setColumns(0);
+				resultArea.setRows(30);
+				sparqlResult.addComponent(resultArea);
 			}
 
 		} catch (RepositoryException e) {
@@ -184,7 +216,7 @@ public class QueryingTab extends CustomComponent
 
 	public void textChange(TextChangeEvent event) {
 		
-		state.setCurrentGraph(event.getText());
+	querygraph = event.getText();	
 		/*
 		final String Query = "SELECT * where {?s ?p ?o.} LIMIT 20";
 		String Encoded = "";
@@ -198,24 +230,37 @@ public class QueryingTab extends CustomComponent
 		ontowikiquerylink.setResource(ontowikiquery);
 		*/
 
-        if (state.getCurrentGraph() == null || state.getCurrentGraph().equals("")) {
-            ontowikiquerylink.setEnabled(false);
-        } else {    
-	    final String query = "SELECT * where {?s ?p ?o.} LIMIT 20";
-            String encoded = "";
-            try {
-                encoded = URLEncoder.encode(query, "UTF-8");
-                String encodedGraph = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
-                ExternalResource o = new ExternalResource(
-                    "http://localhost/ontowiki/queries/editor/?query=" + encoded + "&m=" + encodedGraph);
-                ontowikiquerylink.setResource(o);
-                ontowikiquerylink.setEnabled(true);
-            } catch (UnsupportedEncodingException e) { 
-                ontowikiquerylink.setEnabled(false);
-                e.printStackTrace();
-            };
-        };
-		
+		activateOntoWikiQuery();
 	}
+
+	// propagate the information of one tab to another.
+	public void setDefaults() {
+		if (querygraph.equals("")) {    
+			// on empty set the default value
+			querygraph = state.getCurrentGraph();
+			graphname.setValue(querygraph);
+		};
+		activateOntoWikiQuery();
+	};
+
+	private void activateOntoWikiQuery() {
+		if (querygraph.equals("")) {
+		    ontowikiquerylink.setEnabled(false);
+		} else {    
+		    final String query = "SELECT * where {?s ?p ?o.} LIMIT 20";
+		    String encoded = "";
+		    try {
+			encoded = URLEncoder.encode(query, "UTF-8");
+			String encodedGraph = URLEncoder.encode(querygraph, "UTF-8");
+			ExternalResource o = new ExternalResource(
+			    "http://localhost/ontowiki/queries/editor/?query=" + encoded + "&m=" + encodedGraph);
+			ontowikiquerylink.setResource(o);
+			ontowikiquerylink.setEnabled(true);
+		    } catch (UnsupportedEncodingException e) { 
+			ontowikiquerylink.setEnabled(false);
+			e.printStackTrace();
+		    };
+		};
+	};
 };
 

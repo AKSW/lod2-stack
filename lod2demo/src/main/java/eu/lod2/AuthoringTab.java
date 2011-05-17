@@ -95,7 +95,7 @@ public class AuthoringTab extends CustomComponent
 
         authoringTab.addComponent(t2f);
 
-        final Panel panel = new Panel("External components interfaces");
+        final Panel panel = new Panel("LOD2 components interfaces");
 
         VerticalLayout panelContent = new VerticalLayout();
 

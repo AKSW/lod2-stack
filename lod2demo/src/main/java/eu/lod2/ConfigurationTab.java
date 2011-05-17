@@ -42,42 +42,67 @@ import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
 /**
- * The enrichment tab which collects information about 
- * ways and components to extract information.
+ * The configuration tab which collects information about 
+ * the default settings van the LOD2 demonstrator.
  */
 //@SuppressWarnings("serial")
-public class EnrichmentTab extends CustomComponent
+public class ConfigurationTab extends CustomComponent
+    implements TextChangeListener 
 {
 
 	// reference to the global internal state
 	private LOD2DemoState state;
 
-	public EnrichmentTab(LOD2DemoState st) {
+    // fields
+    private String defaultgraphvalue;
+
+	public ConfigurationTab(LOD2DemoState st) {
 
 		// The internal state and 
 		state = st;
 
-		VerticalLayout enrichmentTab = new VerticalLayout();
+		VerticalLayout configurationTab = new VerticalLayout();
 
-		final Panel panel = new Panel("LOD2 components interfaces");
+	    // Configuration form start
+        // Set all properties at once for the moment.
+        Form t2f = new Form();
+        t2f.setCaption("Configuration");
 
-		VerticalLayout panelContent = new VerticalLayout();
+        TextField defaultgraph = new TextField("Default graph:", state.getCurrentGraph());
+        defaultgraph.setImmediate(false);
+        defaultgraph.addListener(this);
+        defaultgraph.setColumns(50);
+        t2f.getLayout().addComponent(defaultgraph);
 
-        Link l = new Link("ORE",
-                new ExternalResource("http://web.ore-tool.net"));
-        l.setTargetName("_blank");
-        l.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(l);
+        // initialize the footer area of the form
+        HorizontalLayout t2ffooterlayout = new HorizontalLayout();
+        t2f.setFooter(t2ffooterlayout);
 
+        Button commitButton = new Button("Set configuration", new ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                storeConfiguration(event);
+            }
+        });
+        commitButton.setDescription("Commit the new configuration settings.");
+        t2f.getFooter().addComponent(commitButton);
 
-		panel.setContent(panelContent);
-		enrichmentTab.addComponent(panel);
+        configurationTab.addComponent(t2f);
+
+        // Configuration form end
 
 
 		// The composition root MUST be set
-		setCompositionRoot(enrichmentTab);
+		setCompositionRoot(configurationTab);
 	}
 
+    private void storeConfiguration(ClickEvent event) {
+       state.setCurrentGraph(defaultgraphvalue);
 
+    };
+
+    public void textChange(TextChangeEvent event) {
+
+        defaultgraphvalue = event.getText();
+    };
 };
 

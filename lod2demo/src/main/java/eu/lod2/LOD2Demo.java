@@ -33,9 +33,9 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.AbstractOrderedLayout.*;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 
 
-import eu.lod2.OnlineToolsTab;
 import eu.lod2.LOD2DemoState;
 import eu.lod2.LOD2Exception;
 import java.lang.RuntimeException;
@@ -45,91 +45,117 @@ import java.lang.RuntimeException;
  */
 @SuppressWarnings("serial")
 public class LOD2Demo extends Application 
+   implements TabSheet.SelectedTabChangeListener
 {
 
-	private LOD2DemoState state;
-	
-	@Override
-	public void init() {
+    private LOD2DemoState state;
 
-	LOD2DemoState state = new LOD2DemoState();
+    private TabSheet tabsheet = new TabSheet();
+    private QueryingTab queryingTab;
 
-	final Window mainWindow = new Window("LOD2 Prototype");
-	setTheme("lod2");
+    @Override
+        public void init() {
 
+            LOD2DemoState state = new LOD2DemoState();
 
-	AbsoluteLayout welcome = new AbsoluteLayout();
-	welcome.setWidth("99%");
-        welcome.setHeight("154px");
-	Embedded lod2logo = new Embedded("", new ThemeResource("app_images/LOD2.logo.jpg"));
-	lod2logo.setMimeType("image/jpeg");
-	lod2logo.addStyleName("lod2logo");
-	Label slagzin = new Label("<i>Creating Knowledge out of Interlinked Data</i>");
-	slagzin.setContentMode(Label.CONTENT_XHTML);
-	welcome.addComponent(lod2logo, "top:10px; left:10px");
-	welcome.addComponent(slagzin, "top:20px; left:180px");
-//	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
-	slagzin.addStyleName("slagzin");
-
-        mainWindow.addComponent(welcome);
+            final Window mainWindow = new Window("LOD2 Prototype");
+            setTheme("lod2");
 
 
-	HorizontalLayout scenario = new HorizontalLayout();
-	Embedded usecaseimg = new Embedded("", new ThemeResource("app_images/usecases_stream.png"));
-	usecaseimg.setMimeType("image/png");
-	scenario.addComponent(usecaseimg);
-	scenario.setComponentAlignment(usecaseimg, Alignment.MIDDLE_CENTER);
-	scenario.setWidth("100%");
+            AbsoluteLayout welcome = new AbsoluteLayout();
+            welcome.setWidth("99%");
+            welcome.setHeight("154px");
+            Embedded lod2logo = new Embedded("", new ThemeResource("app_images/LOD2.logo.jpg"));
+            lod2logo.setMimeType("image/jpeg");
+            lod2logo.addStyleName("lod2logo");
+            Label slagzin = new Label("<i>Creating Knowledge out of Interlinked Data</i>");
+            slagzin.setContentMode(Label.CONTENT_XHTML);
+            welcome.addComponent(lod2logo, "top:10px; left:10px");
+            welcome.addComponent(slagzin, "top:20px; left:180px");
+            //	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
+            slagzin.addStyleName("slagzin");
 
-        mainWindow.addComponent(scenario);
+            mainWindow.addComponent(welcome);
 
-	
+            /*  // The Scenario graph seems not to contribute a lot.
+             *
+             HorizontalLayout scenario = new HorizontalLayout();
+             Embedded usecaseimg = new Embedded("", new ThemeResource("app_images/usecases_stream.png"));
+             usecaseimg.setMimeType("image/png");
+             scenario.addComponent(usecaseimg);
+             scenario.setComponentAlignment(usecaseimg, Alignment.MIDDLE_CENTER);
+             scenario.setWidth("100%");
 
-	// Create an empty tab sheet.
-	TabSheet tabsheet = new TabSheet();
-
-	//************************************************************************
-	// Extraction Tab
-  	ExtractionTab extractionTab = new ExtractionTab(state);	
-
-	tabsheet.addTab(extractionTab);
-	tabsheet.getTab(extractionTab).setCaption("Extraction");
-
-	
-	//************************************************************************
-	// Querying Tab
-  	QueryingTab queryingTab = new QueryingTab(state);	
-
-	tabsheet.addTab(queryingTab);
-	tabsheet.getTab(queryingTab).setCaption("Querying");
-	
-	//************************************************************************
-	// Authoring Tab
-  	AuthoringTab authoringTab = new AuthoringTab(state);	
-
-	tabsheet.addTab(authoringTab);
-	tabsheet.getTab(authoringTab).setCaption("Authoring");
-
-	//************************************************************************
-	// Enrichment Tab
-  	EnrichmentTab enrichmentTab = new EnrichmentTab(state);	
-
-	tabsheet.addTab(enrichmentTab);
-	tabsheet.getTab(enrichmentTab).setCaption("Enrichment");
-	
-	//************************************************************************
-	// Online Tools Tab
-
-  	OnlineToolsTab onlineToolsTab = new OnlineToolsTab("http://mytest.com", state);	
-
-	tabsheet.addTab(onlineToolsTab);
-	tabsheet.getTab(onlineToolsTab).setCaption("Online Tools and Services");
-
-	mainWindow.addComponent(tabsheet);
+             mainWindow.addComponent(scenario);
+             */
 
 
-    	setMainWindow(mainWindow);
+            // Create an empty tab sheet.
+//            TabSheet tabsheet = new TabSheet();
 
-	}
+            //************************************************************************
+            // Extraction Tab
+            ExtractionTab extractionTab = new ExtractionTab(state);	
+
+            tabsheet.addTab(extractionTab);
+            tabsheet.getTab(extractionTab).setCaption("Extraction");
+
+
+            //************************************************************************
+            // Querying Tab
+            queryingTab = new QueryingTab(state);	
+
+            tabsheet.addTab(queryingTab);
+            tabsheet.getTab(queryingTab).setCaption("Querying");
+
+            //************************************************************************
+            // Authoring Tab
+            AuthoringTab authoringTab = new AuthoringTab(state);	
+
+            tabsheet.addTab(authoringTab);
+            tabsheet.getTab(authoringTab).setCaption("Authoring");
+
+            //************************************************************************
+            // Enrichment Tab
+            EnrichmentTab enrichmentTab = new EnrichmentTab(state);	
+
+            tabsheet.addTab(enrichmentTab);
+            tabsheet.getTab(enrichmentTab).setCaption("Enrichment");
+
+            //************************************************************************
+            // Online Tools Tab
+
+            OnlineToolsTab onlineToolsTab = new OnlineToolsTab("", state);	
+
+            tabsheet.addTab(onlineToolsTab);
+            tabsheet.getTab(onlineToolsTab).setCaption("Online Tools and Services");
+            //************************************************************************
+            // Configuration Tab
+            ConfigurationTab configurationTab = new ConfigurationTab(state);	
+
+            tabsheet.addTab(configurationTab);
+            tabsheet.getTab(configurationTab).setCaption("Configuration");
+
+            tabsheet.addListener(this);
+            mainWindow.addComponent(tabsheet);
+
+
+            setMainWindow(mainWindow);
+
+        }
+
+     public void selectedTabChange(SelectedTabChangeEvent event) {
+
+            final TabSheet source = (TabSheet) event.getSource();
+
+            if (source == tabsheet) {
+                if (source.getSelectedTab() == queryingTab) {
+                    queryingTab.setDefaults();
+            //        tabsheet.getTab(queryingTab).setCaption("hi");
+                } else {
+                    tabsheet.getTab(queryingTab).setCaption("Querying");
+                }
+            }
+     };
 
 }
