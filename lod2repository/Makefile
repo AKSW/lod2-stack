@@ -6,12 +6,17 @@ clean:
 	@echo "--> clean directory"
 	rm -f trustdb.gpg secring.gpg *~
 	rm -rf lod2repository*
+	rm *.log
 
 list:
 	gpg --no-permission-warning --homedir ./ --list-keys
 
 sign-release:
 	bin/sign-remote packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/lod2/Release
+
+release-log-less:
+	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/mini-dinstall.log mini-dinstall.log
+	less mini-dinstall.log
 
 lod2repository: clean lod2repository-newversion lod2repository-build
 
