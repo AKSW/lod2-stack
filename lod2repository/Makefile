@@ -17,6 +17,17 @@ sign-release:
 release-log-less:
 	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/mini-dinstall.log mini-dinstall.log
 	less mini-dinstall.log
+	rm mini-dinstall.log
+
+release-ls-rejected:
+	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/REJECT.ls rejected.ls
+	less rejected.ls
+	rm rejected.ls
+
+release-ls-incoming:
+	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/incoming.ls incoming.ls
+	less incoming.ls
+	rm incoming.ls
 
 lod2repository: clean lod2repository-newversion lod2repository-build
 
