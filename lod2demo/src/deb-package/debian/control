@@ -1,0 +1,15 @@
+Source: lod2demo
+Section: misc
+Priority: extra
+Maintainer: Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://lod2.eu
+
+Package: lod2demo
+Version: 1.0
+Architecture: all
+Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki, virtuoso-opensource
+Description: The LOD2 demonstrator application
+Distribution: development
+
