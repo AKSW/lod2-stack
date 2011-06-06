@@ -397,4 +397,151 @@ The online information demonstrates the Eclipse usage.
 
 
 
+Publishing Debian Package
+-------------------------
 
+Setting up maven to build the debian packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Follow the instructions of to set
+http://europatech.blogspot.com/search/label/debian
+
+
+install dput (debian package put)
+
+	sudo apt-get install dput
+
+configure dput in your homedir: add the next configuration info to .dput/dput.cf
+
+	[lod2]
+	fqdn = stack.lod2.eu
+	method = scp
+	login = packaging
+	incoming = /var/www/stack.lod2.eu/deb/mini-dinstall/incoming
+
+install dch (debian package change)
+
+	sudo apt-get install devscripts dh-make
+
+
+
+install fakeroot
+	
+	sudo apt-get install fakeroot
+
+
+Create the basic template for the application package. This is done by creating
+a directory with the name of the package in the form of <package>-<version>
+
+	cd target/
+        mkdir <package>-<version>
+        cd <package>-<version>
+        dh_make -c apache -n -s -i -e Bert.Van.Nuffelen@tenforce.com 
+
+Move the generated files to the maven soure directory.
+     
+	mkdir src/deb-package
+	cp -r debian src/deb-package
+
+Adapt the changelog to be of the form:
+
+[literal]
+	lod2demo (1.0) lod2; urgency=low
+	  * Initial Release .
+	  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 24 May 2011 04:35:01 -0700
+
+where it is important to set the package distribution identifier to lod2 instead of unstable otherwise it will be blocked at the
+upload to the lod2 stack.
+
+Add the build script build_debpkg.sh to src/deb-package
+
+	#!/bin/sh
+
+	MODULE_NAME=lod2demo_1.0
+
+	echo "Building Debian package for ${MODULE_NAME}"
+	echo
+
+	rm -rf ../../target/deb-pkg
+	mkdir -p ../../target/deb-pkg
+
+	# Extract the tarball to the package workspace
+	#tar xfz data.tar.gz --directory ../../target/deb-pkg
+
+	# copy war file to package workspace
+	cp ../../target/lod2demo-1.0.war ../../target/deb-pkg
+	# Add the Debian control files
+	cp -r debian ../../target/deb-pkg
+
+	# Build the package and sign it.
+	cd ../../target/deb-pkg
+	debuild --check-dirname-level 0 -b
+
+
+The package contains a war file which must be installed at the appropriate place during the installation process of the
+debian package. 
+
+	lod2demo-1.0.war /var/lib/tomcat6/webapps
+
+The package is automatically signed by the debuild command at the end of the script.
+
+
+Extend the pom.xml with
+
+  <profiles>
+      <profile>
+         <id>deb-pkg</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-antrun-plugin</artifactId>
+                  <configuration>
+                     <tasks>
+                        <echo
+                           message="Creating deb package">
+                        </echo>
+                        <exec
+                           dir="${basedir}/src/deb-package"
+                           executable="${basedir}/src/deb-package/build_debpkg.sh"
+                           failonerror="true">
+                        </exec>
+                     </tasks>
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <id>deb-pkg</id>
+                        <phase>package</phase>
+                        <goals>
+                           <goal>run</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
+
+
+
+build the package 
+     
+	mvn package -Pdeb-pkg
+
+debuild
+
+	use it debuild --check-dirname-level 0 -b
+
+////
+sudo apt-get install debsig-verify
+sudo mkdir /usr/share/debsig/keyrings/mylod2
+sudo gpg --no-default-keyring --keyring     /usr/share/debsig/keyrings/mylod2/debsig.gpg --import ../BertVanNuffelen.asc
+////
+
+
+
+
+
+
+ 
