@@ -9,7 +9,7 @@ Homepage: http://lod2.eu
 Package: lod2demo
 Version: 1.0
 Architecture: all
-Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki, virtuoso-opensource
+Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki, virtuoso-opensource, d2r-cordis, silk
 Description: The LOD2 demonstrator application
 Distribution: development
 

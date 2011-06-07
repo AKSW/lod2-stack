@@ -1,3 +1,10 @@
+lod2demo (1.1) lod2; urgency=low
+
+  * integrate online sigma page.
+  * add lod2 dependencies
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+
 lod2demo (1.0) lod2; urgency=low
 
   * Initial Release .

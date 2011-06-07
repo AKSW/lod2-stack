@@ -1,6 +1,7 @@
 #!/bin/sh
 
-MODULE_NAME=lod2demo_1.0
+PACKAGE_NAME=lod2demo
+VERSION=1.1
 
 echo "Building Debian package for ${MODULE_NAME}"
 echo
@@ -12,9 +13,13 @@ mkdir -p ../../target/deb-pkg
 #tar xfz data.tar.gz --directory ../../target/deb-pkg
 
 # copy war file to package workspace
-cp ../../target/lod2demo-1.0.war ../../target/deb-pkg
+# remove the version in the name
+cp ../../target/${PACKAGE_NAME}-${VERSION}.war ../../target/deb-pkg/lod2demo.war
+cp -r ../../src/main/html/ ../../target/deb-pkg/
+cp ../../src/main/html/*html ../../target/deb-pkg/
 # Add the Debian control files
 cp -r debian ../../target/deb-pkg
+cp Makefile ../../target/deb-pkg
 
 # Build the package
 cd ../../target/deb-pkg
