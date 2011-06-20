@@ -1,3 +1,9 @@
+lod2repository (1.8) lod2; urgency=low
+
+  * New maintainer key: Stephen Mulcahy (DERI)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Mon, 20 Jun 2011 13:02:04 +0200
+
 lod2repository (1.7) lod2; urgency=low
 
   * New maintainer key: Robert Isele (FU Berlin)

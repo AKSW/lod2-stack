@@ -3,5 +3,12 @@ repository.
 
 to modify the pubring.gpg try:
   gpg --homedir ./ --import xxx.asc
+  (add a new maintainer key)
+or
+  gpg --homedir ./ --delete-key F27A1C8B
+  (remove an old maintainer key)
 in this directory.
+
+after that, create a new package with
+  make lod2repository
 

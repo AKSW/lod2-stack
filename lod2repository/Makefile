@@ -6,7 +6,7 @@ clean:
 	@echo "--> clean directory"
 	rm -f trustdb.gpg secring.gpg *~
 	rm -rf lod2repository*
-	rm *.log
+	rm -f *.log
 
 list:
 	gpg --no-permission-warning --homedir ./ --list-keys
