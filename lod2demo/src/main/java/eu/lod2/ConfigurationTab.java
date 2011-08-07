@@ -68,11 +68,18 @@ public class ConfigurationTab extends CustomComponent
         Form t2f = new Form();
         t2f.setCaption("Configuration");
 
+	// the localhost ip-address
+        TextField hostname = new TextField("Hostname:", state.getHostName());
+        hostname.setColumns(50);
+        t2f.getLayout().addComponent(hostname);
+
+	// the default graph
         TextField defaultgraph = new TextField("Default graph:", state.getCurrentGraph());
         defaultgraph.setImmediate(false);
         defaultgraph.addListener(this);
         defaultgraph.setColumns(50);
         t2f.getLayout().addComponent(defaultgraph);
+
 
         // initialize the footer area of the form
         HorizontalLayout t2ffooterlayout = new HorizontalLayout();

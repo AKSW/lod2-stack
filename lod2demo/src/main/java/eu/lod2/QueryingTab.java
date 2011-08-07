@@ -111,7 +111,7 @@ public class QueryingTab extends CustomComponent
 		okbutton.setDescription("View the result from the SPARQL query: 'select * from <graphname> where {?s ?p ?o.} LIMIT 100'");
 		//								okbutton.addListener(this); // react to tclicks
 		
-		ExternalResource ontowikiquery = new ExternalResource("http://localhost/ontowiki/queries/editor/?query=&m=http://mytest.com");
+		ExternalResource ontowikiquery = new ExternalResource(state.getHostName() + "/ontowiki/queries/editor/?query=&m=http://mytest.com");
 
 		ontowikiquerylink = new Link("Query via Ontowiki", ontowikiquery);
 		ontowikiquerylink.setTargetName("_blank");
@@ -133,7 +133,7 @@ public class QueryingTab extends CustomComponent
 		VerticalLayout t2ComponentsContent = new VerticalLayout();
 
 		// dummy request
-		ExternalResource ontowikiquery2 = new ExternalResource("http://localhost/ontowiki/queries/editor/?query=&m=");
+		ExternalResource ontowikiquery2 = new ExternalResource(state.getHostName() + "/ontowiki/queries/editor/?query=&m=");
 		Link ontowikiquerylink2 = new Link("Ontowiki", ontowikiquery2);
 		ontowikiquerylink2.setTargetName("_blank");
 		ontowikiquerylink2.setTargetBorder(Link.TARGET_BORDER_NONE);
@@ -253,7 +253,7 @@ public class QueryingTab extends CustomComponent
 			encoded = URLEncoder.encode(query, "UTF-8");
 			String encodedGraph = URLEncoder.encode(querygraph, "UTF-8");
 			ExternalResource o = new ExternalResource(
-			    "http://localhost/ontowiki/queries/editor/?query=" + encoded + "&m=" + encodedGraph);
+			    state.getHostName() + "/ontowiki/queries/editor/?query=" + encoded + "&m=" + encodedGraph);
 			ontowikiquerylink.setResource(o);
 			ontowikiquerylink.setEnabled(true);
 		    } catch (UnsupportedEncodingException e) { 

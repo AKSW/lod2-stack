@@ -73,7 +73,7 @@ public class ExtractionTab extends CustomComponent
 
 
         Link rdfuploadlink = new Link("Upload RDF content to local storage",
-                new ExternalResource("http://localhost:8890/conductor/rdf_import.vspx"));
+                new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx"));
         rdfuploadlink.setTargetName("_blank");
         rdfuploadlink.setTargetBorder(Link.TARGET_BORDER_NONE);
         extractionTab.addComponent(rdfuploadlink);
@@ -118,14 +118,14 @@ public class ExtractionTab extends CustomComponent
         VerticalLayout panelContent = new VerticalLayout();
 
         Link l = new Link("Virtuoso Web Interface",
-                new ExternalResource("http://localhost:8890/conductor/"));
+                new ExternalResource(state.getHostName() + "/conductor/"));
         l.setTargetName("_blank");
         l.setTargetBorder(Link.TARGET_BORDER_NONE);
         panelContent.addComponent(l);
 
 
         Link t1l2 = new Link("OpenRDF Workbench",
-                new ExternalResource("http://localhost:8080/openrdf-workbench/"));
+                new ExternalResource(state.getHostName() + "/openrdf-workbench/"));
         t1l2.setTargetName("_blank");
         t1l2.setTargetBorder(Link.TARGET_BORDER_NONE);
         panelContent.addComponent(t1l2);

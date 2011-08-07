@@ -5,7 +5,7 @@
   <groupId>eu.lod2</groupId>
   <artifactId>lod2demo</artifactId>
   <packaging>war</packaging>
-  <version>1.0</version>
+  <version>1.1.2</version>
   <name>Vaadin Web Application</name>
 
   <properties>
@@ -149,7 +149,8 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+</plugin>
+<!--
       <plugin>
         <groupId>org.vafer</groupId>
         <artifactId>jdeb</artifactId>
@@ -177,6 +178,7 @@
           </execution>
         </executions>
       </plugin>  
+      -->
     </plugins>
 
     <resources>

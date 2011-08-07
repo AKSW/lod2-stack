@@ -1,3 +1,14 @@
+lod2demo (1.1.2) lod2; urgency=low
+
+  * add reading of configuration graph in virtuoso. This will enable to
+    specify configuration information in a system readable way.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+lod2demo (1.1.1) lod2; urgency=low
+
+  * alter lod2 dependency for ontowiki
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
 lod2demo (1.1) lod2; urgency=low
 
   * integrate online sigma page.

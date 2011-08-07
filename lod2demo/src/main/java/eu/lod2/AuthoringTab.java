@@ -82,7 +82,7 @@ public class AuthoringTab extends CustomComponent
         t2f.setFooter(t2ffooterlayout);
 
         ontowikil = new Link("Edit with Ontowiki",
-                new ExternalResource("http://localhost/ontowiki/view/?r=&m=http://mytest.com"));
+                new ExternalResource(state.getHostName() + "/ontowiki/view/?r=&m=http://mytest.com"));
         ontowikil.setTargetName("_blank");
         ontowikil.setTargetBorder(Link.TARGET_BORDER_NONE);
         ThemeResource ontoWikiIconl = new ThemeResource("app_images/OntoWiki.logo.png");
@@ -100,7 +100,7 @@ public class AuthoringTab extends CustomComponent
         VerticalLayout panelContent = new VerticalLayout();
 
         Link l = new Link("Ontowiki",
-                new ExternalResource("http://localhost/ontowiki/view/?r=&m=http://mytest.com"));
+                new ExternalResource(state.getHostName() + "/ontowiki/view/?r=&m=http://mytest.com"));
         l.setTargetName("_blank");
         l.setTargetBorder(Link.TARGET_BORDER_NONE);
         ThemeResource ontoWikiIcon = new ThemeResource("app_images/OntoWiki.logo.png");
@@ -130,7 +130,7 @@ public class AuthoringTab extends CustomComponent
                 Encoded = URLEncoder.encode(resourceToEdit, "UTF-8");
                 String encodedGraph = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
                 ExternalResource o = new ExternalResource(
-                    "http://localhost/ontowiki/view/?r=" + Encoded + "&m=" + encodedGraph);
+                    state.getHostName() + "/ontowiki/view/?r=" + Encoded + "&m=" + encodedGraph);
                 ontowikil.setResource(o);
                 ontowikil.setEnabled(true);
             } catch (UnsupportedEncodingException e) { 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PACKAGE_NAME=lod2demo
-VERSION=1.1
+VERSION=1.1.2
 
 echo "Building Debian package for ${MODULE_NAME}"
 echo
@@ -17,6 +17,8 @@ mkdir -p ../../target/deb-pkg
 cp ../../target/${PACKAGE_NAME}-${VERSION}.war ../../target/deb-pkg/lod2demo.war
 cp -r ../../src/main/html/ ../../target/deb-pkg/
 cp ../../src/main/html/*html ../../target/deb-pkg/
+mkdir ../../target/deb-pkg/configuration
+cp -r ../../src/main/configuration/* ../../target/deb-pkg/configuration
 # Add the Debian control files
 cp -r debian ../../target/deb-pkg
 cp Makefile ../../target/deb-pkg
