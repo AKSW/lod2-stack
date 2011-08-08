@@ -41,6 +41,16 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
+import org.openrdf.model.impl.*;
+
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.parser.ParsedQuery;
+import org.openrdf.query.parser.sparql.SPARQLParser;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
@@ -57,6 +67,7 @@ public class AuthoringTab extends CustomComponent
     // reference to the global internal state
     private LOD2DemoState state;
 
+    private TextField activategraph;
     private String resourceToEdit;
     private Link   ontowikil;
 
@@ -66,6 +77,29 @@ public class AuthoringTab extends CustomComponent
         state = st;
 
         VerticalLayout authoringTab = new VerticalLayout();
+
+	// Activate a graph in Virtuoso be editable in OntoWiki.
+	// Remark: the accessrightsnull in Virtuoso have be set correct [check this]
+        Form activateform = new Form();
+        activateform.setCaption("Activate graph in OntoWiki");
+
+	// the localhost ip-address
+        activategraph = new TextField("graphname:", state.getCurrentGraph());
+        activategraph.setColumns(50);
+        activateform.getLayout().addComponent(activategraph);
+
+        Button activateButton = new Button("Activate graph", new ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                activateGraph(event);
+            }
+        });
+        activateButton.setDescription("Activate the graph in Virtuoso to become editable in OntoWiki.");
+        activateform.getFooter().addComponent(activateButton);
+
+
+        authoringTab.addComponent(activateform);
+
+
 
         // add a form widget to edit with OntoWiki (or other editor) a specific resource
         Form t2f = new Form();
@@ -141,5 +175,37 @@ public class AuthoringTab extends CustomComponent
         };
 		
 	}
+
+    private void activateGraph(ClickEvent event) {
+
+	try {
+		RepositoryConnection con = state.getRdfStore().getConnection();
+
+		// initialize the hostname and portnumber
+		String query = "create silent graph <" + activategraph.getValue() + ">"; 
+		TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+		TupleQueryResult result = tupleQuery.evaluate();
+
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	
+    }
+    //
+	// propagate the information of one tab to another.
+	public void setDefaults() {
+		if (activategraph.getValue() == null || activategraph.getValue().equals("")) {    
+			// on empty set the default value
+			activategraph.setValue(state.getCurrentGraph());
+		};
+	};
 
 }

@@ -121,7 +121,7 @@ public class OnlineToolsTab extends CustomComponent
 
 
 		try { 
-			URL url2 = new URL("http://localhost/lod2.sigma.html");
+			URL url2 = new URL(state.getHostName() + "/lod2.sigma.html");
 			Embedded browser2 = new Embedded("", new ExternalResource(url2));
 			browser2.setType(Embedded.TYPE_BROWSER);
 			browser2.setWidth("100%");

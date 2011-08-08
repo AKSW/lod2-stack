@@ -52,6 +52,7 @@ public class LOD2Demo extends Application
 
     private TabSheet tabsheet = new TabSheet();
     private QueryingTab queryingTab;
+    private AuthoringTab authoringTab;
 
     @Override
         public void init() {
@@ -110,7 +111,7 @@ public class LOD2Demo extends Application
 
             //************************************************************************
             // Authoring Tab
-            AuthoringTab authoringTab = new AuthoringTab(state);	
+            authoringTab = new AuthoringTab(state);	
 
             tabsheet.addTab(authoringTab);
             tabsheet.getTab(authoringTab).setCaption("Authoring");
@@ -152,6 +153,8 @@ public class LOD2Demo extends Application
                 if (source.getSelectedTab() == queryingTab) {
                     queryingTab.setDefaults();
             //        tabsheet.getTab(queryingTab).setCaption("hi");
+                } else if (source.getSelectedTab() == authoringTab) {
+                    authoringTab.setDefaults();
                 } else {
                     tabsheet.getTab(queryingTab).setCaption("Querying");
                 }

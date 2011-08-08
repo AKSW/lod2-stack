@@ -63,6 +63,12 @@ public class EnrichmentTab extends CustomComponent
 
 		VerticalLayout panelContent = new VerticalLayout();
 
+        Link l1 = new Link("SILK",
+                new ExternalResource(state.getHostName() + "/silk"));
+        l1.setTargetName("_blank");
+        l1.setTargetBorder(Link.TARGET_BORDER_NONE);
+        panelContent.addComponent(l1);
+
         Link l = new Link("ORE",
                 new ExternalResource("http://web.ore-tool.net"));
         l.setTargetName("_blank");

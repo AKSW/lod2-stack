@@ -136,6 +136,11 @@ public class ExtractionTab extends CustomComponent
         t1l3.setTargetBorder(Link.TARGET_BORDER_NONE);
         panelContent.addComponent(t1l3);
 
+        Link t1l4 = new Link("D2R - Cordis",
+                new ExternalResource(state.getHostName() + "/d2r-cordis"));
+        t1l4.setTargetName("_blank");
+        t1l4.setTargetBorder(Link.TARGET_BORDER_NONE);
+        panelContent.addComponent(t1l4);
 
         panel.setContent(panelContent);
         extractionTab.addComponent(panel);
