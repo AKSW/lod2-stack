@@ -34,6 +34,7 @@ import com.vaadin.ui.Layout.*;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.AbstractOrderedLayout.*;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.data.Property.*;
 
 
 import eu.lod2.LOD2DemoState;
@@ -53,11 +54,16 @@ public class LOD2Demo extends Application
     private TabSheet tabsheet = new TabSheet();
     private QueryingTab queryingTab;
     private AuthoringTab authoringTab;
+    private ExtractionTab extractionTab;
+    private EnrichmentTab enrichmentTab;
+    private OnlineToolsTab onlineToolsTab;
+    private ConfigurationTab configurationTab;
+    private TextField currentgraph;
 
     @Override
         public void init() {
 
-            LOD2DemoState state = new LOD2DemoState();
+            state = new LOD2DemoState();
 
             final Window mainWindow = new Window("LOD2 Prototype");
             setTheme("lod2");
@@ -78,25 +84,20 @@ public class LOD2Demo extends Application
 
             mainWindow.addComponent(welcome);
 
-            /*  // The Scenario graph seems not to contribute a lot.
-             *
-             HorizontalLayout scenario = new HorizontalLayout();
-             Embedded usecaseimg = new Embedded("", new ThemeResource("app_images/usecases_stream.png"));
-             usecaseimg.setMimeType("image/png");
-             scenario.addComponent(usecaseimg);
-             scenario.setComponentAlignment(usecaseimg, Alignment.MIDDLE_CENTER);
-             scenario.setWidth("100%");
-
-             mainWindow.addComponent(scenario);
-             */
-
-
-            // Create an empty tab sheet.
-//            TabSheet tabsheet = new TabSheet();
+            currentgraph = new TextField("Current graph:", state.getCurrentGraph());
+	    currentgraph.setNullRepresentation("no graph selected");
+            currentgraph.setImmediate(false);
+            currentgraph.addListener(new TextChangeListener() {
+    		public void textChange(TextChangeEvent event) {
+        		currentGraphChange(event);
+		}
+	    });
+            currentgraph.setColumns(50);
+	    mainWindow.addComponent(currentgraph);
 
             //************************************************************************
             // Extraction Tab
-            ExtractionTab extractionTab = new ExtractionTab(state);	
+            extractionTab = new ExtractionTab(state);	
 
             tabsheet.addTab(extractionTab);
             tabsheet.getTab(extractionTab).setCaption("Extraction");
@@ -118,7 +119,7 @@ public class LOD2Demo extends Application
 
             //************************************************************************
             // Enrichment Tab
-            EnrichmentTab enrichmentTab = new EnrichmentTab(state);	
+            enrichmentTab = new EnrichmentTab(state);	
 
             tabsheet.addTab(enrichmentTab);
             tabsheet.getTab(enrichmentTab).setCaption("Enrichment");
@@ -126,13 +127,13 @@ public class LOD2Demo extends Application
             //************************************************************************
             // Online Tools Tab
 
-            OnlineToolsTab onlineToolsTab = new OnlineToolsTab("", state);	
+            onlineToolsTab = new OnlineToolsTab("", state);	
 
             tabsheet.addTab(onlineToolsTab);
             tabsheet.getTab(onlineToolsTab).setCaption("Online Tools and Services");
             //************************************************************************
             // Configuration Tab
-            ConfigurationTab configurationTab = new ConfigurationTab(state);	
+            configurationTab = new ConfigurationTab(state);	
 
             tabsheet.addTab(configurationTab);
             tabsheet.getTab(configurationTab).setCaption("Configuration");
@@ -150,15 +151,35 @@ public class LOD2Demo extends Application
             final TabSheet source = (TabSheet) event.getSource();
 
             if (source == tabsheet) {
-                if (source.getSelectedTab() == queryingTab) {
-                    queryingTab.setDefaults();
-            //        tabsheet.getTab(queryingTab).setCaption("hi");
-                } else if (source.getSelectedTab() == authoringTab) {
-                    authoringTab.setDefaults();
-                } else {
-                    tabsheet.getTab(queryingTab).setCaption("Querying");
-                }
-            }
+		    propagateData(tabsheet);
+            };
+	    currentgraph.setValue(state.getCurrentGraph());
      };
 
+    public void currentGraphChange(TextChangeEvent event) {
+
+	if (event != null && event.getText() != null) {
+        	state.setCurrentGraph(event.getText());
+	};
+	propagateData(tabsheet);
+
+    };
+
+    public void propagateData(TabSheet source) {
+	if (source.getSelectedTab() == queryingTab) {
+	    queryingTab.setDefaults();
+	} else if (source.getSelectedTab() == authoringTab) {
+	    authoringTab.setDefaults();
+	} else if (source.getSelectedTab() == extractionTab) {
+	    extractionTab.setDefaults();
+	} else if (source.getSelectedTab() == enrichmentTab) {
+	    enrichmentTab.setDefaults();
+	} else if (source.getSelectedTab() == onlineToolsTab) {
+	    onlineToolsTab.setDefaults();
+	} else if (source.getSelectedTab() == configurationTab) {
+	    configurationTab.setDefaults();
+	} else {
+	    
+	}
+    }
 }

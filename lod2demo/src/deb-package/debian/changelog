@@ -1,3 +1,9 @@
+lod2demo (1.1.4) lod2; urgency=low
+
+  * take for the online 'lod2'-sigma also the hostname configuration into
+    account.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 8 Aug 2011  02:37:31 -0700
 lod2demo (1.1.3) lod2; urgency=low
 
   * add references to packages d2r-cordis & silk. Add activation call for

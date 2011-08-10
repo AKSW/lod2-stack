@@ -42,7 +42,7 @@ public class LOD2DemoState
 	private String hostname = "http://localhost:8080";
 
 	// the default graph on which the queries and actions will be performed
-	private String currentGraph;
+	private String currentGraph = "";
 
 	// The virtuoso repository
 	public Repository rdfStore;

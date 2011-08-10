@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2011 LOD2 consortium
  *
@@ -38,51 +39,50 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
 
+import org.restlet.resource.ClientResource;
+import org.restlet.data.MediaType;
+
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
+import eu.lod2.ExtractionTab;
 
 /**
- * The enrichment tab which collects information about 
- * ways and components to extract information.
+ * The ELoadRDFFile allows to upload a file into virtuoso via the conductor
  */
 //@SuppressWarnings("serial")
-public class EnrichmentTab extends CustomComponent
+public class ELoadRDFFile extends CustomComponent
 {
 
-	// reference to the global internal state
-	private LOD2DemoState state;
+    // reference to the global internal state
+    private ExtractionTab extractionTab;
 
-	public EnrichmentTab(LOD2DemoState st) {
+    public ELoadRDFFile(ExtractionTab etab) {
 
-		// The internal state and 
-		state = st;
+        // The internal state and 
+        extractionTab = etab;
 
-		VerticalLayout enrichmentTab = new VerticalLayout();
+	VerticalLayout panel = new VerticalLayout();
 
-		final Panel panel = new Panel("LOD2 components interfaces");
+	/* Not necessary 
+        Link rdfuploadlink = new Link("Upload RDF content to local storage",
+                new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba"));
+        rdfuploadlink.setTargetName("_blank");
+        rdfuploadlink.setTargetBorder(Link.TARGET_BORDER_NONE);
+        panel.addComponent(rdfuploadlink);
+	*/
 
-		VerticalLayout panelContent = new VerticalLayout();
+	try { 
+	  	URL url = new URL(extractionTab.getState().getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+		Embedded browser = new Embedded("", new ExternalResource(url));
+		browser.setType(Embedded.TYPE_BROWSER);
+		panel.addComponent(browser);
+	} catch (MalformedURLException e) {
+                e.printStackTrace();
+	};
 
-        Link l1 = new Link("SILK",
-                new ExternalResource(state.getHostName() + "/silk"));
-        l1.setTargetName("_blank");
-        l1.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(l1);
-
-        Link l = new Link("ORE",
-                new ExternalResource("http://web.ore-tool.net"));
-        l.setTargetName("_blank");
-        l.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(l);
-
-
-		panel.setContent(panelContent);
-		enrichmentTab.addComponent(panel);
-
-
-		// The composition root MUST be set
-		setCompositionRoot(enrichmentTab);
-	}
+        // The composition root MUST be set
+        setCompositionRoot(panel);
+    }
 
 	// propagate the information of one tab to another.
 	public void setDefaults() {

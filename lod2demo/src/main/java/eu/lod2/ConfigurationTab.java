@@ -47,14 +47,14 @@ import eu.lod2.LOD2DemoState;
  */
 //@SuppressWarnings("serial")
 public class ConfigurationTab extends CustomComponent
-    implements TextChangeListener 
 {
 
 	// reference to the global internal state
 	private LOD2DemoState state;
 
     // fields
-    private String defaultgraphvalue;
+    	private String defaultgraphvalue;
+    	private TextField defaultgraph;
 
 	public ConfigurationTab(LOD2DemoState st) {
 
@@ -71,12 +71,12 @@ public class ConfigurationTab extends CustomComponent
 	// the localhost ip-address
         TextField hostname = new TextField("Hostname:", state.getHostName());
         hostname.setColumns(50);
+        hostname.setReadOnly(true);
         t2f.getLayout().addComponent(hostname);
 
 	// the default graph
-        TextField defaultgraph = new TextField("Default graph:", state.getCurrentGraph());
+        defaultgraph = new TextField("Default graph:", state.getCurrentGraph());
         defaultgraph.setImmediate(false);
-        defaultgraph.addListener(this);
         defaultgraph.setColumns(50);
         t2f.getLayout().addComponent(defaultgraph);
 
@@ -107,9 +107,9 @@ public class ConfigurationTab extends CustomComponent
 
     };
 
-    public void textChange(TextChangeEvent event) {
-
-        defaultgraphvalue = event.getText();
-    };
+	// propagate the information of one tab to another.
+	public void setDefaults() {
+		defaultgraph.setValue(state.getCurrentGraph());
+	};
 };
 

@@ -163,6 +163,9 @@ public class OnlineToolsTab extends CustomComponent
 		setCompositionRoot(onlineToolsTab);
 	}
 
+	// propagate the information of one tab to another.
+	public void setDefaults() {
+	};
 
 };
 

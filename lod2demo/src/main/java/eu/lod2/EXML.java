@@ -31,8 +31,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.data.*;
 
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
@@ -46,85 +44,35 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
+import eu.lod2.ExtractionTab;
 
 /**
- * The extraction tab which collects information about 
- * ways and components to extract information.
+ * extract RDF data from an XML file using an XSLT transformation
  */
 //@SuppressWarnings("serial")
-public class ExtractionTab extends CustomComponent
+public class EXML extends CustomComponent
     implements TextChangeListener 
 {
 
     // reference to the global internal state
-    private LOD2DemoState state;
+    private ExtractionTab extractionTab;
 
     // 
-    private VerticalLayout extractionTab;
     private Button annotateButton;
     private Label annotatedTextField;
 
     private String textToAnnotate;
     private String annotatedText;
 
-    public ExtractionTab(LOD2DemoState st) {
+    public EXML(ExtractionTab etab) {
 
         // The internal state and 
-        state = st;
+        extractionTab = etab; 
 
-	// split the tab in two.
-	HorizontalSplitPanel extractionTabRoot = new HorizontalSplitPanel();
+        VerticalLayout panel = new VerticalLayout();
 
-	// first component
-	Label rdfupload = new Label("upload RDF file");
-	
-	OptionGroup optiongroup = new OptionGroup("Select");
-	optiongroup.addItem("Upload RDF file");
-	optiongroup.addItem("Load RDF data from CKAN");
-	optiongroup.addItem("Extract RDF from XML");
-	optiongroup.addItem("Extract RDF from text w.r.t. DBpedia");
-	optiongroup.addItem("Extract RDF from text w.r.t. a controlled vocabulary");
-        optiongroup.addListener(new Property.ValueChangeListener() {
-		//  Respond to change in the selection.
-    		public void valueChange(Property.ValueChangeEvent event) {
-        		// The event.getProperty() returns the Item ID (IID) 
-        		// of the currently selected item in the component.
-			showRightPanelContent(event);
-    	}
-	});
-
-
-
-	optiongroup.setHeight("300px");
-	extractionTabRoot.setFirstComponent(optiongroup);
-        
-
-	// second component
-        extractionTab = new VerticalLayout();
-
-	extractionTab.setHeight("300px");
-
-
-        Link rdfuploadlink = new Link("Upload RDF content to local storage",
-                new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba"));
-        rdfuploadlink.setTargetName("_blank");
-        rdfuploadlink.setTargetBorder(Link.TARGET_BORDER_NONE);
-        extractionTab.addComponent(rdfuploadlink);
-/*
-	try { 
-	  	URL url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
-		Embedded browser = new Embedded("", new ExternalResource(url));
-		browser.setType(Embedded.TYPE_BROWSER);
-		extractionTab.addComponent(browser);
-	} catch (MalformedURLException e) {
-                e.printStackTrace();
-	};
-
-        // Spotlight form start
-        // annotate a plain text 
-        // TODO: and add the result as RDF to the default graph
         Form t2f = new Form();
-        t2f.setCaption("Annotate plain text");
+        t2f.setCaption("transform XML file");
 
         TextArea textToAnnotateField = new TextArea("text:");
         textToAnnotateField.setImmediate(false);
@@ -137,60 +85,25 @@ public class ExtractionTab extends CustomComponent
         t2f.getLayout().addComponent(annotatedTextField);
 
         // initialize the footer area of the form
-        HorizontalLayout t2ffooterlayout = new HorizontalLayoutUpload();
+        HorizontalLayout t2ffooterlayout = new HorizontalLayout();
         t2f.setFooter(t2ffooterlayout);
 
-        annotateButton = new Button("Annotate with Spotlight", new ClickListener() {
+        annotateButton = new Button("transfrom XML to RDF", new ClickListener() {
             public void buttonClick(ClickEvent event) {
                 annotateText(event);
             }
         });
-        annotateButton.setDescription("Annotate the text with Spotlight");
+        annotateButton.setDescription("transform the XML to RDF using the XSLT transformation");
         annotateButton.setEnabled(false);
 
         t2f.getFooter().addComponent(annotateButton);
 
-        extractionTab.addComponent(t2f);
-
-        // Spotlight form end
+        panel.addComponent(t2f);
 
 
-        final Panel panel = new Panel("LOD2 components interfaces");
-
-        VerticalLayout panelContent = new VerticalLayout();
-
-        Link l = new Link("Virtuoso Web Interface",
-                new ExternalResource(state.getHostName() + "/conductor/"));
-        l.setTargetName("_blank");
-        l.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(l);
-
-
-        Link t1l2 = new Link("OpenRDF Workbench",
-                new ExternalResource(state.getHostName() + "/openrdf-workbench/"));
-        t1l2.setTargetName("_blank");
-        t1l2.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(t1l2);
-
-        Link t1l3 = new Link("Spotlight",
-                new ExternalResource("http://dbpedia.org/spotlight"));
-        t1l3.setTargetName("_blank");
-        t1l3.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(t1l3);
-
-        Link t1l4 = new Link("D2R - Cordis",
-                new ExternalResource(state.getHostName() + "/d2r-cordis"));
-        t1l4.setTargetName("_blank");
-        t1l4.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panelContent.addComponent(t1l4);
-
-        panel.setContent(panelContent);
-        extractionTab.addComponent(panel);
-*/
-	extractionTabRoot.setSecondComponent(extractionTab);
 
         // The composition root MUST be set
-        setCompositionRoot(extractionTabRoot);
+        setCompositionRoot(panel);
     }
 
     public void textChange(TextChangeEvent event) {
@@ -238,19 +151,6 @@ public class ExtractionTab extends CustomComponent
 	// propagate the information of one tab to another.
 	public void setDefaults() {
 	};
-
-	public LOD2DemoState getState() {
-		return state;
-	};
-
-    	public void showRightPanelContent(Property.ValueChangeEvent event) {
-		if (event.getProperty().toString() == "Upload RDF file") {
-			extractionTab.addComponent(new ELoadRDFFile(this));
-		} else {
-			extractionTab.addComponent(new Label(event.getProperty().toString()));
-		};
-	};
-
 
 };
 
