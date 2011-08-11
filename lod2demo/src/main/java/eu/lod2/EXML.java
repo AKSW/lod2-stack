@@ -19,6 +19,9 @@ package eu.lod2;
 import java.net.*;
 import java.net.URI;
 import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
@@ -31,6 +34,8 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
+import com.vaadin.terminal.FileResource;
+
 
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
@@ -51,11 +56,19 @@ import eu.lod2.ExtractionTab;
  */
 //@SuppressWarnings("serial")
 public class EXML extends CustomComponent
-    implements TextChangeListener 
+    implements 	TextChangeListener,
+    		Upload.SucceededListener,
+                Upload.FailedListener,
+                Upload.Receiver 
 {
 
     // reference to the global internal state
     private ExtractionTab extractionTab;
+
+    private VerticalLayout panel;
+    File  xmlFile;         // The original file
+    File  rdfFile;         // The RDF file containing the triples derived via the XSLT
+    File  xsltFile;	   // The XSLT transformation file
 
     // 
     private Button annotateButton;
@@ -69,19 +82,50 @@ public class EXML extends CustomComponent
         // The internal state and 
         extractionTab = etab; 
 
-        VerticalLayout panel = new VerticalLayout();
+        panel = new VerticalLayout();
+
+	// Create the Upload component for the XML file.
+        final Upload uploadXMLFile =
+                new Upload("Upload the XML file here", this);
+
+        uploadXMLFile.setButtonCaption("Upload Now");
+        uploadXMLFile.addListener(new Upload.SucceededListener() {
+	    public void uploadSucceeded(Upload.SucceededEvent event) {
+		// Log the upload on screen.
+		panel.addComponent(new Label("File " + event.getFilename()
+			+ " of type '" + event.getMIMEType()
+			+ "' uploaded."));
+	    }
+			});
+        uploadXMLFile.addListener((Upload.FailedListener) this);
+
+        panel.addComponent(uploadXMLFile);
+
+	// Create the Upload component for the XSLT file.
+        final Upload uploadXSLTFile =
+                new Upload("Upload the XLST file here", this);
+
+        uploadXSLTFile.setButtonCaption("Upload Now");
+        uploadXSLTFile.addListener((Upload.SucceededListener) this);
+        uploadXSLTFile.addListener((Upload.FailedListener) this);
+        panel.addComponent(uploadXSLTFile);
+
+        panel.addComponent(new Label("Click 'Browse' to "+
+                "select a file and then click 'Upload'."));
+
+
 
         Form t2f = new Form();
-        t2f.setCaption("transform XML file");
+        t2f.setCaption("");
 
-        TextArea textToAnnotateField = new TextArea("text:");
+        TextArea textToAnnotateField = new TextArea("XSLT:");
         textToAnnotateField.setImmediate(false);
         textToAnnotateField.addListener(this);
         textToAnnotateField.setColumns(50);
         textToAnnotateField.setRows(10);
         t2f.getLayout().addComponent(textToAnnotateField);
 
-        annotatedTextField = new Label("annotated text", Label.CONTENT_XHTML);
+        annotatedTextField = new Label("Extracted RDF", Label.CONTENT_XHTML);
         t2f.getLayout().addComponent(annotatedTextField);
 
         // initialize the footer area of the form
@@ -90,7 +134,7 @@ public class EXML extends CustomComponent
 
         annotateButton = new Button("transfrom XML to RDF", new ClickListener() {
             public void buttonClick(ClickEvent event) {
-                annotateText(event);
+                applyXSLT(event);
             }
         });
         annotateButton.setDescription("transform the XML to RDF using the XSLT transformation");
@@ -124,8 +168,25 @@ public class EXML extends CustomComponent
 
     }
 
-    private void annotateText(ClickEvent event) {
+    private void applyXSLT(ClickEvent event) {
+	    /* should be replaced with an xslt call */
         try {
+		// 1. Instantiate a TransformerFactory.
+		javax.xml.transform.TransformerFactory tFactory = 
+				  javax.xml.transform.TransformerFactory.newInstance();
+
+		// 2. Use the TransformerFactory to process the stylesheet Source and
+		//    generate a Transformer.
+		javax.xml.transform.Transformer transformer = tFactory.newTransformer
+				(new javax.xml.transform.stream.StreamSource(xsltFile));
+
+		// 3. Use the Transformer to transform an XML Source and send the
+		//    output to a Result object.
+		transformer.transform
+		    (new javax.xml.transform.stream.StreamSource(xmlFile), 
+		     new javax.xml.transform.stream.StreamResult( new
+						  java.io.FileOutputStream(rdfFile)));
+
             String encoded = "";
             encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
             ClientResource restcall = new ClientResource(
@@ -144,6 +205,12 @@ public class EXML extends CustomComponent
         } catch (IOException e) { 
             annotateButton.setEnabled(false);
             e.printStackTrace();
+	} catch (javax.xml.transform.TransformerConfigurationException e) {
+            annotateButton.setEnabled(false);
+            e.printStackTrace();
+	} catch (javax.xml.transform.TransformerException e) {
+            annotateButton.setEnabled(false);
+            e.printStackTrace();
         };
 
     };
@@ -151,6 +218,41 @@ public class EXML extends CustomComponent
 	// propagate the information of one tab to another.
 	public void setDefaults() {
 	};
+
+	// Callback method to begin receiving the upload.
+    public OutputStream receiveUpload(String filename,
+                                      String MIMEType) {
+        FileOutputStream fos = null; // Output stream to write to
+        xmlFile = new File("/tmp/uploads/" + filename);
+        try {
+            // Open the file for writing.
+            fos = new FileOutputStream(xmlFile);
+        } catch (final java.io.FileNotFoundException e) {
+            // Error while opening the file. Not reported here.
+            e.printStackTrace();
+            return null;
+        }
+
+        return fos; // Return the output stream to write to
+    }
+
+    // This is called if the upload is finished.
+    public void uploadSucceeded(Upload.SucceededEvent event) {
+        // Log the upload on screen.
+        panel.addComponent(new Label("File " + event.getFilename()
+                + " of type '" + event.getMIMEType()
+                + "' uploaded."));
+        
+    }
+
+    // This is called if the upload fails.
+    public void uploadFailed(Upload.FailedEvent event) {
+        // Log the failure on screen.
+        panel.addComponent(new Label("Uploading "
+                + event.getFilename() + " of type '"
+                + event.getMIMEType() + "' failed."));
+    }
+
 
 };
 
