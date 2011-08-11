@@ -131,14 +131,20 @@ public class EPoolPartyExtractor extends CustomComponent
             String encoded = "";
             encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
             ClientResource restcall = new ClientResource(
-                    "http://spotlight.dbpedia.org/rest/annotate?text=" + encoded + "&confidence=0.4&support=20");
+	            "http://pilot1.poolparty.biz/extractor/api/extract?text=" + encoded + 
+			    "&project=2d5bb6fb-9aef-44f8-a587-15a1bd6332e1" +
+			    "&locale=en" +
+			    "&format=rdfxml"+
+			    "&countConcepts=25"+
+			    "&countTerms=25"
+			    );
 
             //            String result = restcall.get().getText();  
 	    //            TEXT_XML is usefull to have the resources already extracted, 
 	    //            but it does not render directly on a label content.
             // String result = restcall.get(MediaType.TEXT_XML).getText();  
 	    //     APPLICATION_XHTML will return an annotated text with rdfa.
-            String result = restcall.get(MediaType.APPLICATION_XHTML).getText();  
+            String result = restcall.get(MediaType.APPLICATION_RDF_XML).getText();  
             annotatedTextField.setValue(result);
         } catch (UnsupportedEncodingException e) { 
             annotateButton.setEnabled(false);

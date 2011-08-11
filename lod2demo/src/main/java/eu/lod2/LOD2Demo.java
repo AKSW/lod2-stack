@@ -55,6 +55,7 @@ public class LOD2Demo extends Application
     private QueryingTab queryingTab;
     private AuthoringTab authoringTab;
     private ExtractionTab extractionTab;
+    private LinkingTab linkingTab;;
     private EnrichmentTab enrichmentTab;
     private OnlineToolsTab onlineToolsTab;
     private ConfigurationTab configurationTab;
@@ -100,7 +101,7 @@ public class LOD2Demo extends Application
             extractionTab = new ExtractionTab(state);	
 
             tabsheet.addTab(extractionTab);
-            tabsheet.getTab(extractionTab).setCaption("Extraction");
+            tabsheet.getTab(extractionTab).setCaption("Loading & Extraction");
 
 
             //************************************************************************
@@ -116,6 +117,13 @@ public class LOD2Demo extends Application
 
             tabsheet.addTab(authoringTab);
             tabsheet.getTab(authoringTab).setCaption("Authoring");
+
+            //************************************************************************
+            // Enrichment Tab
+            linkingTab = new LinkingTab(state);	
+
+            tabsheet.addTab(linkingTab);
+            tabsheet.getTab(linkingTab).setCaption("Linking");
 
             //************************************************************************
             // Enrichment Tab
@@ -172,6 +180,8 @@ public class LOD2Demo extends Application
 	    authoringTab.setDefaults();
 	} else if (source.getSelectedTab() == extractionTab) {
 	    extractionTab.setDefaults();
+	} else if (source.getSelectedTab() == linkingTab) {
+	    linkingTab.setDefaults();
 	} else if (source.getSelectedTab() == enrichmentTab) {
 	    enrichmentTab.setDefaults();
 	} else if (source.getSelectedTab() == onlineToolsTab) {

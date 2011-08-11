@@ -84,6 +84,7 @@ public class ExtractionTab extends CustomComponent
 	optiongroup.addItem("Extract RDF from XML");
 	optiongroup.addItem("Extract RDF from text w.r.t. DBpedia");
 	optiongroup.addItem("Extract RDF from text w.r.t. a controlled vocabulary");
+	optiongroup.setImmediate(true);
         optiongroup.addListener(new Property.ValueChangeListener() {
 		//  Respond to change in the selection.
     		public void valueChange(Property.ValueChangeEvent event) {
@@ -104,12 +105,13 @@ public class ExtractionTab extends CustomComponent
 
 	extractionTab.setHeight("300px");
 
-
+/*
         Link rdfuploadlink = new Link("Upload RDF content to local storage",
                 new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba"));
         rdfuploadlink.setTargetName("_blank");
         rdfuploadlink.setTargetBorder(Link.TARGET_BORDER_NONE);
         extractionTab.addComponent(rdfuploadlink);
+	*/
 /*
 	try { 
 	  	URL url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
@@ -244,8 +246,19 @@ public class ExtractionTab extends CustomComponent
 	};
 
     	public void showRightPanelContent(Property.ValueChangeEvent event) {
+	        extractionTab.removeAllComponents();	
 		if (event.getProperty().toString() == "Upload RDF file") {
-			extractionTab.addComponent(new ELoadRDFFile(this));
+			ELoadRDFFile second = new ELoadRDFFile(this);
+			second.addStyleName("second");
+			extractionTab.addComponent(second);
+		} else if (event.getProperty().toString() == "Load RDF data from CKAN") {
+			extractionTab.addComponent(new Label(event.getProperty().toString()));
+		} else if (event.getProperty().toString() == "Extract RDF from XML") {
+			extractionTab.addComponent(new EXML(this));
+		} else if (event.getProperty().toString() == "Extract RDF from text w.r.t. DBpedia") {
+			extractionTab.addComponent(new ESpotlight(this));
+		} else if (event.getProperty().toString() == "Extract RDF from text w.r.t. a controlled vocabulary") {
+			extractionTab.addComponent(new EPoolPartyExtractor(this));
 		} else {
 			extractionTab.addComponent(new Label(event.getProperty().toString()));
 		};

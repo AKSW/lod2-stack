@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2011 LOD2 consortium
  *
@@ -39,52 +38,40 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
 
-import org.restlet.resource.ClientResource;
-import org.restlet.data.MediaType;
-
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
-import eu.lod2.ExtractionTab;
 
 /**
- * The ELoadRDFFile allows to upload a file into virtuoso via the conductor
+ * The enrichment tab which collects information about 
+ * ways and components to extract information.
  */
 //@SuppressWarnings("serial")
-public class ELoadRDFFile extends CustomComponent
+public class LinkingTab extends CustomComponent
 {
 
-    // reference to the global internal state
-    private ExtractionTab extractionTab;
+	// reference to the global internal state
+	private LOD2DemoState state;
 
-    public ELoadRDFFile(ExtractionTab etab) {
+	public LinkingTab(LOD2DemoState st) {
 
-        // The internal state and 
-        extractionTab = etab;
+		// The internal state and 
+		state = st;
 
-	VerticalLayout panel = new VerticalLayout();
-	panel.setSizeFull();
-
-	/* Not necessary 
-        Link rdfuploadlink = new Link("Upload RDF content to local storage",
-                new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba"));
-        rdfuploadlink.setTargetName("_blank");
-        rdfuploadlink.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panel.addComponent(rdfuploadlink);
-	*/
+		VerticalLayout linkingTab = new VerticalLayout();
 
 	try { 
-	  	URL url = new URL(extractionTab.getState().getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+	  	URL url = new URL(state.getHostName() + "/silk");
 		Embedded browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
-		panel.addComponent(browser);
+		linkingTab.addComponent(browser);
 	} catch (MalformedURLException e) {
                 e.printStackTrace();
 	};
 
-        // The composition root MUST be set
-        setCompositionRoot(panel);
-    }
+		// The composition root MUST be set
+		setCompositionRoot(linkingTab);
+	}
 
 	// propagate the information of one tab to another.
 	public void setDefaults() {

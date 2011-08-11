@@ -44,6 +44,7 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
+import eu.lod2.ExtractionTab;
 
 /**
  * Extract RDF data from a text document using spotlight. 
@@ -54,7 +55,7 @@ public class ESpotlight extends CustomComponent
 {
 
     // reference to the global internal state
-    private LOD2DemoState state;
+    private ExtractionTab state;
 
     // 
     private Button annotateButton;
@@ -63,7 +64,7 @@ public class ESpotlight extends CustomComponent
     private String textToAnnotate;
     private String annotatedText;
 
-    public ESpotlight(LOD2DemoState st) {
+    public ESpotlight(ExtractionTab st) {
 
         // The internal state and 
         state = st;

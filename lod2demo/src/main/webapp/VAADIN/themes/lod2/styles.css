@@ -1,3 +1,8 @@
+# add it first to give it priority
+.second {
+	height: 100%
+}
+
 @import "../reindeer/styles.css";
 
 .v-app {
@@ -35,4 +40,8 @@
 
 .v-textarea-readonly {
 	width: 1200px
+}
+
+.second {
+	height: 100%
 }
