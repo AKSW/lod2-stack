@@ -34,7 +34,7 @@ lod2repository: clean lod2repository-newversion lod2repository-build
 lod2repository-newversion:
 	@echo ""
 	@echo "--> create new changelog entry"
-	dch -D lod2 --force-distribution -v ChangeMe
+	dch -D lod2 --force-distribution -v ChangeMe -b
 
 LOD2REP_VERSION=$(shell dpkg-parsechangelog | grep Version: | head -1 | cut -d " " -f 2 | cut -d "-" -f 1)
 lod2repository-build:
