@@ -11,6 +11,11 @@ clean:
 list:
 	gpg --no-permission-warning --homedir ./ --list-keys
 
+upload-keys:
+	ssh root@stack.lod2.eu "rm /home/packaging/.ssh/PublicKeys/*.pub"
+	scp keys/*.pub root@stack.lod2.eu:/home/packaging/.ssh/PublicKeys/
+	ssh root@stack.lod2.eu "cat /home/packaging/.ssh/PublicKeys/*.pub >/home/packaging/.ssh/authorized_keys"
+
 sign-release:
 	bin/sign-remote packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/lod2/Release
 
