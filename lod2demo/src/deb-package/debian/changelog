@@ -1,3 +1,9 @@
+lod2demo (1.1.5) lod2; urgency=low
+
+  * Make the demonstrator closer to the agreed view: global visible current
+    graph, embedded tools, different options for Extraction and Loading, ..
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 11 Aug 2011  02:37:31 -0700
 lod2demo (1.1.4) lod2; urgency=low
 
   * take for the online 'lod2'-sigma also the hostname configuration into

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PACKAGE_NAME=lod2demo
-VERSION=1.1.4
+VERSION=1.1.5
 
 echo "Building Debian package for ${MODULE_NAME}"
 echo
