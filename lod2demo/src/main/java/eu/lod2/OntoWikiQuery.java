@@ -17,11 +17,14 @@ package eu.lod2;
 
 import java.net.*;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.io.*;
+import java.io.UnsupportedEncodingException;
 
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
@@ -31,49 +34,66 @@ import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
 
+import org.openrdf.model.*;
+import org.openrdf.model.Value;
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.parser.ParsedQuery;
+import org.openrdf.query.parser.sparql.SPARQLParser;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.model.*;
+import org.openrdf.model.impl.*;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
 /**
- * The enrichment tab which collects information about 
- * ways and components to extract information.
+ * OntoWiki SPARQL Querying editor
+ * Important the current graph has to be activated for OntoWiki
  */
 //@SuppressWarnings("serial")
-public class LinkingTab extends CustomComponent
+public class OntoWikiQuery extends CustomComponent
 {
 
 	// reference to the global internal state
 	private LOD2DemoState state;
 
-	public LinkingTab(LOD2DemoState st) {
+	public OntoWikiQuery(LOD2DemoState st) {
 
 		// The internal state and 
 		state = st;
 
-        Embedded browser = new Embedded();
-	try { 
-	  	URL url = new URL(state.getHostName() + "/silk");
-		browser = new Embedded("", new ExternalResource(url));
-		browser.setType(Embedded.TYPE_BROWSER);
-		browser.setSizeFull();
-	} catch (MalformedURLException e) {
-                e.printStackTrace();
-	};
+		VerticalLayout queryingTab = new VerticalLayout();
+
+		final String query = "SELECT * where {?s ?p ?o.} LIMIT 20";
+		String encodedQuery = "";
+		String encodedGraphName= "";
+		try {
+			encodedQuery = URLEncoder.encode(query, "UTF-8");
+			encodedGraphName = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
+		    } catch (UnsupportedEncodingException e) { 
+			e.printStackTrace();
+		    };
+
+
+		Embedded browser = new Embedded();
+		try { 
+			URL url = new URL(state.getHostName() + "/ontowiki/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
+			browser = new Embedded("", new ExternalResource(url));
+			browser.setType(Embedded.TYPE_BROWSER);
+			browser.setSizeFull();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		};
 
 		// The composition root MUST be set
 		setCompositionRoot(browser);
 	}
-
-	// propagate the information of one tab to another.
-	public void setDefaults() {
-	};
 
 };
 

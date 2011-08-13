@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2011 LOD2 consortium
  *
@@ -38,38 +39,41 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
 
+import org.restlet.resource.ClientResource;
+import org.restlet.data.MediaType;
+
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
 /**
- * The enrichment tab which collects information about 
- * ways and components to extract information.
+ * Sigma online service
  */
 //@SuppressWarnings("serial")
-public class LinkingTab extends CustomComponent
+public class Sigma extends CustomComponent
 {
 
-	// reference to the global internal state
-	private LOD2DemoState state;
+    // reference to the global internal state
+    private LOD2DemoState state;
 
-	public LinkingTab(LOD2DemoState st) {
+    public Sigma(LOD2DemoState st) {
 
-		// The internal state and 
-		state = st;
+        // The internal state 
+        state = st;
 
-        Embedded browser = new Embedded();
+	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName() + "/silk");
+	  	URL url = new URL("http://sig.ma/search?q=LOD2");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
+		//panel.addComponent(browser);
 	} catch (MalformedURLException e) {
                 e.printStackTrace();
 	};
 
-		// The composition root MUST be set
-		setCompositionRoot(browser);
-	}
+        // The composition root MUST be set
+        setCompositionRoot(browser);
+    }
 
 	// propagate the information of one tab to another.
 	public void setDefaults() {

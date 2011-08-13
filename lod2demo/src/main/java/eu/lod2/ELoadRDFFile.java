@@ -61,9 +61,6 @@ public class ELoadRDFFile extends CustomComponent
         // The internal state and 
         extractionTab = etab;
 
-	VerticalLayout panel = new VerticalLayout();
-	panel.setSizeFull();
-
 	/* Not necessary 
         Link rdfuploadlink = new Link("Upload RDF content to local storage",
                 new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba"));
@@ -72,18 +69,20 @@ public class ELoadRDFFile extends CustomComponent
         panel.addComponent(rdfuploadlink);
 	*/
 
+	Embedded browser = new Embedded();
 	try { 
 	  	URL url = new URL(extractionTab.getState().getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
-		Embedded browser = new Embedded("", new ExternalResource(url));
+		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
-		panel.addComponent(browser);
+		//panel.addComponent(browser);
 	} catch (MalformedURLException e) {
                 e.printStackTrace();
 	};
 
         // The composition root MUST be set
-        setCompositionRoot(panel);
+        setCompositionRoot(browser);
+	browser.getParent().setSizeUndefined();
     }
 
 	// propagate the information of one tab to another.

@@ -42,24 +42,24 @@ import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
 /**
- * The enrichment tab which collects information about 
- * ways and components to extract information.
+ * Embed the Virtuoso iSPARQL query tool
  */
 //@SuppressWarnings("serial")
-public class LinkingTab extends CustomComponent
+public class VirtuosoISPARQL extends CustomComponent
 {
 
 	// reference to the global internal state
 	private LOD2DemoState state;
 
-	public LinkingTab(LOD2DemoState st) {
+	public VirtuosoISPARQL(LOD2DemoState st) {
 
 		// The internal state and 
 		state = st;
 
         Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName() + "/silk");
+//	  	URL url = new URL(state.getHostName() + "/virtuoso/isparql");
+	  	URL url = new URL("http://localhost:8890/isparql");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

@@ -16,6 +16,7 @@
 package eu.lod2;
 
 import java.net.*;
+import java.util.Iterator;
 
 import com.vaadin.Application;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
@@ -35,6 +36,7 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.AbstractOrderedLayout.*;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.data.Property.*;
+import com.vaadin.ui.MenuBar.*;
 
 
 import eu.lod2.LOD2DemoState;
@@ -51,15 +53,19 @@ public class LOD2Demo extends Application
 
     private LOD2DemoState state;
 
+
+
     private TabSheet tabsheet = new TabSheet();
     private QueryingTab queryingTab;
     private AuthoringTab authoringTab;
     private ExtractionTab extractionTab;
-    private LinkingTab linkingTab;;
+    private LinkingTab linkingTab;
     private EnrichmentTab enrichmentTab;
     private OnlineToolsTab onlineToolsTab;
     private ConfigurationTab configurationTab;
+
     private TextField currentgraph;
+    private VerticalLayout workspace;
 
     @Override
         public void init() {
@@ -70,21 +76,249 @@ public class LOD2Demo extends Application
             setTheme("lod2");
 
 
-            AbsoluteLayout welcome = new AbsoluteLayout();
+            final AbsoluteLayout welcome = new AbsoluteLayout();
             welcome.setWidth("99%");
-            welcome.setHeight("154px");
-            Embedded lod2logo = new Embedded("", new ThemeResource("app_images/LOD2.logo.jpg"));
+            welcome.setHeight("90px");
+            Embedded lod2logo = new Embedded("", new ThemeResource("app_images/lod2_small.jpg"));
             lod2logo.setMimeType("image/jpeg");
             lod2logo.addStyleName("lod2logo");
             Label slagzin = new Label("<i>Creating Knowledge out of Interlinked Data</i>");
             slagzin.setContentMode(Label.CONTENT_XHTML);
-            welcome.addComponent(lod2logo, "top:10px; left:10px");
-            welcome.addComponent(slagzin, "top:20px; left:180px");
+            welcome.addComponent(lod2logo, "top:10px; left:5px");
+            welcome.addComponent(slagzin, "top:5px; left:80px");
             //	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
             slagzin.addStyleName("slagzin");
 
             mainWindow.addComponent(welcome);
+	    
+            //************************************************************************
+	    //  menu bar style
+	    //
+	    MenuBar menubar = new MenuBar();
 
+	    // First define all menu commands
+
+	    MenuBar.Command me1c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+//			mainWindow.getContent().setSizeFull();
+			ELoadRDFFile me1c_content = new ELoadRDFFile(extractionTab);
+			workspace.addComponent(me1c_content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			me1c_content.setSizeUndefined();
+			workspace.setSizeUndefined();
+			me1c_content.setHeight("100%");
+			me1c_content.setWidth("100%");
+			workspace.setWidth("100%");
+			workspace.setHeight("100%");
+			mainWindow.getContent().setHeight("100%");
+		    }  
+		};
+
+	    MenuBar.Command me3c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			EXML me3c_content = new EXML(extractionTab);
+			workspace.addComponent(me3c_content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			me3c_content.setSizeFull();
+		    }  
+		};
+
+	    MenuBar.Command me4c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			ESpotlight me4c_content = new ESpotlight(extractionTab);
+			workspace.addComponent(me4c_content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			me4c_content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command me5c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			EPoolPartyExtractor me5c_content = new EPoolPartyExtractor(extractionTab);
+			workspace.addComponent(me5c_content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			me5c_content.setHeight("90%");
+		    }  
+		};
+
+	    MenuBar.Command silk = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			LinkingTab lsilk = new LinkingTab(state);
+			workspace.addComponent(lsilk);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			lsilk.setSizeFull();
+//			workspace.setSizeFull();
+//			mainWindow.getContent().setSizeFull();
+			workspace.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command ore = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			ORE content = new ORE(state);
+			workspace.addComponent(content);
+			welcome.setHeight("90px");
+			content.setSizeFull();
+			workspace.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mconfiguration = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			ConfigurationTab content = new ConfigurationTab(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mau = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			AuthoringTab content = new AuthoringTab(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mq1c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			SesameSPARQL content = new SesameSPARQL(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mq2c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			OntoWikiQuery content = new OntoWikiQuery(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mq3c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			VirtuosoSPARQL content = new VirtuosoSPARQL(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mq4c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			VirtuosoISPARQL content = new VirtuosoISPARQL(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mo1c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			SameAs content = new SameAs(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mo2c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			Sigma content = new Sigma(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mo3c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			LODCloud content = new LODCloud(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mo4c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			DBpedia content = new DBpedia(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    // Secondly define menu layout
+	    // root menu's
+	    MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
+	    MenuBar.MenuItem querying      = menubar.addItem("Querying", null, null);
+	    MenuBar.MenuItem authoring     = menubar.addItem("Authoring", null, mau);
+	    MenuBar.MenuItem linking       = menubar.addItem("Linking", null, null);
+	    MenuBar.MenuItem enrichment    = menubar.addItem("Enrichment", null, null);
+	    MenuBar.MenuItem onlinetools   = menubar.addItem("Online Tools and Services", null, null);
+	    MenuBar.MenuItem configuration = menubar.addItem("Configuration", null, mconfiguration);
+
+	    // sub menu's 
+	    MenuBar.MenuItem me1 = extraction.addItem("Upload RDF file", null, me1c);
+	    MenuBar.MenuItem me2 = extraction.addItem("Load RDF data from CKAN", null, null);
+	    MenuBar.MenuItem me3 = extraction.addItem("Extract RDF from XML", null, me3c);
+	    MenuBar.MenuItem me4 = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
+	    MenuBar.MenuItem me5 = extraction.addItem("Extract RDF from text w.r.t. a controlled vocabulary", null, me5c);
+
+	    MenuBar.MenuItem linking1 = linking.addItem("Silk", null, silk);
+
+	    MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
+
+	    MenuBar.MenuItem sameAs   = onlinetools.addItem("SameAs", null, mo1c);
+	    MenuBar.MenuItem sigma    = onlinetools.addItem("Sigma", null, mo2c);
+	    MenuBar.MenuItem ckan     = onlinetools.addItem("CKAN", null, null);
+	    MenuBar.MenuItem sparqlonline = onlinetools.addItem("Online SPARQL endpoints", null, null);
+	    MenuBar.MenuItem lodcloud     = sparqlonline.addItem("LOD cloud", null, mo3c);
+	    MenuBar.MenuItem dbpedia      = sparqlonline.addItem("DBpedia", null, mo4c);
+
+
+	    MenuBar.MenuItem mq1 = querying.addItem("Direct via Sesame", null, mq1c);
+	    MenuBar.MenuItem mq2 = querying.addItem("OntoWiki SPARQL endpoint", null, mq2c);
+	    MenuBar.MenuItem mq3 = querying.addItem("Virtuoso SPARQL endpoint", null, mq3c);
+	    MenuBar.MenuItem mq4 = querying.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
+
+	    // the current graph selection widget
             currentgraph = new TextField("Current graph:", state.getCurrentGraph());
 	    currentgraph.setNullRepresentation("no graph selected");
             currentgraph.setImmediate(false);
@@ -94,7 +328,32 @@ public class LOD2Demo extends Application
 		}
 	    });
             currentgraph.setColumns(50);
-	    mainWindow.addComponent(currentgraph);
+
+	    // Embed menu bar in horizontal container
+	    HorizontalLayout menubarContainer = new HorizontalLayout();
+
+            //menubarContainer.addComponent(lod2logo);
+            menubarContainer.addComponent(menubar);
+	    menubarContainer.addComponent(currentgraph);
+
+            welcome.addComponent(menubarContainer, "top:40px; left:80px");
+
+	    welcome.setHeight("90px");
+//	    mainWindow.getContent().setSizeFull();
+
+
+	    //mainWindow.addComponent(currentgraph);
+            //************************************************************************
+	    // add workspace
+	    workspace = new VerticalLayout();
+
+	    mainWindow.addComponent(workspace);
+	    workspace.setHeight("80%");
+	    mainWindow.setSizeFull();
+//	    mainWindow.getContent().setSizeFull();
+//	    Iterator<Component> iterator = mainWindow.getContent().getComponentIterator();
+//	    Component second = iterator.next();
+//	    second.setSizeFull();
 
             //************************************************************************
             // Extraction Tab
@@ -147,7 +406,8 @@ public class LOD2Demo extends Application
             tabsheet.getTab(configurationTab).setCaption("Configuration");
 
             tabsheet.addListener(this);
-            mainWindow.addComponent(tabsheet);
+//            mainWindow.addComponent(tabsheet);
+
 
 
             setMainWindow(mainWindow);

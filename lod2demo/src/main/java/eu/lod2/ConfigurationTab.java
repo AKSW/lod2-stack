@@ -74,6 +74,14 @@ public class ConfigurationTab extends CustomComponent
         hostname.setReadOnly(true);
         t2f.getLayout().addComponent(hostname);
 
+	/*SELECT  DISTINCT ?g
+  
+  {
+    GRAPH  ?g   
+      { ?s  a  ?t }
+  }
+*/
+
 	// the default graph
         defaultgraph = new TextField("Default graph:", state.getCurrentGraph());
         defaultgraph.setImmediate(false);

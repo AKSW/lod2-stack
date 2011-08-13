@@ -42,24 +42,34 @@ import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
 /**
- * The enrichment tab which collects information about 
- * ways and components to extract information.
+ * Embed the Virtuoso SPARQL query tool
  */
 //@SuppressWarnings("serial")
-public class LinkingTab extends CustomComponent
+public class VirtuosoSPARQL extends CustomComponent
 {
 
 	// reference to the global internal state
 	private LOD2DemoState state;
 
-	public LinkingTab(LOD2DemoState st) {
+	public VirtuosoSPARQL(LOD2DemoState st) {
 
 		// The internal state and 
 		state = st;
 
+		final String query = "SELECT * where {?s ?p ?o.} LIMIT 20";
+		String encodedQuery = "";
+		String encodedGraphName= "";
+		try {
+			encodedQuery = URLEncoder.encode(query, "UTF-8");
+			encodedGraphName = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
+		    } catch (UnsupportedEncodingException e) { 
+			e.printStackTrace();
+		    };
+
         Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName() + "/silk");
+//	  	URL url = new URL(state.getHostName() + "/virtuoso/sparql");
+	  	URL url = new URL("http://localhost:8890/sparql");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
