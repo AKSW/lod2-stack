@@ -1,3 +1,10 @@
+lod2demo (1.1.6) lod2; urgency=low
+
+  * new layout with menu's instead of tabs, split functionalities in separate
+    classes.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 14 Aug 2011  02:37:31 -0700
+
 lod2demo (1.1.5) lod2; urgency=low
 
   * Make the demonstrator closer to the agreed view: global visible current
