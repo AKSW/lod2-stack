@@ -65,6 +65,7 @@ public class LOD2Demo extends Application
     private ConfigurationTab configurationTab;
 
     private TextField currentgraph;
+    private Label     currentgraphlabel;
     private VerticalLayout workspace;
 
     @Override
@@ -106,13 +107,9 @@ public class LOD2Demo extends Application
 			workspace.addComponent(me1c_content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("90px");
-			me1c_content.setSizeUndefined();
-			workspace.setSizeUndefined();
-			me1c_content.setHeight("100%");
-			me1c_content.setWidth("100%");
 			workspace.setWidth("100%");
-			workspace.setHeight("100%");
-			mainWindow.getContent().setHeight("100%");
+			workspace.setHeight("500px");
+//			mainWindow.getContent().setHeight("100%");
 		    }  
 		};
 
@@ -177,7 +174,7 @@ public class LOD2Demo extends Application
 	    MenuBar.Command mconfiguration = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
-			ConfigurationTab content = new ConfigurationTab(state);
+			ConfigurationTab content = new ConfigurationTab(state, currentgraphlabel);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("90px");
@@ -319,7 +316,7 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem mq4 = querying.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
 
 	    // the current graph selection widget
-            currentgraph = new TextField("Current graph:", state.getCurrentGraph());
+            currentgraph = new TextField("", state.getCurrentGraph());
 	    currentgraph.setNullRepresentation("no graph selected");
             currentgraph.setImmediate(false);
             currentgraph.addListener(new TextChangeListener() {
@@ -328,13 +325,17 @@ public class LOD2Demo extends Application
 		}
 	    });
             currentgraph.setColumns(50);
+	   
+	   // the current graph as label
+           currentgraphlabel = new Label("no current graph selected");
 
 	    // Embed menu bar in horizontal container
 	    HorizontalLayout menubarContainer = new HorizontalLayout();
 
             //menubarContainer.addComponent(lod2logo);
             menubarContainer.addComponent(menubar);
-	    menubarContainer.addComponent(currentgraph);
+	    menubarContainer.addComponent(currentgraphlabel);
+
 
             welcome.addComponent(menubarContainer, "top:40px; left:80px");
 
@@ -400,7 +401,7 @@ public class LOD2Demo extends Application
             tabsheet.getTab(onlineToolsTab).setCaption("Online Tools and Services");
             //************************************************************************
             // Configuration Tab
-            configurationTab = new ConfigurationTab(state);	
+            configurationTab = new ConfigurationTab(state, currentgraphlabel);	
 
             tabsheet.addTab(configurationTab);
             tabsheet.getTab(configurationTab).setCaption("Configuration");
@@ -452,4 +453,10 @@ public class LOD2Demo extends Application
 	    
 	}
     }
+
+    public void setDefaults() {
+	    currentgraph.setValue(state.getCurrentGraph());
+    };
 }
+
+

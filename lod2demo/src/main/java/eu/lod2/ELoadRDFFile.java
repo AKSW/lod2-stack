@@ -80,9 +80,11 @@ public class ELoadRDFFile extends CustomComponent
                 e.printStackTrace();
 	};
 
+        browser.setSizeUndefined();
+        setSizeUndefined();
+
         // The composition root MUST be set
         setCompositionRoot(browser);
-	browser.getParent().setSizeUndefined();
     }
 
 	// propagate the information of one tab to another.
