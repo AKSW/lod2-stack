@@ -138,7 +138,7 @@ public class LOD2Demo extends Application
 	    MenuBar.Command me5c = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
-			EPoolPartyExtractor me5c_content = new EPoolPartyExtractor(extractionTab);
+			EPoolPartyExtractor me5c_content = new EPoolPartyExtractor(state);
 			workspace.addComponent(me5c_content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("90px");

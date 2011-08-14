@@ -56,7 +56,7 @@ public class EPoolPartyExtractor extends CustomComponent
 {
 
     // reference to the global internal state
-    private ExtractionTab extractionTab;
+    private LOD2DemoState state;
 
     // 
     private Button annotateButton;
@@ -65,27 +65,30 @@ public class EPoolPartyExtractor extends CustomComponent
     private String textToAnnotate;
     private String annotatedText;
 
-    public EPoolPartyExtractor(ExtractionTab etab) {
+    public EPoolPartyExtractor(LOD2DemoState st) {
 
         // The internal state 
-	extractionTab = etab;
+	state = st;
 
 
 	// second component
         VerticalLayout panel = new VerticalLayout();
 
+	Label description = new Label(
+	  "This service will identify text elements which correspond to concepts in a given controlled vocabulary.\n"+
+	  "At the moment we have fixed the controlled vocabulary to be the semantic web controlled vocabulary in the PoolParty's demozone.\n" + 
+	  "The identified concepts will be inserted as triples in the current graph."
+	  );
+	panel.addComponent(description);
+
         Form t2f = new Form();
-        t2f.setCaption("Annotate plain text");
 
         TextArea textToAnnotateField = new TextArea("text:");
         textToAnnotateField.setImmediate(false);
         textToAnnotateField.addListener(this);
-        textToAnnotateField.setColumns(50);
+        textToAnnotateField.setWidth("100%");
         textToAnnotateField.setRows(10);
         t2f.getLayout().addComponent(textToAnnotateField);
-
-        annotatedTextField = new Label("annotated text", Label.CONTENT_XHTML);
-        t2f.getLayout().addComponent(annotatedTextField);
 
         // initialize the footer area of the form
         HorizontalLayout t2ffooterlayout = new HorizontalLayout();
@@ -111,7 +114,9 @@ public class EPoolPartyExtractor extends CustomComponent
     public void textChange(TextChangeEvent event) {
 
         textToAnnotate = event.getText();
-        if (textToAnnotate == null || textToAnnotate.equals("")) {
+        if (state.getCurrentGraph() == null || state.getCurrentGraph().equals("")) {
+            annotateButton.setEnabled(false);
+	} else if (textToAnnotate == null || textToAnnotate.equals("")) {
             annotateButton.setEnabled(false);
         } else {    
             String encoded = "";
@@ -130,22 +135,39 @@ public class EPoolPartyExtractor extends CustomComponent
         try {
             String encoded = "";
             encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
-            ClientResource restcall = new ClientResource(
-	            "http://pilot1.poolparty.biz/extractor/api/extract?text=" + encoded + 
+
+	    String restCallString = 
+		    "http://pilot1.poolparty.biz/extractor/api/extract?text=" + encoded + 
 			    "&project=2d5bb6fb-9aef-44f8-a587-15a1bd6332e1" +
 			    "&locale=en" +
 			    "&format=rdfxml"+
 			    "&countConcepts=25"+
-			    "&countTerms=25"
-			    );
+			    "&countTerms=25";
 
-            //            String result = restcall.get().getText();  
-	    //            TEXT_XML is usefull to have the resources already extracted, 
-	    //            but it does not render directly on a label content.
-            // String result = restcall.get(MediaType.TEXT_XML).getText();  
-	    //     APPLICATION_XHTML will return an annotated text with rdfa.
+	    /* A call with the restlet package
+
+            ClientResource restcall = new ClientResource(RestCallString);
             String result = restcall.get(MediaType.APPLICATION_RDF_XML).getText();  
-            annotatedTextField.setValue(result);
+	    */
+
+
+	    java.net.URL data = new java.net.URL(restCallString);
+	    String baseURI = "http://poolparty.biz/defaultns#";
+
+	    RepositoryConnection con = state.getRdfStore().getConnection();
+	    Resource contextURI = con.getValueFactory().createURI(state.getCurrentGraph());
+            Resource[] contexts = new Resource[] {contextURI};
+	    con.add(data, baseURI, RDFFormat.RDFXML, contexts);
+
+	} catch (RepositoryException e) {
+            annotateButton.setEnabled(false);
+		e.printStackTrace();
+	} catch (MalformedURLException e) {
+            annotateButton.setEnabled(false);
+		e.printStackTrace();
+	} catch (RDFParseException e) {
+            annotateButton.setEnabled(false);
+		e.printStackTrace();
         } catch (UnsupportedEncodingException e) { 
             annotateButton.setEnabled(false);
             e.printStackTrace();

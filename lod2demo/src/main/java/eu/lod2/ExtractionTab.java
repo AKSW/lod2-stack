@@ -258,7 +258,7 @@ public class ExtractionTab extends CustomComponent
 		} else if (event.getProperty().toString() == "Extract RDF from text w.r.t. DBpedia") {
 			extractionTab.addComponent(new ESpotlight(this));
 		} else if (event.getProperty().toString() == "Extract RDF from text w.r.t. a controlled vocabulary") {
-			extractionTab.addComponent(new EPoolPartyExtractor(this));
+			extractionTab.addComponent(new EPoolPartyExtractor(state));
 		} else {
 			extractionTab.addComponent(new Label(event.getProperty().toString()));
 		};
