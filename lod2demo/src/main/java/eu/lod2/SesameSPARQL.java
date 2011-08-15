@@ -78,6 +78,7 @@ public class SesameSPARQL extends CustomComponent
 		query = new TextArea("SPARQL Query");
 
 		// configure & add to layout
+		query.setValue("Select * from <" + state.getCurrentGraph() + "> where {?s ?p ?o} limit 100");
 		query.setImmediate(false);
 		query.addListener(this);
 		query.setColumns(30);

@@ -248,7 +248,7 @@ public class ExtractionTab extends CustomComponent
     	public void showRightPanelContent(Property.ValueChangeEvent event) {
 	        extractionTab.removeAllComponents();	
 		if (event.getProperty().toString() == "Upload RDF file") {
-			ELoadRDFFile second = new ELoadRDFFile(this);
+			ELoadRDFFile second = new ELoadRDFFile(state);
 			second.addStyleName("second");
 			extractionTab.addComponent(second);
 		} else if (event.getProperty().toString() == "Load RDF data from CKAN") {

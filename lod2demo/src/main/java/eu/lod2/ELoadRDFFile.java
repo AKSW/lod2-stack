@@ -54,24 +54,16 @@ public class ELoadRDFFile extends CustomComponent
 {
 
     // reference to the global internal state
-    private ExtractionTab extractionTab;
+    private LOD2DemoState state;
 
-    public ELoadRDFFile(ExtractionTab etab) {
+    public ELoadRDFFile(LOD2DemoState st) {
 
         // The internal state and 
-        extractionTab = etab;
-
-	/* Not necessary 
-        Link rdfuploadlink = new Link("Upload RDF content to local storage",
-                new ExternalResource(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba"));
-        rdfuploadlink.setTargetName("_blank");
-        rdfuploadlink.setTargetBorder(Link.TARGET_BORDER_NONE);
-        panel.addComponent(rdfuploadlink);
-	*/
+        state = st;
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(extractionTab.getState().getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+	  	URL url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

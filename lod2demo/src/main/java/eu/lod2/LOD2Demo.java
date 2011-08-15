@@ -103,13 +103,18 @@ public class LOD2Demo extends Application
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
 //			mainWindow.getContent().setSizeFull();
-			ELoadRDFFile me1c_content = new ELoadRDFFile(extractionTab);
+			ELoadRDFFile me1c_content = new ELoadRDFFile(state);
 			workspace.addComponent(me1c_content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("90px");
+			float wh = mainWindow.getHeight() -90;
+//			workspace.addComponent(new Label(Float.toString(wh)));
+//			me1c_content.getContent().setHeight("100%");
+			me1c_content.setWidth("100%");
+//			me1c_content.setHeight("100%");
+			me1c_content.setHeight(wh, mainWindow.getHeightUnits());
 			workspace.setWidth("100%");
-			workspace.setHeight("500px");
-//			mainWindow.getContent().setHeight("100%");
+			workspace.setHeight("100%");
 		    }  
 		};
 

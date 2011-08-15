@@ -60,6 +60,10 @@
 	min-height: 500px;
 }
 
+.v-embedded-browser {
+	height: 100%
+}
+
 /*
  * the next rules illustrate how to adapt the visualisation of the menu bar
  */

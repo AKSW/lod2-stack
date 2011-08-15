@@ -90,7 +90,10 @@ public class ConfigurationTab extends CustomComponent
 	// XXX TODO show only those which are editable in OntoWiki
 	graphSelector = new ComboBox("Select default graph: ");
 	addCandidateGraphs(graphSelector);
-	if (cg.getValue() != null && cg.getValue() != "no current  graph selected") {
+	if (cg.getValue() != null 
+			&& cg.getValue() != "no current  graph selected"
+			&& cg.getValue() != "null"
+			) {
 		graphSelector.setValue(cg.getValue());
 		graphSelector.setColumns(cg.toString().length());
 	};
