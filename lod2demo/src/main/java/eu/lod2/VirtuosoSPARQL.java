@@ -68,8 +68,8 @@ public class VirtuosoSPARQL extends CustomComponent
 
         Embedded browser = new Embedded();
 	try { 
-//	  	URL url = new URL(state.getHostName() + "/virtuoso/sparql");
-	  	URL url = new URL("http://localhost:8890/sparql");
+	  	URL url = new URL(state.getHostName() + "/virtuoso/sparql");
+//	  	URL url = new URL("http://localhost:8890/sparql");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

@@ -58,8 +58,8 @@ public class VirtuosoISPARQL extends CustomComponent
 
         Embedded browser = new Embedded();
 	try { 
-//	  	URL url = new URL(state.getHostName() + "/virtuoso/isparql");
-	  	URL url = new URL("http://localhost:8890/isparql");
+	  	URL url = new URL(state.getHostName() + "/virtuoso/isparql");
+//	  	URL url = new URL("http://localhost:8890/isparql");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
