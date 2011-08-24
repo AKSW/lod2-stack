@@ -63,7 +63,12 @@ public class ELoadRDFFile extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+		URL url;
+		if (state.getHostName().equals("http://localhost:8080")) {
+			url = new URL("http://localhost:8890/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+		} else {
+	  		url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+		};
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
