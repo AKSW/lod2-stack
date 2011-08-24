@@ -1,3 +1,15 @@
+lod2demo (1.1.8) lod2; urgency=low
+
+  * add extra lod2 stack dependencies
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 22 Aug 2011  02:37:31 -0700
+
+lod2demo (1.1.7) lod2; urgency=low
+
+  * correct layout for rdf file upload, adjust pointers to tools
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 15 Aug 2011  02:37:31 -0700
+
 lod2demo (1.1.6) lod2; urgency=low
 
   * new layout with menu's instead of tabs, split functionalities in separate

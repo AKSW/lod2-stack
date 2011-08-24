@@ -1,7 +1,9 @@
 #!/bin/sh
 
+# $1 the version passed by the maven call
+
 PACKAGE_NAME=lod2demo
-VERSION=1.1.6
+VERSION=$1
 
 echo "Building Debian package for ${MODULE_NAME}"
 echo
