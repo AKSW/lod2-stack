@@ -1,0 +1,105 @@
+How To Start with LOD2 Stack 
+============================
+Bert Van Nuffelen <bert.van.nuffelen@tenforce.be>
+v1.0, aug 2011: Initial version
+:Author Initials: BVN
+:toc:
+:icons:
+:numbered:
+:website: http://stack.lod2.eu/
+
+The LOD2 component stack is a collection of tools that support Linked Data publication.
+The LOD2 stack is the result of the EU funded project LOD2. 
+
+This guide describes several paths to access the LOD2 stack. 
+We have installed an online version of the stack. 
+For those who want to have a deeper insight in the components, a preinstalled VM image is available.
+Finally one can also setup a new machine and install the stack on it.
+
+The online demo
+---------------
+For an quick overview we have made the lod2 stack and the lod2 demonstrator available at http://demo.lod2.eu/lod2demo.
+
+[This has open holes in security as the virtuoso root password is easy to get]
+
+
+The preinstalled virtual machine
+--------------------------------
+We have created a VMware virtual machine on which we have installed the LOD2 stack.
+This virtual machine is available at the VMware marketplace: 
+Search for XXX to find the image.
+
+http://www.vmware.com/products/player/
+
+Regulary new versions of the stack will be uploaded.
+
+Installation of a local LOD2 stack
+----------------------------------
+In general, deploying the LOD2 software stack or parts of it is very easy and comfortable based on the Debian package management system.  There are only two steps which need to be executed in order to install LOD2 stack software:
+1. Add LOD2 stack package repository to the systems repository list and update the repository index.
+2. Install wanted software packages by using a graphical or text-based package management application.
+
+The next guidelines describe the installation using command-line tools. The procedure uses apt-get, the most basic is the most basic package management tool and the preferred command line front-end for non-interactive package management. 
+UI frontends like synaptic can be used too. For the usage of these we refer to their manuals.
+
+The first step is the installation of the LOD2 repository package. 
+
+	# download the repository package 
+	wget http://stack.lod2.eu/lod2repository_current_all.deb
+	# install the repository package 
+	sudo dpkg -i lod2repository_1.2_all.deb
+	# update the repository database 
+	sudo apt-get update
+
+This registers the LOD2 stack repository for the local package manager. 
+
+As the LOD2 stack component Sig.maEE depends on the Oracle-Sun Java suite and this java package is not always per default accessible one has to update the repository with the following
+	sudo add-apt-repository ‘deb http://archive.canonical.com/ lucid partner’ 
+	sudo apt-get update
+where lucid is the Ubuntu release. 
+During the Oracle-Sun Java package installation acceptance confirmation of the license is requested.
+For more information see https://help.ubuntu.com/community/Java.
+
+Next one can install individual lod2 packages or the lod2demo package. Installing the lod2demo package will install the whole LOD2 stack as the package depends on all LOD2 stack components.
+
+	sudo apt-get install lod2demo
+
+On a fresh server the root passwords for Virtuoso and MySQL will be requested. 
+For the moment a post intervention has to be done to configure OntoWiki with Virtuoso.
+
+
+Configuration of the lod2 demonstrator
+--------------------------------------
+1. configuration of location of tools.
+
+The default configuration assumes a machine which has internet access. All tools are accessible directly on the local machine.
+If one wants to share the setup of the lod2 demonstrator to the public the best is to setup a proxy on that machine. 
+One way is to use the apache2 server as proxy.
+
+The lod2 demonstrator configuration file is the graph http://localhost/lod2democonfiguration, which is stored in Virtuoso.
+It contains the hostname prefix of the tools. Per default the value is "http://localhost:8080".
+In case to make the tools accessible via a public lod2 demo interface, this value has to be changed to the machines' url.
+
+
+2. configuration of some tools.
+
+* virtuoso root password is assumed to be "dba"
+* ontowiki access to virtuoso.
+  
+   cd /etc/ontowiki/
+   sudo vim config.ini 
+   # change username to dba and password of virtuoso to chosen root password
+
+   # restart apache2
+   sudo service apache2 restart
+    
+   [if this is a agreed one like "dba" or "lod2" then we skip this rule, and make it a "if problem rule" out of it."]
+
+   Adapt virtuoso and add extra allowed directory
+	cd /etc/virtuoso-opensource-6.1/
+	/usr/share 
+	sudo vim virtuoso.ini 
+	sudo service virtuoso-opensource-6.1 restart
+
+ 
+
