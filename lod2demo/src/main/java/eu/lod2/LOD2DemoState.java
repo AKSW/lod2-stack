@@ -114,6 +114,10 @@ public class LOD2DemoState
 		return rdfStore;
 	};
 
+	public String getConfigurationRDFgraph() {
+		return configurationRDFgraph;
+	};
+
 	// a method to reconnect to the rdfStore.
 	public void reconnectRdfStore() {
 		try {

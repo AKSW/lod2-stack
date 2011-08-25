@@ -62,11 +62,17 @@ public class OntoWikiQuery extends CustomComponent
 
 	// reference to the global internal state
 	private LOD2DemoState state;
+	private String username;
+	private String password;
+	private String service;
 
 	public OntoWikiQuery(LOD2DemoState st) {
 
+
+
 		// The internal state and 
 		state = st;
+		initLogin();
 
 		VerticalLayout queryingTab = new VerticalLayout();
 
@@ -80,10 +86,23 @@ public class OntoWikiQuery extends CustomComponent
 			e.printStackTrace();
 		    };
 
+		try {
+	    		java.net.URL data = new java.net.URL(service + "/application/login?logintype=locallogin&password=" + password + "&username=" + username);
+		} catch (IOException e) {
+			e.printStackTrace();
+		};
+
+	        Label l = new Label(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
+		queryingTab.addComponent(l);
 
 		Embedded browser = new Embedded();
 		try { 
-			URL url = new URL(state.getHostName() + "/ontowiki/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
+			URL url;
+			if (encodedGraphName.equals("")) {
+				url = new URL(service + "/queries/editor/?query="+ encodedQuery);
+			} else {
+				url = new URL(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
+			};
 			browser = new Embedded("", new ExternalResource(url));
 			browser.setType(Embedded.TYPE_BROWSER);
 			browser.setSizeFull();
@@ -93,7 +112,48 @@ public class OntoWikiQuery extends CustomComponent
 
 		// The composition root MUST be set
 		setCompositionRoot(browser);
-	}
+	};
+
+	private void initLogin() {
+	try {
+		RepositoryConnection con = state.getRdfStore().getConnection();
+
+		// initialize the hostname and portnumber
+		String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/ontowiki>. <http://localhost/ontowiki> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/ontowiki> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/ontowiki> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
+		TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+		TupleQueryResult result = tupleQuery.evaluate();
+		while (result.hasNext()) {
+			BindingSet bindingSet = result.next();
+			Value valueOfH = bindingSet.getValue("u");
+			if (valueOfH instanceof LiteralImpl) {
+				LiteralImpl literalH = (LiteralImpl) valueOfH;
+				username = literalH.getLabel();
+				};	
+			Value valueOfP = bindingSet.getValue("p");
+			if (valueOfP instanceof LiteralImpl) {
+				LiteralImpl literalP = (LiteralImpl) valueOfP;
+				password = literalP.getLabel();
+				};	
+			Value valueOfS = bindingSet.getValue("s");
+			if (valueOfS instanceof LiteralImpl) {
+				LiteralImpl literalS = (LiteralImpl) valueOfS;
+				service = literalS.getLabel();
+				};	
+			}
+
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	};
+
 
 };
 

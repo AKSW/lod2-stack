@@ -1,2 +1,9 @@
-<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/hostname> "140.203.155.11"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/hostname> "localhost:8080"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/ontowiki>.
+<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/virtuoso>.
+<http://localhost/ontowiki> <http://lod2.eu/lod2demo/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ontowiki> <http://lod2.eu/lod2demo/username> "Admin"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ontowiki> <http://lod2.eu/lod2demo/service> "http://localhost/ontowiki"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/virtuoso> <http://lod2.eu/lod2demo/password> "dba"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/virtuoso> <http://lod2.eu/lod2demo/username> "dba"^^<http://www.w3.org/2001/XMLSchema#string> .
 
