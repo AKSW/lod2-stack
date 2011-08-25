@@ -100,6 +100,8 @@ In case to make the tools accessible via a public lod2 demo interface, this valu
 	/usr/share 
 	sudo vim virtuoso.ini 
 	sudo service virtuoso-opensource-6.1 restart
+* Virtuoso iSPAQRL package must be activated manually via the conductor interface.
+  If not done, the menu option querying via isparql is not working properly.
 
  
 
