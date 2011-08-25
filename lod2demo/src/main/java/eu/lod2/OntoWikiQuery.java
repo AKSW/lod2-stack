@@ -137,7 +137,12 @@ public class OntoWikiQuery extends CustomComponent
 			Value valueOfS = bindingSet.getValue("s");
 			if (valueOfS instanceof LiteralImpl) {
 				LiteralImpl literalS = (LiteralImpl) valueOfS;
-				service = literalS.getLabel();
+				String service0 = literalS.getLabel();
+				if (service0 == null | service0.equals("")) {
+					service = "http://localhost/ontowiki";
+				} else {
+					service = service0;
+				};
 				};	
 			}
 
