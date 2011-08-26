@@ -60,7 +60,7 @@
 </xsl:template>
 
 <!-- metadata -->
-<xsl:template match="metadaten/metadaten-gruppe[@bezeichnung='createmodifiedat']">
+<xsl:template match="metadaten-gruppe[@bezeichnung='createmodifiedat']">
 	<xsl:if test="metadaten-text[@bezeichnung='createdat'][string-length(.)]">
 		<dcterms:created><xsl:value-of select="fun:dateDe2Iso(string(metadaten-text[@bezeichnung='createdat']))"/></dcterms:created>
 	</xsl:if>
@@ -69,7 +69,7 @@
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="metadaten/metadaten-gruppe[@bezeichnung='handler[[keywords]]']">
+<xsl:template match="metadaten-gruppe[@bezeichnung='handler[[keywords]]']">
 	<xsl:for-each select="descendant-or-self::metadaten-text">
 		<xsl:variable name="l" select="normalize-space(.)"/>
 		<xsl:if	test="string-length($l)">
@@ -83,7 +83,7 @@
 	</xsl:for-each>
 </xsl:template>
 
-<xsl:template match="metadaten/metadaten-gruppe[@bezeichnung='handler[[categories]]']">
+<xsl:template match="metadaten-gruppe[@bezeichnung='handler[[categories]]']">
 	<xsl:for-each select="descendant-or-self::metadaten-gruppe[starts-with(@bezeichnung,'add[[')]">
 		<xsl:variable name="c" select="substring-before(substring-after(@bezeichnung,'add[['),']]')"/>
 		<xsl:for-each select="descendant-or-self::metadaten-text">
@@ -100,7 +100,7 @@
 	</xsl:for-each>
 </xsl:template>
 
-<xsl:template match="metadaten/metadaten-gruppe[@bezeichnung='handler[[vwdata]]']">
+<xsl:template match="metadaten-gruppe[@bezeichnung='handler[[vwdata]]']">
 	<xsl:for-each select="descendant-or-self::metadaten-gruppe[starts-with(@bezeichnung,'item[[')]">
 		<xsl:variable name="p" select="normalize-space(substring-before(substring-after(@bezeichnung,'item[['),'###]]'))"/>
 		<xsl:for-each select="descendant-or-self::metadaten-text">
@@ -115,8 +115,36 @@
 	</xsl:for-each>
 </xsl:template>
 
-<xsl:template match="metadaten/metadaten-text" priority="-1"/>
-<xsl:template match="metadaten/metadaten-gruppe" priority="-1"/>
+<xsl:template match="metadaten-text">
+	<wkd:mdProperty rdf:parseType="Resource">
+   		<rdfs:label><xsl:value-of select="@bezeichnung"/></rdfs:label>
+		<xsl:variable name="t" as="xs:string">
+			<xsl:choose>
+				<xsl:when test="@typ='nummer'"><xsl:value-of select="concat($xsd,'decimal')"/></xsl:when>
+				<xsl:when test="@typ='zeichenkette'"><xsl:value-of select="concat($xsd,'string')"/></xsl:when>
+				<xsl:when test="@typ='liste'"><xsl:value-of select="concat($xsd,'string')"/></xsl:when>
+				<xsl:when test="@typ='datum'"><xsl:value-of select="concat($xsd,'date')"/></xsl:when>
+				<xsl:when test="@typ='zahl'"><xsl:value-of select="concat($xsd,'integer')"/></xsl:when>
+				<xsl:otherwise/>
+			</xsl:choose>
+		</xsl:variable>
+		<rdf:value>
+			<xsl:if test="string-length($t) &gt; 0">
+				<xsl:attribute namespace="{$rdf}" name="datatype" select="$t"/>
+			</xsl:if>
+			<xsl:value-of select="if (@typ='datum') then fun:dateDe2Iso(string(.)) else ."/>
+		</rdf:value>
+   	</wkd:mdProperty>
+</xsl:template>
+
+<xsl:template match="metadaten-gruppe[not(@bezeichnung=('createmodifiedat','handler[[keywords]]','handler[[categories]]','handler[[vwdata]]'))]">
+	<wkd:mdProperty rdf:parseType="Resource">
+		<rdfs:label><xsl:value-of select="@bezeichnung"/></rdfs:label>
+		<rdf:value rdf:parseType="Resource">
+			<xsl:apply-templates select="*"/>
+		</rdf:value>
+	</wkd:mdProperty>
+</xsl:template>
 
 <!-- Practice Area -->
 <xsl:template match="rechtsgebiete/rechtsgebiet-eintrag">
@@ -165,7 +193,14 @@
 	</xsl:for-each>
 </xsl:template>
 
-<!-- contributosr -->
+<!-- abstract -->
+<xsl:template match="abstract">
+	<bibo:abstract rdf:parseType="Literal">
+		<xsl:apply-templates mode="xml-literal"/>
+	</bibo:abstract>
+</xsl:template>
+
+<!-- contributor -->
 <xsl:template match="mitgeteiltvon">
 	<xsl:apply-templates select="person | organisation">
 		<xsl:with-param name="namespace" select="$wkd" as="xs:string"/>

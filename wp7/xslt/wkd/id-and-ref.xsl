@@ -60,7 +60,14 @@
 				<xsl:variable name="date" select="fun:dateDe2Iso(normalize-space($doc/es-metadaten/datum))" as="xs:string"/>
 				<xsl:value-of select="concat($court,'_',$file,'_',$date)"/>
 			</xsl:when>
-			<xsl:when test="$doc-type=('aufsatz','aufsatz-es')">
+			<xsl:when test="$doc-type='aufsatz'">
+				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
+				</xsl:if>
+				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
+				<xsl:value-of select="fun:verweis-zs($identifier)"/>
+			</xsl:when>
+			<xsl:when test="$doc-type='aufsatz-es'">
 				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
 					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
 				</xsl:if>
