@@ -111,7 +111,7 @@ public class OntoWikiQuery extends CustomComponent
 		};
 
 		// The composition root MUST be set
-		setCompositionRoot(browser);
+		setCompositionRoot(queryingTab);
 	};
 
 	private void initLogin() {

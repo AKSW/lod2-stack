@@ -286,6 +286,28 @@ public class LOD2Demo extends Application
 		    }  
 		};
 
+	    MenuBar.Command mo5c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			SPARQLPoolParty content = new SPARQLPoolParty(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+
+	    MenuBar.Command mo6c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			OnlinePoolParty content = new OnlinePoolParty(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
 	    // Secondly define menu layout
 	    // root menu's
 	    MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
@@ -307,12 +329,14 @@ public class LOD2Demo extends Application
 
 	    MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
 
-	    MenuBar.MenuItem sameAs   = onlinetools.addItem("SameAs", null, mo1c);
-	    MenuBar.MenuItem sigma    = onlinetools.addItem("Sigma", null, mo2c);
-	    MenuBar.MenuItem ckan     = onlinetools.addItem("CKAN", null, null);
+	    MenuBar.MenuItem sameAs    = onlinetools.addItem("SameAs", null, mo1c);
+	    MenuBar.MenuItem sigma     = onlinetools.addItem("Sigma", null, mo2c);
+	    MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, null);
+	    MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);
 	    MenuBar.MenuItem sparqlonline = onlinetools.addItem("Online SPARQL endpoints", null, null);
-	    MenuBar.MenuItem lodcloud     = sparqlonline.addItem("LOD cloud", null, mo3c);
-	    MenuBar.MenuItem dbpedia      = sparqlonline.addItem("DBpedia", null, mo4c);
+	    MenuBar.MenuItem lodcloud        = sparqlonline.addItem("LOD cloud", null, mo3c);
+	    MenuBar.MenuItem dbpedia         = sparqlonline.addItem("DBpedia", null, mo4c);
+	    MenuBar.MenuItem sparqlpoolparty = sparqlonline.addItem("PoolParty SPARQL endpoint", null, mo5c);
 
 
 	    MenuBar.MenuItem mq1 = querying.addItem("Direct via Sesame", null, mq1c);
