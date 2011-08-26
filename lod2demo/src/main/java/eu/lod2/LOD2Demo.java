@@ -151,6 +151,17 @@ public class LOD2Demo extends Application
 		    }  
 		};
 
+	    MenuBar.Command me6c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			D2RCordis content = new D2RCordis(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("90%");
+		    }  
+		};
+
 	    MenuBar.Command silk = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
@@ -308,6 +319,29 @@ public class LOD2Demo extends Application
 			content.setHeight("500px");
 		    }  
 		};
+
+	    MenuBar.Command mo7c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			MondecaSPARQLList content = new MondecaSPARQLList(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mo8c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			CKAN content = new CKAN(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("90px");
+			content.setHeight("500px");
+		    }  
+		};
+
 	    // Secondly define menu layout
 	    // root menu's
 	    MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
@@ -322,6 +356,7 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem me1 = extraction.addItem("Upload RDF file", null, me1c);
 	    MenuBar.MenuItem me2 = extraction.addItem("Load RDF data from CKAN", null, null);
 	    MenuBar.MenuItem me3 = extraction.addItem("Extract RDF from XML", null, me3c);
+	    MenuBar.MenuItem me6 = extraction.addItem("Extract RDF from SQL", null, me6c);
 	    MenuBar.MenuItem me4 = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
 	    MenuBar.MenuItem me5 = extraction.addItem("Extract RDF from text w.r.t. a controlled vocabulary", null, me5c);
 
@@ -331,12 +366,13 @@ public class LOD2Demo extends Application
 
 	    MenuBar.MenuItem sameAs    = onlinetools.addItem("SameAs", null, mo1c);
 	    MenuBar.MenuItem sigma     = onlinetools.addItem("Sigma", null, mo2c);
-	    MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, null);
+	    MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
 	    MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);
 	    MenuBar.MenuItem sparqlonline = onlinetools.addItem("Online SPARQL endpoints", null, null);
 	    MenuBar.MenuItem lodcloud        = sparqlonline.addItem("LOD cloud", null, mo3c);
 	    MenuBar.MenuItem dbpedia         = sparqlonline.addItem("DBpedia", null, mo4c);
 	    MenuBar.MenuItem sparqlpoolparty = sparqlonline.addItem("PoolParty SPARQL endpoint", null, mo5c);
+	    MenuBar.MenuItem mondecalist     = sparqlonline.addItem("Mondeca SPARQL endpoint Collection", null, mo7c);
 
 
 	    MenuBar.MenuItem mq1 = querying.addItem("Direct via Sesame", null, mq1c);
