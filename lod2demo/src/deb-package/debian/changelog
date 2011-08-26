@@ -1,3 +1,9 @@
+lod2demo (1.1.10) lod2; urgency=low
+
+  * implement configuration for ontowiki
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 25 Aug 2011 13:20:56 -0700
+
 lod2demo (1.1.9) lod2; urgency=low
 
   * add switch for local virtuoso access as Virtuoso has a different port on
