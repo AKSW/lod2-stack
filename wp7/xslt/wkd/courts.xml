@@ -1,0 +1,1471 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<courts>
+	<name meta="name_meta" technical="name_technical" original="name_original"/>
+	<name meta="AG Bernkastel-Kues" technical="ag_bernkastel-kues" original="Amtsgericht Bernkastel-Kues"/>
+	<name meta="AG Bersenbrück" technical="ag_bersenbrueck" original="Amtsgericht Bersenbrück"/>
+	<name meta="AG Besigheim" technical="ag_besigheim" original="Amtsgericht Besigheim"/>
+	<name meta="AG Betzdorf" technical="ag_betzdorf" original="Amtsgericht Betzdorf"/>
+	<name meta="AG Beverungen" technical="ag_beverungen" original="Amtsgericht Beverungen"/>
+	<name meta="AG Biberach" technical="ag_biberach" original="Amtsgericht Biberach an der Riß"/>
+	<name meta="AG Biedenkopf" technical="ag_biedenkopf" original="Amtsgericht Biedenkopf"/>
+	<name meta="AG Bielefeld" technical="ag_bielefeld" original="Amtsgericht Bielefeld"/>
+	<name meta="AG Bingen" technical="ag_bingen" original="Amtsgericht Bingen am Rhein"/>
+	<name meta="AG Birkenfeld" technical="ag_birkenfeld" original="Amtsgericht Birkenfeld"/>
+	<name meta="AG Bitburg" technical="ag_bitburg" original="Amtsgericht Bitburg"/>
+	<name meta="AG Bitterfeld" technical="ag_bitterfeld" original="Amtsgericht Bitterfeld-Wolfen"/>
+	<name meta="AG Blomberg" technical="ag_blomberg" original="Amtsgericht Blomberg"/>
+	<name meta="AG Böblingen" technical="ag_boeblingen" original="Amtsgericht Böblingen"/>
+	<name meta="AG Bocholt" technical="ag_bocholt" original="Amtsgericht Bocholt"/>
+	<name meta="AG Bochum" technical="ag_bochum" original="Amtsgericht Bochum"/>
+	<name meta="AG Bonn" technical="ag_bonn" original="Amtsgericht Bonn"/>
+	<name meta="AG Borken" technical="ag_borken" original="Amtsgericht Borken"/>
+	<name meta="AG Borna" technical="ag_borna" original="Amtsgericht Borna"/>
+	<name meta="AG Bottrop" technical="ag_bottrop" original="Amtsgericht Bottrop"/>
+	<name meta="AG Brackenheim" technical="ag_brackenheim" original="Amtsgericht Brackenheim"/>
+	<name meta="AG Brake" technical="ag_brake" original="Amtsgericht Brake (Unterweser)"/>
+	<name meta="AG Brakel" technical="ag_brakel" original="Amtsgericht Brakel"/>
+	<name meta="AG Brandenburg/Havel" technical="ag_brandenburg" original="Amtsgericht Brandenburg an der Havel"/>
+	<name meta="AG Braunschweig" technical="ag_braunschweig" original="Amtsgericht Braunschweig"/>
+	<name meta="AG Breisach/Rhein" technical="ag_breisach" original="Amtsgericht Breisach am Rhein"/>
+	<name meta="AG Bremen" technical="ag_bremen" original="Amtsgericht Bremen"/>
+	<name meta="AG Bremen-Blumenthal" technical="ag_bremen-blumenthal" original="Amtsgericht Bremen-Blumenthal"/>
+	<name meta="AG Bremerhaven" technical="ag_bremerhaven" original="Amtsgericht Bremerhaven"/>
+	<name meta="AG Bremervörde" technical="ag_bremervoerde" original="Amtsgericht Bremervörde"/>
+	<name meta="AG Bretten" technical="ag_bretten" original="Amtsgericht Bretten"/>
+	<name meta="AG Brilon" technical="ag_brilon" original="Amtsgericht Brilon"/>
+	<name meta="AG Bruchsal" technical="ag_bruchsal" original="Amtsgericht Bruchsal"/>
+	<name meta="AG Brühl/Rheinland" technical="ag_bruehl" original="Amtsgericht Brühl"/>
+	<name meta="AG Buchen/Odenwald" technical="ag_buchen" original="Amtsgericht Buchen (Odenwald)"/>
+	<name meta="AG Bückeburg" technical="ag_bueckeburg" original="Amtsgericht Bückeburg"/>
+	<name meta="AG Büdingen" technical="ag_buedingen" original="Amtsgericht Büdingen"/>
+	<name meta="AG Bühl" technical="ag_buehl" original="Amtsgericht Bühl"/>
+	<name meta="AG Bünde" technical="ag_buende" original="Amtsgericht Bünde"/>
+	<name meta="AG Burbach" technical="ag_burbach" original="Amtsgericht Burbach"/>
+	<name meta="AG Burg" technical="ag_burg" original="Amtsgericht Burg (bei Magdeburg)"/>
+	<name meta="AG Burgdorf" technical="ag_burgdorf" original="Amtsgericht Burgdorf"/>
+	<name meta="AG Burgwedel" technical="ag_burgwedel" original="Amtsgericht Burgwedel"/>
+	<name meta="AG Butzbach" technical="ag_butzbach" original="Amtsgericht Butzbach"/>
+	<name meta="AG Buxtehude" technical="ag_buxtehude" original="Amtsgericht Buxtehude"/>
+	<name meta="AG Calw" technical="ag_calw" original="Amtsgericht Calw"/>
+	<name meta="AG Castrop-Rauxel" technical="ag_castrop-rauxel" original="Amtsgericht Castrop-Rauxel"/>
+	<name meta="AG Celle" technical="ag_celle" original="Amtsgericht Celle"/>
+	<name meta="AG Cham" technical="ag_cham" original="Amtsgericht Cham in der Oberpfalz"/>
+	<name meta="AG Chemnitz" technical="ag_chemnitz" original="Amtsgericht Chemnitz"/>
+	<name meta="AG Clausthal-Zellerfeld" technical="ag_clausthal-zellerfeld" original="Amtsgericht Clausthal-Zellerfeld"/>
+	<name meta="AG Cloppenburg" technical="ag_cloppenburg" original="Amtsgericht Cloppenburg"/>
+	<name meta="AG Coburg" technical="ag_coburg" original="Amtsgericht Coburg"/>
+	<name meta="AG Cochem" technical="ag_cochem" original="Amtsgericht Cochem"/>
+	<name meta="AG Coesfeld" technical="ag_coesfeld" original="Amtsgericht Coesfeld"/>
+	<name meta="AG Cottbus" technical="ag_cottbus" original="Amtsgericht Cottbus"/>
+	<name meta="AG Crailsheim" technical="ag_crailsheim" original="Amtsgericht Crailsheim"/>
+	<name meta="AG Cuxhaven" technical="ag_cuxhaven" original="Amtsgericht Cuxhaven"/>
+	<name meta="AG Dachau" technical="ag_dachau" original="Amtsgericht Dachau"/>
+	<name meta="AG Dannenberg/Elbe" technical="ag_dannenberg" original="Amtsgericht Dannenberg (Elbe)"/>
+	<name meta="AG Darmstadt" technical="ag_darmstadt" original="Amtsgericht Darmstadt"/>
+	<name meta="AG Daun" technical="ag_daun" original="Amtsgericht Daun"/>
+	<name meta="AG Deggendorf" technical="ag_deggendorf" original="Amtsgericht Deggendorf"/>
+	<name meta="AG Delbrück" technical="ag_delbrueck" original="Amtsgericht Delbrück"/>
+	<name meta="AG Delmenhorst" technical="ag_delmenhorst" original="Amtsgericht Delmenhorst"/>
+	<name meta="AG Demmin" technical="ag_demmin" original="Amtsgericht Demmin"/>
+	<name meta="AG Dessau" technical="ag_dessau" original="Amtsgericht Dessau in Dessau-Roßlau"/>
+	<name meta="AG Detmold" technical="ag_detmold" original="Amtsgericht Detmold"/>
+	<name meta="AG Dieburg" technical="ag_dieburg" original="Amtsgericht Dieburg"/>
+	<name meta="AG Diepholz" technical="ag_diepholz" original="Amtsgericht Diepholz"/>
+	<name meta="AG Diez" technical="ag_diez" original="Amtsgericht Diez"/>
+	<name meta="AG Dillenburg" technical="ag_dillenburg" original="Amtsgericht Dillenburg"/>
+	<name meta="AG Dillingen" technical="ag_dillingen" original="Amtsgericht Dillingen a. d. Donau"/>
+	<name meta="AG Dinslaken" technical="ag_dinslaken" original="Amtsgericht Dinslaken"/>
+	<name meta="AG Dippoldiswalde" technical="ag_dippoldiswalde" original="Amtsgericht Dippoldiswalde"/>
+	<name meta="AG Döbeln" technical="ag_doebeln" original="Amtsgericht Döbeln"/>
+	<name meta="AG Donaueschingen" technical="ag_donaueschingen" original="Amtsgericht Donaueschingen"/>
+	<name meta="AG Dorsten" technical="ag_dorsten" original="Amtsgericht Dorsten"/>
+	<name meta="AG Dortmund" technical="ag_dortmund" original="Amtsgericht Dortmund"/>
+	<name meta="AG Dresden" technical="ag_dresden" original="Amtsgericht Dresden"/>
+	<name meta="AG Duderstadt" technical="ag_duderstadt" original="Amtsgericht Duderstadt"/>
+	<name meta="AG Duisburg" technical="ag_duisburg" original="Amtsgericht Duisburg"/>
+	<name meta="AG Duisburg-Hamborn" technical="ag_duisburg-hamborn" original="Amtsgericht Duisburg-Hamborn"/>
+	<name meta="AG Duisburg-Ruhrort" technical="ag_duisburg-ruhrort" original="Amtsgericht Duisburg-Ruhrort"/>
+	<name meta="AG Dülmen" technical="ag_duelmen" original="Amtsgericht Dülmen"/>
+	<name meta="AG Düren" technical="ag_dueren" original="Amtsgericht Düren"/>
+	<name meta="AG Düsseldorf" technical="ag_duesseldorf" original="Amtsgericht Düsseldorf"/>
+	<name meta="AG Ebersberg" technical="ag_ebersberg" original="Amtsgericht Ebersberg"/>
+	<name meta="AG Eberswalde" technical="ag_eberswalde" original="Amtsgericht Eberswalde"/>
+	<name meta="AG Eckernförde" technical="ag_eckernfoerde" original="Amtsgericht Eckernförde"/>
+	<name meta="AG Eggenfelden" technical="ag_eggenfelden" original="Amtsgericht Eggenfelden"/>
+	<name meta="AG Ehingen/Donau" technical="ag_ehingen" original="Amtsgericht Ehingen (Donau)"/>
+	<name meta="AG Eilenburg" technical="ag_eilenburg" original="Amtsgericht Eilenburg"/>
+	<name meta="AG Einbeck" technical="ag_einbeck" original="Amtsgericht Einbeck"/>
+	<name meta="AG Eisenach" technical="ag_eisenach" original="Amtsgericht Eisenach"/>
+	<name meta="AG Eisenhüttenstadt" technical="ag_eisenhuettenstadt" original="Amtsgericht Eisenhüttenstadt"/>
+	<name meta="AG Eisleben" technical="ag_eisleben" original="Amtsgericht Eisleben"/>
+	<name meta="AG Ellwangen/Jagst" technical="ag_ellwangen" original="Amtsgericht Ellwangen (Jagst)"/>
+	<name meta="AG Elmshorn" technical="ag_elmshorn" original="Amtsgericht Elmshorn"/>
+	<name meta="AG Eltville" technical="ag_eltville" original="AG Rüdesheim am Rhein ZwSt. Eltville am Rhein"/>
+	<name meta="AG Elze" technical="ag_elze" original="Amtsgericht Elze"/>
+	<name meta="AG Emden" technical="ag_emden" original="Amtsgericht Emden"/>
+	<name meta="1. VK Sachsen-Anhalt" technical="vk_st-a" original="1. Vergabekammer Sachsen-Anhalt beim Landesverwaltungsamt Halle"/>
+	<name meta="2. VK Sachsen-Anhalt" technical="vk_st-b" original="2. Vergabekammer Sachsen-Anhalt beim Landesverwaltungsamt Halle"/>
+	<name meta="AG Aachen" technical="ag_aachen" original="Amtsgericht Aachen"/>
+	<name meta="AG Aalen" technical="ag_aalen" original="Amtsgericht Aalen"/>
+	<name meta="AG Achern" technical="ag_achern" original="Amtsgericht Achern"/>
+	<name meta="AG Achim" technical="ag_achim" original="Amtsgericht Achim"/>
+	<name meta="AG Adelsheim" technical="ag_adelsheim" original="Amtsgericht Adelsheim"/>
+	<name meta="AG Ahaus" technical="ag_ahaus" original="Amtsgericht Ahaus"/>
+	<name meta="AG Ahlden" technical="ag_ahlden" original="Amtsgericht Ahlden"/>
+	<name meta="AG Ahlen/Westfalen" technical="ag_ahlen" original="Amtsgericht Ahlen (Westfalen)"/>
+	<name meta="AG Ahrensburg" technical="ag_ahrensburg" original="Amtsgericht Ahrensburg"/>
+	<name meta="AG Aichach" technical="ag_aichach" original="Amtsgericht Aichach"/>
+	<name meta="AG Albstadt" technical="ag_albstadt" original="Amtsgericht Albstadt"/>
+	<name meta="AG Alfeld/Leine" technical="ag_alfeld" original="Amtsgericht Alfeld (Leine)"/>
+	<name meta="AG Alsfeld" technical="ag_alsfeld" original="Amtsgericht Alsfeld"/>
+	<name meta="AG Altena" technical="ag_altena" original="Amtsgericht Altena"/>
+	<name meta="AG Altenburg" technical="ag_altenburg" original="Amtsgericht Altenburg"/>
+	<name meta="AG Altenkirchen" technical="ag_altenkirchen" original="Amtsgericht Altenkirchen (Westerwald)"/>
+	<name meta="AG Altötting" technical="ag_altoetting" original="Amtsgericht Altötting"/>
+	<name meta="AG Alverdissen" technical="ag_alverdissen" original="Amtsgericht Alverdissen"/>
+	<name meta="AG Alzenau" technical="ag_alzenau" original="Amtsgericht Alzenau"/>
+	<name meta="AG Alzey" technical="ag_alzey" original="Amtsgericht Alzey"/>
+	<name meta="AG Amberg" technical="ag_amberg" original="Amtsgericht Amberg"/>
+	<name meta="AG Andernach" technical="ag_andernach" original="Amtsgericht Andernach"/>
+	<name meta="AG Anklam" technical="ag_anklam" original="Amtsgericht Anklam"/>
+	<name meta="AG Annaberg" technical="ag_annaberg" original="Amtsgericht Annaberg-Buchholz"/>
+	<name meta="AG Ansbach" technical="ag_ansbach" original="Amtsgericht Ansbach"/>
+	<name meta="AG Apolda" technical="ag_apolda" original="Amtsgericht Apolda"/>
+	<name meta="AG Arnsberg" technical="ag_arnsberg" original="Amtsgericht Arnsberg"/>
+	<name meta="AG Arnstadt" technical="ag_arnstadt" original="Amtsgericht Arnstadt"/>
+	<name meta="AG Arnstein" technical="ag_arnstein" original="Amtsgericht Arnstein"/>
+	<name meta="AG Artern" technical="ag_artern" original="Amtsgericht Artern"/>
+	<name meta="AG Aschaffenburg" technical="ag_aschaffenburg" original="Amtsgericht Aschaffenburg"/>
+	<name meta="AG Aschersleben" technical="ag_aschersleben" original="Amtsgericht Aschersleben"/>
+	<name meta="AG Aue" technical="ag_aue" original="Amtsgericht Aue"/>
+	<name meta="AG Auerbach" technical="ag_auerbach" original="Amtsgericht Auerbach / Vogtl."/>
+	<name meta="AG Augsburg" technical="ag_augsburg" original="Amtsgericht Augsburg"/>
+	<name meta="AG Aurich" technical="ag_aurich" original="Amtsgericht Aurich"/>
+	<name meta="AG Backnang" technical="ag_backnang" original="Amtsgericht Backnang"/>
+	<name meta="AG Bad Aibling" technical="ag_aibling" original="Amtsgericht Bad Aibling"/>
+	<name meta="AG Bad Arolsen" technical="ag_arolsen" original="Amtsgericht Bad Arolsen"/>
+	<name meta="AG Bad Berleburg" technical="ag_berleburg" original="Amtsgericht Bad Berleburg"/>
+	<name meta="AG Bad Bramstedt" technical="ag_bramstedt" original="Amtsgericht Bad Bramstedt"/>
+	<name meta="AG Bad Doberan" technical="ag_doberan" original="Amtsgericht Bad Doberan"/>
+	<name meta="AG Bad Dürkheim" technical="ag_duerkheim" original="Amtsgericht Bad Dürkheim"/>
+	<name meta="AG Bad Freienwalde" technical="ag_freienwalde" original="Amtsgericht Bad Freienwalde"/>
+	<name meta="AG Bad Gandersheim" technical="ag_gandersheim" original="Amtsgericht Bad Gandersheim"/>
+	<name meta="AG Bad Hersfeld" technical="ag_hersfeld" original="Amtsgericht Bad Hersfeld"/>
+	<name meta="AG Bad Homburg" technical="ag_bad-homburg" original="Amtsgericht Bad Homburg v. d. Höhe"/>
+	<name meta="AG Bad Iburg" technical="ag_iburg" original="Amtsgericht Bad Iburg"/>
+	<name meta="AG Bad Kissingen" technical="ag_kissingen" original="Amtsgericht Bad Kissingen"/>
+	<name meta="AG Bad Kreuznach" technical="ag_kreuznach" original="Amtsgericht Bad Kreuznach"/>
+	<name meta="AG Bad Langensalza" technical="ag_langensalza" original="Amtsgericht Bad Langensalza"/>
+	<name meta="AG Bad Liebenwerda" technical="ag_liebenwerda" original="Amtsgericht Bad Liebenwerda"/>
+	<name meta="AG Bad Mergentheim" technical="ag_mergentheim" original="Amtsgericht Bad Mergentheim"/>
+	<name meta="AG Bad Neuenahr-Ahrweiler" technical="ag_neuenahr-ahrweiler" original="Amtsgericht Bad Neuenahr-Ahrweiler"/>
+	<name meta="AG Bad Neustadt/Saale" technical="ag_neustadt" original="Amtsgericht Bad Neustadt (Saale)"/>
+	<name meta="AG Bad Oeynhausen" technical="ag_oeynhausen" original="Amtsgericht Bad Oeynhausen"/>
+	<name meta="AG Bad Oldesloe" technical="ag_oldesloe" original="Amtsgericht Bad Oldesloe"/>
+	<name meta="AG Bad Reichenhall" technical="ag_bad-reichenhall" original="Amtsgericht Bad Reichenhall"/>
+	<name meta="AG Bad Säckingen" technical="ag_saeckingen" original="Amtsgericht Bad Säckingen"/>
+	<name meta="AG Bad Salzuflen" technical="ag_bad-salzuflen" original="Amtsgericht Bad Salzuflen"/>
+	<name meta="AG Bad Salzungen" technical="ag_salzungen" original="Amtsgericht Bad Salzungen"/>
+	<name meta="AG Bad Saulgau" technical="ag_saulgau" original="Amtsgericht Bad Saulgau"/>
+	<name meta="AG Bad Schwalbach" technical="ag_schwalbach" original="Amtsgericht Bad Schwalbach"/>
+	<name meta="AG Bad Schwartau" technical="ag_schwartau" original="Amtsgericht Bad Schwartau"/>
+	<name meta="AG Bad Segeberg" technical="ag_segeberg" original="Amtsgericht Bad Segeberg"/>
+	<name meta="AG Bad Sobernheim" technical="ag_sobernheim" original="Amtsgericht Bad Sobernheim"/>
+	<name meta="AG Bad Urach" technical="ag_urach" original="Amtsgericht Bad Urach"/>
+	<name meta="AG Bad Vilbel" technical="ag_vilbel" original="Amtsgericht Bad Vilbel"/>
+	<name meta="AG Bad Waldsee" technical="ag_waldsee" original="Amtsgericht Bad Waldsee"/>
+	<name meta="AG Bad Wildungen" technical="ag_wildungen" original="Amtsgericht Bad Wildungen"/>
+	<name meta="AG Baden-Baden" technical="ag_baden-baden" original="Amtsgericht Baden-Baden"/>
+	<name meta="AG Balingen" technical="ag_balingen" original="Amtsgericht Balingen"/>
+	<name meta="AG Bamberg" technical="ag_bamberg" original="Amtsgericht Bamberg"/>
+	<name meta="AG Bautzen" technical="ag_bautzen" original="Amtsgericht Bautzen"/>
+	<name meta="AG Bayreuth" technical="ag_bayreuth" original="Amtsgericht Bayreuth"/>
+	<name meta="AG Beckum" technical="ag_beckum" original="Amtsgericht Beckum"/>
+	<name meta="AG Bensheim" technical="ag_bensheim" original="Amtsgericht Bensheim"/>
+	<name meta="AG Bergen" technical="ag_bergen" original="Amtsgericht Bergen auf Rügen"/>
+	<name meta="AG Bergheim" technical="ag_bergheim" original="Amtsgericht Bergheim"/>
+	<name meta="AG Bergisch Gladbach" technical="ag_bergisch-gladbach" original="Amtsgericht Bergisch Gladbach"/>
+	<name meta="AG Berlin-Charlottenburg" technical="ag_berlin-charlottenburg" original="Amtsgericht Charlottenburg"/>
+	<name meta="AG Berlin-Hohenschönhausen" technical="ag_berlin-hohenschoenhausen" original="Amtsgericht Hohenschönhausen"/>
+	<name meta="AG Berlin-Köpenick" technical="ag_berlin-koepenick" original="Amtsgericht Köpenick"/>
+	<name meta="AG Berlin-Lichtenberg" technical="ag_berlin-lichtenberg" original="Amtsgericht Lichtenberg"/>
+	<name meta="AG Berlin-Mitte" technical="ag_berlin-mitte" original="Amtsgericht Mitte"/>
+	<name meta="AG Berlin-Neukölln" technical="ag_berlin-neukoelln" original="Amtsgericht Neukölln"/>
+	<name meta="AG Berlin-Pankow-Weißensee" technical="ag_berlin-pankow" original="Amtsgericht Pankow-Weißensee"/>
+	<name meta="AG Berlin-Schöneberg" technical="ag_berlin-schoeneberg" original="Amtsgericht Schöneberg"/>
+	<name meta="AG Berlin-Spandau" technical="ag_berlin-spandau" original="Amtsgericht Spandau"/>
+	<name meta="AG Berlin-Tempelhof-Kreuzberg" technical="ag_berlin-tempelhof-kreuzberg" original="Amtsgericht Tempelhof-Kreuzberg"/>
+	<name meta="AG Berlin-Tiergarten" technical="ag_berlin-tiergarten" original="Amtsgericht Tiergarten"/>
+	<name meta="AG Berlin-Wedding" technical="ag_berlin-wedding" original="Amtsgericht Wedding"/>
+	<name meta="AG Berlin-Zehlendorf" technical="ag_berlin-zehlendorf" original="Amtsgericht Berlin-Zehlendorf"/>
+	<name meta="AG Bernau" technical="ag_bernau" original="Amtsgericht Bernau"/>
+	<name meta="AG Bernburg" technical="ag_bernburg" original="Amtsgericht Bernburg"/>
+	<name meta="AG Emmendingen" technical="ag_emmendingen" original="Amtsgericht Emmendingen"/>
+	<name meta="AG Emmerich" technical="ag_emmerich" original="Amtsgericht Emmerich"/>
+	<name meta="AG Erding" technical="ag_erding" original="Amtsgericht Erding"/>
+	<name meta="AG Erfurt" technical="ag_erfurt" original="Amtsgericht Erfurt"/>
+	<name meta="AG Erkelenz" technical="ag_erkelenz" original="Amtsgericht Erkelenz"/>
+	<name meta="AG Erlangen" technical="ag_erlangen" original="Amtsgericht Erlangen"/>
+	<name meta="AG Eschwege" technical="ag_eschwege" original="Amtsgericht Eschwege"/>
+	<name meta="AG Eschweiler" technical="ag_eschweiler" original="Amtsgericht Eschweiler"/>
+	<name meta="AG Essen" technical="ag_essen" original="Amtsgericht Essen"/>
+	<name meta="AG Essen-Borbeck" technical="ag_essen-borbeck" original="Amtsgericht Essen-Borbeck"/>
+	<name meta="AG Essen-Steele" technical="ag_essen-steele" original="Amtsgericht Essen-Steele"/>
+	<name meta="AG Esslingen/Neckar" technical="ag_esslingen" original="Amtsgericht Esslingen (Neckar)"/>
+	<name meta="AG Ettenheim" technical="ag_ettenheim" original="Amtsgericht Ettenheim"/>
+	<name meta="AG Ettlingen" technical="ag_ettlingen" original="Amtsgericht Ettlingen"/>
+	<name meta="AG Euskirchen" technical="ag_euskirchen" original="Amtsgericht Euskirchen"/>
+	<name meta="AG Eutin" technical="ag_eutin" original="Amtsgericht Eutin"/>
+	<name meta="AG Flensburg" technical="ag_flensburg" original="Amtsgericht Flensburg"/>
+	<name meta="AG Forchheim" technical="ag_forchheim" original="Amtsgericht Forchheim"/>
+	<name meta="AG Frankenberg/Eder" technical="ag_frankenberg" original="Amtsgericht Frankenberg (Eder)"/>
+	<name meta="AG Frankenthal/Pfalz" technical="ag_frankenthal" original="Amtsgericht Frankenthal (Pfalz)"/>
+	<name meta="AG Frankfurt/Main" technical="ag_frankfurt-main" original="Amtsgericht Frankfurt am Main"/>
+	<name meta="AG Frankfurt/Oder" technical="ag_frankfurt-oder" original="Amtsgericht Frankfurt (Oder)"/>
+	<name meta="AG Frankfurt-Höchst" technical="ag_frankfurt-hoechst" original="Amtsgericht Frankfurt-Höchst"/>
+	<name meta="AG Freiberg" technical="ag_freiberg" original="Amtsgericht Freiberg"/>
+	<name meta="AG Freiburg/Breisgau" technical="ag_freiburg" original="Amtsgericht Freiburg im Breisgau"/>
+	<name meta="AG Freising" technical="ag_freising" original="Amtsgericht Freising"/>
+	<name meta="AG Freudenstadt" technical="ag_freudenstadt" original="Amtsgericht Freudenstadt"/>
+	<name meta="AG Freyung" technical="ag_freyung" original="Amtsgericht Freyung"/>
+	<name meta="AG Friedberg" technical="ag_friedberg" original="Amtsgericht Friedberg (Hessen)"/>
+	<name meta="AG Fritzlar" technical="ag_fritzlar" original="Amtsgericht Fritzlar"/>
+	<name meta="AG Fulda" technical="ag_fulda" original="Amtsgericht Fulda"/>
+	<name meta="AG Fürstenfeldbruck" technical="ag_fuerstenfeldbruck" original="Amtsgericht Fürstenfeldbruck"/>
+	<name meta="AG Fürstenwalde" technical="ag_fuerstenwalde" original="Amtsgericht Fürstenwalde/Spree"/>
+	<name meta="AG Fürth/Bayern" technical="ag_fuerth-by" original="Amtsgericht Fürth in Bayern"/>
+	<name meta="AG Fürth/Odenwald" technical="ag_fuerth-odenwald" original="Amtsgericht Fürth (Odenwald)"/>
+	<name meta="AG Gardelegen" technical="ag_gardelegen" original="Amtsgericht Gardelegen"/>
+	<name meta="AG Garmisch-Partenkirchen" technical="ag_garmisch-partenkirchen" original="Amtsgericht Garmisch-Partenkirchen"/>
+	<name meta="AG Geesthacht" technical="ag_geesthacht" original="Amtsgericht Geesthacht"/>
+	<name meta="AG Geilenkirchen" technical="ag_geilenkirchen" original="Amtsgericht Geilenkirchen"/>
+	<name meta="AG Geislingen/Steige" technical="ag_geislingen" original="Amtsgericht Geislingen (Steige)"/>
+	<name meta="AG Geldern" technical="ag_geldern" original="Amtsgericht Geldern"/>
+	<name meta="AG Gelnhausen" technical="ag_gelnhausen" original="Amtsgericht Gelnhausen"/>
+	<name meta="AG Gelsenkirchen" technical="ag_gelsenkirchen" original="Amtsgericht Gelsenkirchen"/>
+	<name meta="AG Gelsenkirchen-Buer" technical="ag_gelsenkirchen-buer" original="Amtsgericht Gelsenkirchen-Buer"/>
+	<name meta="AG Gemünden/Main" technical="ag_gemuenden" original="Amtsgericht Gemünden am Main"/>
+	<name meta="AG Gengenbach" technical="ag_gengenbach" original="Amtsgericht Gengenbach"/>
+	<name meta="AG Gera" technical="ag_gera" original="Amtsgericht Gera"/>
+	<name meta="AG Germersheim" technical="ag_germersheim" original="Amtsgericht Germersheim"/>
+	<name meta="AG Gernsbach" technical="ag_gernsbach" original="Amtsgericht Gernsbach"/>
+	<name meta="AG Gießen" technical="ag_giessen" original="Amtsgericht Gießen"/>
+	<name meta="AG Gifhorn" technical="ag_gifhorn" original="Amtsgericht Gifhorn"/>
+	<name meta="AG Gladbeck" technical="ag_gladbeck" original="Amtsgericht Gladbeck"/>
+	<name meta="AG Göppingen" technical="ag_goeppingen" original="Amtsgericht Göppingen"/>
+	<name meta="AG Görlitz" technical="ag_goerlitz" original="Amtsgericht Görlitz"/>
+	<name meta="AG Goslar" technical="ag_goslar" original="Amtsgericht Goslar"/>
+	<name meta="AG Gotha" technical="ag_gotha" original="Amtsgericht Gotha"/>
+	<name meta="AG Göttingen" technical="ag_goettingen" original="Amtsgericht Göttingen"/>
+	<name meta="AG Greifswald" technical="ag_greifswald" original="Amtsgericht Greifswald"/>
+	<name meta="AG Greiz" technical="ag_greiz" original="Amtsgericht Greiz"/>
+	<name meta="AG Grevenbroich" technical="ag_grevenbroich" original="Amtsgericht Grevenbroich"/>
+	<name meta="AG Grevesmühlen" technical="ag_grevesmuehlen" original="Amtsgericht Grevesmühlen"/>
+	<name meta="AG Grimma" technical="ag_grimma" original="Amtsgericht Grimma"/>
+	<name meta="AG Grimmen" technical="ag_grimmen" original="Amtsgericht Grimmen"/>
+	<name meta="AG Gronau" technical="ag_gronau" original="Amtsgericht Gronau"/>
+	<name meta="AG Groß-Gerau" technical="ag_gross-gerau" original="Amtsgericht Groß-Gerau"/>
+	<name meta="AG Grünstadt" technical="ag_gruenstadt" original="Amtsgericht Grünstadt"/>
+	<name meta="AG Guben" technical="ag_guben" original="Amtsgericht Guben"/>
+	<name meta="AG Gummersbach" technical="ag_gummersbach" original="Amtsgericht Gummersbach"/>
+	<name meta="AG Günzburg" technical="ag_guenzburg" original="Amtsgericht Günzburg"/>
+	<name meta="AG Güstrow" technical="ag_guestrow" original="Amtsgericht Güstrow"/>
+	<name meta="AG Gütersloh" technical="ag_guetersloh" original="Amtsgericht Gütersloh"/>
+	<name meta="AG Hadamar" technical="ag_hadamar" original="Amtsgericht Limburg a. d. Lahn - Zweigstelle Hadamar -"/>
+	<name meta="AG Hagen" technical="ag_hagen" original="Amtsgericht Hagen"/>
+	<name meta="AG Hagenow" technical="ag_hagenow" original="Amtsgericht Hagenow"/>
+	<name meta="AG Hainichen" technical="ag_hainichen" original="Amtsgericht Hainichen"/>
+	<name meta="AG Halberstadt" technical="ag_halberstadt" original="Amtsgericht Halberstadt"/>
+	<name meta="AG Haldensleben" technical="ag_haldensleben" original="Amtsgericht Haldensleben"/>
+	<name meta="AG Halle/Westfalen" technical="ag_halle-westfalen" original="Amtsgericht Halle (Westfalen)"/>
+	<name meta="AG Halle-Saalkreis" technical="ag_halle-saalkreis" original="Amtsgericht in Halle (Saale)"/>
+	<name meta="AG Hamburg" technical="ag_hamburg" original="Amtsgericht Hamburg"/>
+	<name meta="AG Hamburg-Altona" technical="ag_hamburg-altona" original="Amtsgericht Hamburg-Altona"/>
+	<name meta="AG Hamburg-Barmbek" technical="ag_hamburg-barmbek" original="Amtsgericht Hamburg-Barmbek"/>
+	<name meta="AG Hamburg-Bergedorf" technical="ag_hamburg-bergedorf" original="Amtsgericht Hamburg-Bergedorf"/>
+	<name meta="AG Hamburg-Blankenese" technical="ag_hamburg-blankenese" original="Amtsgericht Hamburg-Blankenese"/>
+	<name meta="AG Hamburg-Harburg" technical="ag_hamburg-harburg" original="Amtsgericht Hamburg-Harburg"/>
+	<name meta="AG Hamburg-Sankt-Georg" technical="ag_hamburg-sankt-georg" original="Amtsgericht Hamburg-St. Georg"/>
+	<name meta="AG Hamburg-Wandsbek" technical="ag_hamburg-wandsbek" original="Amtsgericht Hamburg-Wandsbek"/>
+	<name meta="AG Hameln" technical="ag_hameln" original="Amtsgericht Hameln"/>
+	<name meta="AG Hamm" technical="ag_hamm" original="Amtsgericht Hamm"/>
+	<name meta="AG Hanau" technical="ag_hanau" original="Amtsgericht Hanau"/>
+	<name meta="AG Hannover" technical="ag_hannover" original="Amtsgericht Hannover"/>
+	<name meta="AG Hannover Münden" technical="ag_hannover-muenden" original="Amtsgericht Hann. Münden"/>
+	<name meta="AG Haßfurt" technical="ag_hassfurt" original="Amtsgericht Haßfurt"/>
+	<name meta="AG Hattingen/Ruhr" technical="ag_hattingen" original="Amtsgericht Hattingen (Ruhr)"/>
+	<name meta="AG Hechingen" technical="ag_hechingen" original="Amtsgericht Hechingen"/>
+	<name meta="AG Heidelberg" technical="ag_heidelberg" original="Amtsgericht Heidelberg"/>
+	<name meta="AG Heidenheim" technical="ag_heidenheim" original="Amtsgericht Heidenheim an der Brenz"/>
+	<name meta="AG Heilbronn" technical="ag_heilbronn" original="Amtsgericht Heilbronn"/>
+	<name meta="AG Heiligenstadt" technical="ag_heiligenstadt" original="Amtsgericht Heilbad Heiligenstadt"/>
+	<name meta="AG Heinsberg" technical="ag_heinsberg" original="Amtsgericht Heinsberg"/>
+	<name meta="AG Helmstedt" technical="ag_helmstedt" original="Amtsgericht Helmstedt"/>
+	<name meta="AG Herborn" technical="ag_herborn" original="Amtsgericht Dillenburg- Zweigstelle Herborn"/>
+	<name meta="AG Herford" technical="ag_herford" original="Amtsgericht Herford"/>
+	<name meta="AG Hermeskeil" technical="ag_hermeskeil" original="Amtsgericht Hermeskeil"/>
+	<name meta="AG Herne-Wanne" technical="ag_herne-wanne" original="Amtsgericht Herne-Wanne"/>
+	<name meta="AG Hersbruck" technical="ag_hersbruck" original="Amtsgericht Hersbruck"/>
+	<name meta="AG Herzberg/Harz" technical="ag_herzberg" original="Amtsgericht Herzberg (Harz)"/>
+	<name meta="AG Hettstedt" technical="ag_hettstedt" original="Amtsgericht Hettstedt"/>
+	<name meta="AG Hildburghausen" technical="ag_hildburghausen" original="Amtsgericht Hildburghausen"/>
+	<name meta="AG Hildesheim" technical="ag_hildesheim" original="Amtsgericht Hildesheim"/>
+	<name meta="AG Hochheim" technical="ag_hochheim" original="Amtsgericht Hochheim"/>
+	<name meta="AG Hof" technical="ag_hof" original="Amtsgericht Hof / Saale"/>
+	<name meta="AG Hofgeismar" technical="ag_hofgeismar" original="AG Kassel ZwSt. Hofgeismar"/>
+	<name meta="AG Hohenstein-Ernstthal" technical="ag_hohenstein-ernstthal" original="Amtsgericht Hohenstein-Ernstthal"/>
+	<name meta="AG Holzminden" technical="ag_holzminden" original="Amtsgericht Holzminden"/>
+	<name meta="AG Homberg" technical="ag_homberg" original="Amtsgericht Homberg (Efze)"/>
+	<name meta="AG Homburg" technical="ag_homburg" original="Amtsgericht Homburg (Saar)"/>
+	<name meta="AG Horb/Neckar" technical="ag_horb" original="Amtsgericht Horb (Neckar)"/>
+	<name meta="AG Höxter" technical="ag_hoexter" original="Amtsgericht Höxter"/>
+	<name meta="AG Hoyerswerda" technical="ag_hoyerswerda" original="Amtsgericht Hoyerswerda"/>
+	<name meta="AG Hünfeld" technical="ag_huenfeld" original="Amtsgericht Hünfeld"/>
+	<name meta="AG Husum" technical="ag_husum" original="Amtsgericht Husum"/>
+	<name meta="AG Ibbenbüren" technical="ag_ibbenbueren" original="Amtsgericht Ibbenbüren"/>
+	<name meta="AG Idar-Oberstein" technical="ag_idar-oberstein" original="Amtsgericht Idar-Oberstein"/>
+	<name meta="AG Idstein" technical="ag_idstein" original="Amtsgericht Idstein"/>
+	<name meta="AG Ingolstadt" technical="ag_ingolstadt" original="Amtsgericht Ingolstadt"/>
+	<name meta="AG Iserlohn" technical="ag_iserlohn" original="Amtsgericht Iserlohn"/>
+	<name meta="AG Itzehoe" technical="ag_itzehoe" original="Amtsgericht Itzehoe"/>
+	<name meta="AG Jena" technical="ag_jena" original="Amtsgericht Jena"/>
+	<name meta="AG Jever" technical="ag_jever" original="Amtsgericht Jever"/>
+	<name meta="AG Jülich" technical="ag_juelich" original="Amtsgericht Jülich"/>
+	<name meta="AG Kaiserslautern" technical="ag_kaiserslautern" original="Amtsgericht Kaiserslautern"/>
+	<name meta="AG Kamen" technical="ag_kamen" original="Amtsgericht Kamen"/>
+	<name meta="AG Kamenz" technical="ag_kamenz" original="Amtsgericht Kamenz"/>
+	<name meta="AG Kandel" technical="ag_kandel" original="Amtsgericht Kandel"/>
+	<name meta="AG Kappein/Schlei" technical="ag_kappein" original="Amtsgericht Kappeln (Schlei)"/>
+	<name meta="AG Kappeln" technical="ag_kappeln" original="Amtsgericht Kappeln"/>
+	<name meta="AG Karlsruhe" technical="ag_karlsruhe" original="Amtsgericht Karlsruhe"/>
+	<name meta="AG Karlsruhe-Durlach" technical="ag_karlsruhe-durlach" original="Amtsgericht Karlsruhe-Durlach"/>
+	<name meta="AG Kassel" technical="ag_kassel" original="Amtsgericht Kassel"/>
+	<name meta="AG Kaufbeuren" technical="ag_kaufbeuren" original="Amtsgericht Kaufbeuren"/>
+	<name meta="AG Kehl" technical="ag_kehl" original="Amtsgericht Kehl"/>
+	<name meta="AG Kelheim" technical="ag_kelheim" original="Amtsgericht Kelheim"/>
+	<name meta="AG Kellinghusen" technical="ag_kellinghusen" original="Amtsgericht Kellinghusen"/>
+	<name meta="AG Kempen" technical="ag_kempen" original="Amtsgericht Kempen"/>
+	<name meta="AG Kempten" technical="ag_kempten" original="Amtsgericht Kempten im Allgäu"/>
+	<name meta="AG Kenzingen" technical="ag_kenzingen" original="Amtsgericht Kenzingen"/>
+	<name meta="AG Kerpen" technical="ag_kerpen" original="Amtsgericht Kerpen"/>
+	<name meta="AG Kiel" technical="ag_kiel" original="Amtsgericht Kiel"/>
+	<name meta="AG Kirchhain" technical="ag_kirchhain" original="Amtsgericht Kirchhain"/>
+	<name meta="AG Kirchheim/Teck" technical="ag_kirchheim" original="Amtsgericht Kirchheim unter Teck"/>
+	<name meta="AG Kitzingen" technical="ag_kitzingen" original="Amtsgericht Kitzingen"/>
+	<name meta="AG Kleve" technical="ag_kleve" original="Amtsgericht Kleve"/>
+	<name meta="AG Klötze" technical="ag_kloetze" original="Amtsgericht Klötze"/>
+	<name meta="AG Koblenz" technical="ag_koblenz" original="Amtsgericht Koblenz"/>
+	<name meta="AG Köln" technical="ag_koeln" original="Amtsgericht Köln"/>
+	<name meta="AG Königs Wusterhausen" technical="ag_koenigs-wusterhausen" original="Amtsgericht Königs Wusterhausen"/>
+	<name meta="AG Königstein/Taunus" technical="ag_koenigstein" original="Amtsgericht Königstein im Taunus"/>
+	<name meta="AG Königswinter" technical="ag_koenigswinter" original="Amtsgericht Königswinter"/>
+	<name meta="AG Konstanz" technical="ag_konstanz" original="Amtsgericht Konstanz"/>
+	<name meta="AG Korbach" technical="ag_korbach" original="Amtsgericht Korbach"/>
+	<name meta="AG Köthen" technical="ag_koethen" original="Amtsgericht Köthen"/>
+	<name meta="AG Krefeld" technical="ag_krefeld" original="Amtsgericht Krefeld"/>
+	<name meta="AG Kronach" technical="ag_kronach" original="Amtsgericht Kronach"/>
+	<name meta="AG Kulmbach" technical="ag_kulmbach" original="Amtsgericht Kulmbach"/>
+	<name meta="AG Künzelsau" technical="ag_kuenzelsau" original="Amtsgericht Künzelsau"/>
+	<name meta="AG Kusel" technical="ag_kusel" original="Amtsgericht Kusel"/>
+	<name meta="AG Lahnstein" technical="ag_lahnstein" original="Amtsgericht Lahnstein"/>
+	<name meta="AG Lahr" technical="ag_lahr" original="Amtsgericht Lahr (Schwarzw.)"/>
+	<name meta="AG Lampertheim" technical="ag_lampertheim" original="Amtsgericht Lampertheim"/>
+	<name meta="AG Landau" technical="ag_landau" original="Amtsgericht Landau an der Isar"/>
+	<name meta="AG Landsberg/Lech" technical="ag_landsberg" original="Amtsgericht Landsberg (Lech)"/>
+	<name meta="AG Landshut" technical="ag_landshut" original="Amtsgericht Landshut"/>
+	<name meta="AG Landstuhl" technical="ag_landstuhl" original="Amtsgericht Landstuhl"/>
+	<name meta="AG Langen/Hessen" technical="ag_langen-he" original="Amtsgericht Langen"/>
+	<name meta="AG Langen/Niedersachsen" technical="ag_langen-ni" original="Amtsgericht Langen"/>
+	<name meta="AG Langenburg" technical="ag_langenburg" original="Amtsgericht Langenburg"/>
+	<name meta="AG Langenfeld/Rheinland" technical="ag_langenfeld" original="Amtsgericht Langenfeld (Rheinland)"/>
+	<name meta="AG Laufen" technical="ag_laufen" original="Amtsgericht Laufen (Salzach)"/>
+	<name meta="AG Lauterbach/Hessen" technical="ag_lauterbach" original="Amtsgericht Lauterbach (Hessen)"/>
+	<name meta="AG Lebach" technical="ag_lebach" original="Amtsgericht Lebach"/>
+	<name meta="AG Leer" technical="ag_leer" original="Amtsgericht Leer"/>
+	<name meta="AG Lehrte" technical="ag_lehrte" original="Amtsgericht Lehrte"/>
+	<name meta="AG Leipzig" technical="ag_leipzig" original="Amtsgericht Leipzig"/>
+	<name meta="AG Lemgo" technical="ag_lemgo" original="Amtsgericht Lemgo"/>
+	<name meta="AG Lennestadt" technical="ag_lennestadt" original="Amtsgericht Lennestadt"/>
+	<name meta="AG Leonberg" technical="ag_leonberg" original="Amtsgericht Leonberg"/>
+	<name meta="AG Leutkirch/Allgäu" technical="ag_leutkirch" original="Amtsgericht Leutkirch im Allgäu"/>
+	<name meta="AG Leverkusen" technical="ag_leverkusen" original="Amtsgericht Leverkusen"/>
+	<name meta="AG Lichtenfels" technical="ag_lichtenfels" original="Amtsgericht Lichtenfels"/>
+	<name meta="AG Lilienthal" technical="ag_lilienthal" original="Amtsgericht Lilienthal"/>
+	<name meta="AG Limburg/Lahn" technical="ag_limburg" original="Amtsgericht Limburg a. d. Lahn"/>
+	<name meta="AG Lindau/Bodensee" technical="ag_lindau" original="Amtsgericht Lindau (Bodensee)"/>
+	<name meta="AG Lingen" technical="ag_lingen" original="Amtsgericht Lingen"/>
+	<name meta="AG Linz/Rhein" technical="ag_linz" original="Amtsgericht Linz (Rhein)"/>
+	<name meta="AG Lippstadt" technical="ag_lippstadt" original="Amtsgericht Lippstadt"/>
+	<name meta="AG Löbau" technical="ag_loebau" original="Amtsgericht Löbau"/>
+	<name meta="AG Lobberich" technical="ag_lobberich" original="Amtsgericht Lobberich"/>
+	<name meta="AG Lobenstein" technical="ag_lobenstein" original="Amtsgericht Pößneck Zweigstelle Bad Lobenstein"/>
+	<name meta="AG Lörrach" technical="ag_loerrach" original="Amtsgericht Lörrach"/>
+	<name meta="AG Lübbecke" technical="ag_luebbecke" original="Amtsgericht Lübbecke"/>
+	<name meta="AG Lübben" technical="ag_luebben" original="Amtsgericht Lübben (Spreewald)"/>
+	<name meta="AG Lübeck" technical="ag_luebeck" original="Amtsgericht Lübeck"/>
+	<name meta="AG Lüchow" technical="ag_luechow" original="Amtsgericht Lüchow"/>
+	<name meta="AG Luckenwalde" technical="ag_luckenwalde" original="Amtsgericht Luckenwalde"/>
+	<name meta="AG Lüdenscheid" technical="ag_luedenscheid" original="Amtsgericht Lüdenscheid"/>
+	<name meta="AG Lüdinghausen" technical="ag_luedinghausen" original="Amtsgericht Lüdinghausen"/>
+	<name meta="AG Ludwigsburg" technical="ag_ludwigsburg" original="Amtsgericht Ludwigsburg"/>
+	<name meta="AG Ludwigshafen/Rhein" technical="ag_ludwigshafen" original="Amtsgericht Ludwigshafen am Rhein"/>
+	<name meta="AG Ludwigslust" technical="ag_ludwigslust" original="Amtsgericht Ludwigslust"/>
+	<name meta="AG Lüneburg" technical="ag_lueneburg" original="Amtsgericht Lüneburg"/>
+	<name meta="AG Lünen" technical="ag_luenen" original="Amtsgericht Lünen"/>
+	<name meta="AG Magdeburg" technical="ag_magdeburg" original="Amtsgericht Magdeburg"/>
+	<name meta="AG Mainz" technical="ag_mainz" original="Amtsgericht Mainz"/>
+	<name meta="AG Mannheim" technical="ag_mannheim" original="Amtsgericht Mannheim"/>
+	<name meta="AG Marbach" technical="ag_marbach" original="Amtsgericht Marbach am Neckar"/>
+	<name meta="AG Marburg" technical="ag_marburg" original="Amtsgericht Marburg"/>
+	<name meta="AG Marienberg" technical="ag_marienberg" original="Amtsgericht Marienberg"/>
+	<name meta="AG Marl" technical="ag_marl" original="Amtsgericht Marl"/>
+	<name meta="AG Marsberg" technical="ag_marsberg" original="Amtsgericht Marsberg"/>
+	<name meta="AG Maulbronn" technical="ag_maulbronn" original="Amtsgericht Maulbronn"/>
+	<name meta="AG Mayen" technical="ag_mayen" original="Amtsgericht Mayen"/>
+	<name meta="AG Mecklenburg" technical="ag_mecklenburg" original="Amtsgericht Mecklenburg"/>
+	<name meta="AG Medebach" technical="ag_medebach" original="Amtsgericht Medebach"/>
+	<name meta="AG Meinerzhagen" technical="ag_meinerzhagen" original="Amtsgericht Meinerzhagen"/>
+	<name meta="AG Meiningen" technical="ag_meiningen" original="Amtsgericht Meiningen"/>
+	<name meta="AG Meißen" technical="ag_meissen" original="Amtsgericht Meißen"/>
+	<name meta="AG Meldorf" technical="ag_meldorf" original="Amtsgericht Meldorf"/>
+	<name meta="AG Melsungen" technical="ag_melsungen" original="Amtsgericht Melsungen"/>
+	<name meta="AG Memmingen" technical="ag_memmingen" original="Amtsgericht Memmingen"/>
+	<name meta="AG Menden/Sauerland" technical="ag_menden" original="Amtsgericht Menden (Sauerland)"/>
+	<name meta="AG Meppen" technical="ag_meppen" original="Amtsgericht Meppen"/>
+	<name meta="AG Merseburg" technical="ag_merseburg" original="Amtsgericht Merseburg"/>
+	<name meta="AG Merzig" technical="ag_merzig" original="Amtsgericht Merzig"/>
+	<name meta="AG Meschede" technical="ag_meschede" original="Amtsgericht Meschede"/>
+	<name meta="AG Mettmann" technical="ag_mettmann" original="Amtsgericht Mettmann"/>
+	<name meta="AG Michelstadt" technical="ag_michelstadt" original="Amtsgericht Michelstadt"/>
+	<name meta="AG Miesbach" technical="ag_miesbach" original="Amtsgericht Miesbach"/>
+	<name meta="AG Minden/Westfalen" technical="ag_minden" original="Amtsgericht Minden (Westfalen)"/>
+	<name meta="AG Moers" technical="ag_moers" original="Amtsgericht Moers"/>
+	<name meta="AG Mölln" technical="ag_moelln" original="Amtsgericht Mölln"/>
+	<name meta="AG Mönchengladbach" technical="ag_moenchengladbach" original="Amtsgericht Mönchengladbach"/>
+	<name meta="AG Mönchengladbach-Rheydt" technical="ag_moenchengladbach-rheydt" original="Amtsgericht Mönchengladbach-Rheydt"/>
+	<name meta="AG Monschau" technical="ag_monschau" original="Amtsgericht Monschau"/>
+	<name meta="AG Montabaur" technical="ag_montabaur" original="Amtsgericht Montabaur"/>
+	<name meta="AG Mosbach/Baden" technical="ag_mosbach" original="Amtsgericht Mosbach (Baden)"/>
+	<name meta="AG Mühldorf/Inn" technical="ag_muehldorf" original="Amtsgericht Mühldorf (Inn)"/>
+	<name meta="AG Mühlhausen" technical="ag_muehlhausen" original="Amtsgericht Mühlhausen"/>
+	<name meta="AG Mülheim/Ruhr" technical="ag_muelheim" original="Amtsgericht Mülheim (Ruhr)"/>
+	<name meta="AG Müllheim/Baden" technical="ag_muellheim" original="Amtsgericht Müllheim (Baden)"/>
+	<name meta="AG München" technical="ag_muenchen" original="Amtsgericht München"/>
+	<name meta="AG Münsingen" technical="ag_muensingen" original="Amtsgericht Münsingen"/>
+	<name meta="AG Münster" technical="ag_muenster" original="Amtsgericht Münster"/>
+	<name meta="AG Nagold" technical="ag_nagold" original="Amtsgericht Nagold"/>
+	<name meta="AG Nauen" technical="ag_nauen" original="Amtsgericht Nauen"/>
+	<name meta="AG Naumburg" technical="ag_naumburg" original="Amtsgericht Naumburg"/>
+	<name meta="AG Neresheim" technical="ag_neresheim" original="Amtsgericht Neresheim"/>
+	<name meta="AG Nettetal" technical="ag_nettetal" original="Amtsgericht Nettetal"/>
+	<name meta="AG Neubrandenburg" technical="ag_neubrandenburg" original="Amtsgericht Neubrandenburg"/>
+	<name meta="AG Neuburg" technical="ag_neuburg" original="Amtsgericht Neuburg an der Donau"/>
+	<name meta="AG Neumarkt" technical="ag_neumarkt" original="Amtsgericht Neumarkt in der Oberpfalz"/>
+	<name meta="AG Neumünster" technical="ag_neumuenster" original="Amtsgericht Neumünster"/>
+	<name meta="AG Neunkirchen" technical="ag_neunkirchen" original="Amtsgericht Neunkirchen (Saar)"/>
+	<name meta="AG Neuruppin" technical="ag_neuruppin" original="Amtsgericht Neuruppin"/>
+	<name meta="AG Neuss" technical="ag_neuss" original="Amtsgericht Neuss"/>
+	<name meta="AG Neustadt/Aisch" technical="ag_neustadt-aisch" original="Amtsgericht Neustadt (Aisch)"/>
+	<name meta="AG Neustadt/Rübenberge" technical="ag_neustadt-ruebenberge" original="Amtsgericht Neustadt (Rübenberge)"/>
+	<name meta="AG Neustadt/Weinstraße" technical="ag_neustadt-weinstrasse" original="Amtsgericht Neustadt (Weinstraße)"/>
+	<name meta="AG Neustrelitz" technical="ag_neustrelitz" original="Amtsgericht Neustrelitz"/>
+	<name meta="AG Neu-Ulm" technical="ag_neu-ulm" original="Amtsgericht Neu-Ulm"/>
+	<name meta="AG Neuwied" technical="ag_neuwied" original="Amtsgericht Neuwied"/>
+	<name meta="AG Nidda" technical="ag_nidda" original="Amtsgericht Nidda"/>
+	<name meta="AG Niebüll" technical="ag_niebuell" original="Amtsgericht Niebüll"/>
+	<name meta="AG Nienburg" technical="ag_nienburg" original="Amtsgericht Nienburg"/>
+	<name meta="AG Norden" technical="ag_norden" original="Amtsgericht Norden"/>
+	<name meta="AG Nordenham" technical="ag_nordenham" original="Amtsgericht Nordenham"/>
+	<name meta="AG Norderstedt" technical="ag_norderstedt" original="Amtsgericht Norderstedt"/>
+	<name meta="AG Nordhausen" technical="ag_nordhausen" original="Amtsgericht Nordhausen"/>
+	<name meta="AG Nordhorn" technical="ag_nordhorn" original="Amtsgericht Nordhorn"/>
+	<name meta="AG Nördlingen" technical="ag_noerdlingen" original="Amtsgericht Nördlingen"/>
+	<name meta="AG Northeim" technical="ag_northeim" original="Amtsgericht Northeim"/>
+	<name meta="AG Nürnberg" technical="ag_nuernberg" original="Amtsgericht Nürnberg"/>
+	<name meta="AG Nürtingen" technical="ag_nuertingen" original="Amtsgericht Nürtingen"/>
+	<name meta="AG Oberhausen" technical="ag_oberhausen" original="Amtsgericht Oberhausen"/>
+	<name meta="AG Oberkirch/Baden" technical="ag_oberkirch" original="Amtsgericht Oberkirch (Baden)"/>
+	<name meta="AG Obernburg" technical="ag_obernburg" original="Amtsgericht Obernburg am Main"/>
+	<name meta="AG Oberndorf/Neckar" technical="ag_oberndorf" original="Amtsgericht Oberndorf (Neckar)"/>
+	<name meta="AG Offenbach/Main" technical="ag_offenbach" original="Amtsgericht Offenbach am Main"/>
+	<name meta="AG Offenburg" technical="ag_offenburg" original="Amtsgericht Offenburg"/>
+	<name meta="AG Öhringen" technical="ag_oehringen" original="Amtsgericht Öhringen"/>
+	<name meta="AG Oldenburg/Holstein" technical="ag_oldenburg-sh" original="Amtsgericht Oldenburg in Holstein"/>
+	<name meta="AG Oldenburg/Oldenburg" technical="ag_oldenburg-ni" original="Amtsgericht Oldenburg (Oldenburg)"/>
+	<name meta="AG Olpe" technical="ag_olpe" original="Amtsgericht Olpe"/>
+	<name meta="AG Oranienburg" technical="ag_oranienburg" original="Amtsgericht Oranienburg"/>
+	<name meta="AG Oschatz" technical="ag_oschatz" original="Amtsgericht Oschatz"/>
+	<name meta="AG Oschersleben" technical="ag_oschersleben" original="Amtsgericht Oschersleben (Bode)"/>
+	<name meta="AG Osnabrück" technical="ag_osnabrueck" original="Amtsgericht Osnabrück"/>
+	<name meta="AG Osterburg" technical="ag_osterburg" original="Amtsgericht Osterburg (Altmark)"/>
+	<name meta="AG Osterholz-Scharmbeck" technical="ag_osterholz-scharmbeck" original="Amtsgericht Osterholz-Scharmbeck"/>
+	<name meta="AG Osterode/Harz" technical="ag_osterode" original="Amtsgericht Osterode am Harz"/>
+	<name meta="AG Otterndorf" technical="ag_otterndorf" original="Amtsgericht Otterndorf"/>
+	<name meta="AG Ottweiler" technical="ag_ottweiler" original="Amtsgericht Ottweiler"/>
+	<name meta="AG Paderborn" technical="ag_paderborn" original="Amtsgericht Paderborn"/>
+	<name meta="AG Papenburg" technical="ag_papenburg" original="Amtsgericht Papenburg (Ems)"/>
+	<name meta="AG Parchim" technical="ag_parchim" original="Amtsgericht Parchim"/>
+	<name meta="AG Pasewalk" technical="ag_pasewalk" original="Amtsgericht Pasewalk"/>
+	<name meta="AG Passau" technical="ag_passau" original="Amtsgericht Passau"/>
+	<name meta="AG Peine" technical="ag_peine" original="Amtsgericht Peine"/>
+	<name meta="AG Perleberg" technical="ag_perleberg" original="Amtsgericht Perleberg"/>
+	<name meta="AG Pfaffenhofen" technical="ag_pfaffenhofen" original="Amtsgericht Pfaffenhofen an der Ilm"/>
+	<name meta="AG Pforzheim" technical="ag_pforzheim" original="Amtsgericht Pforzheim"/>
+	<name meta="AG Philippsburg" technical="ag_philippsburg" original="Amtsgericht Philippsburg"/>
+	<name meta="AG Pinneberg" technical="ag_pinneberg" original="Amtsgericht Pinneberg"/>
+	<name meta="AG Pirmasens" technical="ag_pirmasens" original="Amtsgericht Pirmasens"/>
+	<name meta="AG Pirna" technical="ag_pirna" original="Amtsgericht Pirna"/>
+	<name meta="AG Plau/See" technical="ag_plau-see" original="Amtsgericht Plau am See"/>
+	<name meta="AG Plauen" technical="ag_plauen" original="Amtsgericht Plauen"/>
+	<name meta="AG Plettenberg" technical="ag_plettenberg" original="Amtsgericht Plettenberg"/>
+	<name meta="AG Plön" technical="ag_ploen" original="Amtsgericht Plön"/>
+	<name meta="AG Pößneck" technical="ag_poessneck" original="Amtsgericht Pößneck"/>
+	<name meta="AG Potsdam" technical="ag_potsdam" original="Amtsgericht Potsdam"/>
+	<name meta="AG Prenzlau" technical="ag_prenzlau" original="Amtsgericht Prenzlau"/>
+	<name meta="AG Prüm" technical="ag_pruem" original="Amtsgericht Prüm"/>
+	<name meta="AG Quedlinburg" technical="ag_quedlinburg" original="Amtsgericht Quedlinburg"/>
+	<name meta="AG Querfurt" technical="ag_querfurt" original="Amtsgericht Querfurt"/>
+	<name meta="AG Radolfzell" technical="ag_radolfzell" original="Amtsgericht Radolfzell am Bodensee"/>
+	<name meta="AG Rahden" technical="ag_rahden" original="Amtsgericht Rahden"/>
+	<name meta="AG Rastatt" technical="ag_rastatt" original="Amtsgericht Rastatt"/>
+	<name meta="AG Rathenow" technical="ag_rathenow" original="Amtsgericht Rathenow"/>
+	<name meta="AG Ratingen" technical="ag_ratingen" original="Amtsgericht Ratingen"/>
+	<name meta="AG Ratzeburg" technical="ag_ratzeburg" original="Amtsgericht Ratzeburg"/>
+	<name meta="AG Ravensburg" technical="ag_ravensburg" original="Amtsgericht Ravensburg"/>
+	<name meta="AG Recklinghausen" technical="ag_recklinghausen" original="Amtsgericht Recklinghausen"/>
+	<name meta="AG Regensburg" technical="ag_regensburg" original="Amtsgericht Regensburg"/>
+	<name meta="AG Reinbek" technical="ag_reinbek" original="Amtsgericht Reinbek"/>
+	<name meta="AG Remscheid" technical="ag_remscheid" original="Amtsgericht Remscheid"/>
+	<name meta="AG Rendsburg" technical="ag_rendsburg" original="Amtsgericht Rendsburg"/>
+	<name meta="AG Reutlingen" technical="ag_reutlingen" original="Amtsgericht Reutlingen"/>
+	<name meta="AG Rheda-Wiedenbrück" technical="ag_rheda-wiedenbrueck" original="Amtsgericht Rheda-Wiedenbrück"/>
+	<name meta="AG Rheinbach" technical="ag_rheinbach" original="Amtsgericht Rheinbach"/>
+	<name meta="AG Rheinberg" technical="ag_rheinberg" original="Amtsgericht Rheinberg"/>
+	<name meta="AG Rheine" technical="ag_rheine" original="Amtsgericht Rheine"/>
+	<name meta="AG Ribnitz-Damgarten" technical="ag_ribnitz-damgarten" original="Amtsgericht Ribnitz-Damgarten"/>
+	<name meta="AG Riedlingen" technical="ag_riedlingen" original="Amtsgericht Riedlingen"/>
+	<name meta="AG Riesa" technical="ag_riesa" original="Amtsgericht Riesa"/>
+	<name meta="AG Rinteln" technical="ag_rinteln" original="Amtsgericht Rinteln"/>
+	<name meta="AG Rockenhausen" technical="ag_rockenhausen" original="Amtsgericht Rockenhausen"/>
+	<name meta="AG Rockhausen" technical="ag_rockhausen" original="Amtsgericht Rockhausen"/>
+	<name meta="AG Rodenberg/Deister" technical="ag_rodenberg-deister" original="Amtsgericht Rodenberg (Deister)"/>
+	<name meta="AG Rosenheim" technical="ag_rosenheim" original="Amtsgericht Rosenheim"/>
+	<name meta="AG Rostock" technical="ag_rostock" original="Amtsgericht Rostock"/>
+	<name meta="AG Rotenburg/Fulda" technical="ag_rotenburg-fulda" original="Amtsgericht Rotenburg a. d. Fulda"/>
+	<name meta="AG Rotenburg/Wümme" technical="ag_rotenburg-wuemme" original="Amtsgericht Rotenburg (Wümme)"/>
+	<name meta="AG Rothenburg/Tauber" technical="ag_rothenburg-tauber" original="Amtsgericht Rothenburg (Tauber)"/>
+	<name meta="AG Rottenburg/Neckar" technical="ag_rottenburg" original="Amtsgericht Rottenburg am Neckar"/>
+	<name meta="AG Rottweil" technical="ag_rottweil" original="Amtsgericht Rottweil"/>
+	<name meta="AG Rüdesheim" technical="ag_ruedesheim" original="Amtsgericht Rüdesheim am Rhein"/>
+	<name meta="AG Rudolstadt" technical="ag_rudolstadt" original="Amtsgericht Rudolstadt"/>
+	<name meta="AG Rüsselsheim" technical="ag_ruesselsheim" original="Amtsgericht Rüsselsheim"/>
+	<name meta="AG Rüthen" technical="ag_ruethen" original="Amtsgericht Rüthen"/>
+	<name meta="AG Saalfeld" technical="ag_saalfeld" original="AG Rudolstadt Zweigstelle Saalfeld"/>
+	<name meta="AG Saarbrücken" technical="ag_saarbruecken" original="Amtsgericht Saarbrücken"/>
+	<name meta="AG Saarburg" technical="ag_saarburg" original="Amtsgericht Saarburg"/>
+	<name meta="AG Saarlouis" technical="ag_saarlouis" original="Amtsgericht Saarlouis"/>
+	<name meta="AG Salmünster" technical="ag_salmuenster" original="Amtsgericht Salmünster"/>
+	<name meta="AG Salzgitter" technical="ag_salzgitter" original="Amtsgericht Salzgitter"/>
+	<name meta="AG Salzwedel" technical="ag_salzwedel" original="Amtsgericht Salzwedel"/>
+	<name meta="AG Sangerhausen" technical="ag_sangerhausen" original="Amtsgericht Sangerhausen"/>
+	<name meta="AG Sankt Blasien" technical="ag_blasien" original="Amtsgericht St. Blasien"/>
+	<name meta="AG Sankt Goar" technical="ag_goar" original="Amtsgericht St. Goar"/>
+	<name meta="AG Sankt Ingbert" technical="ag_ingbert" original="Amtsgericht St. Ingbert"/>
+	<name meta="AG Sankt Wendel" technical="ag_wendel" original="Amtsgericht St. Wendel"/>
+	<name meta="AG Schleiden/Eifel" technical="ag_schleiden" original="Amtsgericht Schleiden"/>
+	<name meta="AG Schleswig" technical="ag_schleswig" original="Amtsgericht Schleswig"/>
+	<name meta="AG Schlüchtern" technical="ag_schluechtern" original="Amtsgericht Schlüchtern"/>
+	<name meta="AG Schmalkalden" technical="ag_schmalkalden" original="Amtsgericht Schmalkalden"/>
+	<name meta="AG Schmallenberg" technical="ag_schmallenberg" original="Amtsgericht Schmallenberg"/>
+	<name meta="AG Schönau/Schwarzwald" technical="ag_schoenau" original="Amtsgericht Schönau im Schwarzwald"/>
+	<name meta="AG Schönebeck" technical="ag_schoenebeck" original="Amtsgericht Schönebeck (Elbe)"/>
+	<name meta="AG Schopfheim" technical="ag_schopfheim" original="Amtsgericht Schopfheim"/>
+	<name meta="AG Schorndorf" technical="ag_schorndorf" original="Amtsgericht Schorndorf"/>
+	<name meta="AG Schwabach" technical="ag_schwabach" original="Amtsgericht Schwabach"/>
+	<name meta="AG Schwäbisch-Gmünd" technical="ag_schwaebisch-gmuend" original="Amtsgericht Schwäbisch Gmünd"/>
+	<name meta="AG Schwäbisch-Hall" technical="ag_schwaebisch-hall" original="Amtsgericht Schwäbisch Hall"/>
+	<name meta="AG Schwalmstadt" technical="ag_schwalmstadt" original="Amtsgericht Schwalmstadt"/>
+	<name meta="AG Schwandorf" technical="ag_schwandorf" original="Amtsgericht Schwandorf"/>
+	<name meta="AG Schwarzenbek" technical="ag_schwarzenbek" original="Amtsgericht Schwarzenbek"/>
+	<name meta="AG Schwedt" technical="ag_schwedt" original="Amtsgericht Schwedt / Oder"/>
+	<name meta="AG Schweinfurt" technical="ag_schweinfurt" original="Amtsgericht Schweinfurt"/>
+	<name meta="AG Schwelm" technical="ag_schwelm" original="Amtsgericht Schwelm"/>
+	<name meta="AG Schwerin" technical="ag_schwerin" original="Amtsgericht Schwerin"/>
+	<name meta="AG Schwerte" technical="ag_schwerte" original="Amtsgericht Schwerte"/>
+	<name meta="AG Schwetzingen" technical="ag_schwetzingen" original="Amtsgericht Schwetzingen"/>
+	<name meta="AG Seesen" technical="ag_seesen" original="Amtsgericht Seesen"/>
+	<name meta="AG Seligenstadt" technical="ag_seligenstadt" original="Amtsgericht Seligenstadt"/>
+	<name meta="AG Senftenberg" technical="ag_senftenberg" original="Amtsgericht Senftenberg"/>
+	<name meta="AG Siegburg" technical="ag_siegburg" original="Amtsgericht Siegburg"/>
+	<name meta="AG Siegen" technical="ag_siegen" original="Amtsgericht Siegen"/>
+	<name meta="AG Sigmaringen" technical="ag_sigmaringen" original="Amtsgericht Sigmaringen"/>
+	<name meta="AG Simmern" technical="ag_simmern" original="Amtsgericht Simmern / Hunsrück"/>
+	<name meta="AG Singen/Hohentwiel" technical="ag_singen" original="Amtsgericht Singen (Hohentwiel)"/>
+	<name meta="AG Sinsheim" technical="ag_sinsheim" original="Amtsgericht Sinsheim"/>
+	<name meta="AG Sinzig" technical="ag_sinzig" original="Amtsgericht Sinzig"/>
+	<name meta="AG Soest" technical="ag_soest" original="Amtsgericht Soest"/>
+	<name meta="AG Solingen" technical="ag_solingen" original="Amtsgericht Solingen"/>
+	<name meta="AG Soltau" technical="ag_soltau" original="Amtsgericht Soltau"/>
+	<name meta="AG Sömmerda" technical="ag_soemmerda" original="Amtsgericht Sömmerda"/>
+	<name meta="AG Sondershausen" technical="ag_sondershausen" original="Amtsgericht Sondershausen"/>
+	<name meta="AG Sonneberg" technical="ag_sonneberg" original="Amtsgericht Sonneberg"/>
+	<name meta="AG Sonthofen" technical="ag_sonthofen" original="Amtsgericht Sonthofen"/>
+	<name meta="AG Spaichingen" technical="ag_spaichingen" original="Amtsgericht Spaichingen"/>
+	<name meta="AG Speyer" technical="ag_speyer" original="Amtsgericht Speyer"/>
+	<name meta="AG Springe" technical="ag_springe" original="Amtsgericht Springe"/>
+	<name meta="AG Stade" technical="ag_stade" original="Amtsgericht Stade"/>
+	<name meta="AG Stadthagen" technical="ag_stadthagen" original="Amtsgericht Stadthagen"/>
+	<name meta="AG Stadtroda" technical="ag_stadtroda" original="Amtsgericht Stadtroda"/>
+	<name meta="AG Starnberg" technical="ag_starnberg" original="Amtsgericht Starnberg"/>
+	<name meta="AG Staßfurt" technical="ag_stassfurt" original="AG Aschersleben ZwSt. Staßfurt"/>
+	<name meta="AG Staufen/Breisgau" technical="ag_staufen" original="Amtsgericht Staufen im Breisgau"/>
+	<name meta="AG Steinfurt" technical="ag_steinfurt" original="Amtsgericht Steinfurt"/>
+	<name meta="AG Stendal" technical="ag_stendal" original="Amtsgericht Stendal"/>
+	<name meta="AG Stockach" technical="ag_stockach" original="Amtsgericht Stockach"/>
+	<name meta="AG Stolberg/Rhld" technical="ag_stolberg" original="Amtsgericht Stolberg"/>
+	<name meta="AG Stollberg" technical="ag_stollberg" original="Amtsgericht Stollberg im Erzgebirge"/>
+	<name meta="AG Stolzenau" technical="ag_stolzenau" original="Amtsgericht Stolzenau"/>
+	<name meta="AG Stralsund" technical="ag_stralsund" original="Amtsgericht Stralsund"/>
+	<name meta="AG Strasburg" technical="ag_strasburg" original="Amtsgericht Strasburg"/>
+	<name meta="AG Straubing" technical="ag_straubing" original="Amtsgericht Straubing"/>
+	<name meta="AG Strausberg" technical="ag_strausberg" original="Amtsgericht Strausberg"/>
+	<name meta="AG Stuttgart" technical="ag_stuttgart" original="Amtsgericht Stuttgart"/>
+	<name meta="AG Stuttgart-Bad Cannstatt" technical="ag_stuttgart-cannstatt" original="Amtsgericht Stuttgart-Bad Cannstatt"/>
+	<name meta="AG Suhl" technical="ag_suhl" original="Amtsgericht Suhl"/>
+	<name meta="AG Sulingen" technical="ag_sulingen" original="Amtsgericht Sulingen"/>
+	<name meta="AG Syke" technical="ag_syke" original="Amtsgericht Syke"/>
+	<name meta="AG Tauberbischofsheim" technical="ag_tauberbischofsheim" original="Amtsgericht Tauberbischofsheim"/>
+	<name meta="AG Tecklenburg" technical="ag_tecklenburg" original="Amtsgericht Tecklenburg"/>
+	<name meta="AG Tettnang" technical="ag_tettnang" original="Amtsgericht Tettnang"/>
+	<name meta="AG Tirschenreuth" technical="ag_tirschenreuth" original="Amtsgericht Tirschenreuth"/>
+	<name meta="AG Titisee-Neustadt" technical="ag_titisee-neustadt" original="Amtsgericht Titisee-Neustadt"/>
+	<name meta="AG Torgau" technical="ag_torgau" original="Amtsgericht Torgau"/>
+	<name meta="AG Tostedt" technical="ag_tostedt" original="Amtsgericht Tostedt"/>
+	<name meta="AG Traunstein" technical="ag_traunstein" original="Amtsgericht Traunstein"/>
+	<name meta="AG Trier" technical="ag_trier" original="Amtsgericht Trier"/>
+	<name meta="AG Tübingen" technical="ag_tuebingen" original="Amtsgericht Tübingen"/>
+	<name meta="AG Tuttlingen" technical="ag_tuttlingen" original="Amtsgericht Tuttlingen"/>
+	<name meta="AG Überlingen" technical="ag_ueberlingen" original="Amtsgericht Überlingen"/>
+	<name meta="AG Ueckermünde" technical="ag_ueckermuende" original="Amtsgericht Ueckermünde"/>
+	<name meta="AG Uelzen" technical="ag_uelzen" original="Amtsgericht Uelzen"/>
+	<name meta="AG Ulm" technical="ag_ulm" original="Amtsgericht Ulm"/>
+	<name meta="AG Unna" technical="ag_unna" original="Amtsgericht Unna"/>
+	<name meta="AG Usingen" technical="ag_usingen" original="Amtsgericht Usingen"/>
+	<name meta="AG Vaihingen" technical="ag_vaihingen" original="Amtsgericht Vaihingen a.d.Enz"/>
+	<name meta="AG Varel" technical="ag_varel" original="Amtsgericht Varel"/>
+	<name meta="AG Vechta" technical="ag_vechta" original="Amtsgericht Vechta"/>
+	<name meta="AG Velbert" technical="ag_velbert" original="Amtsgericht Velbert"/>
+	<name meta="AG Verden/Aller" technical="ag_verden" original="Amtsgericht Verden (Aller)"/>
+	<name meta="AG Viechtach" technical="ag_viechtach" original="Amtsgericht Viechtach"/>
+	<name meta="AG Viersen" technical="ag_viersen" original="Amtsgericht Viersen"/>
+	<name meta="AG Villingen-Schwenningen" technical="ag_villingen-schwenningen" original="Amtsgericht Villingen-Schwenningen"/>
+	<name meta="AG Völklingen" technical="ag_voelklingen" original="Amtsgericht Völklingen"/>
+	<name meta="AG Waiblingen" technical="ag_waiblingen" original="Amtsgericht Waiblingen"/>
+	<name meta="AG Waldbröl" technical="ag_waldbroel" original="Amtsgericht Waldbröl"/>
+	<name meta="AG Waldkirch" technical="ag_waldkirch" original="Amtsgericht Waldkirch"/>
+	<name meta="AG Waldshut-Tiengen" technical="ag_waldshut-tiengen" original="Amtsgericht Waldshut-Tiengen"/>
+	<name meta="AG Walsrode" technical="ag_walsrode" original="Amtsgericht Walsrode"/>
+	<name meta="AG Wangen/Allgäu" technical="ag_wangen" original="Amtsgericht Wangen im Allgäu"/>
+	<name meta="AG Warburg" technical="ag_warburg" original="Amtsgericht Warburg"/>
+	<name meta="AG Waren/Müritz" technical="ag_waren" original="Amtsgericht Waren (Müritz)"/>
+	<name meta="AG Warendorf" technical="ag_warendorf" original="Amtsgericht Warendorf"/>
+	<name meta="AG Warstein" technical="ag_warstein" original="Amtsgericht Warstein"/>
+	<name meta="AG Weener" technical="ag_weener" original="Amtsgericht Weener"/>
+	<name meta="AG Weiden/Oberpfalz" technical="ag_weiden" original="Amtsgericht Weiden in der Oberpfalz"/>
+	<name meta="AG Weilburg" technical="ag_weilburg" original="Amtsgericht Weilburg"/>
+	<name meta="AG Weilheim" technical="ag_weilheim" original="Amtsgericht Weilheim in Oberbayern"/>
+	<name meta="AG Weimar" technical="ag_weimar" original="Amtsgericht Weimar"/>
+	<name meta="AG Weinheim/Bergstraße" technical="ag_weinheim" original="Amtsgericht Weinheim (Bergstraße)"/>
+	<name meta="AG Weißenburg" technical="ag_weissenburg" original="Amtsgericht Weißenburg"/>
+	<name meta="AG Weißenfels" technical="ag_weissenfels" original="Amtsgericht Weißenfels"/>
+	<name meta="AG Weißwasser" technical="ag_weisswasser" original="Amtsgericht Weißwasser"/>
+	<name meta="AG Wennigsen" technical="ag_wennigsen" original="Amtsgericht Wennigsen (Deister)"/>
+	<name meta="AG Werl" technical="ag_werl" original="Amtsgericht Werl"/>
+	<name meta="AG Wermelskirchen" technical="ag_wermelskirchen" original="Amtsgericht Wermelskirchen"/>
+	<name meta="AG Wernigerode" technical="ag_wernigerode" original="Amtsgericht Wernigerode"/>
+	<name meta="AG Wertheim" technical="ag_wertheim" original="Amtsgericht Wertheim"/>
+	<name meta="AG Wesel" technical="ag_wesel" original="Amtsgericht Wesel"/>
+	<name meta="AG Wesselburen" technical="ag_wesselburen" original="Amtsgericht Wesselburen"/>
+	<name meta="AG Westerburg" technical="ag_westerburg" original="Amtsgericht Westerburg"/>
+	<name meta="AG Westerstede" technical="ag_westerstede" original="Amtsgericht Westerstede"/>
+	<name meta="AG Wetter/Ruhr" technical="ag_wetter" original="Amtsgericht Wetter (Ruhr)"/>
+	<name meta="AG Wetzlar" technical="ag_wetzlar" original="Amtsgericht Wetzlar"/>
+	<name meta="AG Wiehl" technical="ag_wiehl" original="Amtsgericht Wiehl"/>
+	<name meta="AG Wiesbaden" technical="ag_wiesbaden" original="Amtsgericht Wiesbaden"/>
+	<name meta="AG Wiesloch" technical="ag_wiesloch" original="Amtsgericht Wiesloch"/>
+	<name meta="AG Wildeshausen" technical="ag_wildeshausen" original="Amtsgericht Wildeshausen"/>
+	<name meta="AG Wilhelmshaven" technical="ag_wilhelmshaven" original="Amtsgericht Wilhelmshaven"/>
+	<name meta="AG Wilster" technical="ag_wilster" original="Amtsgericht Wilster"/>
+	<name meta="AG Winsen/Luhe" technical="ag_winsen" original="Amtsgericht Winsen (Luhe)"/>
+	<name meta="AG Wipperfürth" technical="ag_wipperfuerth" original="Amtsgericht Wipperfürth"/>
+	<name meta="AG Wismar" technical="ag_wismar" original="Amtsgericht Wismar"/>
+	<name meta="AG Witten" technical="ag_witten" original="Amtsgericht Witten"/>
+	<name meta="AG Wittenberg" technical="ag_wittenberg" original="Amtsgericht Wittenberg"/>
+	<name meta="AG Wittlich" technical="ag_wittlich" original="Amtsgericht Wittlich"/>
+	<name meta="AG Wittmund" technical="ag_wittmund" original="Amtsgericht Wittmund"/>
+	<name meta="AG Witzenhausen" technical="ag_witzenhausen" original="Amtsgericht Witzenhausen"/>
+	<name meta="AG Wolfach" technical="ag_wolfach" original="Amtsgericht Wolfach"/>
+	<name meta="AG Wolfenbüttel" technical="ag_wolfenbuettel" original="Amtsgericht Wolfenbüttel"/>
+	<name meta="AG Wolfhagen" technical="ag_wolfhagen" original="Amtsgericht Wolfhagen"/>
+	<name meta="AG Wolfratshausen" technical="ag_wolfratshausen" original="Amtsgericht Wolfratshausen"/>
+	<name meta="AG Wolfsburg" technical="ag_wolfsburg" original="Amtsgericht Wolfsburg"/>
+	<name meta="AG Wolgast" technical="ag_wolgast" original="Amtsgericht Wolgast"/>
+	<name meta="AG Worbis" technical="ag_worbis" original="Amtsgericht Worbis"/>
+	<name meta="AG Worms" technical="ag_worms" original="Amtsgericht Worms"/>
+	<name meta="AG Wunsiedel" technical="ag_wunsiedel" original="Amtsgericht Wunsiedel"/>
+	<name meta="AG Wuppertal" technical="ag_wuppertal" original="Amtsgericht Wuppertal"/>
+	<name meta="AG Würzburg" technical="ag_wuerzburg" original="Amtsgericht Würzburg"/>
+	<name meta="AG Wyk/Föhr" technical="ag_wyk-foehr" original="Amtsgericht Wyk auf Föhr"/>
+	<name meta="AG Zehdenick" technical="ag_zehdenick" original="Amtsgericht Zehdenick"/>
+	<name meta="AG Zeitz" technical="ag_zeitz" original="Amtsgericht Zeitz"/>
+	<name meta="AG Zerbst" technical="ag_zerbst" original="Amtsgericht Zerbst"/>
+	<name meta="AG Zeven" technical="ag_zeven" original="Amtsgericht Zeven"/>
+	<name meta="AG Zittau" technical="ag_zittau" original="Amtsgericht Zittau"/>
+	<name meta="AG Zossen" technical="ag_zossen" original="Amtsgericht Zossen"/>
+	<name meta="AG Zschopau" technical="ag_zschopau" original="Amtsgericht Zschopau"/>
+	<name meta="AG Zweibrücken" technical="ag_zweibruecken" original="Amtsgericht Zweibrücken"/>
+	<name meta="AG Zwickau" technical="ag_zwickau" original="Amtsgericht Zwickau"/>
+	<name meta="AGH Baden-Württemberg" technical="agh_bw" original="Anwaltsgerichtshof Baden-Württemberg"/>
+	<name meta="AGH Bayern" technical="agh_by" original="Anwaltsgerichtshof Bayern"/>
+	<name meta="AGH Berlin" technical="agh_be" original="Anwaltsgerichtshof Berlin"/>
+	<name meta="AGH Brandenburg" technical="agh_bb" original="Anwaltsgerichtshof Brandenburg"/>
+	<name meta="AGH Bremen" technical="agh_hb" original="Anwaltsgerichtshof Bremen"/>
+	<name meta="AGH des Landes Sachsen-Anhalt" technical="agh_st" original="Anwaltsgerichtshof des Landes Sachsen-Anhalt"/>
+	<name meta="AGH Hamburg" technical="agh_hh" original="Anwaltsgerichtshof Hamburg"/>
+	<name meta="AGH Hessen" technical="agh_he" original="Anwaltsgerichtshof Hessen"/>
+	<name meta="AGH Mecklenburg-Vorpommern" technical="agh_mv" original="Anwaltsgerichtshof Mecklenburg-Vorpommern"/>
+	<name meta="AGH Niedersachsen" technical="agh_ni" original="Niedersächsischer Anwaltsgerichtshof"/>
+	<name meta="AGH Nordrhein-Westfalen" technical="agh_nw" original="Anwaltsgerichtshof Nordrhein-Westfalen"/>
+	<name meta="AGH Rheinland-Pfalz" technical="agh_rp" original="Anwaltsgerichtshof Rheinland-Pfalz"/>
+	<name meta="AGH Saarland" technical="agh_sl" original="Anwaltsgerichtshof Saarland"/>
+	<name meta="ÄGH Saarland" technical="aegh_sl" original="Ärztegerichtshof Saarland"/>
+	<name meta="AGH Sachsen" technical="agh_sn" original="Anwaltsgerichtshof Sachsen"/>
+	<name meta="AGH Schleswig-Holstein" technical="agh_sh" original="Schleswig-Holsteinischer Anwaltsgerichtshof"/>
+	<name meta="AGH Thüringen" technical="agh_th" original="Anwaltsgerichtshof Thüringen"/>
+	<name meta="AnwG Bamberg" technical="anwg_bamberg" original="Anwaltsgericht für den Bezirk der RAK Bamberg"/>
+	<name meta="AnwG Berlin" technical="anwg_berlin" original="Anwaltsgericht im Bezirk der RAK Berlin"/>
+	<name meta="AnwG Brandenburg" technical="anwg_brandenburg" original="Anwaltsgericht im Bezirk der Brandenburgischen RAK"/>
+	<name meta="AnwG Braunschweig" technical="anwg_braunschweig" original="Anwaltsgericht für den Bezirk der RAK Braunschweig"/>
+	<name meta="AnwG Bremen" technical="anwg_bremen" original="Anwaltsgericht im Bezirk der Hanseatischen RAK Bremen"/>
+	<name meta="AnwG Celle" technical="anwg_celle" original="Anwaltsgericht für den Bezirk der RAK Celle"/>
+	<name meta="AnwG Dresden" technical="anwg_dresden" original="Anwaltsgericht für den Bezirk der RAK des Freistaates Sachsen"/>
+	<name meta="AnwG Düsseldorf" technical="anwg_duesseldorf" original="Anwaltsgericht für den Bezirk der RAK Düsseldorf"/>
+	<name meta="AnwG Erfurt" technical="anwg_erfurt" original="Anwaltsgericht im Bezirk der RAK Thüringen"/>
+	<name meta="AnwG Frankfurt/Main" technical="anwg_frankfurt-main" original="Anwaltsgericht im Bezirk der RAK Frankfurt am Main"/>
+	<name meta="AnwG Freiburg" technical="anwg_freiburg" original="Anwaltsgericht für den Bezirk der RAK Freiburg"/>
+	<name meta="AnwG Hamburg" technical="anwg_hamburg" original="Anwaltsgericht im Bezirk der Hanseatischen RAK Hamburg"/>
+	<name meta="AnwG Hamm" technical="anwg_hamm" original="Anwaltsgericht für den Bezirk der RAK Hamm"/>
+	<name meta="AnwG Karlsruhe" technical="anwg_karlsruhe" original="Anwaltsgericht für den Bezirk der RAK Karlsruhe"/>
+	<name meta="AnwG Kassel" technical="anwg_kassel" original="Anwaltsgericht für den Bezirk der RAK Kassel"/>
+	<name meta="AnwG Koblenz" technical="anwg_koblenz" original="Anwaltsgericht für den Bezirk der RAK Koblenz"/>
+	<name meta="AnwG Köln" technical="anwg_koeln" original="Anwaltsgericht für den Bezirk der RAK Köln"/>
+	<name meta="AnwG Magdeburg" technical="anwg_magdeburg" original="Anwaltsgericht im Bezirk der RAK Sachsen-Anhalt"/>
+	<name meta="AnwG München" technical="anwg_muenchen" original="Anwaltsgericht für den Bezirk der RAK München"/>
+	<name meta="AnwG Nürnberg" technical="anwg_nuernberg" original="Anwaltsgericht für den Bezirk der RAK Nürnberg"/>
+	<name meta="AnwG Oldenburg" technical="anwg_oldenburg" original="Anwaltsgericht für den Bezirk der RAK Oldenburg"/>
+	<name meta="AnwG Saarbrücken" technical="anwg_saarbruecken" original="Anwaltsgericht im Bezirk der RAK des Saarlandes"/>
+	<name meta="AnwG Schleswig" technical="anwg_schleswig" original="Anwaltsgericht im Bezirk der Schleswig-Holsteinischen RAK"/>
+	<name meta="AnwG Schwerin" technical="anwg_schwerin" original="Anwaltsgericht im Bezirk der RAK Mecklenburg-Vorpommern"/>
+	<name meta="AnwG Stuttgart" technical="anwg_stuttgart" original="Anwaltsgericht für den Bezirk der RAK Stuttgart"/>
+	<name meta="AnwG Tübingen" technical="anwg_tuebingen" original="Anwaltsgericht für den Bezirk der RAK Tübingen"/>
+	<name meta="AnwG Zweibrücken" technical="anwg_zweibruecken" original="Anwaltsgericht für den Bezirk der RAK Zweibrücken"/>
+	<name meta="ArbG Aachen" technical="arbg_aachen" original="Arbeitsgericht Aachen"/>
+	<name meta="ArbG Aalen" technical="arbg_aalen" original="Arbeitsgericht Aalen"/>
+	<name meta="ArbG Arnsberg" technical="arbg_arnsberg" original="Arbeitsgericht Arnsberg"/>
+	<name meta="ArbG Augsburg" technical="arbg_augsburg" original="Arbeitsgericht Augsburg"/>
+	<name meta="ArbG Bad Hersfeld" technical="arbg_hersfeld" original="Arbeitsgericht Bad Hersfeld"/>
+	<name meta="ArbG Bad Oldesloe" technical="arbg_oldesloe" original="Arbeitsgericht Bad Oldesloe"/>
+	<name meta="ArbG Bamberg" technical="arbg_bamberg" original="Arbeitsgericht Bamberg"/>
+	<name meta="ArbG Bautzen" technical="arbg_bautzen" original="Arbeitsgericht Bautzen"/>
+	<name meta="ArbG Bayreuth" technical="arbg_bayreuth" original="Arbeitsgericht Bayreuth"/>
+	<name meta="ArbG Berlin" technical="arbg_berlin" original="Arbeitsgericht Berlin"/>
+	<name meta="ArbG Bielefeld" technical="arbg_bielefeld" original="Arbeitsgericht Bielefeld"/>
+	<name meta="ArbG Bocholt" technical="arbg_bocholt" original="Arbeitsgericht Bocholt"/>
+	<name meta="ArbG Bochum" technical="arbg_bochum" original="Arbeitsgericht Bochum"/>
+	<name meta="ArbG Bonn" technical="arbg_bonn" original="Arbeitsgericht Bonn"/>
+	<name meta="ArbG Brandenburg/Havel" technical="arbg_brandenburg" original="Arbeitsgericht Brandenburg an der Havel"/>
+	<name meta="ArbG Braunschweig" technical="arbg_braunschweig" original="Arbeitsgericht Braunschweig"/>
+	<name meta="ArbG Bremen" technical="arbg_bremen" original="Arbeitsgericht Bremen"/>
+	<name meta="ArbG Bremen-Bremerhaven" technical="arbg_bremen-bremerhaven" original="Arbeitsgericht Bremerhaven"/>
+	<name meta="ArbG Bremerhaven" technical="arbg_bremerhaven" original="Arbeitsgericht Bremen-Bremerhaven"/>
+	<name meta="ArbG Celle" technical="arbg_celle" original="Arbeitsgericht Celle"/>
+	<name meta="ArbG Chemnitz" technical="arbg_chemnitz" original="Arbeitsgericht Chemnitz"/>
+	<name meta="ArbG Cottbus" technical="arbg_cottbus" original="Arbeitsgericht Cottbus"/>
+	<name meta="ArbG Crailsheim" technical="arbg_crailsheim" original="Arbeitsgericht Heilbronn - Auswärtige Kammern Crailsheim"/>
+	<name meta="ArbG Darmstadt" technical="arbg_darmstadt" original="Arbeitsgericht Darmstadt"/>
+	<name meta="ArbG Dessau" technical="arbg_dessau" original="Arbeitsgericht Dessau"/>
+	<name meta="ArbG Detmold" technical="arbg_detmold" original="Arbeitsgericht Detmold"/>
+	<name meta="ArbG Dortmund" technical="arbg_dortmund" original="Arbeitsgericht Dortmund"/>
+	<name meta="ArbG Dresden" technical="arbg_dresden" original="Arbeitsgericht Dresden"/>
+	<name meta="ArbG Duisburg" technical="arbg_duisburg" original="Arbeitsgericht Duisburg"/>
+	<name meta="ArbG Düsseldorf" technical="arbg_duesseldorf" original="Arbeitsgericht Düsseldorf"/>
+	<name meta="ArbG Eberswalde" technical="arbg_eberswalde" original="Arbeitsgericht Eberswalde"/>
+	<name meta="ArbG Eisenach" technical="arbg_eisenach" original="Arbeitsgericht Eisenach"/>
+	<name meta="ArbG Elmshorn" technical="arbg_elmshorn" original="Arbeitsgericht Elmshorn"/>
+	<name meta="ArbG Emden" technical="arbg_emden" original="Arbeitsgericht Emden"/>
+	<name meta="ArbG Erfurt" technical="arbg_erfurt" original="Arbeitsgericht Erfurt"/>
+	<name meta="ArbG Essen" technical="arbg_essen" original="Arbeitsgericht Essen"/>
+	<name meta="ArbG Esslingen" technical="arbg_esslingen" original="Arbeitsgericht Esslingen"/>
+	<name meta="ArbG Flensburg" technical="arbg_flensburg" original="Arbeitsgericht Flensburg"/>
+	<name meta="ArbG Frankfurt/Main" technical="arbg_frankfurt-main" original="Arbeitsgericht Frankfurt (Main)"/>
+	<name meta="ArbG Frankfurt/Oder" technical="arbg_frankfurt-oder" original="Arbeitsgericht Frankfurt (Oder)"/>
+	<name meta="ArbG Freiburg/Breisgau" technical="arbg_freiburg" original="Arbeitsgericht Freiburg (Breisgau)"/>
+	<name meta="ArbG Fulda" technical="arbg_fulda" original="Arbeitsgericht Fulda"/>
+	<name meta="ArbG Gelsenkirchen" technical="arbg_gelsenkirchen" original="Arbeitsgericht Gelsenkirchen"/>
+	<name meta="ArbG Gera" technical="arbg_gera" original="Arbeitsgericht Gera"/>
+	<name meta="ArbG Gießen" technical="arbg_giessen" original="Arbeitsgericht Gießen"/>
+	<name meta="ArbG Gotha" technical="arbg_gotha" original="Arbeitsgericht Gotha"/>
+	<name meta="ArbG Göttingen" technical="arbg_goettingen" original="Arbeitsgericht Göttingen"/>
+	<name meta="ArbG Hagen" technical="arbg_hagen" original="Arbeitsgericht Hagen"/>
+	<name meta="ArbG Halberstadt" technical="arbg_halberstadt" original="Arbeitsgericht Halberstadt"/>
+	<name meta="ArbG Halle" technical="arbg_halle" original="Arbeitsgericht Halle"/>
+	<name meta="ArbG Hamburg" technical="arbg_hamburg" original="Arbeitsgericht Hamburg"/>
+	<name meta="ArbG Hameln" technical="arbg_hameln" original="Arbeitsgericht Hameln"/>
+	<name meta="ArbG Hamm" technical="arbg_hamm" original="Arbeitsgericht Hamm"/>
+	<name meta="ArbG Hanau" technical="arbg_hanau" original="Arbeitsgericht Hanau"/>
+	<name meta="ArbG Hannover" technical="arbg_hannover" original="Arbeitsgericht Hannover"/>
+	<name meta="ArbG Heide" technical="arbg_heide" original="Arbeitsgericht Heide"/>
+	<name meta="ArbG Heidelberg" technical="arbg_heidelberg" original="Arbeitsgericht Mannheim - Kammern Heidelberg"/>
+	<name meta="ArbG Heilbronn" technical="arbg_heilbronn" original="Arbeitsgericht Heilbronn"/>
+	<name meta="ArbG Herford" technical="arbg_herford" original="Arbeitsgericht Herford"/>
+	<name meta="ArbG Herne" technical="arbg_herne" original="Arbeitsgericht Herne"/>
+	<name meta="ArbG Hildesheim" technical="arbg_hildesheim" original="Arbeitsgericht Hildesheim"/>
+	<name meta="ArbG Husum" technical="arbg_husum" original="Arbeitsgericht Husum"/>
+	<name meta="ArbG Iserlohn" technical="arbg_iserlohn" original="Arbeitsgericht Iserlohn"/>
+	<name meta="ArbG Jena" technical="arbg_jena" original="Arbeitsgericht Jena"/>
+	<name meta="ArbG Kaiserslautern" technical="arbg_kaiserslautern" original="Arbeitsgericht Kaiserslautern"/>
+	<name meta="ArbG Karlsruhe" technical="arbg_karlsruhe" original="Arbeitsgericht Karlsruhe"/>
+	<name meta="ArbG Kassel" technical="arbg_kassel" original="Arbeitsgericht Kassel"/>
+	<name meta="ArbG Kempten" technical="arbg_kempten" original="Arbeitsgericht Kempten"/>
+	<name meta="ArbG Kiel" technical="arbg_kiel" original="Arbeitsgericht Kiel"/>
+	<name meta="ArbG Koblenz" technical="arbg_koblenz" original="Arbeitsgericht Koblenz"/>
+	<name meta="ArbG Köln" technical="arbg_koeln" original="Arbeitsgericht Köln"/>
+	<name meta="ArbG Krefeld" technical="arbg_krefeld" original="Arbeitsgericht Krefeld"/>
+	<name meta="ArbG Landau" technical="arbg_landau" original="Auswärtige Kammern Landau in der Pfalz"/>
+	<name meta="ArbG Leipzig" technical="arbg_leipzig" original="Arbeitsgericht Leipzig"/>
+	<name meta="ArbG Limburg/Lahn" technical="arbg_limburg" original="Arbeitsgericht Limburg a.d. Lahn"/>
+	<name meta="ArbG Lingen" technical="arbg_lingen" original="Arbeitsgericht Lingen"/>
+	<name meta="ArbG Lörrach" technical="arbg_loerrach" original="Arbeitsgericht Lörrach"/>
+	<name meta="ArbG Lübeck" technical="arbg_luebeck" original="Arbeitsgericht Lübeck"/>
+	<name meta="ArbG Ludwigsburg" technical="arbg_ludwigsburg" original="Arbeitsgericht Stuttgart - Kammern Ludwigsburg"/>
+	<name meta="ArbG Ludwigshafen" technical="arbg_ludwigshafen" original="Arbeitsgericht Ludwigshafen am Rhein"/>
+	<name meta="ArbG Lüneburg" technical="arbg_lueneburg" original="Arbeitsgericht Lüneburg"/>
+	<name meta="ArbG Magdeburg" technical="arbg_magdeburg" original="Arbeitsgericht Magdeburg"/>
+	<name meta="ArbG Mainz" technical="arbg_mainz" original="Arbeitsgericht Mainz"/>
+	<name meta="ArbG Mannheim" technical="arbg_mannheim" original="Arbeitsgericht Mannheim"/>
+	<name meta="ArbG Marburg/Lahn" technical="arbg_marburg" original="Arbeitsgericht Marburg (Lahn)"/>
+	<name meta="ArbG Minden/Westfalen" technical="arbg_minden" original="Arbeitsgericht Minden (Westfalen)"/>
+	<name meta="ArbG Mönchengladbach" technical="arbg_moenchengladbach" original="Arbeitsgericht Mönchengladbach"/>
+	<name meta="ArbG Mosbach" technical="arbg_mosbach" original="Arbeitsgericht Mosbach"/>
+	<name meta="ArbG München" technical="arbg_muenchen" original="Arbeitsgericht München"/>
+	<name meta="ArbG Münster" technical="arbg_muenster" original="Arbeitsgericht Münster"/>
+	<name meta="ArbG Naumburg" technical="arbg_naumburg" original="Arbeitsgericht Naumburg"/>
+	<name meta="ArbG Neubrandenburg" technical="arbg_neubrandenburg" original="Arbeitsgericht Neubrandenburg"/>
+	<name meta="ArbG Neumünster" technical="arbg_neumuenster" original="Arbeitsgericht Neumünster"/>
+	<name meta="ArbG Neunkirchen" technical="arbg_neunkirchen" original="Arbeitsgericht Neunkirchen"/>
+	<name meta="ArbG Neuruppin" technical="arbg_neuruppin" original="Arbeitsgericht Neuruppin"/>
+	<name meta="ArbG Neustrelitz" technical="arbg_neustrelitz" original="Arbeitsgericht Neustrelitz"/>
+	<name meta="ArbG Nienburg/Weser" technical="arbg_nienburg" original="Arbeitsgericht Nienburg (Weser)"/>
+	<name meta="ArbG Nordhausen" technical="arbg_nordhausen" original="Arbeitsgericht Nordhausen"/>
+	<name meta="ArbG Nürnberg" technical="arbg_nuernberg" original="Arbeitsgericht Nürnberg"/>
+	<name meta="ArbG Oberhausen" technical="arbg_oberhausen" original="Arbeitsgericht Oberhausen"/>
+	<name meta="ArbG Offenbach" technical="arbg_offenbach" original="Arbeitsgericht Offenbach am Main"/>
+	<name meta="ArbG Offenburg" technical="arbg_offenburg" original="Arbeitsgericht Freiburg - Kammern Offenburg"/>
+	<name meta="ArbG Oldenburg/Oldenburg" technical="arbg_oldenburg-ni" original="Arbeitsgericht Oldenburg (Oldenburg)"/>
+	<name meta="ArbG Osnabrück" technical="arbg_osnabrueck" original="Arbeitsgericht Osnabrück"/>
+	<name meta="ArbG Paderborn" technical="arbg_paderborn" original="Arbeitsgericht Paderborn"/>
+	<name meta="ArbG Passau" technical="arbg_passau" original="Arbeitsgericht Passau"/>
+	<name meta="ArbG Pforzheim" technical="arbg_pforzheim" original="Arbeitsgericht Pforzheim"/>
+	<name meta="ArbG Potsdam" technical="arbg_potsdam" original="Arbeitsgericht Potsdam"/>
+	<name meta="ArbG Radolfzell" technical="arbg_radolfzell" original="Kammern Radolfzell"/>
+	<name meta="ArbG Rastatt" technical="arbg_rastatt" original="Arbeitsgericht Rastatt"/>
+	<name meta="ArbG Ravensburg" technical="arbg_ravensburg" original="Kammern Ravensburg"/>
+	<name meta="ArbG Regensburg" technical="arbg_regensburg" original="Arbeitsgericht Regensburg"/>
+	<name meta="ArbG Rendsburg" technical="arbg_rendsburg" original="Arbeitsgericht Rendsburg"/>
+	<name meta="ArbG Reutlingen" technical="arbg_reutlingen" original="Arbeitsgericht Reutlingen"/>
+	<name meta="ArbG Rheine" technical="arbg_rheine" original="Arbeitsgericht Rheine"/>
+	<name meta="ArbG Rosenheim" technical="arbg_rosenheim" original="Arbeitsgericht Rosenheim"/>
+	<name meta="ArbG Rostock" technical="arbg_rostock" original="Arbeitsgericht Rostock"/>
+	<name meta="ArbG Saarbrücken" technical="arbg_saarbruecken" original="Arbeitsgericht Saarbrücken"/>
+	<name meta="ArbG Saarlouis" technical="arbg_saarlouis" original="Arbeitsgericht Saarlouis"/>
+	<name meta="ArbG Schwerin" technical="arbg_schwerin" original="Arbeitsgericht Schwerin"/>
+	<name meta="ArbG Senftenberg" technical="arbg_senftenberg" original="Arbeitsgericht Senftenberg"/>
+	<name meta="ArbG Siegburg" technical="arbg_siegburg" original="Arbeitsgericht Siegburg"/>
+	<name meta="ArbG Siegen" technical="arbg_siegen" original="Arbeitsgericht Siegen"/>
+	<name meta="ArbG Sigmaringen" technical="arbg_sigmaringen" original="Arbeitsgericht Sigmaringen"/>
+	<name meta="ArbG Solingen" technical="arbg_solingen" original="Arbeitsgericht Solingen"/>
+	<name meta="ArbG Stade" technical="arbg_stade" original="Arbeitsgericht Stade"/>
+	<name meta="ArbG Stendal" technical="arbg_stendal" original="Arbeitsgericht Stendal"/>
+	<name meta="ArbG Stralsund" technical="arbg_stralsund" original="Arbeitsgericht Stralsund"/>
+	<name meta="ArbG Stuttgart" technical="arbg_stuttgart" original="Arbeitsgericht Stuttgart"/>
+	<name meta="ArbG Suhl" technical="arbg_suhl" original="Arbeitsgericht Suhl"/>
+	<name meta="ArbG Trier" technical="arbg_trier" original="Arbeitsgericht Trier"/>
+	<name meta="ArbG Tübingen" technical="arbg_tuebingen" original="Arbeitsgericht Tübingen"/>
+	<name meta="ArbG Ulm" technical="arbg_ulm" original="Arbeitsgericht Ulm"/>
+	<name meta="ArbG Verden/Aller" technical="arbg_verden" original="Arbeitsgericht Verden (Aller)"/>
+	<name meta="ArbG Weiden" technical="arbg_weiden" original="Arbeitsgericht Weiden in der Oberpflaz"/>
+	<name meta="ArbG Wesel" technical="arbg_wesel" original="Arbeitsgericht Wesel"/>
+	<name meta="ArbG Wetzlar" technical="arbg_wetzlar" original="Arbeitsgericht Wetzlar"/>
+	<name meta="ArbG Wiesbaden" technical="arbg_wiesbaden" original="Arbeitsgericht Wiesbaden"/>
+	<name meta="ArbG Wilhelmshaven" technical="arbg_wilhelmshaven" original="Arbeitsgericht Wilhelmshaven"/>
+	<name meta="ArbG Wuppertal" technical="arbg_wuppertal" original="Arbeitsgericht Wuppertal"/>
+	<name meta="ArbG Würzburg" technical="arbg_wuerzburg" original="Arbeitsgericht Würzburg"/>
+	<name meta="ArbG Zwickau" technical="arbg_zwickau" original="Arbeitsgericht Zwickau"/>
+	<name meta="BAG" technical="bag" original="Bundesarbeitsgericht in Erfurt"/>
+	<name meta="Bayerischer VerfGH" technical="lverfg_by" original="Bayerischer Verfassungsgerichtshof"/>
+	<name meta="Bayerischer VGH" technical="vgh_by" original="Bayerischer Verwaltungsgerichtshof"/>
+	<name meta="Bayerisches LSG" technical="lsg_by" original="Bayerisches Landessozialgericht"/>
+	<name meta="BayObLG" technical="oblg_by" original="Bayerisches Oberstes Landesgericht"/>
+	<name meta="BDiszG" technical="bdiszg" original="BDiszG"/>
+	<name meta="Belgischer Schiedshof" technical="int_be-schiedshof" original="Belgischer Schiedshof"/>
+	<name meta="BezBSG Berlin" technical="bezbsg_berlin" original="Bezirksbühnenschiedsgericht Berlin"/>
+	<name meta="BezBSG Hamburg" technical="bezbsg_hamburg" original="Bezirksbühnenschiedsgericht Hamburg"/>
+	<name meta="BezG Chemnitz" technical="bezg_chemnitz" original="Bezirksgericht Chemnitz"/>
+	<name meta="BezG Dresden" technical="bezg_dresden" original="BezG Dresden"/>
+	<name meta="BezG Erfurt" technical="bezg_erfurt" original="Bezirksgericht Erfurt"/>
+	<name meta="BezG Gera" technical="bezg_gera" original="BezG Gera"/>
+	<name meta="BezG Halle" technical="bezg_halle" original="Bezirksgericht Halle"/>
+	<name meta="BezG Leipzig" technical="bezg_leipzig" original="Bezirksgericht Leizpig"/>
+	<name meta="BezG Lublin" technical="bezg_lublin" original="BezG Lublin"/>
+	<name meta="BezG Magdeburg" technical="bezg_magdeburg" original="BezG Magdeburg"/>
+	<name meta="BezG Meiningen" technical="bezg_meiningen" original="Bezirksgericht Meiningen"/>
+	<name meta="BezG Potsdam" technical="bezg_potsdam" original="BezG Potsdam"/>
+	<name meta="BFH" technical="bfh" original="Bundesfinanzhof"/>
+	<name meta="BG für Architekten Karlsruhe" technical="bg_architekten-karlsruhe" original="Berufsgericht für Architekten Karlsruhe"/>
+	<name meta="BG für Architekten Stuttgart" technical="bg_architekten-stuttgart" original="BG für Architekten Stuttgart"/>
+	<name meta="BGH" technical="bgh" original="Bundesgerichtshof"/>
+	<name meta="BKartA" technical="bkarta" original="Bundeskartellamt"/>
+	<name meta="BPatG" technical="bpatg" original="Bundespatentgericht"/>
+	<name meta="BSG" technical="bsg" original="Bundessozialgericht"/>
+	<name meta="BVerfG" technical="bverfg" original="Bundesverfassungsgericht"/>
+	<name meta="BVerwG" technical="bverwg" original="Bundesverwaltungsgericht"/>
+	<name meta="BVG Berlin" technical="bvg_berlin" original="Bundesverwaltungsgericht Berlin"/>
+	<name meta="BvS" technical="bvs" original="Bundesanstalt für vereinigungsbedingte Sonderaufgaben"/>
+	<name meta="C.A.11.C" technical="int_us_ca11c" original="U.S. Court of Appeals for the Eleventh Circuit"/>
+	<name meta="C.A.F.C." technical="US_CAFC" original="U.S. Court of Appeals for the Eleventh Circuit"/>
+	<name meta="CASD" technical="int_us_casd" original="U.S. District Court for the Southern District of California"/>
+	<name meta="Corte di Cassazione" technical="int_it_cc" original="Corte di Cassazione"/>
+	<name meta="Cour de Cassation" technical="int_fr_cc" original="Cour de Cassation"/>
+	<name meta="Court of Appeal of New Zealand" technical="int_nz_cap" original="Court of Appeal of New Zealand"/>
+	<name meta="Court of Appeals for England and Wales" technical="int_uk_ewca" original="Court of Appeals for England and Wales"/>
+	<name meta="Court of Session of Scotland" technical="int_uk_cos" original="Court of Session of Scotland"/>
+	<name meta="Court Vizcaya" technical="int_sp_cvi" original="Court Vizcaya"/>
+	<name meta="CPVO" technical="eu_cpvo" original="Community Plant Variety Office (Gemeinschaftliche Sortenamt)"/>
+	<name meta="Dienstgericht Frankfurt/Main" technical="dienstg_frankfurt-main" original="Hessisches Dienstgericht beim Landgericht Frankfurt am Main"/>
+	<name meta="Dienstgericht Leipzig" technical="dienstg_leipzig" original="Dienstgericht für Richter am Landgericht Leipzig"/>
+	<name meta="Dienstgericht München" technical="dienstg_muenchen" original="Bayerisches Dienstgericht fuer Richter in München"/>
+	<name meta="Dienstgerichtshof Frankfurt/Main" technical="dienstgh_frankfurt-main" original="Dienstgerichtshof beim Oberlandesgericht Frankfurt am Main"/>
+	<name meta="DIS" technical="dis" original="Deutsche Institution für Schiedsgerichtsbarkeit"/>
+	<name meta="DPMA" technical="dpma" original="Deutsches Patent- und Markenamt"/>
+	<name meta="EFTA Court" technical="int_gh_efta" original="Gerichtshof des European Free Trade Agreements"/>
+	<name meta="EGMR" technical="egmr" original="Europäischer Gerichtshof für Menschenrechte"/>
+	<name meta="Ehrengerichtshof Berlin" technical="ehrg_berlin" original="Ehrengerichtshof für Rechtsanwälte in Berlin"/>
+	<name meta="Ehrengerichtshof Celle" technical="ehrg_celle" original="Niedersächsischer Ehrengerichtshof für Rechtsanwälte in Celle"/>
+	<name meta="Ehrengerichtshof Hamburg" technical="ehrg_hamburg" original="Ehrengerichtshof für Rechtsanwälte beim Hanseatischen Oberlandesgericht"/>
+	<name meta="Ehrengerichtshof Hamm" technical="ehrg_hamm" original="Ehrengerichtshof für Rechtsanwälte des Landes Nordrhein-Westfalen beim Oberlandesgericht Hamm"/>
+	<name meta="Ehrengerichtshof Koblenz" technical="ehrg_koblenz" original="Ehrengerichtshof für Rechtsanwälte beim Oberlandesgericht Koblenz"/>
+	<name meta="Ehrengerichtshof München" technical="ehrg_muenchen" original="Bayerischer Ehrengerichtshof München"/>
+	<name meta="Ehrengerichtshof Saarbrücken" technical="ehrg_saarbruecken" original="Ehrengerichtshof für Rechtsanwälte in Saarbrücken"/>
+	<name meta="Ehrengerichtshof Stuttgart" technical="ehrg_stuttgart" original="Ehrengerichtshof für Rechtsanwält beim Oberlandesgericht Stuttgart"/>
+	<name meta="EPA" technical="eu_epa" original="Europäischen Patentamt"/>
+	<name meta="EU BeamtenG" technical="eu_goed" original="Gericht für den öffentlichen Dienst der Europäischen Union"/>
+	<name meta="EuG" technical="eug" original="Europäisches Gericht erster Instanz"/>
+	<name meta="EuGH" technical="eugh" original="Europäischer Gerichtshof"/>
+	<name meta="FG Baden-Württemberg" technical="fg_bw" original="Finanzgericht Baden-Württemberg"/>
+	<name meta="FG Berlin" technical="fg_be" original="Finanzgericht Berlin-Brandenburg"/>
+	<name meta="FG Berlin-Brandenburg" technical="fg_be-br" original="Finanzgericht Berlin-Brandenburg"/>
+	<name meta="FG Brandenburg" technical="fg_br" original="Finanzgericht Brandenburg"/>
+	<name meta="FG Bremen" technical="fg_hb" original="Finanzgericht Bremen"/>
+	<name meta="FG Düsseldorf" technical="fg_duesseldorf" original="Finanzgericht Düsseldorf"/>
+	<name meta="FG Hamburg" technical="fg_hh" original="Finanzgericht Hamburg"/>
+	<name meta="FG Hessen" technical="fg_he" original="Hessisches Finanzgericht"/>
+	<name meta="FG Köln" technical="fg_koeln" original="Finanzgericht Köln"/>
+	<name meta="FG Mecklenburg-Vorpommern" technical="fg_mv" original="Finanzgericht Mecklenburg-Vorpommern"/>
+	<name meta="FG München" technical="fg_muenchen" original="Finanzgericht München"/>
+	<name meta="FG Münster" technical="fg_muenster" original="Finanzgericht Münster"/>
+	<name meta="FG Niedersachsen" technical="fg_ni" original="Niedersächsisches Finanzgericht"/>
+	<name meta="FG Nürnberg" technical="fg_nuernberg" original="Finanzgericht Nürnberg"/>
+	<name meta="FG Rheinland-Pfalz" technical="fg_rp" original="Finanzgericht Rheinland-Pfalz"/>
+	<name meta="FG Saarland" technical="fg_sl" original="Finanzgericht des Saarlandes"/>
+	<name meta="FG Sachsen" technical="fg_sn" original="Sächsisches Finanzgericht"/>
+	<name meta="FG Sachsen-Anhalt" technical="fg_st" original="Finanzgericht des Landes Sachsen- Anhalt"/>
+	<name meta="FG Schleswig-Holstein" technical="fg_sh" original="Schleswig - Holsteinisches Finanzgericht"/>
+	<name meta="FG Thüringen" technical="fg_th" original="Thüringer Finanzgericht"/>
+	<name meta="FICPI" technical="int_ficpi" original="FICPI Weltkongress (FICPI = Federation International des Conseils en Propriete)"/>
+	<name meta="Gem. Kirchl. ArbG" technical="gkag" original="Gemeinsames Kirchliches Arbeitsgericht in Hamburg"/>
+	<name meta="GmS-OGB" technical="gms_ogb" original="Gemeinsamer Senat der Obersten Gerichtshöfe des Bundes"/>
+	<name meta="HABM" technical="eu_habm" original="Harmonisierungsamt für den Binnenmarkt"/>
+	<name meta="High Court of Australia" technical="int_aus_hc" original="High Court of Australia"/>
+	<name meta="High Court of Justice for England and Wales" technical="int_uk_ewhc" original="High Court of Justice for England and Wales"/>
+	<name meta="Hoge Raad" technical="int_nl_hr" original="Hoge Raad"/>
+	<name meta="House of Lords" technical="int_uk_hl" original="House of Lords"/>
+	<name meta="HVerfG" technical="lverfg_hh" original="Hamburgisches Verfassungsgericht"/>
+	<name meta="IGH" technical="un_igh" original="Internationaler Gerichtshof"/>
+	<name meta="ISGH" technical="un_isgh" original="Internationaler Seegerichtshof"/>
+	<name meta="IStGH" technical="un_istgh" original="Internationaler Strafgerichtshof"/>
+	<name meta="KArbG Aachen" technical="kag_aachen" original="Kirchliches Arbeitsgericht erster Instanz für die Diözese Aachen"/>
+	<name meta="KAG Diözese Aachen" technical="kagd_aachen" original="Interdiözesanes Arbeitsgericht für den KODA-Bereich NRW"/>
+	<name meta="KArbG Essen" technical="kag_essen" original="Kirchliches Arbeitsgericht erster Instanz für das Bistum Essen"/>
+	<name meta="KArbG Freiburg" technical="kag_freiburg" original="Kirchliches Arbeitsgericht erster Instanz für die Erzdiözese Freiburg"/>
+	<name meta="KArbG Fulda" technical="kag_fulda" original="Kirchliches Arbeitsgericht erster Instanz für die Diözese Fulda"/>
+	<name meta="KArbG Köln" technical="kag_koeln" original="Diözesenas Arbeitsgericht für den MAVO-Bereich-Köln"/>
+	<name meta="KArbG Mainz" technical="kag_mainz" original="Kirchliches Arbeitsgericht erster Instanz für die Diözesen Limburg – Mainz – Speyer – Trier"/>
+	<name meta="KArbG Münster" technical="kag_muenster" original="Kirchliches Arbeitsgericht erster Instanz für die Diözese Münster"/>
+	<name meta="KArbG Paderborn" technical="kag_paderborn" original="Kirchliches Arbeitsgericht erster Instanz für die Erzdiözese Paderborn"/>
+	<name meta="KArbG Rottenburg-Stuttgart" technical="kag_stuttgart" original="Kirchliches Arbeitsgericht erster Instanz für die Diözese Rottenburg-Stuttgart"/>
+	<name meta="KAGH" technical="kagh" original="Kirchlichen Arbeitsgerichtshof"/>
+	<name meta="KArbG München" technical="kagd_muenchen" original="Kirchliches Arbeitsgericht erster Instanz für die (Erz-) Diözesen München und Freising, Bamberg, Augsburg, Eichstätt, Passau, Regensburg und Würzburg"/>
+	<name meta="KG" technical="kg" original="Kammergericht"/>
+	<name meta="KArbG Hamburg" technical="karbg_hamburg" original="Gemeinsames Kirchliches Arbeitsgericht in Hamburg"/>
+	<name meta="KrG Annaberg" technical="krg_annaberg" original="Kreisgericht Annaberg"/>
+	<name meta="KrG Bad Salzungen" technical="krg_salzungen" original="Kreisgericht Bad Salzungen"/>
+	<name meta="KrG Chemnitz" technical="krg_chemnitz" original="Kreisgericht Chemnitz"/>
+	<name meta="KrG Dresden" technical="krg_dresden" original="Kreisgericht Dresden"/>
+	<name meta="KrG Eisenhüttenstadt" technical="krg_eisenhuettenstadt" original="Kreisgericht Eisenhüttenstadt"/>
+	<name meta="KrG Erfurt" technical="krg_erfurt" original="Kreisgericht Erfurt"/>
+	<name meta="KrG Halle" technical="krg_halle" original="Kreisgericht Halle"/>
+	<name meta="KrG Leipzig-Stadt" technical="krg_leipzig-stadt" original="Kreisgericht Leipzig-Stadt"/>
+	<name meta="KrG Lübben" technical="krg_luebben" original="Kreisgericht Lübben"/>
+	<name meta="KrG Luckenwalde" technical="krg_luckenwalde" original="Kreisgericht Luckenwalde"/>
+	<name meta="KrG Magdeburg" technical="krg_magdeburg" original="Kreisgericht Magdeburg"/>
+	<name meta="KrG Neuhaus/RwG" technical="krg_neuhaus" original="Kreisgericht Neuhaus/RwG"/>
+	<name meta="KrG Oranienburg" technical="krg_oranienburg" original="Kreisgericht Oranienburg"/>
+	<name meta="KrG Rostock" technical="krg_rostock" original="Kreisgericht Rostock"/>
+	<name meta="KrG Rostock-Stadt" technical="krg_rostock-stadt" original="Kreisgericht Rostock-Stadt"/>
+	<name meta="KrG Schönebeck" technical="krg_schoenebeck" original="Kreisgericht Schönebeck"/>
+	<name meta="KrG Suhl" technical="krg_suhl" original="Kreisgericht Suhl"/>
+	<name meta="KrG Weimar" technical="krg_weimar" original="Kreisgericht Weimar"/>
+	<name meta="KrG Zwickau-Land" technical="krg_zwickau-land" original="Kreisgericht Zwickau-Land"/>
+	<name meta="KrG Zwickau-Stadt" technical="krg_zwickau-stadt" original="Kreisgericht Zwickau-Stadt"/>
+	<name meta="LAG Baden-Württemberg" technical="lag_bw" original="Landesarbeitsgericht Baden-Württemberg"/>
+	<name meta="LAG Berlin" technical="lag_be" original="Landesarbeitsgericht Berlin"/>
+	<name meta="LAG Berlin-Brandenburg" technical="lag_be-br" original="Landesarbeitsgericht Berlin-Brandenburg"/>
+	<name meta="LAG Brandenburg" technical="lag_br" original="Landesarbeitsgericht Brandenburg"/>
+	<name meta="LAG Bremen" technical="lag_hb" original="Landesarbeitsgericht Bremen"/>
+	<name meta="LAG Düsseldorf" technical="lag_duesseldorf" original="Landesarbeitsgericht Düsseldorf"/>
+	<name meta="LAG Hamburg" technical="lag_hh" original="Landesarbeitsgericht Hamburg"/>
+	<name meta="LAG Hamm" technical="lag_hamm" original="Landesarbeitsgericht Hamm"/>
+	<name meta="LAG Hessen" technical="lag_he" original="Hessisches Landesarbeitsgericht"/>
+	<name meta="LAG Köln" technical="lag_koeln" original="Landesarbeitsgericht Köln"/>
+	<name meta="LAG Mecklenburg-Vorpommern" technical="lag_mv" original="Landesarbeitsgericht Mecklenburg-Vorpommern"/>
+	<name meta="LAG München" technical="lag_muenchen" original="Landesarbeitsgericht München"/>
+	<name meta="LAG Niedersachsen" technical="lag_ni" original="Landesarbeitsgericht Niedersachsen"/>
+	<name meta="LAG Nürnberg" technical="lag_nuernberg" original="Landesarbeitsgericht Nürnberg"/>
+	<name meta="LAG Rheinland-Pfalz" technical="lag_rp" original="Landesarbeitsgericht Rheinland-Pfalz"/>
+	<name meta="LAG Saarland" technical="lag_sl" original="Landesarbeitsgericht Saarland"/>
+	<name meta="LAG Sachsen" technical="lag_sn" original="Sächsisches Landesarbeitsgericht"/>
+	<name meta="LAG Sachsen-Anhalt" technical="lag_st" original="Landesarbeitsgericht Sachsen-Anhalt"/>
+	<name meta="LAG Schleswig-Holstein" technical="lag_sh" original="Landesarbeitsgericht Schleswig-Holstein"/>
+	<name meta="LAG Thüringen" technical="lag_th" original="Thüringer Landesarbeitsgericht"/>
+	<name meta="LBG für Architekten Stuttgart" technical="lbgarchitekten_stuttgart" original="Landesberufsgericht für Architekten Stuttgart"/>
+	<name meta="LBG für Heilberufe Bayern" technical="lbgheilberufe_by" original="Bayerisches Landesberufsgericht für die Heilberufe"/>
+	<name meta="LG Aachen" technical="lg_aachen" original="Landgericht Aachen"/>
+	<name meta="LG Amberg" technical="lg_amberg" original="Landgericht Amberg"/>
+	<name meta="LG Ansbach" technical="lg_ansbach" original="Landgericht Ansbach"/>
+	<name meta="LG Arnsberg" technical="lg_arnsberg" original="Landgericht Arnsberg"/>
+	<name meta="LG Aschaffenburg" technical="lg_aschaffenburg" original="Landgericht Aschaffenburg"/>
+	<name meta="LG Augsburg" technical="lg_augsburg" original="Landgericht Augsburg"/>
+	<name meta="LG Aurich" technical="lg_aurich" original="Landgericht Aurich"/>
+	<name meta="LG Bad Kreuznach" technical="lg_kreuznach" original="Landgericht Bad Kreuznach"/>
+	<name meta="LG Baden-Baden" technical="lg_baden-baden" original="Landgericht Baden-Baden"/>
+	<name meta="LG Bamberg" technical="lg_bamberg" original="Landgericht Bamberg"/>
+	<name meta="LG Bautzen" technical="lg_bautzen" original="Landgericht Bautzen"/>
+	<name meta="LG Bayreuth" technical="lg_bayreuth" original="Landgericht Bayreuth"/>
+	<name meta="LG Berlin" technical="lg_berlin" original="Landgericht Berlin"/>
+	<name meta="LG Bielefeld" technical="lg_bielefeld" original="Landgericht Bielefeld"/>
+	<name meta="LG Bochum" technical="lg_bochum" original="Landgericht Bochum"/>
+	<name meta="LG Bonn" technical="lg_bonn" original="Landgericht Bonn"/>
+	<name meta="LG Brandenburg" technical="lg_brandenburg" original="Landgericht Brandenburg"/>
+	<name meta="LG Braunschweig" technical="lg_braunschweig" original="Landgericht Braunschweig"/>
+	<name meta="LG Bremen" technical="lg_bremen" original="Landgericht Bremen"/>
+	<name meta="LG Bückeburg" technical="lg_bueckeburg" original="Landgericht Bückeburg"/>
+	<name meta="LG Chemnitz" technical="lg_chemnitz" original="Landgericht Chemnitz"/>
+	<name meta="LG Coburg" technical="lg_coburg" original="Landgericht Coburg"/>
+	<name meta="LG Cottbus" technical="lg_cottbus" original="Landgericht Cottbus"/>
+	<name meta="LG Dachau" technical="lg_dachau" original="Landgericht Dachau"/>
+	<name meta="LG Darmstadt" technical="lg_darmstadt" original="Landgericht Darmstadt"/>
+	<name meta="LG Deggendorf" technical="lg_deggendorf" original="Landgericht Deggendorf"/>
+	<name meta="LG Dessau" technical="lg_dessau" original="Landgericht Dessau-Roßlau"/>
+	<name meta="LG Detmold" technical="lg_detmold" original="Landgericht Detmold"/>
+	<name meta="LG Dortmund" technical="lg_dortmund" original="Landgericht Dortmund"/>
+	<name meta="LG Dresden" technical="lg_dresden" original="Landgericht Dresden"/>
+	<name meta="LG Duisburg" technical="lg_duisburg" original="Landgericht Duisburg"/>
+	<name meta="LG Düsseldorf" technical="lg_duesseldorf" original="Landgericht Düsseldorf"/>
+	<name meta="LG Ellwangen/Jagst" technical="lg_ellwangen" original="Landgericht Ellwangen (Jagst)"/>
+	<name meta="LG Erfurt" technical="lg_erfurt" original="Landgericht Erfurt"/>
+	<name meta="LG Essen" technical="lg_essen" original="Landgericht Essen"/>
+	<name meta="LG Flensburg" technical="lg_flensburg" original="Landgericht Flensburg"/>
+	<name meta="LG Frankenthal" technical="lg_frankenthal" original="Landgericht Frankenthal (Pfalz)"/>
+	<name meta="LG Frankfurt/Main" technical="lg_frankfurt-main" original="Landgericht Frankfurt (Main)"/>
+	<name meta="LG Frankfurt/Oder" technical="lg_frankfurt-oder" original="Landgericht Frankfurt (Oder)"/>
+	<name meta="LG Freiburg" technical="lg_freiburg" original="Landgericht Freiburg im Breisgau"/>
+	<name meta="LG Fulda" technical="lg_fulda" original="Landgericht Fulda"/>
+	<name meta="LG für Zivilrechtssachen Graz" technical="lgzrs_graz" original="Landgericht für Zivilrechtssachen Graz"/>
+	<name meta="LG Gera" technical="lg_gera" original="Landgericht Gera"/>
+	<name meta="LG Gießen" technical="lg_giessen" original="Landgericht Gießen"/>
+	<name meta="LG Görlitz" technical="lg_goerlitz" original="Landgericht Görlitz"/>
+	<name meta="LG Göttingen" technical="lg_goettingen" original="Landgericht Göttingen"/>
+	<name meta="LG Hagen" technical="lg_hagen" original="Landgericht Hagen"/>
+	<name meta="LG Halle" technical="lg_halle" original="Landgericht Halle (Saale)"/>
+	<name meta="LG Hamburg" technical="lg_hamburg" original="Landgericht Hamburg"/>
+	<name meta="LG Hanau" technical="lg_hanau" original="Landgericht Hanau"/>
+	<name meta="LG Hannover" technical="lg_hannover" original="Landgericht Hannover"/>
+	<name meta="LG Hechingen" technical="lg_hechingen" original="Landgericht Hechingen"/>
+	<name meta="LG Heidelberg" technical="lg_heidelberg" original="Landgericht Heidelberg"/>
+	<name meta="LG Heilbronn" technical="lg_heilbronn" original="Landgericht Heilbronn"/>
+	<name meta="LG Heraklion (Griechenland)" technical="int_gr-lg-heraklion" original="Landgericht Heraklion (Griechenland)"/>
+	<name meta="LG Hildesheim" technical="lg_hildesheim" original="Landgericht Hildesheim"/>
+	<name meta="LG Hof" technical="lg_hof" original="Landgericht Hof / Saale"/>
+	<name meta="LG Ingolstadt" technical="lg_ingolstadt" original="Landgericht Ingolstadt"/>
+	<name meta="LG Innsbruck" technical="int_at-lg-innsbruck" original="Landgericht Innsbruck"/>
+	<name meta="LG Itzehoe" technical="lg_itzehoe" original="Landgericht Itzehoe"/>
+	<name meta="LG Kaiserslautern" technical="lg_kaiserslautern" original="Landgericht Kaiserslautern"/>
+	<name meta="LG Karlsruhe" technical="lg_karlsruhe" original="Landgericht Karlsruhe"/>
+	<name meta="LG Kassel" technical="lg_kassel" original="Landgericht Kassel"/>
+	<name meta="LG Kempten/Allgäu" technical="lg_kempten" original="Landgericht Kempten (Allgäu)"/>
+	<name meta="LG Kiel" technical="lg_kiel" original="Landgericht Kiel"/>
+	<name meta="LG Kleve" technical="lg_kleve" original="Landgericht Kleve"/>
+	<name meta="LG Koblenz" technical="lg_koblenz" original="Landgericht Koblenz"/>
+	<name meta="LG Köln" technical="lg_koeln" original="Landgericht Köln"/>
+	<name meta="LG Konstanz" technical="lg_konstanz" original="Landgericht Konstanz"/>
+	<name meta="LG Krefeld" technical="lg_krefeld" original="Landgericht Krefeld"/>
+	<name meta="LG Landau" technical="lg_landau" original="Landgericht Landau in der Pfalz"/>
+	<name meta="LG Landshut" technical="lg_landshut" original="Landgericht Landshut"/>
+	<name meta="LG Leipzig" technical="lg_leipzig" original="Landgericht Leipzig"/>
+	<name meta="LG Limburg" technical="lg_limburg" original="Landgericht Limburg a.d. Lahn"/>
+	<name meta="LG Lübeck" technical="lg_luebeck" original="Landgericht Lübeck"/>
+	<name meta="LG Lüneburg" technical="lg_lueneburg" original="Landgericht Lüneburg"/>
+	<name meta="LG Magdeburg" technical="lg_magdeburg" original="Landgericht Magdeburg"/>
+	<name meta="LG Mainz" technical="lg_mainz" original="Landgericht Mainz"/>
+	<name meta="LG Mannheim" technical="lg_mannheim" original="Landgericht Mannheim"/>
+	<name meta="LG Marburg" technical="lg_marburg" original="Landgericht Marburg"/>
+	<name meta="LG Meiningen" technical="lg_meiningen" original="Landgericht Meiningen"/>
+	<name meta="LG Memmingen" technical="lg_memmingen" original="Landgericht Memmingen"/>
+	<name meta="LG Mönchengladbach" technical="lg_moenchengladbach" original="Landgericht Mönchengladbach"/>
+	<name meta="LG Mosbach" technical="lg_mosbach" original="Landgericht Mosbach"/>
+	<name meta="LG Mühlhausen" technical="lg_muehlhausen" original="Landgericht Mühlhausen"/>
+	<name meta="LG München" technical="lg_muenchen" original="Landgericht München"/>
+	<name meta="LG München I" technical="lg_muenchen-i" original="Landgericht München I"/>
+	<name meta="LG München II" technical="lg_muenchen-ii" original="Landgericht München II"/>
+	<name meta="LG Münster" technical="lg_muenster" original="Landgericht Münster"/>
+	<name meta="LG Neubrandenburg" technical="lg_neubrandenburg" original="Landgericht Neubrandenburg"/>
+	<name meta="LG Neuruppin" technical="lg_neuruppin" original="Landgericht Neuruppin"/>
+	<name meta="LG Nürnberg-Fürth" technical="lg_nuernberg-fuerth" original="Landgericht Nürnberg-Fürth"/>
+	<name meta="LG Offenburg" technical="lg_offenburg" original="Landgericht Offenburg"/>
+	<name meta="LG Oldenburg" technical="lg_oldenburg" original="Landgericht Oldenburg (Oldb.)"/>
+	<name meta="LG Osnabrück" technical="lg_osnabrueck" original="Landgericht Osnabrück"/>
+	<name meta="LG Paderborn" technical="lg_paderborn" original="Landgericht Paderborn"/>
+	<name meta="LG Passau" technical="lg_passau" original="Landgericht Passau"/>
+	<name meta="LG Pforzheim" technical="lg_pforzheim" original="Landgericht Pforzheim"/>
+	<name meta="LG Potsdam" technical="lg_potsdam" original="Landgericht Potsdam"/>
+	<name meta="LG Ravensburg" technical="lg_ravensburg" original="Landgericht Ravensburg"/>
+	<name meta="LG Regensburg" technical="lg_regensburg" original="Landgericht Regensburg"/>
+	<name meta="LG Rostock" technical="lg_rostock" original="Landgericht Rostock"/>
+	<name meta="LG Rottweil" technical="lg_rottweil" original="Landgericht Rottweil"/>
+	<name meta="LG Saarbrücken" technical="lg_saarbruecken" original="Landgericht Saarbrücken"/>
+	<name meta="LG Schweinfurt" technical="lg_schweinfurt" original="Landgericht Schweinfurt"/>
+	<name meta="LG Schwerin" technical="lg_schwerin" original="Landgericht Schwerin"/>
+	<name meta="LG Siegen" technical="lg_siegen" original="Landgericht Siegen"/>
+	<name meta="LG Stade" technical="lg_stade" original="Landgericht Stade"/>
+	<name meta="LG Stendal" technical="lg_stendal" original="Landgericht Stendal"/>
+	<name meta="LG Stralsund" technical="lg_stralsund" original="Landgericht Stralsund"/>
+	<name meta="LG Stuttgart" technical="lg_stuttgart" original="Landgericht Stuttgart"/>
+	<name meta="LG Traunstein" technical="lg_traunstein" original="Landgericht Traunstein"/>
+	<name meta="LG Trier" technical="lg_trier" original="Landgericht Trier"/>
+	<name meta="LG Tübingen" technical="lg_tuebingen" original="Landgericht Tübingen"/>
+	<name meta="LG Ulm" technical="lg_ulm" original="Landgericht Ulm"/>
+	<name meta="LG Verden" technical="lg_verden" original="Landgericht Verden (Aller)"/>
+	<name meta="LG Villingen-Schwenningen" technical="lg_villingen-schwenningen" original="Landgericht Villingen-Schwenningen"/>
+	<name meta="LG Waldshut-Tiengen" technical="lg_waldshut-tiengen" original="Landgericht Waldshut-Tiengen"/>
+	<name meta="LG Weiden/Oberpfalz" technical="lg_weiden" original="Landgericht Weiden in der Oberpfalz"/>
+	<name meta="LG Wiesbaden" technical="lg_wiesbaden" original="Landgericht Wiesbaden"/>
+	<name meta="LG Wuppertal" technical="lg_wuppertal" original="Landgericht Wuppertal"/>
+	<name meta="LG Würzburg" technical="lg_wuerzburg" original="Landgericht Würzburg"/>
+	<name meta="LG Zweibrücken" technical="lg_zweibruecken" original="Landgericht Zweibrücken"/>
+	<name meta="LG Zwickau" technical="lg_zwickau" original="Landgericht Zwickau"/>
+	<name meta="LSG Baden-Württemberg" technical="lsg_bw" original="Landessozialgericht Baden-Württemberg"/>
+	<name meta="LSG Berlin" technical="lsg_be" original="Landessozialgericht Berlin"/>
+	<name meta="LSG Berlin-Brandenburg" technical="lsg_be-br" original="Landessozialgericht Berlin-Brandenburg"/>
+	<name meta="LSG Brandenburg" technical="lsg_br" original="Landessozialgericht für das Land Brandenburg"/>
+	<name meta="LSG Bremen" technical="lsg_hb" original="Landessozialgericht Bremen Zweigstelle Bremen"/>
+	<name meta="LSG Hamburg" technical="lsg_hh" original="Landessozialgericht Hamburg"/>
+	<name meta="LSG Hessen" technical="lsg_he" original="Hessisches Landessozialgericht"/>
+	<name meta="LSG Mecklenburg-Vorpommern" technical="lsg_mv" original="Landessozialgericht Mecklenburg-Vorpommern"/>
+	<name meta="LSG Niedersachsen" technical="lsg_ni" original="Landessozialgericht Niedersachsen"/>
+	<name meta="LSG Niedersachsen-Bremen" technical="lsg_ni-hb" original="Landessozialgericht Niedersachsen-Bremen"/>
+	<name meta="LSG Nordrhein-Westfalen" technical="lsg_nw" original="Landessozialgericht Nordrhein-Westfalen"/>
+	<name meta="LSG Rheinland-Pfalz" technical="lsg_rp" original="Landessozialgericht Rheinland-Pfalz"/>
+	<name meta="LSG Saarland" technical="lsg_sl" original="Landessozialgerichtf für das Saarland"/>
+	<name meta="LSG Sachsen" technical="lsg_sn" original="Sächsisches Landessozialgericht"/>
+	<name meta="LSG Sachsen-Anhalt" technical="lsg_st" original="Landessozialgericht Sachsen-Anhalt"/>
+	<name meta="LSG Schleswig-Holstein" technical="lsg_sh" original="Schleswig-Holsteinisches Landessozialgericht"/>
+	<name meta="LSG Thüringen" technical="lsg_th" original="Thüringer Landessozialgericht"/>
+	<name meta="LVerfG Mecklenburg-Vorpommern" technical="lverfg_mv" original="Landesverfassungsgericht Mecklenburg-Vorpommern"/>
+	<name meta="LVerfG Sachsen-Anhalt" technical="lverfg_st" original="Landesverfassungsgericht Sachsen-Anhalt"/>
+	<name meta="LVerfG Schleswig-Holstein" technical="lverfg_sh" original="Schleswig-Holsteinische Landesverfassungsgericht"/>
+	<name meta="LVG Aachen" technical="lvg_aachen" original="Landesverwaltungsgericht Aachen"/>
+	<name meta="LVG Arnsberg" technical="lvg_arnsberg" original="Landesverwaltungsgericht Arnsberg"/>
+	<name meta="LVG Düsseldorf" technical="lvg_duesseldorf" original="Landesverwaltungsgericht Düsseldorf"/>
+	<name meta="LVG Gelsenkirchen" technical="lvg_gelsenkirchen" original="Landesverwaltungsgericht Gelsenkirchen"/>
+	<name meta="LVG Hamburg" technical="lvg_hamburg" original="Landesverwaltungsgericht Hamburg"/>
+	<name meta="LVG Hannover" technical="lvg_hannover" original="Landesverwaltungsgericht Hannover"/>
+	<name meta="LVG Köln" technical="lvg_koeln" original="Landesverwaltungsgericht Köln"/>
+	<name meta="LVG Minden" technical="lvg_minden" original="Landesverwaltungsgericht Minden"/>
+	<name meta="LVG Münster" technical="lvg_muenster" original="Landesverwaltungsgericht Münster"/>
+	<name meta="LVG Oldenburg" technical="lvg_oldenburg" original="Landesverwaltungsgericht Oldenburg"/>
+	<name meta="LVG Rheinland-Pfalz" technical="lvg_rp" original="Landesverwaltungsgericht Rheinland-Pfalz"/>
+	<name meta="Notariat Ravensburg als Vormundschaftsgericht" technical="not_ravensburg" original="Notariat Ravensburg als Vormundschaftsgericht"/>
+	<name meta="ÖBVA" technical="bva_at" original="Österreichisches Bundesvergabeamt"/>
+	<name meta="Octrooicentrum Nederland" technical="int_nl_pa" original="Octrooicentrum Nederland"/>
+	<name meta="OFD Erfurt" technical="ofd_erfurt" original="Oberfinanzdirektion Erfurt"/>
+	<name meta="OFD Frankfurt/Main" technical="ofd_frankfurt-main" original="Oberfinanzdirektion Frankfurt am Main"/>
+	<name meta="OFD Koblenz" technical="ofd_koblenz" original="Oberfinanzdirektion Koblenz"/>
+	<name meta="OGH" technical="ogh" original="Oberster Gerichtshof für die Britische Zone"/>
+	<name meta="OLG Bamberg" technical="olg_bamberg" original="Oberlandesgericht Bamberg"/>
+	<name meta="OLG Brandenburg" technical="olg_brandenburg" original="Brandenburgisches Oberlandesgericht"/>
+	<name meta="OLG Braunschweig" technical="olg_braunschweig" original="Oberlandesgericht Braunschweig"/>
+	<name meta="OLG Bremen" technical="olg_bremen" original="Hanseatisches OLG Bremen"/>
+	<name meta="OLG Celle" technical="olg_celle" original="Oberlandesgericht Celle"/>
+	<name meta="OLG Dresden" technical="olg_dresden" original="Oberlandesgericht Dresden"/>
+	<name meta="OLG Düsseldorf" technical="olg_duesseldorf" original="Oberlandesgericht Düsseldorf"/>
+	<name meta="OLG Frankfurt/Main" technical="olg_frankfurt-main" original="Oberlandesgericht Frankfurt (Main)"/>
+	<name meta="OLG Hamburg" technical="olg_hamburg" original="Hanseatisches Oberlandesgericht Hamburg"/>
+	<name meta="OLG Hamm" technical="olg_hamm" original="Oberlandesgericht Hamm"/>
+	<name meta="OLG Innsbruck" technical="int_at-olg-innsbruck" original="Oberlandesgericht Innsbruck"/>
+	<name meta="OLG Karlsruhe" technical="olg_karlsruhe" original="Oberlandesgericht Karlsruhe"/>
+	<name meta="OLG Koblenz" technical="olg_koblenz" original="Oberlandesgericht Koblenz"/>
+	<name meta="OLG Köln" technical="olg_koeln" original="Oberlandesgericht Köln"/>
+	<name meta="OLG München" technical="olg_muenchen" original="Oberlandesgericht München"/>
+	<name meta="OLG Naumburg" technical="olg_naumburg" original="Oberlandesgericht Naumburg"/>
+	<name meta="OLG Nürnberg" technical="olg_nuernberg" original="Oberlandesgericht Nürnberg"/>
+	<name meta="OLG Oldenburg" technical="olg_oldenburg" original="Oberlandesgericht Oldenburg"/>
+	<name meta="OLG Rostock" technical="olg_rostock" original="Oberlandesgericht Rostock"/>
+	<name meta="OLG Saarland" technical="olg_saarland" original="Saarländisches Oberlandesgericht Saarbrücken"/>
+	<name meta="OLG Schleswig-Holstein" technical="olg_schleswig-holstein" original="Schleswig-Holsteinisches Oberlandesgericht"/>
+	<name meta="OLG Stuttgart" technical="olg_stuttgart" original="Oberlandesgericht Stuttgart"/>
+	<name meta="OLG Thüringen" technical="olg_thueringen" original="Thüringer Oberlandesgericht in Jena"/>
+	<name meta="OLG Wien" technical="int_at-olg-wien" original="Oberlandesgericht Wien"/>
+	<name meta="OLG Zweibrücken" technical="olg_zweibruecken" original="Pfälzisches Oberlandesgericht Zweibrücken"/>
+	<name meta="ÖOGH" technical="int_at-ogh-wien" original="Oberster Gerichtshof Österreichs"/>
+	<name meta="ÖOPM" technical="int_au_opm" original="Oberste Patent- und Markensenat"/>
+	<name meta="ÖPA" technical="int_au_pa" original="Österrreichisches Patentamt"/>
+	<name meta="ÖVfGH" technical="int_at-verfgh" original="Österreichischer Verfassungsgerichtshof"/>
+	<name meta="OVG Berlin" technical="ovg_be" original="Oberverwaltungsgericht Berlin"/>
+	<name meta="OVG Berlin-Brandenburg" technical="ovg_be-br" original="Oberverwaltungsgericht Berlin-Brandenburg"/>
+	<name meta="OVG Brandenburg" technical="ovg_br" original="Oberverwaltungsgericht Brandenburg"/>
+	<name meta="OVG Bremen" technical="ovg_hb" original="Oberverwaltungsgericht der Freien Hansestadt Bremen"/>
+	<name meta="OVG für die Länder Niedersachsen und Schleswig-Holstein" technical="ovg_ni-sh" original="Oberverwaltungsgericht für die Länder Niedersachsen und Schleswig-Holstein"/>
+	<name meta="OVG Hamburg" technical="ovg_hh" original="Hamburgisches Oberverwaltungsgericht"/>
+	<name meta="OVG Mecklenburg-Vorpommern" technical="ovg_mv" original="Oberverwaltungsgericht Mecklenburg-Vorpommern"/>
+	<name meta="OVG Niedersachsen" technical="ovg_ni" original="Niedersächsisches Oberverwaltungsgericht"/>
+	<name meta="OVG Nordrhein-Westfalen" technical="ovg_nw" original="Oberverwaltungsgericht für das Land Nordrhein-Westfalen"/>
+	<name meta="OVG Rheinland-Pfalz" technical="ovg_rp" original="Oberverwaltungsgericht Rheinland-Pfalz"/>
+	<name meta="OVG Saarland" technical="ovg_sl" original="Oberverwaltungsgericht des Saarlandes"/>
+	<name meta="OVG Sachsen" technical="ovg_sn" original="Sächsisches Oberverwaltungsgericht"/>
+	<name meta="OVG Sachsen-Anhalt" technical="ovg_st" original="Oberverwaltungsgericht des Landes Sachsen-Anhalt"/>
+	<name meta="OVG Schleswig-Holstein" technical="ovg_sh" original="Schleswig - Holsteinisches Oberverwaltungsgericht"/>
+	<name meta="OVG Thüringen" technical="ovg_th" original="Thüringer Oberverwaltungsgericht"/>
+	<name meta="OVG Wien" technical="int_ovg-wien" original="Oberverwaltungsgericht Wien"/>
+	<name meta="Patentbesvärsrätten" technical="int_sw_pbr" original="Patentbesvärsrätten"/>
+	<name meta="Patents Court att the High Court of Justice for England and Wales" technical="int_uk_ewpc" original="Patents Court att the High Court of Justice for England and Wales"/>
+	<name meta="Privy Council" technical="int_uk_pc" original="Privy Council"/>
+	<name meta="PrOVG" technical="ovg_pr" original="Preußisches Oberverwaltungsgericht"/>
+	<name meta="RFH" technical="rfh" original="Reichsfinanzhof"/>
+	<name meta="RG" technical="rg" original="Reichsgericht"/>
+	<name meta="RKGE" technical="int_ch_rkge" original="Eidgenössische Rekurskommission für Geistiges Eigentum"/>
+	<name meta="Rospatent" technical="int_ru_rospatent" original="Federal service on intellectual property, patent and trade marks"/>
+	<name meta="RVG" technical="rvg" original="Reichsverwaltungsgericht"/>
+	<name meta="Schweizerisches Bundesgericht" technical="int_ch-bg" original="Schweizerisches Bundesgericht"/>
+	<name meta="SCOTUS" technical="int_us_scotus" original="Supreme Court of the United States"/>
+	<name meta="SG Aachen" technical="sg_aachen" original="Sozialgericht Aachen"/>
+	<name meta="SG Altenburg" technical="sg_altenburg" original="Sozialgericht Altenburg"/>
+	<name meta="SG Augsburg" technical="sg_augsburg" original="Sozialgericht Augsburg"/>
+	<name meta="SG Aurich" technical="sg_aurich" original="Sozialgericht Aurich"/>
+	<name meta="SG Bayreuth" technical="sg_bayreuth" original="Sozialgericht Bayreuth"/>
+	<name meta="SG Berlin" technical="sg_berlin" original="Sozialgericht Berlin"/>
+	<name meta="SG Braunschweig" technical="sg_braunschweig" original="Sozialgericht Braunschweig"/>
+	<name meta="SG Bremen" technical="sg_bremen" original="Sozialgericht Bremen"/>
+	<name meta="SG Chemnitz" technical="sg_chemnitz" original="Sozialgericht Chemnitz"/>
+	<name meta="SG Cottbus" technical="sg_cottbus" original="Sozialgericht Cottbus"/>
+	<name meta="SG Darmstadt" technical="sg_darmstadt" original="Sozialgericht Darmstadt"/>
+	<name meta="SG Dessau" technical="sg_dessau" original="Sozialgericht Dessau-Roßlau"/>
+	<name meta="SG Detmold" technical="sg_detmold" original="Sozialgericht Detmold"/>
+	<name meta="SG Dortmund" technical="sg_dortmund" original="Sozialgericht Dortmund"/>
+	<name meta="SG Dresden" technical="sg_dresden" original="Sozialgericht Dresden"/>
+	<name meta="SG Duisburg" technical="sg_duisburg" original="Sozialgericht Duisburg"/>
+	<name meta="SG Düsseldorf" technical="sg_duesseldorf" original="Sozialgericht Düsseldorf"/>
+	<name meta="SG Frankfurt/Main" technical="sg_frankfurt-main" original="Sozialgericht Frankfurt am Main"/>
+	<name meta="SG Frankfurt/Oder" technical="sg_frankfurt-oder" original="Sozialgericht Frankfurt (Oder)"/>
+	<name meta="SG Freiburg/Breisgau" technical="sg_freiburg" original="Sozialgericht Freiburg"/>
+	<name meta="SG Fulda" technical="sg_fulda" original="Sozialgericht Fulda"/>
+	<name meta="SG Gelsenkirchen" technical="sg_gelsenkirchen" original="Sozialgericht Gelsenkirchen"/>
+	<name meta="SG Gießen" technical="sg_giessen" original="Sozialgericht Gießen"/>
+	<name meta="SG Gotha" technical="sg_gotha" original="Sozialgericht Gotha"/>
+	<name meta="SG Halle" technical="sg_halle" original="Sozialgericht Halle"/>
+	<name meta="SG Hamburg" technical="sg_hamburg" original="Sozialgericht Hamburg"/>
+	<name meta="SG Hannover" technical="sg_hannover" original="Sozialgericht Hannover"/>
+	<name meta="SG Heilbronn" technical="sg_heilbronn" original="Sozialgericht Heilbronn"/>
+	<name meta="SG Hildesheim" technical="sg_hildesheim" original="Sozialgericht Hildesheim"/>
+	<name meta="SG Itzehoe" technical="sg_itzehoe" original="Sozialgericht Itzehoe"/>
+	<name meta="SG Karlsruhe" technical="sg_karlsruhe" original="Sozialgericht Karlsruhe"/>
+	<name meta="SG Kassel" technical="sg_kassel" original="Sozialgericht Kassel"/>
+	<name meta="SG Kiel" technical="sg_kiel" original="Sozialgericht Kiel"/>
+	<name meta="SG Koblenz" technical="sg_koblenz" original="Sozialgericht Koblenz"/>
+	<name meta="SG Köln" technical="sg_koeln" original="Sozialgericht Köln"/>
+	<name meta="SG Konstanz" technical="sg_konstanz" original="Sozialgericht Konstanz"/>
+	<name meta="SG Landshut" technical="sg_landshut" original="Sozialgericht Landshut"/>
+	<name meta="SG Leipzig" technical="sg_leipzig" original="Sozialgericht Leipzig"/>
+	<name meta="SG Lübeck" technical="sg_luebeck" original="Sozialgericht Lübeck"/>
+	<name meta="SG Lüneburg" technical="sg_lueneburg" original="Sozialgericht Lüneburg"/>
+	<name meta="SG Magdeburg" technical="sg_magdeburg" original="Sozialgericht Magdeburg"/>
+	<name meta="SG Mainz" technical="sg_mainz" original="Sozialgericht Mainz"/>
+	<name meta="SG Mannheim" technical="sg_mannheim" original="Sozialgericht Mannheim"/>
+	<name meta="SG Marburg/Lahn" technical="sg_marburg" original="Sozialgericht Marburg"/>
+	<name meta="SG Meiningen" technical="sg_meiningen" original="Sozialgericht Meiningen"/>
+	<name meta="SG München" technical="sg_muenchen" original="Sozialgericht München"/>
+	<name meta="SG Münster" technical="sg_muenster" original="Sozialgericht Münster"/>
+	<name meta="SG Neubrandenburg" technical="sg_neubrandenburg" original="SG Neubrandenburg"/>
+	<name meta="SG Neuruppin" technical="sg_neuruppin" original="Sozialgericht Neuruppin"/>
+	<name meta="SG Nordhausen" technical="sg_nordhausen" original="Sozialgericht Nordhausen"/>
+	<name meta="SG Nürnberg" technical="sg_nuernberg" original="Sozialgericht Nürnberg"/>
+	<name meta="SG Oldenburg" technical="sg_oldenburg" original="Sozialgericht Oldenburg"/>
+	<name meta="SG Osnabrück" technical="sg_osnabrueck" original="Sozialgericht Osnabrück"/>
+	<name meta="SG Potsdam" technical="sg_potsdam" original="Sozialgericht Potsdam"/>
+	<name meta="SG Regensburg" technical="sg_regensburg" original="Sozialgericht Regensburg"/>
+	<name meta="SG Reutlingen" technical="sg_reutlingen" original="Sozialgericht Reutlingen"/>
+	<name meta="SG Rostock" technical="sg_rostock" original="Sozialgericht Rostock"/>
+	<name meta="SG Saarland" technical="sg_saarland" original="Sozialgericht für das Saarland"/>
+	<name meta="SG Schleswig" technical="sg_schleswig" original="Sozialgericht Schleswig"/>
+	<name meta="SG Schwerin" technical="sg_schwerin" original="Sozialgericht Schwerin"/>
+	<name meta="SG Speyer" technical="sg_speyer" original="Sozialgericht Speyer"/>
+	<name meta="SG Stade" technical="sg_stade" original="Sozialgericht Stade"/>
+	<name meta="SG Stendal" technical="sg_stendal" original="Sozialgericht Stendal"/>
+	<name meta="SG Stralsund" technical="sg_stralsund" original="Sozialgericht Stralsund"/>
+	<name meta="SG Stuttgart" technical="sg_stuttgart" original="Sozialgericht Stuttgart"/>
+	<name meta="SG Trier" technical="sg_trier" original="Sozialgericht Trier"/>
+	<name meta="SG Ulm" technical="sg_ulm" original="Sozialgericht Ulm"/>
+	<name meta="SG Wiesbaden" technical="sg_wiesbaden" original="Sozialgericht Wiesbaden"/>
+	<name meta="SG Würzburg" technical="sg_wuerzburg" original="Sozialgericht Würzburg"/>
+	<name meta="SportG Oberliga Baden-Württemberg" technical="sportgoberliga_bw" original="Sportgericht der Oberliga Baden-Württemberg"/>
+	<name meta="SS ArbEG DPMA" technical="ss_arbge_dpma" original="Schiedsstelle nach dem ArbEG beim Deutschen Patent- und Markenamt"/>
+	<name meta="StGH Baden-Württemberg" technical="lverfg_bw" original="Staatsgerichtshof für das Land Baden-Württemberg"/>
+	<name meta="StGH Bremen" technical="lverfg_hb" original="Staatsgerichtshof der Freien Hansestadt Bremen"/>
+	<name meta="StGH Hessen" technical="lverfg_he" original="Staatsgerichtshof des Landes Hessen"/>
+	<name meta="StGH Liechtenstein" technical="int_stgh-fl" original="Staatsgerichtshof Liechtenstein"/>
+	<name meta="StGH Niedersachsen" technical="lverfg_ni" original="Niedersächsischer Staatsgerichtshof"/>
+	<name meta="TDG Mitte" technical="tdg_mitte" original="Truppendienstgericht Mitte"/>
+	<name meta="TDG Nord" technical="tdg_nord" original="Truppendienstgericht Nord"/>
+	<name meta="TDG Süd" technical="tdg_sued" original="Truppendienstgericht Süd"/>
+	<name meta="Türk Kassationshof" technical="int_kh-tr" original="Türkischer Kassationshof"/>
+	<name meta="UN-Kriegsverbrechertribunal" technical="un_tribunal" original="Internationalen Strafgericht für das ehemalige Jugoslawien"/>
+	<name meta="UPRP" technical="int_po_uprp" original="Urzad Patentowy Rzeczypospolitej Polskiej"/>
+	<name meta="VerfG Brandenburg" technical="lverfg_br" original="Verfassungsgericht der Landes Brandenburg"/>
+	<name meta="VerfG und VerwG der VELKD" technical="velkdvv" original="Verfassungs- und Verwaltungsgericht der Vereinigten Evangelisch-Lutherischen Kirche"/>
+	<name meta="VerfGerH Thüringen" technical="lverfg_th" original="Thüringer Verfassungsgerichtshof"/>
+	<name meta="VerfGH Berlin" technical="lverfg_be" original="Verfassungsgerichtshof Berlin"/>
+	<name meta="VerfGH Nordrhein-Westfalen" technical="lverfg_nw" original="Verfassungsgerichtshof Nordrhein-Westfalen"/>
+	<name meta="VerfGH Rheinland-Pfalz" technical="lverfg_rp" original="Verfassungsgerichtshof Rheinland-Pfalz"/>
+	<name meta="VerfGH Saarland" technical="lverfg_sl" original="Verfassungsgerichtshof Saarland"/>
+	<name meta="VerfGH Sachsen" technical="lverfg_sn" original="Verfassungsgerichtshof des Freistaates Sachsen"/>
+	<name meta="Vergabeprüfstelle der BvS" technical="bvsvps" original="Vergabeprüfstelle der Bundesanstalt für vereinigungsbedingte Sonderaufgaben"/>
+	<name meta="VG Aachen" technical="vg_aachen" original="Verwaltungsgericht Aachen"/>
+	<name meta="VG Ansbach" technical="vg_ansbach" original="Bayerisches Verwaltungsgericht Ansbach"/>
+	<name meta="VG Arnsberg" technical="vg_arnsberg" original="Verwaltungsgericht Arnsberg"/>
+	<name meta="VG Augsburg" technical="vg_augsburg" original="Bayerisches Verwaltungsgericht Augsburg"/>
+	<name meta="VG Bayreuth" technical="vg_bayreuth" original="Bayerisches Verwaltungsgericht Bayreuth"/>
+	<name meta="VG Berlin" technical="vg_berlin" original="Verwaltungsgericht Berlin"/>
+	<name meta="VG Braunschweig" technical="vg_braunschweig" original="Verwaltungsgericht Braunschweig"/>
+	<name meta="VG Bremen" technical="vg_bremen" original="Verwaltungsgericht Bremen"/>
+	<name meta="VG Chemnitz" technical="vg_chemnitz" original="Verwaltungsgericht Chemnitz"/>
+	<name meta="VG Cottbus" technical="vg_cottbus" original="Verwaltungsgericht Cottbus"/>
+	<name meta="VG Darmstadt" technical="vg_darmstadt" original="Verwaltungsgericht Darmstadt"/>
+	<name meta="VG Dessau" technical="vg_dessau" original="Verwaltungsgericht Dessau-Roßlau"/>
+	<name meta="VG Dresden" technical="vg_dresden" original="Verwaltungsgericht Dresden"/>
+	<name meta="VG Düsseldorf" technical="vg_duesseldorf" original="Verwaltungsgericht Düsseldorf"/>
+	<name meta="VG EvangK Berlin-Brandenburg-Schlesisches-Oberlausitz" technical="vg_ev-k-be-br-sch" original="Evangelische Kirche Berlin-Brandenburg-schlesische Oberlausitz"/>
+	<name meta="VG Frankfurt/Main" technical="vg_frankfurt-main" original="Verwaltungsgericht Frankfurt am Main"/>
+	<name meta="VG Frankfurt/Oder" technical="vg_frankfurt-oder" original="Verwaltungsgericht Frankfurt an der Oder"/>
+	<name meta="VG Freiburg" technical="vg_freiburg" original="Verwaltungsgericht Freiburg"/>
+	<name meta="VG Gelsenkirchen" technical="vg_gelsenkirchen" original="Verwaltungsgericht Gelsenkirchen"/>
+	<name meta="VG Gera" technical="vg_gera" original="Verwaltungsgericht Gera"/>
+	<name meta="VG Gießen" technical="vg_giessen" original="Verwaltungsgericht Gießen"/>
+	<name meta="VG Göttingen" technical="vg_goettingen" original="Verwaltungsgericht Göttingen"/>
+	<name meta="VG Greifswald" technical="vg_greifswald" original="Verwaltungsgericht Greifswald"/>
+	<name meta="VG Halle" technical="vg_halle" original="Verwaltungsgericht Halle"/>
+	<name meta="VG Hamburg" technical="vg_hamburg" original="Verwaltungsgericht Hamburg"/>
+	<name meta="VG Hannover" technical="vg_hannover" original="Verwaltungsgericht Hannover"/>
+	<name meta="VG Karlsruhe" technical="vg_karlsruhe" original="Verwaltungsgericht Karlsruhe"/>
+	<name meta="VG Kassel" technical="vg_kassel" original="Verwaltungsgericht Kassel"/>
+	<name meta="VG Koblenz" technical="vg_koblenz" original="Verwaltungsgericht Koblenz"/>
+	<name meta="VG Köln" technical="vg_koeln" original="Verwaltungsgericht Köln"/>
+	<name meta="VG Leipzig" technical="vg_leipzig" original="Verwaltungsgericht Leipzig"/>
+	<name meta="VG Lüneburg" technical="vg_lueneburg" original="Verwaltungsgericht Lüneburg"/>
+	<name meta="VG Magdeburg" technical="vg_magdeburg" original="Verwaltungsgericht Magdeburg"/>
+	<name meta="VG Mainz" technical="vg_mainz" original="Verwaltungsgericht Mainz"/>
+	<name meta="VG Mannheim" technical="vg_mannheim" original="Verwaltungsgericht Mannheim"/>
+	<name meta="VG Meiningen" technical="vg_meiningen" original="Verwaltungsgericht Meiningen"/>
+	<name meta="VG Minden" technical="vg_minden" original="Verwaltungsgericht Minden"/>
+	<name meta="VG München" technical="vg_muenchen" original="Verwaltungsgericht München"/>
+	<name meta="VG Münster" technical="vg_muenster" original="Verwaltungsgericht Münster"/>
+	<name meta="VG Neustadt/Weinstraße" technical="vg_neustadt-weinstrasse" original="Verwaltungsgericht Neustadt"/>
+	<name meta="VG Oldenburg/Oldenburg" technical="vg_oldenburg-ni" original="Verwaltungsgericht Oldenburg (Oldenburg)"/>
+	<name meta="VG Osnabrück" technical="vg_osnabrueck" original="Verwaltungsgericht Osnabrück"/>
+	<name meta="VG Potsdam" technical="vg_potsdam" original="Verwaltungsgericht Potsdam"/>
+	<name meta="VG Regensburg" technical="vg_regensburg" original="Verwaltungsgericht Regensburg"/>
+	<name meta="VG Saarlouis" technical="vg_saarlouis" original="Verwaltungsgericht des Saarlandes Saarlouis"/>
+	<name meta="VG Schleswig" technical="vg_schleswig" original="Verwaltungsgericht Schleswig-Holstein"/>
+	<name meta="VG Schwerin" technical="vg_schwerin" original="Verwaltungsgericht Schwerin"/>
+	<name meta="VG Sigmaringen" technical="vg_sigmaringen" original="Verwaltungsgericht Sigmaringen"/>
+	<name meta="VG Stade" technical="vg_stade" original="Verwaltungsgericht Stade"/>
+	<name meta="VG Stuttgart" technical="vg_stuttgart" original="Verwaltungsgericht Stuttgart"/>
+	<name meta="VG Trier" technical="vg_trier" original="Verwaltungsgericht Trier"/>
+	<name meta="VG Weimar" technical="vg_weimar" original="Verwaltungsgericht Weimar"/>
+	<name meta="VG Wiesbaden" technical="vg_wiesbaden" original="Verwaltungsgericht Wiesbaden"/>
+	<name meta="VG Würzburg" technical="vg_wuerzburg" original="Verwaltungsgericht Würzburg"/>
+	<name meta="VGH Baden-Württemberg" technical="vgh_bw" original="Verwaltungsgerichtshof Baden-Württemberg"/>
+	<name meta="VGH Hessen" technical="vgh_he" original="Hessischer Verwaltungsgerichtshof"/>
+	<name meta="VK Arnsberg" technical="vk_arnsberg" original="Vergabekammer Nordrhein-Westfalen bei der Bezirksregierung Arnsberg"/>
+	<name meta="VK Baden-Württemberg" technical="vk_bw" original="Vergabekammer Baden-Württemberg"/>
+	<name meta="VK Berlin" technical="vk_be" original="Vergabekammer Berlin"/>
+	<name meta="VK Brandenburg" technical="vk_br" original="Vergabekammer Brandenburg"/>
+	<name meta="VK Bremen" technical="vk_hb" original="Vergabekammer Bremen"/>
+	<name meta="VK Detmold" technical="vk_detmold" original="Vergabekammer Nordrhein-Westfalen bei der Bezirksregierung Detmold"/>
+	<name meta="VK Düsseldorf" technical="vk_duesseldorf" original="Vergabekammer Nordrhein-Westfalen bei der Bezirksregierung Düsseldorf"/>
+	<name meta="VK Hamburg Finanzbehörde" technical="vk_hamburg-finanz" original="Vergabekammer bei der Finanzbehörde Hamburg"/>
+	<name meta="VK Hamburg Stadtentwicklung und Umwelt" technical="vk_hamburg-st-u" original="Vergabekammer bei der Behörde für Stadtentwicklung und Umwelt Hamburg"/>
+	<name meta="VK Hannover" technical="vk_hannover" original="Vergabekammer Niedersachsen bei der Oberfinanzdirektion Hannover"/>
+	<name meta="VK Hessen" technical="vk_he" original="Vergabekammer Hessen"/>
+	<name meta="VK Köln" technical="vk_koeln" original="Vergabekammer Nordrhein-Westfalen bei der Bezirksregierung Köln"/>
+	<name meta="" technical="vk_lueneburg" original="Vergabekammer beim Niedersächsischen Ministerium für Wirtschaft, Arbeit und Verkehr -Regierungsvertretung Lüneburg"/>
+	<name meta="VK Mecklenburg-Vorpommern" technical="vk_mv" original="Vergabekammer Mecklenburg-Vorpommern"/>
+	<name meta="VK Münster" technical="vk_muenster" original="Vergabekammer Nordrhein-Westfalen bei der Bezirksregierung Münster"/>
+	<name meta="VK Nordbayern" technical="vk_nordbayern" original="Vergabekammer Nordbayern"/>
+	<name meta="VK Rheinland-Pfalz" technical="vk_rp" original="Vergabekammer Rheinland-Pfalz"/>
+	<name meta="VK Saarland" technical="vk_sl" original="Vergabekammer Saarland"/>
+	<name meta="VK Sachsen" technical="vk_sn" original="Vergabekammer Sachsen"/>
+	<name meta="VK Schleswig-Holstein" technical="vk_sh" original="Vergabekammer Schleswig-Holstein"/>
+	<name meta="VK Südbayern" technical="vk_suedbayern" original="Vergabekammer Südbayern"/>
+	<name meta="VK Thüringen" technical="vk_th" original="Vergabekammer Thüringen"/>
+	<name meta="VOB-Stelle Eichsfeld" technical="vob_eichsfeld" original="VOB-Stelle Eichsfeld"/>
+	<name meta="VOB-Stelle Niedersachsen" technical="vob_ni" original="VOB-Stelle Niedersachsen"/>
+	<name meta="VOB-Stelle Oberfranken" technical="vob_oberfranken" original="VOB-Stelle Oberfranken"/>
+	<name meta="VOB-Stelle Sachsen-Anhalt" technical="vob_st" original="VOB-Stelle Sachsen-Anhalt"/>
+	<name meta="VPS OFD Chemnitz" technical="vps_chemnitz" original="Vergabeprüfstelle der OFD Chemnitz"/>
+	<name meta="VÜA Baden-Württemberg" technical="vuea_bw" original="Vergabeüberwachungsausschuss Baden-Württemberg"/>
+	<name meta="VÜA Bayern" technical="vuea_by" original="Vergabeüberwachungsausschuss Bayern"/>
+	<name meta="VÜA Berlin" technical="vuea_be" original="Vergabeüberwachungsausschuss Berlin"/>
+	<name meta="VÜA Brandenburg" technical="vuea_br" original="Vergabeüberwachungsausschuss Brandenburg"/>
+	<name meta="VÜA Bremen" technical="vuea_hb" original="Vergabeüberwachungsausschuss Bremen"/>
+	<name meta="VÜA Bund" technical="vuea_bund" original="Vergabeüberwachungsausschuss Bund"/>
+	<name meta="VÜA Hessen" technical="vuea_he" original="Vergabeüberwachungsausschuss Hessen"/>
+	<name meta="VÜA Niedersachsen" technical="vuea_ni" original="Vergabeüberwachungsausschuss Niedersachsen"/>
+	<name meta="VÜA Nordrhein-Westfalen" technical="vuea_nw" original="Vergabeüberwachungsausschuss Nordrhein-Westfalen"/>
+	<name meta="VÜA Rheinland-Pfalz" technical="vuea_rp" original="Vergabeüberwachungsausschuss Rheinland-Pfalz"/>
+	<name meta="VÜA Saarland" technical="vuea_sl" original="Vergabeüberwachungsausschuss Saarland"/>
+	<name meta="VÜA Sachsen" technical="vuea_sn" original="Vergabeüberwachungsausschuss Sachsen"/>
+	<name meta="VÜA Sachsen-Anhalt" technical="vuea_st" original="Vergabeüberwachungsausschuss Sachsen-Anhalt"/>
+	<name meta="VÜA Schleswig-Holstein" technical="vuea_sh" original="Vergabeüberwachungsausschuss Schleswig-Holstein"/>
+	<name meta="VÜA Thüringen" technical="vuea_th" original="Vergabeüberwachungsausschuss Thüringen"/>
+	<name meta="Wahlprüfungsgericht Bremen" technical="wpg_bremen" original="Wahlprüfungsgericht der Freien Hansestadt Bremen"/>
+	<name meta="KrG Guben" technical="krg_guben" original="Kreisgericht Guben"/>
+</courts>
