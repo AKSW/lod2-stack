@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.7.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.7//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.7//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC STANDARD ENTITIES v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/xml-entities/wkdsc-standard.ent"/>
+</catalog>
