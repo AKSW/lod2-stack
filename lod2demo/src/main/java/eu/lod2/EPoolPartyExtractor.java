@@ -44,7 +44,7 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
-import eu.lod2.ExtractionTab;
+import eu.lod2.ExportSelector;
 
 /**
  * The extract from a natural language text (english) the relevant
@@ -64,6 +64,7 @@ public class EPoolPartyExtractor extends CustomComponent
 
     private String textToAnnotate;
     private String annotatedText;
+    private ExportSelector exportGraph;
 
     public EPoolPartyExtractor(LOD2DemoState st) {
 
@@ -80,6 +81,9 @@ public class EPoolPartyExtractor extends CustomComponent
 	  "The identified concepts will be inserted as triples in the current graph."
 	  );
 	panel.addComponent(description);
+
+	exportGraph = new ExportSelector(state);
+	panel.addComponent(exportGraph);
 
         Form t2f = new Form();
 
@@ -111,10 +115,13 @@ public class EPoolPartyExtractor extends CustomComponent
         setCompositionRoot(panel);
     }
 
+    // make the button activate when suffient conditions are met to execute the action.
+    // NOTE: the order could be a problem. This activation is only triggered by updating the text area.
+    // not the other fields.
     public void textChange(TextChangeEvent event) {
 
         textToAnnotate = event.getText();
-        if (state.getCurrentGraph() == null || state.getCurrentGraph().equals("")) {
+        if (exportGraph.getExportGraph() == null || exportGraph.getExportGraph().equals("")) {
             annotateButton.setEnabled(false);
 	} else if (textToAnnotate == null || textToAnnotate.equals("")) {
             annotateButton.setEnabled(false);
@@ -155,7 +162,7 @@ public class EPoolPartyExtractor extends CustomComponent
 	    String baseURI = "http://poolparty.biz/defaultns#";
 
 	    RepositoryConnection con = state.getRdfStore().getConnection();
-	    Resource contextURI = con.getValueFactory().createURI(state.getCurrentGraph());
+	    Resource contextURI = con.getValueFactory().createURI(exportGraph.getExportGraph());
             Resource[] contexts = new Resource[] {contextURI};
 	    con.add(data, baseURI, RDFFormat.RDFXML, contexts);
 
