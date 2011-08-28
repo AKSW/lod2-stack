@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2011 LOD2 consortium
  *
@@ -17,15 +18,11 @@ package eu.lod2;
 
 import java.net.*;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.io.*;
-import java.io.UnsupportedEncodingException;
-import java.util.*;
 
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
@@ -54,63 +51,42 @@ import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
 
 /**
- * OntoWiki SPARQL Querying editor
- * Important the current graph has to be activated for OntoWiki
+ * Embedded OntoWiki tool
  */
 //@SuppressWarnings("serial")
-public class OntoWikiQuery extends CustomComponent
+public class OntoWiki extends CustomComponent
 {
 
-	// reference to the global internal state
-	private LOD2DemoState state;
+  // reference to the global internal state
+  private LOD2DemoState state;
 	private String username;
 	private String password;
 	private String service;
 
-	public OntoWikiQuery(LOD2DemoState st) {
+  public OntoWiki(LOD2DemoState st) {
 
+    // The internal state 
+    state = st;
+    initLogin();
 
+    Embedded browser = new Embedded();
+    try { 
+			URL url = new URL(service + "/");
+      browser = new Embedded("", new ExternalResource(url));
+      browser.setType(Embedded.TYPE_BROWSER);
+      browser.setSizeFull();
+      //panel.addComponent(browser);
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    };
 
-		// The internal state and 
-		state = st;
-		initLogin();
+    // The composition root MUST be set
+    setCompositionRoot(browser);
+  }
 
-		VerticalLayout queryingTab = new VerticalLayout();
-
-		final String query = "SELECT * where {?s ?p ?o.} LIMIT 20";
-		String encodedQuery = "";
-		String encodedGraphName= "";
-		try {
-			encodedQuery = URLEncoder.encode(query, "UTF-8");
-			encodedGraphName = URLEncoder.encode(state.getCurrentGraph(), "UTF-8");
-		} catch (UnsupportedEncodingException e) { 
-			e.printStackTrace();
-		};
-
-//    loginRequest(queryingTab);
-
-		Label l = new Label(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
-		queryingTab.addComponent(l);
-
-		Embedded browser = new Embedded();
-		try { 
-			URL url;
-			if (encodedGraphName.equals("")) {
-				url = new URL(service + "/queries/editor/?query="+ encodedQuery);
-			} else {
-				url = new URL(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
-			};
-			browser = new Embedded("", new ExternalResource(url));
-			browser.setType(Embedded.TYPE_BROWSER);
-			browser.setSizeFull();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		};
-
-    queryingTab.addComponent(browser);
-		// The composition root MUST be set
-		setCompositionRoot(browser);
-	};
+  // propagate the information of one tab to another.
+  public void setDefaults() {
+  };
 
 	private void initLogin() {
 		try {
@@ -156,43 +132,5 @@ public class OntoWikiQuery extends CustomComponent
 		}
 
 	};
-
-
-	private void loginRequest(VerticalLayout l) {
-		try {
-			java.net.URL loginrequest = new java.net.URL(service + "/application/login"); 
-			URLConnection connection = loginrequest.openConnection();
-			connection.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-			connection.setDoOutput(true);
-			Writer post = new OutputStreamWriter(connection.getOutputStream());
-      post.write("logintype=locallogin&password=" + password + "&username=" + username);
-			post.write("\r\n");
-			post.close();
-			connection.connect();
-			Map headers = connection.getHeaderFields();
-			Iterator it = headers.keySet().iterator();
-			while (it.hasNext()) {
-				String key = (String)it.next();
-				l.addComponent(new Label(key+": "+headers.get(key)));
-			}
-			System.out.println();
-      BufferedReader in = null;
-			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String line=null;
-			while ((line=in.readLine()) != null)
-				l.addComponent(new Label(line));
-		}
-		catch (MalformedURLException ex) {
-			System.err.println(ex);
-		}
-		catch (FileNotFoundException ex) {
-			System.err.println("Failed to open stream to URL: "+ex);
-		}
-		catch (IOException ex) {
-			System.err.println("Error reading URL content: "+ex);
-		}
-
-	};
-
 };
 

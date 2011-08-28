@@ -77,20 +77,37 @@ public class LOD2Demo extends Application
             setTheme("lod2");
 
 
-            final AbsoluteLayout welcome = new AbsoluteLayout();
-            welcome.setWidth("99%");
-            welcome.setHeight("90px");
+            final AbsoluteLayout welcomeSlagzin = new AbsoluteLayout();
+            welcomeSlagzin.setWidth("370px");
+            welcomeSlagzin.setHeight("60px");
             Embedded lod2logo = new Embedded("", new ThemeResource("app_images/lod2_small.jpg"));
             lod2logo.setMimeType("image/jpeg");
             lod2logo.addStyleName("lod2logo");
-            Label slagzin = new Label("<i>Creating Knowledge out of Interlinked Data</i>");
-            slagzin.setContentMode(Label.CONTENT_XHTML);
-            welcome.addComponent(lod2logo, "top:10px; left:5px");
-            welcome.addComponent(slagzin, "top:5px; left:80px");
+            Label slagzin = new Label("Creating Knowledge out of Interlinked Data");
+            //slagzin.setContentMode(Label.CONTENT_XHTML);
+            welcomeSlagzin.addComponent(lod2logo, "top:5px; left:5px");
+            welcomeSlagzin.addComponent(slagzin, "top:5px; left:80px");
             //	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
             slagzin.addStyleName("slagzin");
 
+	   // the current graph as label
+           currentgraphlabel = new Label("no current graph selected");
+           currentgraphlabel.addStyleName("currentgraphlabel");
+	    // Create an horizontal container
+	    HorizontalLayout welcomeContainer = new HorizontalLayout();
+
+            //menubarContainer.addComponent(lod2logo);
+            welcomeContainer.addComponent(welcomeSlagzin);
+	    welcomeContainer.setComponentAlignment(welcomeSlagzin, Alignment.TOP_LEFT);
+	    welcomeContainer.addComponent(currentgraphlabel);
+	    welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
+	    welcomeContainer.setWidth("100%");
+	
+	    final VerticalLayout welcome = new VerticalLayout();
+	    welcome.addComponent(welcomeContainer);
+
             mainWindow.addComponent(welcome);
+
 	    
             //************************************************************************
 	    //  menu bar style
@@ -201,7 +218,7 @@ public class LOD2Demo extends Application
 	    MenuBar.Command mau = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
-			AuthoringTab content = new AuthoringTab(state);
+			OntoWiki content = new OntoWiki(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("90px");
@@ -346,7 +363,7 @@ public class LOD2Demo extends Application
 	    // root menu's
 	    MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
 	    MenuBar.MenuItem querying      = menubar.addItem("Querying", null, null);
-	    MenuBar.MenuItem authoring     = menubar.addItem("Authoring", null, mau);
+	    MenuBar.MenuItem authoring     = menubar.addItem("Authoring", null, null);
 	    MenuBar.MenuItem linking       = menubar.addItem("Linking", null, null);
 	    MenuBar.MenuItem enrichment    = menubar.addItem("Enrichment", null, null);
 	    MenuBar.MenuItem onlinetools   = menubar.addItem("Online Tools and Services", null, null);
@@ -359,6 +376,13 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem me6 = extraction.addItem("Extract RDF from SQL", null, me6c);
 	    MenuBar.MenuItem me4 = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
 	    MenuBar.MenuItem me5 = extraction.addItem("Extract RDF from text w.r.t. a controlled vocabulary", null, me5c);
+
+	    MenuBar.MenuItem mq1 = querying.addItem("Direct via Sesame", null, mq1c);
+	    MenuBar.MenuItem mq2 = querying.addItem("OntoWiki SPARQL endpoint", null, mq2c);
+	    MenuBar.MenuItem mq3 = querying.addItem("Virtuoso SPARQL endpoint", null, mq3c);
+	    MenuBar.MenuItem mq4 = querying.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
+
+	    MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
 	    MenuBar.MenuItem linking1 = linking.addItem("Silk", null, silk);
 
@@ -375,14 +399,10 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem mondecalist     = sparqlonline.addItem("Mondeca SPARQL endpoint Collection", null, mo7c);
 
 
-	    MenuBar.MenuItem mq1 = querying.addItem("Direct via Sesame", null, mq1c);
-	    MenuBar.MenuItem mq2 = querying.addItem("OntoWiki SPARQL endpoint", null, mq2c);
-	    MenuBar.MenuItem mq3 = querying.addItem("Virtuoso SPARQL endpoint", null, mq3c);
-	    MenuBar.MenuItem mq4 = querying.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
-
+/*
 	    // the current graph selection widget
             currentgraph = new TextField("", state.getCurrentGraph());
-	    currentgraph.setNullRepresentation("no graph selected");
+	    currentgraph.setNullRepresentation("no current graph selected");
             currentgraph.setImmediate(false);
             currentgraph.addListener(new TextChangeListener() {
     		public void textChange(TextChangeEvent event) {
@@ -390,20 +410,14 @@ public class LOD2Demo extends Application
 		}
 	    });
             currentgraph.setColumns(50);
+	    */
 	   
-	   // the current graph as label
-           currentgraphlabel = new Label("no current graph selected");
 
-	    // Embed menu bar in horizontal container
 	    HorizontalLayout menubarContainer = new HorizontalLayout();
-
-            //menubarContainer.addComponent(lod2logo);
             menubarContainer.addComponent(menubar);
-	    menubarContainer.addComponent(currentgraphlabel);
-
-
-            welcome.addComponent(menubarContainer, "top:40px; left:80px");
-
+            menubarContainer.addStyleName("menubarContainer");
+	    menubarContainer.setWidth("100%");
+            welcome.addComponent(menubarContainer);
 	    welcome.setHeight("90px");
 //	    mainWindow.getContent().setSizeFull();
 
@@ -421,6 +435,8 @@ public class LOD2Demo extends Application
 //	    Component second = iterator.next();
 //	    second.setSizeFull();
 
+	    /* Obselete => should be cleaned.
+	     *
             //************************************************************************
             // Extraction Tab
             extractionTab = new ExtractionTab(state);	
@@ -475,6 +491,7 @@ public class LOD2Demo extends Application
 //            mainWindow.addComponent(tabsheet);
 
 
+	*/
 
             setMainWindow(mainWindow);
 

@@ -5,6 +5,11 @@
 
  */
 
+@charset "UTF-8";
+
+/* import Droid TTF */
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold);
+
 @import "../reindeer/styles.css";
 
 .v-app {
@@ -16,25 +21,25 @@
 }
 
 .slagzin {
-    font-family:"Droid Sans", Arial, sans-serif; 
+    font-family:'Droid Sans', Arial, sans-serif; 
     font-weight:normal;
     font-style:normal;
-	font-size:1.8em;
+	  font-size:0.875em; 
     line-height:1.5;
     z-index: 100;
-    color:#000 !important;
-.v-menubar { }
-.gwt-MenuItem {}
-.gwt-MenuItem-selected {}}
+    color:#551A8B;
+}
 
-.v-embedded-lod.v-menubar { }
-.gwt-MenuItem {}
-.gwt-MenuItem-selected {}2logo {
+.currentgraphlabel {
+    font-size: 11px;
+}
+
+.v-embedded-lod2logo {
     z-index: 1;
 }
 
 .slagzin_image {
-    font-family:"Droid Sans", Arial, sans-serif; font-weight:normal; font-style:normal;
+    font-family:'Droid Sans', Arial, sans-serif; font-weight:normal; font-style:normal;
 	font-size:1.4em;
     line-height:1.5;
     background: url("/lod2demo/VAADIN/themes/lod2/app-images/LOD2.logo.jpg");
@@ -102,3 +107,38 @@
 	background-color: blue;
 }
 */
+
+/* from the mockup */
+.menubarContainer {
+    border-top-color: #B5B6B7;
+    border-top-style: dotted;
+    border-top-width: 2px;
+    margin-left: 46px;
+    border-bottom-color: #B5B6B7;
+    border-bottom-style: dotted;
+    border-bottom-width: 2px;
+}
+
+.v-menubar {
+    -moz-background-clip: border;
+    -moz-background-origin: padding;
+    -moz-background-size: auto auto;
+    background-attachment: scroll;
+    background-color: #FFFFFF;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat;
+    color: #000000;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.v-menubar-menuitem:hover {
+    -moz-background-clip: border;
+    -moz-background-origin: padding;
+    -moz-background-size: auto auto;
+    background-attachment: scroll;
+    background-color: #004471;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat;
+    color: #FFFFFF;
+}
