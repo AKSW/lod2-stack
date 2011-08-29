@@ -1,3 +1,13 @@
+lod2demo (1.1.11) lod2; urgency=low
+
+  * style header similar as mockup
+  * add authoring page: ontowiki
+  * add d2r-cordis, onlinePoolParty, onlinePoolPartySPARQL, CKAN page,
+    Mondeca,
+  * add target RDF graph widget and apply it for EPoolPartyExtractor
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 29 Aug 2011 02:30:24 -0700
+
 lod2demo (1.1.10) lod2; urgency=low
 
   * implement configuration for ontowiki
