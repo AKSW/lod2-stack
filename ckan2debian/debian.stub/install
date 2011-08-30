@@ -1,0 +1,4 @@
+data.rdf     usr/share/ckan/%%package%%/
+ckan.rdf     usr/share/ckan/%%package%%/
+ckan.json    usr/share/ckan/%%package%%/
+

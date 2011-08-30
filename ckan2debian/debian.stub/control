@@ -1,0 +1,21 @@
+Source: %%package%%
+Section: misc
+Priority: extra
+Maintainer: Sebastian Tramp <tramp@informatik.uni-leipzig.de>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.9.1
+Homepage: http://thedatahub.org/
+
+Package: %%package%%
+Architecture: all
+Depends: ${misc:Depends}, virtuoso-opensource
+Description: CKAN dataset %%name%% as an LOD2 stack package (%%count triple)
+ description here
+ .
+ LOD2 is a large-scale integrating project co-funded by the European
+ Commission within the FP7 Information and Communication Technologies
+ Work Programme (Grant Agreement No. 257943). Commencing in September
+ 2010, this 4-year project comprises leading Linked Open Data technology
+ researchers, companies, and service providers from across 7 European
+ countries and is coordinated by the AKSW research group at the
+ University of Leipzig.
