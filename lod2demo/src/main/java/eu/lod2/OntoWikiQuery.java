@@ -141,7 +141,7 @@ public class OntoWikiQuery extends CustomComponent
 					} else {
 						service = service0;
 					};
-				};	
+				};
 			}
 
 		} catch (RepositoryException e) {

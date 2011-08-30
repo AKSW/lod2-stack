@@ -109,11 +109,20 @@
 */
 
 /* from the mockup */
+.v-menubar .v-menubar-menuitem {
+    height: 17px;
+    line-height: 16px;
+    padding-bottom: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 3px;
+}
+
 .menubarContainer {
     border-top-color: #B5B6B7;
     border-top-style: dotted;
     border-top-width: 2px;
-    margin-left: 46px;
+    margin-left: 37px;
     border-bottom-color: #B5B6B7;
     border-bottom-style: dotted;
     border-bottom-width: 2px;
@@ -141,4 +150,9 @@
     background-position: 0 0;
     background-repeat: repeat;
     color: #FFFFFF;
+}
+
+.v-menubar-menuitem-caption { 
+    	font-family:"Droid Sans", sans-serif; 
+	font-size: 12px;
 }

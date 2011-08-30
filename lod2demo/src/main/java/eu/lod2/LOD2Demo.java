@@ -22,6 +22,7 @@ import com.vaadin.Application;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.ClassResource;
 import com.vaadin.terminal.FileResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
@@ -79,16 +80,16 @@ public class LOD2Demo extends Application
 
             final AbsoluteLayout welcomeSlagzin = new AbsoluteLayout();
             welcomeSlagzin.setWidth("370px");
-            welcomeSlagzin.setHeight("60px");
-            Embedded lod2logo = new Embedded("", new ThemeResource("app_images/lod2_small.jpg"));
-            lod2logo.setMimeType("image/jpeg");
-            lod2logo.addStyleName("lod2logo");
-            Label slagzin = new Label("Creating Knowledge out of Interlinked Data");
+            welcomeSlagzin.setHeight("75px");
+            Embedded lod2logo = new Embedded("", new ThemeResource("app_images/logo-lod2-small.png"));
+            lod2logo.setMimeType("image/png");
+//            lod2logo.addStyleName("lod2logo");
+//            Label slagzin = new Label("Creating Knowledge out of Interlinked Data");
             //slagzin.setContentMode(Label.CONTENT_XHTML);
-            welcomeSlagzin.addComponent(lod2logo, "top:5px; left:5px");
-            welcomeSlagzin.addComponent(slagzin, "top:5px; left:80px");
+            welcomeSlagzin.addComponent(lod2logo, "top:0px; left:5px");
+//            welcomeSlagzin.addComponent(slagzin, "top:5px; left:80px");
             //	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
-            slagzin.addStyleName("slagzin");
+//            slagzin.addStyleName("slagzin");
 
 	   // the current graph as label
            currentgraphlabel = new Label("no current graph selected");
@@ -123,7 +124,7 @@ public class LOD2Demo extends Application
 			ELoadRDFFile me1c_content = new ELoadRDFFile(state);
 			workspace.addComponent(me1c_content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			float wh = mainWindow.getHeight() -90;
 //			workspace.addComponent(new Label(Float.toString(wh)));
 //			me1c_content.getContent().setHeight("100%");
@@ -141,7 +142,7 @@ public class LOD2Demo extends Application
 			EXML me3c_content = new EXML(extractionTab);
 			workspace.addComponent(me3c_content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			me3c_content.setSizeFull();
 		    }  
 		};
@@ -152,7 +153,7 @@ public class LOD2Demo extends Application
 			ESpotlight me4c_content = new ESpotlight(extractionTab);
 			workspace.addComponent(me4c_content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			me4c_content.setHeight("500px");
 		    }  
 		};
@@ -163,7 +164,7 @@ public class LOD2Demo extends Application
 			EPoolPartyExtractor me5c_content = new EPoolPartyExtractor(state);
 			workspace.addComponent(me5c_content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			me5c_content.setHeight("90%");
 		    }  
 		};
@@ -174,7 +175,7 @@ public class LOD2Demo extends Application
 			D2RCordis content = new D2RCordis(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("90%");
 		    }  
 		};
@@ -185,7 +186,7 @@ public class LOD2Demo extends Application
 			LinkingTab lsilk = new LinkingTab(state);
 			workspace.addComponent(lsilk);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			lsilk.setSizeFull();
 //			workspace.setSizeFull();
 //			mainWindow.getContent().setSizeFull();
@@ -198,7 +199,7 @@ public class LOD2Demo extends Application
 			workspace.removeAllComponents();
 			ORE content = new ORE(state);
 			workspace.addComponent(content);
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setSizeFull();
 			workspace.setHeight("500px");
 		    }  
@@ -210,7 +211,7 @@ public class LOD2Demo extends Application
 			ConfigurationTab content = new ConfigurationTab(state, currentgraphlabel);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -221,7 +222,7 @@ public class LOD2Demo extends Application
 			OntoWiki content = new OntoWiki(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -232,7 +233,7 @@ public class LOD2Demo extends Application
 			SesameSPARQL content = new SesameSPARQL(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -243,7 +244,7 @@ public class LOD2Demo extends Application
 			OntoWikiQuery content = new OntoWikiQuery(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -254,7 +255,7 @@ public class LOD2Demo extends Application
 			VirtuosoSPARQL content = new VirtuosoSPARQL(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -265,7 +266,7 @@ public class LOD2Demo extends Application
 			VirtuosoISPARQL content = new VirtuosoISPARQL(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -276,7 +277,7 @@ public class LOD2Demo extends Application
 			SameAs content = new SameAs(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -287,7 +288,7 @@ public class LOD2Demo extends Application
 			Sigma content = new Sigma(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -298,7 +299,7 @@ public class LOD2Demo extends Application
 			LODCloud content = new LODCloud(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -309,7 +310,7 @@ public class LOD2Demo extends Application
 			DBpedia content = new DBpedia(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -320,7 +321,7 @@ public class LOD2Demo extends Application
 			SPARQLPoolParty content = new SPARQLPoolParty(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -332,7 +333,7 @@ public class LOD2Demo extends Application
 			OnlinePoolParty content = new OnlinePoolParty(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -343,7 +344,7 @@ public class LOD2Demo extends Application
 			MondecaSPARQLList content = new MondecaSPARQLList(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -354,7 +355,7 @@ public class LOD2Demo extends Application
 			CKAN content = new CKAN(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
-			welcome.setHeight("90px");
+			welcome.setHeight("110px");
 			content.setHeight("500px");
 		    }  
 		};
@@ -418,7 +419,7 @@ public class LOD2Demo extends Application
             menubarContainer.addStyleName("menubarContainer");
 	    menubarContainer.setWidth("100%");
             welcome.addComponent(menubarContainer);
-	    welcome.setHeight("90px");
+	    welcome.setHeight("110px");
 //	    mainWindow.getContent().setSizeFull();
 
 
@@ -429,6 +430,19 @@ public class LOD2Demo extends Application
 
 	    mainWindow.addComponent(workspace);
 	    workspace.setHeight("80%");
+
+	    HorizontalLayout introH = new HorizontalLayout();
+            Embedded lod2cycle = new Embedded("", new ThemeResource("app_images/lod-lifecycle-small.png"));
+            lod2cycle.setMimeType("image/png");
+	    introH.addComponent(lod2cycle);
+	    introH.setComponentAlignment(lod2cycle, Alignment.MIDDLE_LEFT);
+
+	    Label introtextl =  new Label(introtext, Label.CONTENT_XHTML);
+	    introH.addComponent(introtextl);
+	    introtextl.setWidth("400px");
+	    workspace.addComponent(introH);
+            
+
 	    mainWindow.setSizeFull();
 //	    mainWindow.getContent().setSizeFull();
 //	    Iterator<Component> iterator = mainWindow.getContent().getComponentIterator();
@@ -539,6 +553,30 @@ public class LOD2Demo extends Application
     public void setDefaults() {
 	    currentgraph.setValue(state.getCurrentGraph());
     };
+
+    private String introtext = 
+"<p>This is Version 1.0 of the LOD2 Stack, which comprises a number of tools " + 
+"for managing the life-cycle of Linked Data. The life-cycle comprises in " + 
+"particular the stages" + 
+"</p><p>" + 
+"<ul>" + 
+"<li>Extraction of RDF from text, XML and SQL</li>" + 
+"<li>Querying and Exploration using SPARQL</li>" + 
+"<li>Authoring of Linked Data using a Semantic Wiki</li>" + 
+"<li>Semi-automatic link discovery between Linked Data sources</li>" + 
+"<li>Knowledge-base Enrichment and Repair</li>" + 
+"</ul>" + 
+"</p><p>" + 
+"You can access tools for each of these stages using the menu on top." + 
+"</p><p>" + 
+"The LOD2 Stack is developed by the LOD2 project consortium comprising 15" + 
+"research groups and companies. The LOD2 project is co-funded by the" + 
+"European Commission within the 7th Framework Programme (GA no. 257934)." + 
+"</p><p>" + 
+"You can find further information about the LOD2 Stack and the LOD2" + 
+"project at <a href=\"http://lod2.eu\">http://lod2.eu</a>." + 
+"<p>";
+
 }
 
 
