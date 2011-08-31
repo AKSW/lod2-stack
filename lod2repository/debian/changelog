@@ -1,3 +1,9 @@
+lod2repository (1.10) lod2; urgency=low
+
+  * Replaced maintainer key: Tim Haynes (Openlink)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Wed, 31 Aug 2011 16:19:58 +0200
+
 lod2repository (1.9) lod2; urgency=low
 
   * New maintainer key: Tim Haynes (Openlink) 
