@@ -16,12 +16,11 @@ We have installed an online version of the stack.
 For those who want to have a deeper insight in the components, a preinstalled VM image is available.
 Finally one can also setup a new machine and install the stack on it.
 
+The LOD2 stack is standarized upon Ubuntu 10.01 as Operating System and firefox as browser. 
+
 The online demo
 ---------------
-For an quick overview we have made the lod2 stack and the lod2 demonstrator available at http://demo.lod2.eu/lod2demo.
-
-[This has open holes in security as the virtuoso root password is easy to get]
-
+For an quick start we have made the lod2 stack and the lod2 demonstrator available at http://demo.lod2.eu/lod2demo.
 
 The preinstalled virtual machine
 --------------------------------
@@ -39,7 +38,7 @@ In general, deploying the LOD2 software stack or parts of it is very easy and co
 1. Add LOD2 stack package repository to the systems repository list and update the repository index.
 2. Install wanted software packages by using a graphical or text-based package management application.
 
-The next guidelines describe the installation using command-line tools. The procedure uses apt-get, the most basic is the most basic package management tool and the preferred command line front-end for non-interactive package management. 
+The next guidelines describe the installation using command-line tools. The procedure uses apt-get, the most basic package management tool and the preferred command line front-end for non-interactive package management. 
 UI frontends like synaptic can be used too. For the usage of these we refer to their manuals.
 
 The first step is the installation of the LOD2 repository package. 
@@ -47,13 +46,13 @@ The first step is the installation of the LOD2 repository package.
 	# download the repository package 
 	wget http://stack.lod2.eu/lod2repository_current_all.deb
 	# install the repository package 
-	sudo dpkg -i lod2repository_1.2_all.deb
+	sudo dpkg -i lod2repository_current_all.deb
 	# update the repository database 
 	sudo apt-get update
 
 This registers the LOD2 stack repository for the local package manager. 
 
-As the LOD2 stack component Sig.maEE depends on the Oracle-Sun Java suite and this java package is not always per default accessible one has to update the repository with the following
+As the LOD2 stack component Sig.maEE depends on the Oracle-Sun Java suite and this java package is not always per default installed one has to update the repository with the following
 	sudo add-apt-repository ‘deb http://archive.canonical.com/ lucid partner’ 
 	sudo apt-get update
 where lucid is the Ubuntu release. 
@@ -64,44 +63,54 @@ Next one can install individual lod2 packages or the lod2demo package. Installin
 
 	sudo apt-get install lod2demo
 
-On a fresh server the root passwords for Virtuoso and MySQL will be requested. 
-For the moment a post intervention has to be done to configure OntoWiki with Virtuoso.
+If MySQL and Virtuoso are not installed yet, the root passwords for Virtuoso and MySQL will be requested. 
 
+The lod2 demo can now be accessed via http://localhost:8080/lod2demo.
+For the moment the lod2 demo requires some manual post configuration to make all components collaborate together.
+In future releases we aim at reducing the post-configuration requirements.
+
+When new versions of the lod2 stack components are available, the update manager will inform the system administrator automatically.
 
 Configuration of the lod2 demonstrator
 --------------------------------------
-1. configuration of location of tools.
 
-The default configuration assumes a machine which has internet access. All tools are accessible directly on the local machine.
-If one wants to share the setup of the lod2 demonstrator to the public the best is to setup a proxy on that machine. 
-One way is to use the apache2 server as proxy.
+1. Post configuration of stack components
 
-The lod2 demonstrator configuration file is the graph http://localhost/lod2democonfiguration, which is stored in Virtuoso.
-It contains the hostname prefix of the tools. Per default the value is "http://localhost:8080".
-In case to make the tools accessible via a public lod2 demo interface, this value has to be changed to the machines' url.
-
-
-2. configuration of some tools.
-
-* virtuoso root password is assumed to be "dba"
+* We assume that the virtuoso root password is "dba"
 * ontowiki access to virtuoso.
   
    cd /etc/ontowiki/
+   # for the virtuoso connector change username to dba and password  to chosen root password
    sudo vim config.ini 
-   # change username to dba and password of virtuoso to chosen root password
 
    # restart apache2
    sudo service apache2 restart
     
-   [if this is a agreed one like "dba" or "lod2" then we skip this rule, and make it a "if problem rule" out of it."]
+   # Adapt virtuoso configuration and add extra allowed directory
+   cd /etc/virtuoso-opensource-6.1/
+   # add to the allowed directories the directory /usr/share 
+   sudo vim virtuoso.ini 
+   # restart the virtuoso server
+   sudo service virtuoso-opensource-6.1 restart
 
-   Adapt virtuoso and add extra allowed directory
-	cd /etc/virtuoso-opensource-6.1/
-	/usr/share 
-	sudo vim virtuoso.ini 
-	sudo service virtuoso-opensource-6.1 restart
 * Virtuoso iSPAQRL package must be activated manually via the conductor interface.
-  If not done, the menu option querying via isparql is not working properly.
+  If it is not activated then the menu option querying via isparql is not working properly.
 
- 
+2. Exposing the components to a wider public.
+
+The default configuration assumes a local usage of the lod2 stack, not accessible for the outside world. 
+If one wants to expose the lod2 demonstrator or one of the components
+we advice to setup a proxy. For instance one can use the apache2 server as proxy.
+
+To expose the lod2 demonstrator, its configuration graph has to be adapted to the location of the different components.
+The lod2 demonstrator configuration file is the graph http://localhost/lod2democonfiguration, which is stored in Virtuoso.
+It contains the hostname prefix of the tools. Per default the value is "http://localhost:8080".
+In case to make the tools accessible via a public lod2 demo interface, this value has to be changed to the machines' url.
+
+More information
+----------------
+For more information about the lod2 stack and the lod2 demonstrator we refer to
+
+http://stack.lod2.eu : the stack repository
+http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments: installation and configuration guides
 

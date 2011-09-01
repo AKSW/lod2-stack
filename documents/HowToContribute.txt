@@ -1,0 +1,59 @@
+How To Contribute to LOD2 Stack 
+============================
+Bert Van Nuffelen <bert.van.nuffelen@tenforce.be>
+v1.0, aug 2011: Initial version
+:Author Initials: BVN
+:toc:
+:icons:
+:numbered:
+:website: http://stack.lod2.eu/
+
+The LOD2 component stack is a collection of tools that support Linked Data publication.
+The LOD2 stack is the result of the EU funded project LOD2. 
+
+This guide describes how one can contribute a new component to the LOD2 stack. 
+The LOD2 component stack is a debian package repository. 
+
+Uploading a debian package to the LOD2 stack repository
+-------------------------------------------------------
+
+The repository is publicly available at http://stack.lod2.eu/. The repository forms a trusted group of components. This is achieved by a signing procedure while uploading a new (version of a) component.  The component owner signs the component package with its private key.  This signature is validated with his public key known by the repository. To contribute an component to the LOD2 debian repository, the component owner must create a key pair for signing the package and also a key for the secure connection to the repository. The GPG key pair can be recreated with 
+
+	gpg --gen-key
+
+The public key is exported with 
+
+	gpg --export -a > publickey.asc
+
+The ssh-key for the upload can be generated as follows
+
+	ssh-keygen -t dsa
+
+All these public keys are sent to the lod2 stack repository responsible. When added to the trusted key ring one can upload of the component package using the tool dput. The local configuration is 
+
+[lod2]
+fqdn = stack.lod2.eu
+method = scp
+login = packaging
+incoming = /var/www/stack.lod2.eu/deb/mini-dinstall/incoming
+
+The upload command is
+
+	dput lod2 <packet>.changes
+
+where <packet>.changes is the changes file created during the package creation.
+
+After the debian package is uploaded the whole repository has to be signed by one trusted partners.
+
+
+Creating a debian package
+-------------------------
+The process of making a debian package depends on the applications' source code and building process. 
+Many of the LOD2 applications currently in the LOD2 stack are java web applications deployed via tomcat.
+If one uses maven to build the application this process can be automated.
+In <...> one finds a description how the lod2demo package is being build via maven.
+
+
+
+
+
