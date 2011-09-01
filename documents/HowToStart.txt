@@ -21,6 +21,9 @@ The LOD2 stack is standarized upon Ubuntu 10.01 as Operating System and firefox 
 The online demo
 ---------------
 For an quick start we have made the lod2 stack and the lod2 demonstrator available at http://demo.lod2.eu/lod2demo.
+The demonstrator shows via reduced workflows/editing pages how the different challenges in publishing Linked Open Data can be tackled 
+by the components in the LOD2 stack. The demo focusses on the core functionality of the components. Most of them have much larger capabilities
+than exposed by the lod2 demonstrator. 
 
 The preinstalled virtual machine
 --------------------------------

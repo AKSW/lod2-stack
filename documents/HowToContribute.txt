@@ -49,11 +49,29 @@ After the debian package is uploaded the whole repository has to be signed by on
 Creating a debian package
 -------------------------
 The process of making a debian package depends on the applications' source code and building process. 
+The main tool is debuild. 
 Many of the LOD2 applications currently in the LOD2 stack are java web applications deployed via tomcat.
-If one uses maven to build the application this process can be automated.
-In <...> one finds a description how the lod2demo package is being build via maven.
+If one uses maven to build the application this process can be automated. 
+In http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments it is described how the lod2demo package is being build via maven.
+
+Licensing
+---------
+There is no specific license imposed on the components except that it has to be an open-source license which allow end-users to use, configure and interact with it.
+Every component-owner is responsible for validating that his tool satisfy its chosen open-source license.
+
+Inter-component integration requirements
+----------------------------------------
+The contributation of the component as a debian package (or set of debian packages) to the lod2 stack repository is the first step in the integration
+process. A next level is to ease the communication between the different components. For that we standarize upon communicating via SPARQL using SPARQL endpoints.
+Hence, we require for integration the components input and output to be a SPARQL endpoint description w.r.t a graph. 
+With that the basic glue between the components in the current version of the LOD2 stack is made.
+In the future more requirements could come like to allow external programs to share and edit the component functionality configuration.
 
 
+More information
+----------------
+http://stack.lod2.eu: the lod2 stack repository
+http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments: installation and configuration guides
 
 
 
