@@ -125,7 +125,7 @@
 				<xsl:when test="@typ='liste'"><xsl:value-of select="concat($xsd,'string')"/></xsl:when>
 				<xsl:when test="@typ='datum'"><xsl:value-of select="concat($xsd,'date')"/></xsl:when>
 				<xsl:when test="@typ='zahl'"><xsl:value-of select="concat($xsd,'integer')"/></xsl:when>
-				<xsl:otherwise/>
+				<xsl:otherwise><xsl:value-of select="concat($xsd,'string')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<rdf:value>
