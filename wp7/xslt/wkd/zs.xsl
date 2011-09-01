@@ -99,38 +99,38 @@
 
 <metaInformation>
 	<scenarios>
-		<scenario default="yes" name="euroas_2009_01-02_10" userelativepaths="yes" externalpreview="no" url="..\..\Data\Doctrine\euroas_2009_01-02_10.xml" htmlbaseurl="" outputurl="..\..\result\doc\euroas_2009_01-02_10.rdf" processortype="saxon8"
+		<scenario default="no" name="euroas_2009_01-02_10" userelativepaths="yes" externalpreview="no" url="..\..\Data\Doctrine\euroas_2009_01-02_10.xml" htmlbaseurl="" outputurl="..\..\result\doc\euroas_2009_01-02_10.rdf" processortype="saxon8"
 		          useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="KommP_BY_2010_01_17" userelativepaths="yes" externalpreview="no" url="..\..\Data\Doctrine\KommP_BY_2010_01_17.xml" htmlbaseurl="" outputurl="..\..\result\doc\KommP_BY_2010_01_17.rdf" processortype="saxon8"
+		<scenario default="yes" name="KommP_BY_2010_01_17" userelativepaths="yes" externalpreview="no" url="..\..\Data\Doctrine\KommP_BY_2010_01_17.xml" htmlbaseurl="" outputurl="..\..\result\doc\KommP_BY_2010_01_17.rdf" processortype="saxon8"
 		          useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

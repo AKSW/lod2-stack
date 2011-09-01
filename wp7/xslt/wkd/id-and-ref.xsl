@@ -68,11 +68,19 @@
 				<xsl:value-of select="fun:verweis-zs($identifier)"/>
 			</xsl:when>
 			<xsl:when test="$doc-type='aufsatz-es'">
-				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
-					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
-				</xsl:if>
-				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
-				<xsl:value-of select="fun:verweis-zs($identifier)"/>
+				<xsl:choose>
+					<xsl:when test="$doc/zuordnung-produkt/verweis-zs">
+						<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
+						<xsl:value-of select="fun:verweis-zs($identifier)"/>
+					</xsl:when>
+					<xsl:when test="$doc/@bezugsquelle and $doc/verbundene-dokumente/verweis-es">
+						<xsl:variable name="identifier" select="$doc/verbundene-dokumente/verweis-es[1]" as="element()"/>
+						<xsl:value-of select="concat(fun:verweis-es($identifier),'_',$doc/@bezugsquelle)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs or verbundene-dokumente/verweis-es+@bezugsquelle) found for this document.</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">ERROR: invalid document type - got <xsl:value-of select="$doc-type"/>.</xsl:message>
