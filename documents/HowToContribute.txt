@@ -29,7 +29,7 @@ The ssh-key for the upload can be generated as follows
 
 	ssh-keygen -t dsa
 
-All these public keys are sent to the lod2 stack repository responsible. When added to the trusted key ring one can upload of the component package using the tool dput. The local configuration is 
+All these public keys are sent to the lod2 stack repository responsible (support-stack@lod2.eu). When added to the trusted key ring one can upload of the component package using the tool dput. The local configuration is 
 
 [lod2]
 fqdn = stack.lod2.eu
@@ -52,7 +52,7 @@ The process of making a debian package depends on the applications' source code 
 The main tool is debuild. 
 Many of the LOD2 applications currently in the LOD2 stack are java web applications deployed via tomcat.
 If one uses maven to build the application this process can be automated. 
-In http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments it is described how the lod2demo package is being build via maven.
+In http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments, the document demonstrator_implementation.pdf describes how the lod2demo package is being build via maven.
 
 Licensing
 ---------
@@ -70,6 +70,8 @@ In the future more requirements could come like to allow external programs to sh
 
 More information
 ----------------
+To get in touch with the stack responsibles for any support or questions about contributing to the LOD2 stack, contact support-stack@lod2.eu.
+
 http://stack.lod2.eu: the lod2 stack repository
 http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments: installation and configuration guides
 

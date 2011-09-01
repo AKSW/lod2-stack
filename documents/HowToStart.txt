@@ -116,8 +116,10 @@ In case to make the tools accessible via a public LOD2 demo interface, this valu
 
 More information
 ----------------
-For more information about the LOD2 stack and the LOD2 demonstrator we refer to
+To get in touch with the stack responsibles for any support or questions about the LOD2 stack, contact support-stack@lod2.eu.
+If you want to contribute your tool to the LOD2 stack, read our HowTo Contribute document.
 
+For more information about the LOD2 stack and the LOD2 demonstrator we refer to
 http://stack.lod2.eu : the stack repository
 http://code.google.com/p/lod2-stack/source/browse/#svn%2Ftrunk%2Fdocuments: installation and configuration guides
 
