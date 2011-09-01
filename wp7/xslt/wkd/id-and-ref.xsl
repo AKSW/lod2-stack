@@ -77,8 +77,11 @@
 						<xsl:variable name="identifier" select="$doc/verbundene-dokumente/verweis-es[1]" as="element()"/>
 						<xsl:value-of select="concat(fun:verweis-es($identifier),'_',$doc/@bezugsquelle)"/>
 					</xsl:when>
+					<xsl:when test="$doc/metadaten/metadaten-text[@bezeichnung='link-id']">
+						<xsl:value-of select="fun:percentEncode(normalize-space($doc/metadaten/metadaten-text[@bezeichnung='link-id']))"/>
+					</xsl:when>
 					<xsl:otherwise>
-						<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs or verbundene-dokumente/verweis-es+@bezugsquelle) found for this document.</xsl:message>
+						<xsl:message terminate="yes">No identifier for aufsatz-es found for this document.</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
@@ -313,7 +316,10 @@
 
 <xsl:function name="fun:verweis-obj" as="xs:string">
 	<xsl:param name="e" as="element()"/>
-	<xsl:value-of select="''"/>
+	<xsl:variable name="uri">
+		<xsl:value-of select="concat($r-base-uri,'object/',$e/@referenz)"/>
+	</xsl:variable>
+	<xsl:value-of select="normalize-space($uri)"/>
 </xsl:function>
 
 <xsl:function name="fun:verweis-vtext-id" as="xs:string">
@@ -368,7 +374,11 @@
 	</xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="verweis-obj"/>
+<xsl:template match="verweis-obj">
+	<xsl:call-template name="write-reference">
+		<xsl:with-param name="target" select="fun:verweis-obj(.)"/>
+	</xsl:call-template>
+</xsl:template>
 
 <xsl:template match="verweis-vtext-id"/>
 
