@@ -59,7 +59,7 @@ The first step is the installation of the LOD2 repository package.
 
 This registers the LOD2 stack repository for the local package manager. 
 
-As the LOD2 stack component Sig.maEE depends on the Oracle-Sun Java suite and this java package is not always per default installed, one has to update the repository with the following command:
+As the LOD2 stack component Sig.ma EE depends on the Oracle-Sun Java suite and this java package is not always per default installed, one has to update the repository with the following command:
 
 	sudo add-apt-repository ‘deb http://archive.canonical.com/ `lsb_release -c -s` partner’ 
 	sudo apt-get update
@@ -83,7 +83,7 @@ For instance, to install public Linked Data about Contractors and suppliers of
 the Senate of the Italian Republic in 2010, install the package
 ckan-dataset-linked-open-senate with
 
-    sudo apt-get install ckan-dataset-linked-open-senate
+	sudo apt-get install ckan-dataset-linked-open-senate
 
 For the moment the LOD2 demo requires some manual post configuration to make all components collaborate together.
 In future releases we aim at reducing the post-configuration requirements.
@@ -95,7 +95,9 @@ Configuration of the LOD2 demonstrator
 
 1. Post configuration of stack components
 
-* We assume that the virtuoso root password is "dba"
+* We assume that the virtuoso root password is "dba". In case this is chosen differently -- best done when the intention is to make the 
+machine public accessible -- then one has to adapt the configuration of OntoWiki. 
+In the short future a release will be ready where this is lifted.
 
 * Virtuoso iSPARQL package must be activated manually via the conductor interface.
   If it is not activated then the menu option querying via isparql is not working properly.
