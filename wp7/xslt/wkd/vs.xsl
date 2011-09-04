@@ -207,12 +207,6 @@
 <xsl:template match="artikel" mode="top-level">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
-	<!--xsl:apply-templates select="stichworte" mode="top-level">
-		<xsl:with-param name="subject" select="$uri" as="xs:string"/>
-	</xsl:apply-templates>
-	<xsl:apply-templates select="vs-absatz | vs-anlage | paragraph | artikel-ebene" mode="top-level">
-		<xsl:with-param name="uri" select="$uri" as="xs:string"/>
-	</xsl:apply-templates-->
 	<xsl:apply-templates select="*" mode="top-level">
 		<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 	</xsl:apply-templates>
@@ -227,9 +221,6 @@
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$ae-uri}">
 		<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<!--xsl:apply-templates select="vs-absatz | paragraph | artikel-ebene">
-				<xsl:with-param name="uri" select="$uri" as="xs:string"/>
-			</xsl:apply-templates-->
 			<xsl:apply-templates select="*"/>
 		</metalex:Fragment>
 	</dcterms:hasPart>

@@ -172,6 +172,7 @@
 	<xsl:for-each select="taxonomie-eintrag[string-length(normalize-space(.)) &gt; 0]">
 		<dcterms:subject>
 			<wkd:TaxonomyTerm>
+				<rdf:type rdf:resource="{$skos}Concept"/>
 				<xsl:if test="string-length($p) &gt; 0">
 					<wkd:product rdf:parseType="Resource">
 						<skos:prefLabel><xsl:value-of select="$p"/></skos:prefLabel>
@@ -283,7 +284,7 @@
 						  else if (@typ='redaktionell') then 'SubjectEditorial' 
 						  else 'Subject'" as="xs:string"/>
 	<xsl:element namespace="{$wkd}" name="{$e}">
-		<xsl:variable name="l1-uri" select="fun:stwUri(concat($v-base-uri,$e),string(haupt-stw))" as="xs:string"/>
+		<xsl:variable name="l1-uri" select="concat($v-base-uri,'stw/',fun:stwSegmentId(string(haupt-stw)))" as="xs:string"/>
 		<xsl:attribute name="rdf:about" select="$l1-uri"/>
 		<rdf:type rdf:resource="{$skos}Concept"/>
 		<xsl:call-template name="buildLabel">
@@ -297,7 +298,7 @@
 		</xsl:for-each>
 		<xsl:for-each select="unter-stw">
 			<skos:narrower>
-				<xsl:variable name="l2-uri" select="fun:stwUri(concat($l1-uri,$e),string(.))" as="xs:string"/>
+				<xsl:variable name="l2-uri" select="fun:stwUri($l1-uri,string(.))" as="xs:string"/>
 				<xsl:element namespace="{$wkd}" name="{$e}">
 					<xsl:attribute name="rdf:about" select="$l2-uri"/>
 					<rdf:type rdf:resource="{$skos}Concept"/>
@@ -305,7 +306,7 @@
 						<xsl:with-param name="e" select="." as="element()"/>
 					</xsl:call-template>
 					<xsl:for-each select="unter-unter-stw">
-						<xsl:variable name="l3-uri" select="fun:stwUri(concat($l2-uri,$e),string(.))" as="xs:string"/>
+						<xsl:variable name="l3-uri" select="fun:stwUri($l2-uri,string(.))" as="xs:string"/>
 						<skos:narrower>
 							<xsl:element namespace="{$wkd}" name="{$e}">
 								<xsl:attribute name="rdf:about" select="$l3-uri"/>
@@ -325,7 +326,7 @@
 <xsl:function name="fun:stwUri" as="xs:string">
 	<xsl:param name="base" as="xs:string"/>
 	<xsl:param name="segment" as="xs:string"/>
-	<xsl:value-of select="concat($base,'/',fun:percentEncode($segment))"/>
+	<xsl:value-of select="concat($base,'_',fun:stwSegmentId($segment))"/>
 </xsl:function>
 
 <xsl:template name="buildLabel">
@@ -350,7 +351,7 @@
 <xsl:template match="inline-stichwort | stichwort" mode="top-level">
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
 	<xsl:variable name="e" select="if (@typ='amtlich') then 'SubjectOfficial' else if (@typ='redaktionell') then 'SubjectEditorial' else 'Subject'" as="xs:string"/>
-	<xsl:variable name="l1-uri" select="fun:stwUri(concat($v-base-uri,$e),string(haupt-stw))" as="xs:string"/>
+	<xsl:variable name="l1-uri" select="concat($v-base-uri,'stw/',fun:stwSegmentId(string(haupt-stw)))" as="xs:string"/>
 	<xsl:if test="not(unter-stw)">
 		<xsl:call-template name="setSubject">
 			<xsl:with-param name="subject" select="$p-uri"/>
@@ -359,7 +360,7 @@
 		</xsl:call-template>
 	</xsl:if>
 	<xsl:for-each select="unter-stw">
-		<xsl:variable name="l2-uri" select="fun:stwUri(concat($l1-uri,$e),string(.))" as="xs:string"/>
+		<xsl:variable name="l2-uri" select="fun:stwUri($l1-uri,string(.))" as="xs:string"/>
 		<xsl:if test="not(unter-unter-stw)">
 			<xsl:call-template name="setSubject">
 				<xsl:with-param name="subject" select="$p-uri"/>
@@ -368,7 +369,7 @@
 			</xsl:call-template>
 		</xsl:if>
 		<xsl:for-each select="unter-unter-stw">
-			<xsl:variable name="l3-uri" select="fun:stwUri(concat($l2-uri,$e),string(.))" as="xs:string"/>
+			<xsl:variable name="l3-uri" select="fun:stwUri($l2-uri,string(.))" as="xs:string"/>
 			<xsl:call-template name="setSubject">
 				<xsl:with-param name="subject" select="$p-uri"/>
 				<xsl:with-param name="object" select="$l3-uri"/>

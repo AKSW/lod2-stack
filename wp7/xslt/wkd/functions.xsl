@@ -108,6 +108,17 @@
 	<xsl:value-of select="replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F')"/>
 </xsl:function>
 
+<xsl:variable name="poolpart-in"  select="'ÀÁÂÃÅÆàáâãåæÈÉÊËèéêëÌÍÎÏìíîïÒÓÔÕÖòóôõöÙÚÛÜùúûüÇç'" as="xs:string"/>
+<xsl:variable name="poolpart-out" select="'AAAAAAaaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuCc'" as="xs:string"/>
+
+<xsl:function name="fun:stwSegmentId" as="xs:string">
+	<!-- ÄäÜüÖööß -> Ae ae Ue ue Oe oe ss -->
+	<xsl:param name="segment" as="xs:string"/>
+	<xsl:variable name="s" select="translate($segment,$poolpart-in,$poolpart-out)"/>
+	<xsl:variable name="r" select="replace(replace(replace(replace(replace(replace(replace(replace($s,' ','_'),'ß','ss'),'ö','oe'),'Ö','Oe'),'Ä','Ae'),'ä','ae'),'Ü','Ue'),'ü','ue')"/>
+	<xsl:value-of select="$r"/>
+</xsl:function>
+
 <xsl:function name="fun:language" as="xs:string">
 	<xsl:param name="l"/>
 	<xsl:value-of select="if (normalize-space($l)='') then 'de' else normalize-space($l)"/>
