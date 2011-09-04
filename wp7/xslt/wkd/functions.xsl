@@ -108,8 +108,8 @@
 	<xsl:value-of select="replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F')"/>
 </xsl:function>
 
-<xsl:variable name="poolpart-in"  select="'ÀÁÂÃÅÆàáâãåæÈÉÊËèéêëÌÍÎÏìíîïÒÓÔÕÖòóôõöÙÚÛÜùúûüÇç'" as="xs:string"/>
-<xsl:variable name="poolpart-out" select="'AAAAAAaaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuCc'" as="xs:string"/>
+<xsl:variable name="poolpart-in"  select="'ÀÁÂÃÅÆàáâãåæÈÉÊËèéêëÌÍÎÏìíîïÒÓÔÕòóôõÙÚÛùúûÇç'" as="xs:string"/>
+<xsl:variable name="poolpart-out" select="'AAAAAAaaaaaaEEEEeeeeIIIIiiiiOOOOooooUUUuuuCc'" as="xs:string"/>
 
 <xsl:function name="fun:stwSegmentId" as="xs:string">
 	<!-- ÄäÜüÖööß -> Ae ae Ue ue Oe oe ss -->
