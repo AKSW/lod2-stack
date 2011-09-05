@@ -101,11 +101,11 @@
 
 <xsl:function name="fun:percentEncode" as="xs:string">
 	<!-- placeholder function to get more sophistivated later (with java function)
-	 handled: %, space, /, #, ?
-	 to do: :, [, ], @, !, $, &, ', ", (, ), *, +, ,, ;, =, \, <, >
+	 handled: %, space, /, #, ?, [, ]
+	 to do: :, @, !, $, &, ', ", (, ), *, +, ,, ;, =, \, <, >
 	 -->
 	<xsl:param name="in" as="xs:string"/>
-	<xsl:value-of select="replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F')"/>
+	<xsl:value-of select="replace(replace(replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F'),'\[','%5B'),'\]','%5D')"/>
 </xsl:function>
 
 <xsl:variable name="poolpart-in"  select="'ÀÁÂÃÅÆàáâãåæÈÉÊËèéêëÌÍÎÏìíîïÒÓÔÕòóôõÙÚÛùúûÇç'" as="xs:string"/>
