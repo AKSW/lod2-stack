@@ -3,7 +3,7 @@
 
 echo "Starting valiant tool..."
 
-inputFile=input.xml
+inputFile="input.xml"
 configFile="`pwd`/valiant.properties"
 logFile="log/valiant.log"
 
