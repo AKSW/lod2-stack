@@ -23,6 +23,9 @@ public class Valiant {
   @Value("#{properties.rdfFolder}")
   private String rdfFolder;
 
+  @Value("#{properties['virtuoso.load']}")
+  private boolean loadInVirtuoso;
+
   @Autowired(required = true)
   private DavReader davReader;
 
@@ -93,6 +96,6 @@ public class Valiant {
   }
 
   private void writeToVirtuoso(File outputFile, String outputName) {
-    virtuosoFactory.add(outputFile, outputName);
+    if (loadInVirtuoso) virtuosoFactory.add(outputFile, outputName);
   }
 }

@@ -39,21 +39,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="0e002c6e-f994-4e9f-a2d5-26b15b8fa6aa" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/virtuoso/VirtuosoFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/webdav/DavConnector.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/virtuoso" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/valiant.properties" afterPath="$PROJECT_DIR$/tools/valiant.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/valiant.iml" afterPath="$PROJECT_DIR$/valiant.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/webdav/DavReader.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/webdav/DavWriter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/virtuoso/VirtuosoFactoryImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Namespace.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Valiant.java" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Valiant.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/webdav" />
     </list>
     <ignored path="valiant.iws" />
     <ignored path="$USER_HOME_GRAILS$/" />
@@ -161,10 +149,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Valiant.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Valiant.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Valiant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="0" selection-start="3104" selection-end="3104" vertical-scroll-proportion="1.3075435">
+            <state line="98" column="24" selection-start="3206" selection-end="3206" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -181,10 +169,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="valiant.properties" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="valiant.properties" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tools/valiant.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="29" selection-start="188" selection-end="188" vertical-scroll-proportion="0.0">
+            <state line="12" column="20" selection-start="348" selection-end="348" vertical-scroll-proportion="0.3448276">
               <folding />
             </state>
           </provider>
@@ -227,11 +215,11 @@
         <option value="$PROJECT_DIR$/src/main/java/be/tenforce/lod2.valiant/Valiant.java" />
         <option value="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/Valiant.java" />
         <option value="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Namespace.java" />
-        <option value="$PROJECT_DIR$/tools/valiant.properties" />
         <option value="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/virtuoso/VirtuosoFactory.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/virtuoso/VirtuosoFactoryImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Valiant.java" />
+        <option value="$PROJECT_DIR$/tools/valiant.properties" />
       </list>
     </option>
   </component>
@@ -906,7 +894,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1682" height="1027" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -916,15 +904,15 @@
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32875144" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875144" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27222562" sideWeight="0.66323024" order="3" side_tool="false" content_ui="tabs" x="398" y="223" width="414" height="553" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27222562" sideWeight="0.6689576" order="3" side_tool="false" content_ui="tabs" x="398" y="223" width="414" height="553" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924587" sideWeight="0.66323024" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924587" sideWeight="0.6689576" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32302406" sideWeight="0.98767966" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32302406" sideWeight="0.98767966" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1053,11 +1041,6 @@
         <state line="67" column="15" selection-start="1670" selection-end="1670" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tools/valiant.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="29" selection-start="188" selection-end="188" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/spring-configs/config.xml">
       <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
         <state />
@@ -1093,10 +1076,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/be/tenforce/lod2/valiant/Valiant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="0" selection-start="3104" selection-end="3104" vertical-scroll-proportion="1.3075435">
+        <state line="98" column="24" selection-start="3206" selection-end="3206" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/valiant.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="20" selection-start="348" selection-end="348" vertical-scroll-proportion="0.3448276">
+          <folding />
         </state>
       </provider>
     </entry>
