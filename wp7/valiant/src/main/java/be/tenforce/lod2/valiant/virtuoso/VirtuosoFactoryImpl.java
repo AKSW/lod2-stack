@@ -12,7 +12,6 @@ import virtuoso.jena.driver.VirtModel;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 @Service
 public class VirtuosoFactoryImpl implements VirtuosoFactory {
@@ -49,7 +48,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
       model.read(new FileInputStream(inputFile), namespace.getBaseURI());
       log.info("graph '<" + graphName + ">' loaded in virtuoso");
     }
-    catch (FileNotFoundException e) {
+    catch (Exception e) {
       log.error(e.getMessage(), e);
     }
     finally {
