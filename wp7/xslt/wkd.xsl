@@ -260,7 +260,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="webdav aentg" userelativepaths="yes" externalpreview="no" url="http://wp7.lod2.eu:8890/DAV/home/wkd/rdf_sink/aentg.xml" htmlbaseurl="" outputurl="..\result\aentg.rdf" processortype="saxon8" useresolver="yes"
+		<scenario default="yes" name="webdav aentg" userelativepaths="yes" externalpreview="no" url="http://wp7.lod2.eu:8890/DAV/home/wkd/rdf_sink/aentg.xml" htmlbaseurl="" outputurl="..\result\aentg.rdf" processortype="saxon8" useresolver="yes"
 		          profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -277,7 +277,7 @@ Tunnel parameters used
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="yes" name="ustae" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\ustae.xml" htmlbaseurl="" outputurl="..\result\ustae-t.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
+		<scenario default="no" name="ustae" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\ustae.xml" htmlbaseurl="" outputurl="..\result\ustae-t.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
 		          profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
