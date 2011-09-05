@@ -1,5 +1,8 @@
 package be.tenforce.lod2.valiant;
 
+import be.tenforce.lod2.valiant.virtuoso.VirtuosoFactory;
+import be.tenforce.lod2.valiant.webdav.DavReader;
+import be.tenforce.lod2.valiant.webdav.DavWriter;
 import com.googlecode.sardine.DavResource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +32,14 @@ public class Valiant {
   @Autowired(required = true)
   private WkdTransformer transformer;
 
+  @Autowired(required = true)
+  private VirtuosoFactory virtuosoFactory;
+
   public void execute(String[] args) {
     if (null != args && args.length > 0) {
       transform(args[0]);
-    } else {
+    }
+    else {
       while (davReader.hasNext()) {
         DavResource resource = davReader.getNextMatch();
         if (resource != null) transform(resource);
@@ -50,7 +57,8 @@ public class Valiant {
     StreamResult outputStream = new StreamResult(outputFile);
     transformer.transform(davReader.getInputStream(resource), outputStream);
 
-    write(outputFile, outputName);
+    writeToWebdav(outputFile, outputName);
+    writeToVirtuoso(outputFile, outputName);
   }
 
   private void transform(String filename) {
@@ -65,6 +73,8 @@ public class Valiant {
       InputStream inputStream = new FileInputStream(inputFile);
       StreamResult outputStream = new StreamResult(outputFile);
       transformer.transform(inputStream, outputStream);
+
+      writeToVirtuoso(outputFile, outputName);
     }
     catch (FileNotFoundException e) {
       log.error(e.getMessage(), e);
@@ -72,7 +82,7 @@ public class Valiant {
     }
   }
 
-  private void write(File outputFile, String outputName) {
+  private void writeToWebdav(File outputFile, String outputName) {
     try {
       InputStream rdf = new FileInputStream(outputFile);
       davWriter.putStream(outputName, rdf);
@@ -80,5 +90,9 @@ public class Valiant {
     catch (FileNotFoundException e) {
       log.error("Failed to write output: '" + e.getMessage(), e);
     }
+  }
+
+  private void writeToVirtuoso(File outputFile, String outputName) {
+    virtuosoFactory.add(outputFile, outputName);
   }
 }
