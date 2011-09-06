@@ -6,10 +6,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import virtuoso.jdbc3.VirtuosoDataSource;
 import virtuoso.jena.driver.VirtGraph;
 import virtuoso.jena.driver.VirtModel;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -33,16 +35,29 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
   @Autowired(required = true)
   private Namespace namespace;
 
+  private VirtuosoDataSource virtuosoDataSource;
   private String jdbcUrl;
 
   @PostConstruct
   private void initialize() {
     validate();
+    setup();
+  }
+
+  @PreDestroy
+  private void exit() {
+    try {
+      virtuosoDataSource.getConnection().commit();
+      virtuosoDataSource.getConnection().close();
+    }
+    catch (Exception e) {
+      log.error(e.getMessage(), e);
+    }
   }
 
   public void add(File inputFile, String fileName) {
     String graphName = namespace.getBaseURI() + fileName;
-    VirtGraph graph = new VirtGraph(graphName, jdbcUrl, username, password);
+    VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
     try {
       model.read(new FileInputStream(inputFile), namespace.getBaseURI());
@@ -54,6 +69,14 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     finally {
       model.close();
     }
+  }
+
+  private void setup() {
+    virtuosoDataSource = new VirtuosoDataSource();
+    virtuosoDataSource.setServerName(host);
+    virtuosoDataSource.setPortNumber(Integer.parseInt(port));
+    virtuosoDataSource.setUser(username);
+    virtuosoDataSource.setPassword(password);
   }
 
   private void validate() {
