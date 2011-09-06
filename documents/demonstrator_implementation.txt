@@ -251,6 +251,9 @@ Add the following dependencies to the pom.xml
 			<scope>runtime</scope>
 		</dependency>
 
+The files virt_sesame2.jar and virt_jdbc3.jar are available at
+ 
+	http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSDownload
 
 The files have to be registered manually in your maven repository.
 
