@@ -2,23 +2,9 @@
 <assembly>
   <id>libraries</id>
   <formats>
-    <!--<format>jar</format>-->
     <format>zip</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
-  <!--<fileSets>
-    <fileSet>
-      <directory>target/classes</directory>
-      <outputDirectory>/</outputDirectory>
-    </fileSet>
-  </fileSets>
-  <fileSets>
-    <fileSet>
-      <includes>
-        <include>src/main/resources/valiant.properties</include>
-      </includes>
-    </fileSet>
-  </fileSets>-->
   <dependencySets>
     <dependencySet>
       <excludes>
