@@ -38,7 +38,7 @@ public class DavReader {
 
   public DavResource getNext() {
     DavResource resource = null;
-    if (hasNext()) {
+    if (hasNext() && next < max) {
       resource = davConnector.getResources().get(next);
       next++;
     }
@@ -46,11 +46,11 @@ public class DavReader {
   }
 
   public boolean hasNext() {
-    return next < davConnector.getResources().size();
+    return next < davConnector.getResources().size() && next < max;
   }
 
   public DavResource getNextMatch() {
-    while (hasNext()) {
+    while (hasNext() && next < max) {
       DavResource resource = getNext();
       if (isMatch(resource.getName())) return resource;
     }
