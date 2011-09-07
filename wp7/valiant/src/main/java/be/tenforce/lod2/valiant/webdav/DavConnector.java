@@ -46,7 +46,8 @@ public class DavConnector {
       return sardine.get(host + resource.getPath());
     }
     catch (Exception e) {
-      log.error("Failed to retrieve resource: " + e.getMessage(), e);
+      log.error("Failed to retrieve resource: " + resource.getName());
+      log.error(e.getMessage(), e);
     }
     return null;
   }
@@ -57,6 +58,7 @@ public class DavConnector {
       sardine.put(host + outputFolder + name, input, mimetype);
     }
     catch (Exception e) {
+      log.error("Failed to write to webdav: " + name);
       log.error(e.getMessage(), e);
     }
   }

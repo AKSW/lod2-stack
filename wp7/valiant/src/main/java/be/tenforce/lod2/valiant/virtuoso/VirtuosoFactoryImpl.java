@@ -64,6 +64,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
       log.info("graph '<" + graphName + ">' loaded in virtuoso");
     }
     catch (Exception e) {
+      log.error("Error in file: " + fileName);
       log.error(e.getMessage(), e);
     }
     finally {

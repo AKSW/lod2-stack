@@ -41,7 +41,7 @@ public class WkdTransformer {
     setup();
   }
 
-  public void transform(InputStream input, StreamResult output) {
+  public void transform(InputStream input, StreamResult output) throws TransformerException {
     if (null == input || null == output || null == transformer) return;
 
     SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
@@ -50,6 +50,7 @@ public class WkdTransformer {
     }
     catch (TransformerException e) {
       log.error("Transform failed: " + e.getMessage(), e);
+      throw new TransformerException(e.getMessage(), e);
     }
     finally {
       try {
