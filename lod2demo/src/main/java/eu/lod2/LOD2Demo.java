@@ -176,6 +176,17 @@ public class LOD2Demo extends Application
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("110px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command me7c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			DebCKAN content = new DebCKAN(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
 			content.setHeight("90%");
 		    }  
 		};
@@ -372,7 +383,7 @@ public class LOD2Demo extends Application
 
 	    // sub menu's 
 	    MenuBar.MenuItem me1 = extraction.addItem("Upload RDF file", null, me1c);
-	    MenuBar.MenuItem me2 = extraction.addItem("Load RDF data from CKAN", null, null);
+	    MenuBar.MenuItem me2 = extraction.addItem("Load RDF data from CKAN", null, me7c);
 	    MenuBar.MenuItem me3 = extraction.addItem("Extract RDF from XML", null, me3c);
 	    MenuBar.MenuItem me6 = extraction.addItem("Extract RDF from SQL", null, me6c);
 	    MenuBar.MenuItem me4 = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
