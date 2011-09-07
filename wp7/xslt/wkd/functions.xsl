@@ -101,11 +101,11 @@
 
 <xsl:function name="fun:percentEncode" as="xs:string">
 	<!-- placeholder function to get more sophistivated later (with java function)
-	 handled: %, space, /, #, ?, [, ]
-	 to do: :, @, !, $, &, ', ", (, ), *, +, ,, ;, =, \, <, >
+	 handled: %, space, :, /, #, ?, [, ]
+	 to do: @, !, $, &, ', ", (, ), *, +, ,, ;, =, \, <, >
 	 -->
 	<xsl:param name="in" as="xs:string"/>
-	<xsl:value-of select="replace(replace(replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F'),'\[','%5B'),'\]','%5D')"/>
+	<xsl:value-of select="replace(replace(replace(replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F'),'\[','%5B'),'\]','%5D'),':','%3A')"/>
 </xsl:function>
 
 <xsl:variable name="poolpart-in"  select="'ÀÁÂÃÅÆàáâãåæÈÉÊËèéêëÌÍÎÏìíîïÒÓÔÕòóôõÙÚÛùúûÇç'" as="xs:string"/>
@@ -116,12 +116,12 @@
 	<xsl:param name="segment" as="xs:string"/>
 	<xsl:variable name="s" select="translate($segment,$poolpart-in,$poolpart-out)"/>
 	<xsl:variable name="r" select="replace(replace(replace(replace(replace(replace(replace(replace($s,' ','_'),'ß','ss'),'ö','oe'),'Ö','Oe'),'Ä','Ae'),'ä','ae'),'Ü','Ue'),'ü','ue')"/>
-	<xsl:value-of select="$r"/>
+	<xsl:value-of select="fun:percentEncode($r)"/>
 </xsl:function>
 
 <xsl:function name="fun:language" as="xs:string">
 	<xsl:param name="l"/>
-	<xsl:value-of select="if (normalize-space($l)='') then 'de' else normalize-space($l)"/>
+	<xsl:value-of select="if (normalize-space($l)=('','deu')) then 'de' else normalize-space($l)"/>
 </xsl:function>
 
 <xsl:function name="fun:firstAndRest" as="xs:string*">

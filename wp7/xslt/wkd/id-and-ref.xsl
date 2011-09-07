@@ -447,7 +447,7 @@
 				<owl:annotatedTarget rdf:resource="{$object}"/>
 				<wkd:referenceType>
 					<wkd:ReferenceType rdf:about="{$v-base-uri}verbundene-dokumente/{fun:percentEncode($typ)}">
-						<skos:prefLabel xml:lang="deu"><xsl:value-of select="$typ"/></skos:prefLabel>
+						<skos:prefLabel xml:lang="de"><xsl:value-of select="$typ"/></skos:prefLabel>
 					</wkd:ReferenceType>
 				</wkd:referenceType>
 				<xsl:if test="string-length($priority) &gt; 0">

@@ -44,7 +44,7 @@
 
 <!-- language -->
 <xsl:template name="setLanguage">
-	<dcterms:language><xsl:value-of select="if (@sprache) then @sprache else 'deu'"/></dcterms:language>
+	<dcterms:language><xsl:value-of select="if (@sprache) then @sprache else 'de'"/></dcterms:language>
 </xsl:template>
 
 <xsl:template match="titel" mode="plain-literal">
