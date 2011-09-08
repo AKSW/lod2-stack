@@ -61,6 +61,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     Model model = new VirtModel(graph);
     try {
       model.read(new FileInputStream(inputFile), namespace.getBaseURI());
+      log.info("create graph <" + graphName + ">");
       log.info("graph '<" + graphName + ">' loaded in virtuoso");
     }
     catch (Exception e) {
