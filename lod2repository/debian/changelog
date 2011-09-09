@@ -1,3 +1,9 @@
+lod2repository (1.12) lod2; urgency=low
+
+  * Remove maintainer key: Stephen Mulcahy (DERI)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Fri, 09 Sep 2011 12:33:16 +0200
+
 lod2repository (1.11) lod2; urgency=low
 
   * New maintainer key: Szymon Danielczyk (DERI)
