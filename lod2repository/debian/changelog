@@ -1,3 +1,9 @@
+lod2repository (1.11) lod2; urgency=low
+
+  * New maintainer key: Szymon Danielczyk (DERI)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Fri, 09 Sep 2011 10:44:46 +0200
+
 lod2repository (1.10) lod2; urgency=low
 
   * Replaced maintainer key: Tim Haynes (Openlink)
