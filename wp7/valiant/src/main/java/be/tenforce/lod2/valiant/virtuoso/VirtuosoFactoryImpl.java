@@ -62,8 +62,8 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     try {
       log.info("start loading graph in virtuoso");
       model.read(new FileInputStream(inputFile), namespace.getBaseURI());
-      log.info("create graph <" + graphName + ">");
       log.info("done loading graph in virtuoso");
+      log.info("create graph <" + graphName + ">");
     }
     catch (Exception e) {
       log.error("Error in file: " + fileName);
