@@ -212,22 +212,18 @@
       <id>vaadin-addons</id>
       <url>http://maven.vaadin.com/vaadin-addons</url>
     </repository>
-    <!--
     <repository>
       <id>openRDF1</id>
       <url>http://repo.aduna-software.org</url>
     </repository>
-    -->
     <repository>
       <id>openRDF2</id>
       <url>http://repo.aduna-software.org/maven2</url>
     </repository>
-    <!-- 
     <repository>
       <id>openRDF3</id>
       <url>http://repo.aduna-software.org/maven2/releases</url>
     </repository>
-    -->
     <repository>
       <id>slf4j</id>
       <url>http://repo2.maven.org/maven2/org/slf4j/</url>
