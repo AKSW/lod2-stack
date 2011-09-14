@@ -60,9 +60,10 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
     try {
+      log.info("start loading graph in virtuoso");
       model.read(new FileInputStream(inputFile), namespace.getBaseURI());
       log.info("create graph <" + graphName + ">");
-      log.info("graph '<" + graphName + ">' loaded in virtuoso");
+      log.info("done loading graph in virtuoso");
     }
     catch (Exception e) {
       log.error("Error in file: " + fileName);
@@ -79,6 +80,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     virtuosoDataSource.setPortNumber(Integer.parseInt(port));
     virtuosoDataSource.setUser(username);
     virtuosoDataSource.setPassword(password);
+    virtuosoDataSource.setCharset("UTF-8");
   }
 
   private void validate() {
