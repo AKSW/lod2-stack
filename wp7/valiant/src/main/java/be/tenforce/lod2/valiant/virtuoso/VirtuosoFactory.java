@@ -12,4 +12,8 @@ import java.io.File;
 public interface VirtuosoFactory {
 
   public void add(File inputFile, String fileName);
+
+  public void dropGraph(String fileName);
+
+  public void dropGraphSilent(String fileName);
 }

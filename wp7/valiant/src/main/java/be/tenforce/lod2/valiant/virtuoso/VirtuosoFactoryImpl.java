@@ -14,6 +14,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @Service
 public class VirtuosoFactoryImpl implements VirtuosoFactory {
@@ -37,6 +39,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
 
   private VirtuosoDataSource virtuosoDataSource;
   private String jdbcUrl;
+  private static String DROP_GRAPH = "sparql define output:format '_JAVA_' DROP GRAPH iri(??)";
 
   @PostConstruct
   private void initialize() {
@@ -56,6 +59,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
   }
 
   public void add(File inputFile, String fileName) {
+    dropGraph(fileName);
     String graphName = namespace.getBaseURI() + fileName;
     VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
@@ -72,6 +76,35 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     finally {
       model.close();
     }
+  }
+
+  public void dropGraphSilent(String fileName) {
+    String graphName = namespace.getBaseURI() + fileName;
+    try {
+      deleteGraph(graphName);
+      log.info("graph <" + graphName + "> dropped");
+    }
+    catch (SQLException ignored) {
+    }
+  }
+
+  public void dropGraph(String fileName) {
+    String graphName = namespace.getBaseURI() + fileName;
+    try {
+      deleteGraph(graphName);
+      log.info("graph <" + graphName + "> dropped");
+    }
+    catch (SQLException e) {
+      log.error(e.getMessage(), e);
+    }
+  }
+
+  private void deleteGraph(String graphName) throws SQLException {
+    PreparedStatement ps = null;
+    ps = virtuosoDataSource.getConnection().prepareStatement(DROP_GRAPH);
+    ps.setString(1, graphName);
+    ps.execute();
+    ps.close();
   }
 
   private void setup() {
