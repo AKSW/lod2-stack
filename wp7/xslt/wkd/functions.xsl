@@ -3,6 +3,7 @@
  xmlns:fun="http://local-function/"
  xmlns:data="http://local-data/"
  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+ xmlns:ppuri="at.punkt.commons.uricreator.URIFactory"
  exclude-result-prefixes="xsl xs fun data"
 >
 
@@ -114,9 +115,10 @@
 <xsl:function name="fun:stwSegmentId" as="xs:string">
 	<!-- ÄäÜüÖööß -> Ae ae Ue ue Oe oe ss -->
 	<xsl:param name="segment" as="xs:string"/>
-	<xsl:variable name="s" select="translate($segment,$poolpart-in,$poolpart-out)"/>
+	<!-- xsl:variable name="s" select="translate($segment,$poolpart-in,$poolpart-out)"/>
 	<xsl:variable name="r" select="replace(replace(replace(replace(replace(replace(replace(replace($s,' ','_'),'ß','ss'),'ö','oe'),'Ö','Oe'),'Ä','Ae'),'ä','ae'),'Ü','Ue'),'ü','ue')"/>
-	<xsl:value-of select="fun:percentEncode($r)"/>
+	<xsl:value-of select="fun:percentEncode($r)"/-->
+	<xsl:value-of select="substring-after(ppuri:createURIFromLabel('http://x/','x',$segment),'http://x/x/')"/>
 </xsl:function>
 
 <xsl:function name="fun:language" as="xs:string">
