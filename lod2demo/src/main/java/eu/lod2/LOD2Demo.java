@@ -448,10 +448,29 @@ public class LOD2Demo extends Application
 	    introH.addComponent(lod2cycle);
 	    introH.setComponentAlignment(lod2cycle, Alignment.MIDDLE_LEFT);
 
+	    VerticalLayout introV =  new VerticalLayout();
+	    introH.addComponent(introV);
+
 	    Label introtextl =  new Label(introtext, Label.CONTENT_XHTML);
-	    introH.addComponent(introtextl);
+	    introV.addComponent(introtextl);
 	    introtextl.setWidth("400px");
+
+	    HorizontalLayout introVH =  new HorizontalLayout();
+	    introV.addComponent(introVH);
+
+            Embedded euflag = new Embedded("", new ThemeResource("app_images/eu-flag.gif"));
+            euflag.setMimeType("image/gif");
+	    introVH.addComponent(euflag);
+            euflag.addStyleName("eugif");
+            euflag.setHeight("50px");
+            Embedded fp7 = new Embedded("", new ThemeResource("app_images/fp7-gen-rgb_small.gif"));
+            fp7.setMimeType("image/gif");
+            fp7.addStyleName("eugif");
+            fp7.setHeight("50px");
+	    introVH.addComponent(fp7);
+
 	    workspace.addComponent(introH);
+             
             
 
 	    mainWindow.setSizeFull();

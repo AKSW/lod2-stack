@@ -45,6 +45,11 @@
     background: url("/lod2demo/VAADIN/themes/lod2/app-images/LOD2.logo.jpg");
 }
 
+
+.eugif {
+   height: 50px
+}
+
 .v-icon {
 	height: 20px
 }
