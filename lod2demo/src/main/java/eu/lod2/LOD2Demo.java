@@ -371,6 +371,17 @@ public class LOD2Demo extends Application
 		    }  
 		};
 
+	    MenuBar.Command mo9c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			IframedUrl content = new IframedUrl(state, "http://publicdata.eu");
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
+			content.setHeight("500px");
+		    }  
+		};
+
 	    // Secondly define menu layout
 	    // root menu's
 	    MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
@@ -403,6 +414,7 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem sameAs    = onlinetools.addItem("SameAs", null, mo1c);
 	    MenuBar.MenuItem sigma     = onlinetools.addItem("Sigma", null, mo2c);
 	    MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
+	    MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);
 	    MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);
 	    MenuBar.MenuItem sparqlonline = onlinetools.addItem("Online SPARQL endpoints", null, null);
 	    MenuBar.MenuItem lodcloud        = sparqlonline.addItem("LOD cloud", null, mo3c);

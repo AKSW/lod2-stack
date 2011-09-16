@@ -132,6 +132,7 @@ public class ConfigurationTab extends CustomComponent
 	};
 
 	public void addCandidateGraphs(AbstractSelect selection) {
+	// SELECT ID_TO_IRI(REC_GRAPH_IID) AS GRAPH FROM DB.DBA.RDF_EXPLICITLY_CREATED_GRAPH
 
 	try {
 		RepositoryConnection con = state.getRdfStore().getConnection();
