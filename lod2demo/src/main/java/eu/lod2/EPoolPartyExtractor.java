@@ -76,9 +76,9 @@ public class EPoolPartyExtractor extends CustomComponent
         VerticalLayout panel = new VerticalLayout();
 
 	Label description = new Label(
-	  "This service will identify text elements which correspond to concepts in a given controlled vocabulary.\n"+
-	  "At the moment we have fixed the controlled vocabulary to be the semantic web controlled vocabulary in the PoolParty's demozone.\n" + 
-	  "The identified concepts will be inserted as triples in the current graph."
+	  "This service will identify text elements (tags) which correspond to concepts in a given controlled vocabulary using the PoolParty Extractor (PPX).\n"+
+	  "At the moment we have fixed the controlled vocabulary to be the Social Semantic Web thesaurus also available at CKAN.\n" + 
+	  "The identified concepts will be inserted as triples in the current graph.\n"
 	  );
 	panel.addComponent(description);
 
