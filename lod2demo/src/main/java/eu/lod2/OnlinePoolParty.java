@@ -62,7 +62,7 @@ public class OnlinePoolParty extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL("http://pilot1.poolparty.biz");
+	  	URL url = new URL("http://pilot5.poolparty.biz");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
