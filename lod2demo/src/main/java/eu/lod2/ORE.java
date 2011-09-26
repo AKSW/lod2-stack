@@ -62,7 +62,7 @@ public class ORE extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName() + "/ore");
+	  	URL url = new URL(state.getHostName() + "/ore/app/Application.html");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

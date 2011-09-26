@@ -68,6 +68,7 @@ public class OntoWiki extends CustomComponent
     // The internal state 
     state = st;
     initLogin();
+    activateCurrentGraph();
 
     Embedded browser = new Embedded();
     try { 
@@ -132,5 +133,32 @@ public class OntoWiki extends CustomComponent
 		}
 
 	};
+
+
+    private void activateCurrentGraph() {
+
+	if ( ! state.getCurrentGraph().equals("") ) {
+
+	try {
+		RepositoryConnection con = state.getRdfStore().getConnection();
+
+		// initialize the hostname and portnumber
+		String query = "create silent graph <" + state.getCurrentGraph() + ">"; 
+		TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+		TupleQueryResult result = tupleQuery.evaluate();
+
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+    }
 };
 

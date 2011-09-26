@@ -62,7 +62,8 @@ public class Sigma extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL("http://sig.ma/search?q=LOD2");
+	  	URL url = new URL("http://localhost:8080/sigmaee");
+
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

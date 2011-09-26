@@ -149,6 +149,10 @@ public class ConfigurationTab extends CustomComponent
 				// exclude some value to be candidates
 			if (valueOfG.stringValue() != "null") {
 				selection.addItem(valueOfG.stringValue());
+				// shortcut
+				String cgquery = "create silent GRAPH <" + valueOfG.stringValue() + ">";
+				TupleQuery cgtupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, cgquery);
+				TupleQueryResult cgresult = tupleQuery.evaluate();
 			};
 		};
 
