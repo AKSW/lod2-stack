@@ -30,6 +30,9 @@ import org.openrdf.model.*;
 import org.openrdf.model.impl.*;
 import virtuoso.sesame2.driver.VirtuosoRepository;
 
+import java.util.Properties;
+import java.io.*;
+
 // import java.lang.RuntimeException;
 
 public class LOD2DemoState
@@ -45,18 +48,26 @@ public class LOD2DemoState
 	private String currentGraph = "";
 
 	// The virtuoso repository
+        private String jDBCconnectionstring = "jdbc:virtuoso://localhost:1111";
+        private String jDBCuser = "dba";
+        private String jDBCpassword = "pwd";
+
 	public Repository rdfStore;
+
+	public Boolean InitStatus = false;
+	public String ErrorMessage = "true";
 
 	// initialize the state with an default configuration
 	// After succesfull initialisation the rdfStore connection is an active connection 
 	public LOD2DemoState() {
 
-    	rdfStore = new VirtuosoRepository("jdbc:virtuoso://localhost:1111", "dba", "dba");
+	readConfiguration();
+    	rdfStore = new VirtuosoRepository(jDBCconnectionstring, jDBCuser, jDBCpassword);
 	try {
 		rdfStore.initialize();
 	} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		ErrorMessage = "Initialization connection to Virtuoso failed";
+		e.printStackTrace();
 	};
 
 	try {
@@ -76,15 +87,17 @@ public class LOD2DemoState
 			}
 
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
+			ErrorMessage = "Query execution failed due to problems with the repository.";
 			e.printStackTrace();
 		} catch (MalformedQueryException e) {
-			// TODO Auto-generated catch block
+			ErrorMessage = "Query execution failed due to malformed query.";
 			e.printStackTrace();
 		} catch (QueryEvaluationException e) {
-			// TODO Auto-generated catch block
+			ErrorMessage = "Query execution failed due to query evaluation problem.";
 			e.printStackTrace();
 		}
+
+		InitStatus = new Boolean(ErrorMessage);
 
 	}
 	
@@ -127,5 +140,26 @@ public class LOD2DemoState
 			e.printStackTrace();
 		};
 	};
+
+	// read the local configuration file /etc/lod2demo/lod2demo.conf
+        private void readConfiguration() {
+		
+	Properties properties = new Properties();
+	try {
+	        properties.load(new FileInputStream("/etc/lod2demo/lod2demo.conf"));
+		jDBCconnectionstring = properties.getProperty("JDBCconnection");
+		jDBCuser             = properties.getProperty("JDBCuser");
+		jDBCpassword         = properties.getProperty("JDBCpassword");
+
+//		System.print("$"+jDBCuser+"$");
+//		System.print("$"+jDBCpassword+"$");
+		
+	} catch (IOException e) {
+		// the file is absent or has faults in configuration settings
+		ErrorMessage = "Reading configuration file in /etc/lod2demo/lod2demo.conf failed.";
+		// print more detail to catalina logs
+		e.printStackTrace();
+	};
+	}
 		
 }

@@ -38,6 +38,8 @@ import com.vaadin.ui.AbstractOrderedLayout.*;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.data.Property.*;
 import com.vaadin.ui.MenuBar.*;
+import com.vaadin.ui.Window.Notification;
+
 
 
 import eu.lod2.LOD2DemoState;
@@ -73,6 +75,7 @@ public class LOD2Demo extends Application
         public void init() {
 
             state = new LOD2DemoState();
+
 
             final Window mainWindow = new Window("LOD2 Prototype");
             setTheme("lod2");
@@ -550,6 +553,13 @@ public class LOD2Demo extends Application
 	*/
 
             setMainWindow(mainWindow);
+
+	    if (!state.InitStatus) {
+ 			mainWindow.showNotification(
+                                "Initialization Demonstration Failed",
+                                state.ErrorMessage,
+                                Notification.TYPE_ERROR_MESSAGE);
+		};
 
         }
 
