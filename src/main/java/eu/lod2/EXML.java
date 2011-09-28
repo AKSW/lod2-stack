@@ -377,8 +377,8 @@ public class EXML extends CustomComponent
             System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
             System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
             System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
-             WkdTransformer wkdTransformer = new WkdTransformer("C:/Checkout/xslt/wkd.xsl");
-        //wkdTransformer.transform(iStream, sResult);
+             WkdTransformer wkdTransformer = new WkdTransformer("/home/bertv/lod2-stack/wp7/xslt/wkd.xsl");
+             wkdTransformer.transform(iStream, sResult);
         } catch (Exception e){
             e.printStackTrace();
 

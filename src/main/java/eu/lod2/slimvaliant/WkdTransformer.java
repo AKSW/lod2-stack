@@ -25,7 +25,7 @@ public class WkdTransformer {
     private Transformer transformer = null;
     private String xsltUrl;
     private InputStream toTransformStream = null;
-    private String[] catalogUrl = new String[]{"C:/Checkout/catalog/catalog.xml"};
+    private String[] catalogUrl = new String[]{"/home/bertv/lod2-stack/wp7/catalog/catalog.xml"};
     private XMLCatalogResolver resolver = null;
     private XMLReader xmlReader = null;
 
