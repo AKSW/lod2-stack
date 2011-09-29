@@ -1,3 +1,4 @@
 html/lod2.sigma.html /var/www/
 lod2.sigma.html /var/www/
 lod2demo.war /var/lib/tomcat6/webapps
+confguration/lod2demo.conf /etc/lod2demo
