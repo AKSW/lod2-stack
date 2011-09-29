@@ -76,7 +76,7 @@
 			<dcterms:subject>
 				<skos:Concept>
 					<rdf:type rdf:resource="{$wkd}Keyword"/>
-					<skos:prefLabel><xsl:value-of select="$l"/></skos:prefLabel>
+					<skos:prefLabel xml:lang="de"><xsl:value-of select="$l"/></skos:prefLabel>
 				</skos:Concept>
 			</dcterms:subject>
 		</xsl:if>
@@ -92,7 +92,7 @@
 				<dcterms:subject>
 					<skos:Concept>
 						<rdf:type rdf:resource="{$wkd}Category{if ($c) then concat('/',$c) else ''}"/>
-						<skos:prefLabel><xsl:value-of select="$l"/></skos:prefLabel>
+						<skos:prefLabel xml:lang="de"><xsl:value-of select="$l"/></skos:prefLabel>
 					</skos:Concept>
 				</dcterms:subject>
 			</xsl:if>
@@ -175,12 +175,12 @@
 				<rdf:type rdf:resource="{$skos}Concept"/>
 				<xsl:if test="string-length($p) &gt; 0">
 					<wkd:product rdf:parseType="Resource">
-						<skos:prefLabel><xsl:value-of select="$p"/></skos:prefLabel>
+						<skos:prefLabel xml:lang="de"><xsl:value-of select="$p"/></skos:prefLabel>
 					</wkd:product>
 				</xsl:if>
 				<xsl:if test="string-length($q) &gt; 0">
 					<wkd:source rdf:parseType="Resource">
-						<skos:prefLabel><xsl:value-of select="$q"/></skos:prefLabel>
+						<skos:prefLabel xml:lang="de"><xsl:value-of select="$q"/></skos:prefLabel>
 					</wkd:source>
 				</xsl:if>
 				<xsl:call-template name="printHierarchy">
@@ -217,10 +217,10 @@
 		<skos:Concept>
 			<rdf:type rdf:resource="{$foaf}Organization"/>
 			<foaf:name><xsl:value-of select="string(org-bezeichnung)"/></foaf:name>
-			<skos:prefLabel><xsl:value-of select="string(org-bezeichnung)"/></skos:prefLabel>
+			<skos:prefLabel xml:lang="de"><xsl:value-of select="string(org-bezeichnung)"/></skos:prefLabel>
 			<xsl:if test="org-kuerzel">
 				<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
-				<skos:altLabel><xsl:value-of select="org-kuerzel"/></skos:altLabel>
+				<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
 			</xsl:if>
 			<xsl:if test="@ref-id">
 				<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
@@ -245,10 +245,10 @@
 			<xsl:if test="name/nachname">
 				<foaf:lastName><xsl:value-of select="string(name/nachname)"/></foaf:lastName>
 			</xsl:if>
-			<skos:prefLabel><xsl:value-of select="concat(name/vorname,if (name/nachname and name/vorname) then ' ' else '',name/nachname)"/></skos:prefLabel>
+			<skos:prefLabel xml:lang="de"><xsl:value-of select="concat(name/vorname,if (name/nachname and name/vorname) then ' ' else '',name/nachname)"/></skos:prefLabel>
 			<xsl:if test="org-kuerzel">
 				<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
-				<skos:altLabel><xsl:value-of select="org-kuerzel"/></skos:altLabel>
+				<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
 			</xsl:if>
 			<xsl:if test="@ref-id">
 				<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
@@ -412,7 +412,7 @@
 	<xsl:param name="name" as="xs:string" tunnel="yes"/>
 	<xsl:variable name="seq" select="fun:lastAndHead($label, $token)" as="xs:string*"/>
 	<xsl:if test="exists($seq[1])">
-		<skos:prefLabel><xsl:value-of select="normalize-space($seq[1])"/></skos:prefLabel>
+		<skos:prefLabel xml:lang="de"><xsl:value-of select="normalize-space($seq[1])"/></skos:prefLabel>
 		<xsl:if test="exists($seq[2])">
 			<skos:broader>
 				<xsl:element namespace="{$ns}" name="{$name}">
