@@ -35,7 +35,6 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.AbstractOrderedLayout.*;
-import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.data.Property.*;
 import com.vaadin.ui.MenuBar.*;
 import com.vaadin.ui.Window.Notification;
@@ -51,7 +50,6 @@ import java.lang.RuntimeException;
  */
 @SuppressWarnings("serial")
 public class LOD2Demo extends Application 
-   implements TabSheet.SelectedTabChangeListener
 {
 
     private LOD2DemoState state;
@@ -205,6 +203,17 @@ public class LOD2Demo extends Application
 //			workspace.setSizeFull();
 //			mainWindow.getContent().setSizeFull();
 			workspace.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command sameaslinking = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			SameAsLinking content = new SameAsLinking(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
+			content.setSizeFull();
 		    }  
 		};
 
@@ -411,6 +420,7 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
 	    MenuBar.MenuItem linking1 = linking.addItem("Silk", null, silk);
+	    MenuBar.MenuItem linking2 = linking.addItem("SameAs Linking", null, sameaslinking);
 
 	    MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
 
@@ -494,63 +504,6 @@ public class LOD2Demo extends Application
 //	    Component second = iterator.next();
 //	    second.setSizeFull();
 
-	    /* Obselete => should be cleaned.
-	     *
-            //************************************************************************
-            // Extraction Tab
-            extractionTab = new ExtractionTab(state);	
-
-            tabsheet.addTab(extractionTab);
-            tabsheet.getTab(extractionTab).setCaption("Loading & Extraction");
-
-
-            //************************************************************************
-            // Querying Tab
-            queryingTab = new QueryingTab(state);	
-
-            tabsheet.addTab(queryingTab);
-            tabsheet.getTab(queryingTab).setCaption("Querying");
-
-            //************************************************************************
-            // Authoring Tab
-            authoringTab = new AuthoringTab(state);	
-
-            tabsheet.addTab(authoringTab);
-            tabsheet.getTab(authoringTab).setCaption("Authoring");
-
-            //************************************************************************
-            // Enrichment Tab
-            linkingTab = new LinkingTab(state);	
-
-            tabsheet.addTab(linkingTab);
-            tabsheet.getTab(linkingTab).setCaption("Linking");
-
-            //************************************************************************
-            // Enrichment Tab
-            enrichmentTab = new EnrichmentTab(state);	
-
-            tabsheet.addTab(enrichmentTab);
-            tabsheet.getTab(enrichmentTab).setCaption("Enrichment");
-
-            //************************************************************************
-            // Online Tools Tab
-
-            onlineToolsTab = new OnlineToolsTab("", state);	
-
-            tabsheet.addTab(onlineToolsTab);
-            tabsheet.getTab(onlineToolsTab).setCaption("Online Tools and Services");
-            //************************************************************************
-            // Configuration Tab
-            configurationTab = new ConfigurationTab(state, currentgraphlabel);	
-
-            tabsheet.addTab(configurationTab);
-            tabsheet.getTab(configurationTab).setCaption("Configuration");
-
-            tabsheet.addListener(this);
-//            mainWindow.addComponent(tabsheet);
-
-
-	*/
 
             setMainWindow(mainWindow);
 
@@ -563,44 +516,13 @@ public class LOD2Demo extends Application
 
         }
 
-     public void selectedTabChange(SelectedTabChangeEvent event) {
-
-            final TabSheet source = (TabSheet) event.getSource();
-
-            if (source == tabsheet) {
-		    propagateData(tabsheet);
-            };
-	    currentgraph.setValue(state.getCurrentGraph());
-     };
 
     public void currentGraphChange(TextChangeEvent event) {
 
 	if (event != null && event.getText() != null) {
         	state.setCurrentGraph(event.getText());
 	};
-	propagateData(tabsheet);
-
     };
-
-    public void propagateData(TabSheet source) {
-	if (source.getSelectedTab() == queryingTab) {
-	    queryingTab.setDefaults();
-	} else if (source.getSelectedTab() == authoringTab) {
-	    authoringTab.setDefaults();
-	} else if (source.getSelectedTab() == extractionTab) {
-	    extractionTab.setDefaults();
-	} else if (source.getSelectedTab() == linkingTab) {
-	    linkingTab.setDefaults();
-	} else if (source.getSelectedTab() == enrichmentTab) {
-	    enrichmentTab.setDefaults();
-	} else if (source.getSelectedTab() == onlineToolsTab) {
-	    onlineToolsTab.setDefaults();
-	} else if (source.getSelectedTab() == configurationTab) {
-	    configurationTab.setDefaults();
-	} else {
-	    
-	}
-    }
 
     public void setDefaults() {
 	    currentgraph.setValue(state.getCurrentGraph());

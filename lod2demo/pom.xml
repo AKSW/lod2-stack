@@ -225,8 +225,8 @@
       <url>http://repo.aduna-software.org/maven2/releases</url>
     </repository>
     <repository>
-      <id>slf4j</id>
-      <url>http://repo2.maven.org/maven2/org/slf4j/</url>
+      <id>maven-general</id>
+      <url>http://repo2.maven.org/maven2/</url>
     </repository>
     <repository>
       <id>Jena</id>
@@ -455,6 +455,16 @@
     	<groupId>xalan</groupId>
     	<artifactId>xalan</artifactId>
     	<version>2.7.1</version>
+    </dependency>
+    <dependency>
+        <groupId>xerces</groupId>
+        <artifactId>xercesImpl</artifactId>
+        <version>2.9.1</version>
+      </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.2</version>
     </dependency>
   </dependencies>
 
