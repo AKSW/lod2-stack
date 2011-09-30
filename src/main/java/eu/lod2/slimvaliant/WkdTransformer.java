@@ -53,6 +53,32 @@ public class WkdTransformer {
             throw new Exception("Failed to create the XmlReader");
         }
     }
+    public WkdTransformer(StreamSource xslt, File catalogFile){
+	catalogUrl[0] = catalogFile.getPath();
+	if (this.transformerFactory == null)
+            this.transformerFactory = TransformerFactory.newInstance();
+        //this.xsltUrl = xsltUrl;
+        //File xslt = new File(xsltUrl);
+        // boolean readable = xslt.canRead();
+        // System.out.println("file is readable: " + readable);
+        try {
+            this.transformer = this.transformerFactory.newTransformer(xslt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        //    throw new Exception("Failed to compile the stylesheet");
+        }
+        // this.catalogUrl;
+        this.resolver = new XMLCatalogResolver(catalogUrl);
+        try {
+            this.xmlReader = XMLReaderFactory.createXMLReader();
+            this.xmlReader.setEntityResolver(this.resolver);
+        }
+        catch (org.xml.sax.SAXException e) {
+            e.printStackTrace();
+        //    throw new Exception("Failed to create the XmlReader");
+        }
+
+    }
 
     public void transform(InputStream input, StreamResult output) throws Exception {
         if (this.transformer == null) throw new Exception("Xslt transformer is not initialized.");

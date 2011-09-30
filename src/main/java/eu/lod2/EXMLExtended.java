@@ -108,6 +108,8 @@ public class EXMLExtended extends CustomComponent
     File  xmlFile;         // The original file
     File  rdfFile;         // The RDF file containing the triples derived via the XSLT
     File  xsltFile;	   // The XSLT transformation file
+    File  catalogFile;
+    File  dtdFile;
 
     //
     //private Button annotateButton;
@@ -133,27 +135,32 @@ public class EXMLExtended extends CustomComponent
 
     private ByteArrayOutputStream oStream;
 
+
     final Upload uploadXMLFile =
-                new Upload("Or upload the XML file here", this);
+                new Upload("Upload the XML file here", this);
 
     final Upload uploadXSLTFile =
-                new Upload("Or upload the XLST file here", this);
-    public EXMLExtended(){
+                new Upload("Upload the XLST file here", this);
+    final Upload uploadCatalogFile = new Upload("Upload the catalog file here", this);
+    final Upload uploadDTDFile = new Upload("Upload the DTD file here", this);
 
+    public EXMLExtended(){
 
 }
     public EXMLExtended(ExtractionTab etab, LOD2DemoState state) {
 	this();
 	this.state = state;
-	
+
+
         // The internal state and
         extractionTab = etab;
 
         panel = new VerticalLayout();
+	panel.setSpacing(true);
 
 	transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
 
-
+//	panel.addComponent(upload);
 
         // Create the Upload component for the XML file.
         
@@ -161,8 +168,7 @@ public class EXMLExtended extends CustomComponent
         uploadXMLFile.addListener((Upload.SucceededListener) this);
         uploadXMLFile.addListener((Upload.FailedListener) this);
 
-        panel.addComponent(uploadXMLFile);
-
+        
 	// Create the Upload component for the XSLT file.
         
 
@@ -170,9 +176,30 @@ public class EXMLExtended extends CustomComponent
         uploadXSLTFile.addListener((Upload.SucceededListener) this);
         uploadXSLTFile.addListener((Upload.FailedListener) this);
 
+	// Create the Upload component for the Catalog file.
+	
+	uploadCatalogFile.setButtonCaption("Upload Now");
+	uploadCatalogFile.addListener((Upload.SucceededListener) this);
+	uploadCatalogFile.addListener((Upload.FailedListener) this);
+
+	//Create the Upload component for the DTD file.
+
+	uploadDTDFile.setButtonCaption("Upload Now");
+	uploadDTDFile.addListener((Upload.SucceededListener) this);
+	uploadDTDFile.addListener((Upload.FailedListener) this);
+
 	errorMsg = new Label("");
 
+	exportGraph = new ExportSelector(state);
+	uploadButton = new Button("Upload to Virtuoso", (Button.ClickListener) this);
+	
+
+	panel.addComponent(uploadXMLFile);
         panel.addComponent(uploadXSLTFile);
+	panel.addComponent(uploadCatalogFile);
+	panel.addComponent(uploadDTDFile);
+	panel.addComponent(exportGraph);
+	panel.addComponent(uploadButton);
        	panel.addComponent(transformButton);
 	panel.addComponent(errorMsg);
 	
@@ -196,22 +223,20 @@ public class EXMLExtended extends CustomComponent
 	t2f.setVisible(false);
 
 	downloadForm = new Form();
-	downloadForm.setCaption("Download file, or upload it to Virtuoso.");
+	downloadForm.setCaption("Download file.");
 	dlFileName = new TextField();
+	dlFileName.setRequired(true);
 	//dlFileName.setCaption("Give a filename. (Required)");
-	downloadForm.getLayout().addComponent(new Label("Give a filename. (Required)"));
+	downloadForm.getLayout().addComponent(new Label("Give a filename."));
 	downloadForm.getLayout().addComponent(dlFileName);
 	dlPath = new TextField();
+	dlPath.setRequired(true);
 	//dlPath.setCaption("Specify a path. (Required for downloading)");
-	downloadForm.getLayout().addComponent(new Label("Specify a path. (Only required for downloading)"));
+	downloadForm.getLayout().addComponent(new Label("Specify a path."));
 	downloadForm.getLayout().addComponent(dlPath);
 	downloadButton = new Button("Download file", (Button.ClickListener) this);
 	downloadForm.getLayout().addComponent(downloadButton);
-	uploadButton = new Button("Upload to Virtuoso", (Button.ClickListener) this);
-	downloadForm.getLayout().addComponent(uploadButton);
-	exportGraph = new ExportSelector(state);
-	downloadForm.getLayout().addComponent(exportGraph);
-	
+		
 	panel.addComponent(downloadForm);
 	downloadForm.setVisible(false);
 
@@ -250,13 +275,22 @@ public class EXMLExtended extends CustomComponent
 		if(event.getComponent()== uploadXMLFile){
 			xmlFile = file;
 			//xmlText.setVisible(false);
-			uploadXMLFile.setCaption("xml file upload succeeded.");
+			uploadXMLFile.setCaption("xml file:"+ xmlFile.getName()+" upload succeeded.");
 		}
 		else if(event.getComponent()== uploadXSLTFile){
 			xsltFile = file;
 			//xsltText.setVisible(false);
-			uploadXSLTFile.setCaption("xslt file upload succeeded.");
+			uploadXSLTFile.setCaption("xslt file:"+ xsltFile.getName() + " upload succeeded.");
 		}
+		else if(event.getComponent() == uploadCatalogFile){
+			catalogFile = file;
+			uploadCatalogFile.setCaption("catalog file:"+catalogFile.getName() +" upload succeeded");
+		}
+		else if(event.getComponent() == uploadDTDFile){
+			dtdFile = file;
+			uploadDTDFile.setCaption("DTD file:"+dtdFile.getName() +" upload succeeded");
+		}
+		
     }
 
     // This is called if the upload fails.
@@ -277,8 +311,6 @@ public class EXMLExtended extends CustomComponent
 		uploadToVirtuoso();
 	}
     }
-
-
     private void transform(){
 		errorMsg.setVisible(false);
 		InputStream xmlStream, xsltStream;
@@ -291,7 +323,7 @@ public class EXMLExtended extends CustomComponent
 
 		if(xmlFile == null){
 			errorMsg.setVisible(true);
-			errorMsg.setValue("Upload a xml file first.");
+			errorMsg.setValue("Upload a xml file.");
 			return;
 		}
 		else if(xsltFile == null){
@@ -299,10 +331,20 @@ public class EXMLExtended extends CustomComponent
 			errorMsg.setValue("Upload a xslt file.");
 			return;
 		}
+		else if(catalogFile == null){
+			errorMsg.setVisible(true);
+			errorMsg.setValue("Upload a catalog file.");
+			return;
+		}
+		else if(dtdFile == null){
+			errorMsg.setVisible(true);
+			errorMsg.setValue("Upload a dtd file");
+			return;
+		}
 		try{
 			xmlStream = new FileInputStream(xmlFile);
 			xsltStream = new FileInputStream(xsltFile);
-            		WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream)); 
+            		WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream), catalogFile); 
 	    		wkdTransformer.transform(xmlStream, sResult);
         	} catch (Exception e){
             		e.printStackTrace();
@@ -333,6 +375,14 @@ public class EXMLExtended extends CustomComponent
 		 panel.addComponent(new Label("Download succeeded!"));
 	}
     private void uploadToVirtuoso(){
+	if(exportGraph.getExportGraph() == null){
+		panel.addComponent(new Label("No graph selected"));
+		return;
+	}
+	else if(oStream == null || oStream.toString().isEmpty()){
+		transform();
+		if(oStream.toString().isEmpty()){return;}
+	}
 	try{
 	rdfFile = new File ("/tmp/uploads/file.rdf");
 	FileOutputStream fos = new FileOutputStream(rdfFile);
@@ -351,5 +401,4 @@ public class EXMLExtended extends CustomComponent
 	panel.addComponent(new Label("Upload succeeded!"));
     }
 };
-
 

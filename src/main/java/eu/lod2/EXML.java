@@ -140,10 +140,12 @@ public class EXML extends CustomComponent
 	xmlText.setImmediate(false);
 	xmlText.setColumns(100);
     	xmlText.setRows(25);
+	xmlText.setRequired(true);
 	xsltText = new TextArea("Enter your xslt code:");
 	xsltText.setImmediate(false);
 	xsltText.setColumns(100);
         xsltText.setRows(25);
+	xsltText.setRequired(true);
 
 	exportGraph = new ExportSelector(state);
 	
@@ -298,6 +300,14 @@ public class EXML extends CustomComponent
 		t2f.setVisible(true);
 	}
     private void uploadToVirtuoso(){
+	if(exportGraph.getExportGraph() == null){
+		panel.addComponent(new Label("No graph selected"));
+		return;
+	}
+	else if(oStream == null || oStream.toString().isEmpty()){
+		transform();
+		if(oStream.toString().isEmpty()){return;}
+	}
 	try{
 	File rdfFile = new File ("/tmp/uploads/file.rdf");
 	FileOutputStream fos = new FileOutputStream(rdfFile);
