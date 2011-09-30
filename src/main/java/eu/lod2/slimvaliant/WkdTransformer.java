@@ -23,21 +23,21 @@ import java.io.InputStream;
 public class WkdTransformer {
     private TransformerFactory transformerFactory = null;
     private Transformer transformer = null;
-    private String xsltUrl;
+    //private String xsltUrl;
     private InputStream toTransformStream = null;
-    private String[] catalogUrl = new String[]{"/home/bertv/lod2-stack/wp7/catalog/catalog.xml"};
+    private String[] catalogUrl = new String[]{"//home/jand/Project/jan/src/example/catalog/catalog.xml"};
     private XMLCatalogResolver resolver = null;
     private XMLReader xmlReader = null;
 
-    public WkdTransformer(String xsltUrl) throws Exception {
+    public WkdTransformer(StreamSource xslt) throws Exception {
         if (this.transformerFactory == null)
             this.transformerFactory = TransformerFactory.newInstance();
-        this.xsltUrl = xsltUrl;
-        File xslt = new File(xsltUrl);
+        //this.xsltUrl = xsltUrl;
+        //File xslt = new File(xsltUrl);
         // boolean readable = xslt.canRead();
         // System.out.println("file is readable: " + readable);
         try {
-            this.transformer = this.transformerFactory.newTransformer(new StreamSource(xslt));
+            this.transformer = this.transformerFactory.newTransformer(xslt);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to compile the stylesheet");

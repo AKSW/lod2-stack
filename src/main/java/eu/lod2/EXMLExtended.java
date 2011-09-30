@@ -92,75 +92,92 @@ import javax.xml.transform.stream.StreamSource;
 //@SuppressWarnings("serial")
 //@Configurable(preConstruction = true)
 //@Component
-public class EXML extends CustomComponent
-    implements 	TextChangeListener,
+public class EXMLExtended extends CustomComponent
+    implements	Upload.SucceededListener,
+                Upload.FailedListener,
+                Upload.Receiver,
 		Button.ClickListener
-    	{
+{
  //private static final Logger log = Logger.getLogger(EXML.class);
 
     // reference to the global internal state
     private ExtractionTab extractionTab;
-    private LOD2DemoState state;
 
     private VerticalLayout panel;
-    private ByteArrayOutputStream oStream;
+    File  file;
+    File  xmlFile;         // The original file
+    File  rdfFile;         // The RDF file containing the triples derived via the XSLT
+    File  xsltFile;	   // The XSLT transformation file
 
     //
-    //private Button annotateButton; 
-    private Button transformButton;
-    private Button uploadButton;
+    //private Button annotateButton;
     private Label annotatedTextField;
     private Label errorMsg;
+
+    private LOD2DemoState state;
 
     private String textToAnnotate;
     private String annotatedText;
 
-    private TextArea xmlText;
-    private TextArea xsltText;
     private TextArea textToAnnotateField;
+    private TextField dlPath;
+    private TextField dlFileName;
+
+    private Button transformButton;
+    private Button downloadButton;
+    private Button uploadButton;
+
+    private Form downloadForm, t2f;
 
     private ExportSelector exportGraph;
 
-    private Form t2f;
+    private ByteArrayOutputStream oStream;
 
-    public EXML(){
+    final Upload uploadXMLFile =
+                new Upload("Or upload the XML file here", this);
+
+    final Upload uploadXSLTFile =
+                new Upload("Or upload the XLST file here", this);
+    public EXMLExtended(){
 
 
 }
-    public EXML(ExtractionTab etab,LOD2DemoState state) {
+    public EXMLExtended(ExtractionTab etab, LOD2DemoState state) {
 	this();
 	this.state = state;
-
+	
         // The internal state and
         extractionTab = etab;
 
         panel = new VerticalLayout();
 
-	xmlText = new TextArea("Enter your xml code:");
-	xmlText.setImmediate(false);
-	xmlText.setColumns(100);
-    	xmlText.setRows(25);
-	xsltText = new TextArea("Enter your xslt code:");
-	xsltText.setImmediate(false);
-	xsltText.setColumns(100);
-        xsltText.setRows(25);
-
-	exportGraph = new ExportSelector(state);
-	
-
-	uploadButton = new Button("Upload result to Virtuoso", (Button.ClickListener) this);
-
 	transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
+
+
+
+        // Create the Upload component for the XML file.
+        
+	uploadXMLFile.setButtonCaption("Upload Now");
+        uploadXMLFile.addListener((Upload.SucceededListener) this);
+        uploadXMLFile.addListener((Upload.FailedListener) this);
+
+        panel.addComponent(uploadXMLFile);
+
+	// Create the Upload component for the XSLT file.
+        
+
+        uploadXSLTFile.setButtonCaption("Upload Now");
+        uploadXSLTFile.addListener((Upload.SucceededListener) this);
+        uploadXSLTFile.addListener((Upload.FailedListener) this);
+
 	errorMsg = new Label("");
 
-	panel.addComponent(xmlText);
-      	panel.addComponent(xsltText);
-	panel.addComponent(transformButton);
-	panel.addComponent(exportGraph);
-	panel.addComponent(uploadButton);
+        panel.addComponent(uploadXSLTFile);
+       	panel.addComponent(transformButton);
 	panel.addComponent(errorMsg);
 	
 	errorMsg.setVisible(false);
+
 
         t2f = new Form();
         t2f.setCaption("");
@@ -170,96 +187,97 @@ public class EXML extends CustomComponent
 
 	textToAnnotateField = new TextArea();
         textToAnnotateField.setImmediate(false);
-        textToAnnotateField.addListener(this);
+        //textToAnnotateField.addListener(this);
         textToAnnotateField.setColumns(100);
         textToAnnotateField.setRows(25);
         t2f.getLayout().addComponent(textToAnnotateField);
 
- 	panel.addComponent(t2f);
+        panel.addComponent(t2f);
 	t2f.setVisible(false);
 
+	downloadForm = new Form();
+	downloadForm.setCaption("Download file, or upload it to Virtuoso.");
+	dlFileName = new TextField();
+	//dlFileName.setCaption("Give a filename. (Required)");
+	downloadForm.getLayout().addComponent(new Label("Give a filename. (Required)"));
+	downloadForm.getLayout().addComponent(dlFileName);
+	dlPath = new TextField();
+	//dlPath.setCaption("Specify a path. (Required for downloading)");
+	downloadForm.getLayout().addComponent(new Label("Specify a path. (Only required for downloading)"));
+	downloadForm.getLayout().addComponent(dlPath);
+	downloadButton = new Button("Download file", (Button.ClickListener) this);
+	downloadForm.getLayout().addComponent(downloadButton);
+	uploadButton = new Button("Upload to Virtuoso", (Button.ClickListener) this);
+	downloadForm.getLayout().addComponent(uploadButton);
+	exportGraph = new ExportSelector(state);
+	downloadForm.getLayout().addComponent(exportGraph);
+	
+	panel.addComponent(downloadForm);
+	downloadForm.setVisible(false);
 
         // The composition root MUST be set
         setCompositionRoot(panel);
 
 }
 
-   public void textChange(TextChangeEvent event) {
+	// propagate the information of one tab to another.
+	public void setDefaults() {
+	};
 
-        textToAnnotate = event.getText();
-        if (textToAnnotate == null || textToAnnotate.equals("")) {
-            //annotateButton.setEnabled(false);
-        } else {
-            String encoded = "";
-            try {
-                encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
-              //  annotateButton.setEnabled(true);
-            } catch (UnsupportedEncodingException e) {
-                //annotateButton.setEnabled(false);
-                e.printStackTrace();
-            };
-        };
+	// Callback method to begin receiving the upload.
+    public OutputStream receiveUpload(String filename,
+                                      String MIMEType) {
+        FileOutputStream fos = null; // Output stream to write to
+        file = new File("/tmp/uploads/" + filename);
+        try {
+            // Open the file for writing.
+            fos = new FileOutputStream(file);
+        } catch (final java.io.FileNotFoundException e) {
+            // Error while opening the file. Not reported here.
+            e.printStackTrace();
+            return null;
+        }
+	
+        return fos; // Return the output stream to write to
+    }
 
-    }	
+    // This is called if the upload is finished.
+    public void uploadSucceeded(Upload.SucceededEvent event) {
+        // Log the upload on screen.
+       /* panel.addComponent(new Label("File " + event.getFilename()
+                + " of type '" + event.getMIMEType()
+                + "' uploaded."));*/
+		if(event.getComponent()== uploadXMLFile){
+			xmlFile = file;
+			//xmlText.setVisible(false);
+			uploadXMLFile.setCaption("xml file upload succeeded.");
+		}
+		else if(event.getComponent()== uploadXSLTFile){
+			xsltFile = file;
+			//xsltText.setVisible(false);
+			uploadXSLTFile.setCaption("xslt file upload succeeded.");
+		}
+    }
+
+    // This is called if the upload fails.
+    public void uploadFailed(Upload.FailedEvent event) {
+        // Log the failure on screen.
+        panel.addComponent(new Label("Uploading "
+                + event.getFilename() + " of type '"
+                + event.getMIMEType() + "' failed."));
+    }
     public void buttonClick(ClickEvent event) {
 	if(event.getComponent()==transformButton){
 		transform();
+	}
+	else if(event.getComponent()==downloadButton){
+		download();
 	}
 	else if(event.getComponent()==uploadButton){
 		uploadToVirtuoso();
 	}
     }
-       /*
-    private void applyXSLT(ClickEvent event) {
-	     should be replaced with an xslt call
-        try {
-		// 1. Instantiate a TransformerFactory.
-		javax.xml.transform.TransformerFactory tFactory =
-				  javax.xml.transform.TransformerFactory.newInstance();
 
-		// 2. Use the TransformerFactory to process the stylesheet Source and
-		//    generate a Transformer.
-		javax.xml.transform.Transformer transformer = tFactory.newTransformer
-				(new javax.xml.transform.stream.StreamSource(xsltFile));
-
-		// 3. Use the Transformer to transform an XML Source and send the
-		//    output to a Result object.
-		transformer.transform
-		    (new javax.xml.transform.stream.StreamSource(xmlFile),
-		     new javax.xml.transform.stream.StreamResult( new
-						  java.io.FileOutputStream(rdfFile)));
-
-            String encoded = "";
-            encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
-            ClientResource restcall = new ClientResource(
-                    "http://spotlight.dbpedia.org/rest/annotate?text=" + encoded + "&confidence=0.4&support=20");
-
-            //            String result = restcall.get().getText();
-	    //            TEXT_XML is usefull to have the resources already extracted,
-	    //            but it does not render directly on a label content.
-            // String result = restcall.get(MediaType.TEXT_XML).getText();
-	    //     APPLICATION_XHTML will return an annotated text with rdfa.
-            String result = restcall.get(MediaType.APPLICATION_XHTML).getText();
-            annotatedTextField.setValue(result);
-        } catch (UnsupportedEncodingException e) {
-            annotateButton.setEnabled(false);
-            e.printStackTrace();
-        } catch (IOException e) {
-            annotateButton.setEnabled(false);
-            e.printStackTrace();
-	} catch (javax.xml.transform.TransformerConfigurationException e) {
-            annotateButton.setEnabled(false);
-            e.printStackTrace();
-	} catch (javax.xml.transform.TransformerException e) {
-            annotateButton.setEnabled(false);
-            e.printStackTrace();
-        };
-
-    };     */
-
-	// propagate the information of one tab to another.
-	public void setDefaults() {
-	};
 
     private void transform(){
 		errorMsg.setVisible(false);
@@ -271,20 +289,19 @@ public class EXML extends CustomComponent
             	System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
             	System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
 
-		if(xmlText.getValue().toString().isEmpty()){
+		if(xmlFile == null){
 			errorMsg.setVisible(true);
-			errorMsg.setValue("Enter a xml text first.");
+			errorMsg.setValue("Upload a xml file first.");
 			return;
 		}
-		else if(xsltText.getValue().toString().isEmpty()){
+		else if(xsltFile == null){
 			errorMsg.setVisible(true);
-			errorMsg.setValue("Enter a xslt code.");
+			errorMsg.setValue("Upload a xslt file.");
 			return;
 		}
 		try{
-			xmlStream = new ByteArrayInputStream(xmlText.getValue().toString().getBytes("UTF-8"));
-			xsltStream = new ByteArrayInputStream(xsltText.getValue().toString().getBytes("UTF-8"));	
-		
+			xmlStream = new FileInputStream(xmlFile);
+			xsltStream = new FileInputStream(xsltFile);
             		WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream)); 
 	    		wkdTransformer.transform(xmlStream, sResult);
         	} catch (Exception e){
@@ -296,10 +313,28 @@ public class EXML extends CustomComponent
 		}
         	textToAnnotateField.setValue(oStream.toString());
 		t2f.setVisible(true);
+		downloadForm.setVisible(true);
+	}
+
+   private void download(){
+	String path = dlPath.getValue().toString();
+	if(path.charAt(path.length() -1) != '/'){
+		path += "/";
+	}
+		try{
+		File dlFile = new File(path + dlFileName.getValue().toString() + ".rdf");
+		FileOutputStream fos = new FileOutputStream(dlFile);
+		oStream.writeTo(fos);
+		} catch (Exception e){
+			e.printStackTrace();
+			panel.addComponent(new Label("Download failed"));
+			return;
+		}
+		 panel.addComponent(new Label("Download succeeded!"));
 	}
     private void uploadToVirtuoso(){
 	try{
-	File rdfFile = new File ("/tmp/uploads/file.rdf");
+	rdfFile = new File ("/tmp/uploads/file.rdf");
 	FileOutputStream fos = new FileOutputStream(rdfFile);
 	oStream.writeTo(fos);
 	String baseURI = "http://poolparty.biz/defaultns#";
@@ -316,4 +351,5 @@ public class EXML extends CustomComponent
 	panel.addComponent(new Label("Upload succeeded!"));
     }
 };
+
 
