@@ -99,7 +99,6 @@ implements 	TextChangeListener,
         //private static final Logger log = Logger.getLogger(EXML.class);
 
         // reference to the global internal state
-        private ExtractionTab extractionTab;
         private LOD2DemoState state;
 
         private VerticalLayout panel;
@@ -124,12 +123,11 @@ implements 	TextChangeListener,
         private Form t2f;
 
         public EXML(){
+        };
 
-
-        }
-        public EXML(LOD2DemoState state) {
+        public EXML(LOD2DemoState st) {
                 this();
-                this.state = state;
+                state = st;
 
                 // The internal state and
 
@@ -153,14 +151,12 @@ implements 	TextChangeListener,
                 xsltText.setRows(25);
                 xsltText.setRequired(true);
 
-                exportGraph = new ExportSelector(state);
+                exportGraph = new ExportSelector(st);
 
-/*
                 uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
 
                 transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
                 errorMsg = new Label("");
-	*/
 
                 panel.addComponent(desc);
                 panel.addComponent(xmlText);
