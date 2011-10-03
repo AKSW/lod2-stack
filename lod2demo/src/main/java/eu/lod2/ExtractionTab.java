@@ -254,7 +254,7 @@ public class ExtractionTab extends CustomComponent
 		} else if (event.getProperty().toString() == "Load RDF data from CKAN") {
 			extractionTab.addComponent(new Label(event.getProperty().toString()));
 		} else if (event.getProperty().toString() == "Extract RDF from XML") {
-			extractionTab.addComponent(new EXML(this));
+			extractionTab.addComponent(new EXMLExtended(state));
 		} else if (event.getProperty().toString() == "Extract RDF from text w.r.t. DBpedia") {
 			extractionTab.addComponent(new ESpotlight(this));
 		} else if (event.getProperty().toString() == "Extract RDF from text w.r.t. a controlled vocabulary") {

@@ -140,13 +140,24 @@ public class LOD2Demo extends Application
 	    MenuBar.Command me3c = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
-			EXML me3c_content = new EXML(extractionTab);
+			EXML me3c_content = new EXML(state);
 			workspace.addComponent(me3c_content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("110px");
 			me3c_content.setSizeFull();
 		    }  
 		};
+	    MenuBar.Command me3cbis = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			EXMLExtended me3c_content = new EXMLExtended(state);
+			workspace.addComponent(me3c_content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
+			me3c_content.setSizeFull();
+		    }  
+		};
+
 
 	    MenuBar.Command me4c = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
@@ -407,7 +418,9 @@ public class LOD2Demo extends Application
 	    // sub menu's 
 	    MenuBar.MenuItem me1 = extraction.addItem("Upload RDF file", null, me1c);
 	    MenuBar.MenuItem me2 = extraction.addItem("Load RDF data from CKAN", null, me7c);
-	    MenuBar.MenuItem me3 = extraction.addItem("Extract RDF from XML", null, me3c);
+	    MenuBar.MenuItem me3 = extraction.addItem("Extract RDF from XML", null, null);
+	    MenuBar.MenuItem exml = me3.addItem("Basic extraction", null, me3c);
+	    MenuBar.MenuItem extended = me3.addItem("Extended extraction", null, me3cbis);
 	    MenuBar.MenuItem me6 = extraction.addItem("Extract RDF from SQL", null, me6c);
 	    MenuBar.MenuItem me4 = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
 	    MenuBar.MenuItem me5 = extraction.addItem("Extract RDF from text w.r.t. a controlled vocabulary", null, me5c);
