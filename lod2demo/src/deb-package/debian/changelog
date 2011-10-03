@@ -1,3 +1,12 @@
+lod2demo (1.1.14) lod2; urgency=low
+
+  * Add XML-RDF pages
+  * make JDBC connection to virtuoso configurable
+  * add SameAs linking page
+
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 03 Oct 2011 02:36:45 -0700
+
 lod2demo (1.1.13) lod2; urgency=low
 
   [ Bert Van Nuffelen (TenForce/LOD2) ]

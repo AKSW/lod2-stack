@@ -155,11 +155,12 @@ implements 	TextChangeListener,
 
                 exportGraph = new ExportSelector(state);
 
-
+/*
                 uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
 
                 transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
                 errorMsg = new Label("");
+	*/
 
                 panel.addComponent(desc);
                 panel.addComponent(xmlText);
