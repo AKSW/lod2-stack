@@ -1,3 +1,9 @@
+lod2demo (1.1.17) lod2; urgency=low
+
+  * make reference to sigmaee generic
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Tue, 04 Oct 2011 07:06:29 -0700
+
 lod2demo (1.1.16) lod2; urgency=low
 
   * bug fix package building
