@@ -5,6 +5,29 @@
     <format>zip</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+	<directory>tools</directory>
+  	<outputDirectory>/</outputDirectory>	
+    </fileSet>
+    <fileSet>
+  	<directory>src/test/java</directory>
+  	<outputDirectory>/log</outputDirectory>
+  	<excludes>
+    		<exclude>*</exclude>
+  	</excludes>
+    </fileSet>
+    <fileSet>
+  	<directory>src/test/java</directory>
+  	<outputDirectory>/rdf</outputDirectory>
+  	<excludes>
+    		<exclude>*</exclude>
+  	</excludes>
+    </fileSet>
+    <!--fileSet>
+	<outputDirectory>/log</outputDirectory>
+    </fileSet-->
+  </fileSets>
   <dependencySets>
     <dependencySet>
       <excludes>
@@ -14,6 +37,14 @@
       <outputDirectory>/lib</outputDirectory>
       <unpack>false</unpack>
       <scope>runtime</scope>
+    </dependencySet>
+    <dependencySet>
+	<includes>
+		<include>valiant:valiant</include>
+	</includes>
+	<outputDirectory>/</outputDirectory>
+	<unpack>false</unpack>
+	<scope>runtime</scope>
     </dependencySet>
   </dependencySets>
 </assembly>

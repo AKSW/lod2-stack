@@ -8,13 +8,17 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 @Component("valiant")
 public class Valiant {
@@ -34,74 +38,223 @@ public class Valiant {
   private DavWriter davWriter;
 
   @Autowired(required = true)
-  private WkdTransformer transformer;
+  private WkdTransformer wkdTransformer;
 
   @Autowired(required = true)
   private VirtuosoFactory virtuosoFactory;
 
   public void execute(String[] args) {
-    if (null != args && args.length > 0) {
-      transform(args[0]);
+    if (null == args) {
+      log.error("Mode needs to be selected");
+      return;
     }
-    else {
+    /*else {
       while (davReader.hasNext()) {
         DavResource resource = davReader.getNextMatch();
-        if (resource != null) transform(resource);
+	if (resource != null) {
+		transform(resource);
+	}
       }
+    }*/
+    String mode = args[0];
+    String fileName = null;
+    if(args.length > 1){
+	fileName = args[1];
+    }
+    if(mode.equals("f")){
+	transformToFile(fileName);
+    }
+    else if(mode.equals("v")){
+	transformToVirtuoso(fileName);
+    }
+    else if(mode.equals("w")){
+	transformToWebDav(fileName);
+    }
+    else if(mode.equals("fv")){
+	transformToFileAndVirtuoso(fileName);
+    }
+    else if(mode.equals("wv")){
+	transformToWebDavAndVirtuoso(fileName);
     }
   }
 
-  private void transform(DavResource resource) {
+  private ByteArrayOutputStream transform(DavResource resource) {
     String inputName = resource.getName();
-    String outputName = inputName.replaceAll("(?i).xml", ".rdf"); //(?i) will ignore the case
+   // String outputName = inputName.replaceAll("(?i).xml", ".rdf"); //(?i) will ignore the case
 
     log.info(new StringBuilder().append("processing: ").append(inputName).append(" (").append(davReader.pos()).append("/").append(davReader.size()).append(")").toString());
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    StreamResult outputStream = new StreamResult(baos);
+    /*File outputFile = new File(rdfFolder + outputName);
+    StreamResult outputStream = new StreamResult(outputFile);*/
+    log.info(inputName+ ": Transformation started");
+    wkdTransformer.transform(davReader.getInputStream(resource), outputStream);
+    log.info(inputName+ ": Transformation finished");
+    return baos;
 
-    File outputFile = new File(rdfFolder + outputName);
-    StreamResult outputStream = new StreamResult(outputFile);
-    try {
-      transformer.transform(davReader.getInputStream(resource), outputStream);
-      writeToWebdav(outputFile, outputName);
-      writeToVirtuoso(outputFile, outputName);
-    }
-    catch (TransformerException ignored) {
-    }
+    /*writeToWebdav(outputFile, outputName);
+    log.info("Written to webdav, writing to Virtuoso..");
+    writeToVirtuoso(outputFile, outputName);*/
   }
 
-  private void transform(String filename) {
-    if (filename.length() <= 0) return;
+  private ByteArrayOutputStream transform(String filename) {
+    if (filename.length() <= 0) return null;
+    log.info(filename);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
     File inputFile = new File(filename);
-    String outputName = inputFile.getName().replaceAll("(?i).xml", ".rdf");
+    //String outputName = inputFile.getName().replaceAll("(?i).xml", ".rdf");
 
     log.info(new StringBuilder().append("processing: ").append(inputFile.getName()).toString());
 
-    File outputFile = new File(rdfFolder + outputName);
+    //File outputFile = new File(rdfFolder + outputName);
     try {
       InputStream inputStream = new FileInputStream(inputFile);
-      StreamResult outputStream = new StreamResult(outputFile);
-      transformer.transform(inputStream, outputStream);
-
-      writeToVirtuoso(outputFile, outputName);
+      StreamResult outputStream = new StreamResult(baos);
+      log.info(filename + ": Transformation started");
+      wkdTransformer.transform(inputStream, outputStream);
+      log.info(filename + ": Transformation finished");
+      //writeToVirtuoso(outputFile, outputName);
+      return baos;
     }
-    catch (Exception e) {
-      log.error("Error in file: " + filename);
+    catch (FileNotFoundException e) {
       log.error(e.getMessage(), e);
       throw new RuntimeException(e.getMessage(), e);
     }
   }
 
-  private void writeToWebdav(File outputFile, String outputName) {
-    try {
-      InputStream rdf = new FileInputStream(outputFile);
+  private void writeToWebdav(OutputStream outputStream, String outputName) {
+   // try {
+      InputStream rdf = new ByteArrayInputStream(((ByteArrayOutputStream)outputStream).toByteArray());
       davWriter.putStream(outputName, rdf);
-    }
+    /*}
     catch (FileNotFoundException e) {
-      log.error("Error in file: " + outputName);
-      log.error(e.getMessage(), e);
-    }
+      log.error("Failed to write output: '" + e.getMessage(), e);
+    }*/
   }
 
-  private void writeToVirtuoso(File outputFile, String outputName) {
-    if (loadInVirtuoso) virtuosoFactory.add(outputFile, outputName);
+  private void writeToVirtuoso(ByteArrayOutputStream outputStream, String outputName) {
+    if (loadInVirtuoso) virtuosoFactory.add(outputStream, outputName);
+  }
+  private void writeToFile(ByteArrayOutputStream baos, String fileName){
+	try{
+	File outputFile = new File(rdfFolder + fileName);
+    	FileOutputStream outputStream = new FileOutputStream(outputFile);
+	baos.writeTo(outputStream);
+	} catch(Exception e){
+		log.error(e.getMessage(),e);
+	}
+  }
+  private void transformToFile(String file){
+	if(file == null){
+     		while (davReader.hasNext()) {
+        		DavResource resource = davReader.getNextMatch();
+			if (resource != null) {
+				String fileName = resource.getName().replaceAll("(?i).xml", ".rdf");
+				log.info(fileName + ": Writing to file started");
+				writeToFile(transform(resource),fileName);
+				log.info(fileName + ": Writing of file finished");
+			}
+      		}
+	}
+	else{	
+		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+		log.info(fileName +": Writing to file started");	
+		writeToFile(transform(file),fileName);
+		log.info(fileName + ": Writing of file finished");
+	}
+  }
+  private void transformToVirtuoso(String file){
+	if(file == null){
+	     	while (davReader.hasNext()) {
+        		DavResource resource = davReader.getNextMatch();
+			if (resource != null) {
+				String fileName = resource.getName().replaceAll("(?i).xml", ".rdf");
+				log.info(fileName + ": Writing to virtuoso");
+				writeToVirtuoso(transform(resource),fileName);
+				log.info(fileName + ": Writing in virtuoso finished");
+			}
+      		}
+
+	}
+	else{
+		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+		log.info(fileName + ": Writing to virtuoso");
+		writeToVirtuoso(transform(file),fileName);
+		log.info(fileName + ": Writing in virtuoso finished");
+	}
+  }
+  private void transformToWebDav(String file){
+	if(file == null){
+     		while (davReader.hasNext()) {
+        		DavResource resource = davReader.getNextMatch();
+			if (resource != null) {
+				String fileName = resource.getName().replaceAll("(?i).xml", ".rdf");
+				log.info(fileName + ": Writing to webdav");
+				writeToWebdav(transform(resource),fileName);
+				log.info(fileName + ": Writing in webdav finished");
+			}
+      		}
+	}
+	else{
+		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+		log.info(fileName + ": Writing to webdav");
+		writeToWebdav(transform(file),file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf"));
+		log.info(fileName + ": Writing in webdav finished");
+	}
+  }
+  private void transformToFileAndVirtuoso(String file){
+	if(file == null){
+     		while (davReader.hasNext()) {
+        		DavResource resource = davReader.getNextMatch();
+			if (resource != null) {
+				String fileName = resource.getName().replaceAll("(?i).xml",".rdf");
+				ByteArrayOutputStream baos = transform(resource);
+				log.info(fileName + ": Writing to file started");
+				writeToFile(baos,fileName);
+				log.info(fileName + ": Writing of file finished");
+				log.info(fileName + ": Writing to virtuoso");
+				writeToVirtuoso(baos,fileName);
+				log.info(fileName + ": Writing in virtuoso finised");
+			}
+      		}
+	}
+	else{	
+		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+		ByteArrayOutputStream baos = transform(file);
+		log.info(fileName + ": Writing to file started");
+		writeToFile(baos,fileName);
+		log.info(fileName + ": Writing of file finished");
+		log.info(fileName + ": Writing to virtuoso:");
+		writeToVirtuoso(baos,fileName);
+		log.info(fileName + ": Writing in virtuoso finished");
+	}
+  }
+  private void transformToWebDavAndVirtuoso(String file){
+	if(file == null){
+     		while (davReader.hasNext()) {
+        		DavResource resource = davReader.getNextMatch();
+			if (resource != null) {
+				ByteArrayOutputStream baos = transform(resource);
+				String fileName = resource.getName().replaceAll("(?i).xml",".rdf");
+				log.info(fileName + ": Writing to webdav");
+				writeToWebdav(baos,fileName);
+				log.info(fileName + ": Writing in webdav finished");
+				log.info(fileName + ": Writing to virtuoso");
+				writeToVirtuoso(baos,fileName);
+				log.info(fileName + ": Writing in virtuoso finished");
+			}
+      		}
+	}
+	else{
+		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+		ByteArrayOutputStream baos = transform(file);
+		log.info(fileName + ": Writing to webdav:");
+		writeToWebdav(baos,fileName);
+		log.info(fileName + ": writing in webdav finished");
+		log.info(fileName + ": Writing to virtuoso");
+		writeToVirtuoso(baos,fileName);
+		log.info(fileName + ": Writing in virtuoso finished");
+
+	}
   }
 }

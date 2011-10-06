@@ -41,23 +41,37 @@ public class WkdTransformer {
     setup();
   }
 
-  public void transform(InputStream input, StreamResult output) throws TransformerException {
-    if (null == input || null == output || null == transformer) return;
+  public String getTest(){
+	return "test";
+  }
 
+  public void transform(InputStream input, StreamResult output) {
+    if (input == null){
+    	log.info("InputStream is null");
+    }
+    if (output == null){
+	log.info("StreamResult is null");
+    }
+    if (transformer == null){
+	log.info("transformer is null");
+    }
+    if (null == input || null == output || null == transformer) return;
+   	
     SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
     try {
       transformer.transform(inputSource, output);
     }
     catch (TransformerException e) {
-      log.error("Transform failed: " + e.getMessage(), e);
-      throw new TransformerException(e.getMessage(), e);
+       log.error("Transform failed: " + e.getMessage(), e);
     }
+    //log.info("Exiting transform method");
     finally {
       try {
         input.close();
       }
       catch (IOException ignored) {
       }
+
     }
   }
 

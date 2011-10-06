@@ -1,5 +1,6 @@
 package be.tenforce.lod2.valiant.virtuoso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 /**
@@ -11,7 +12,7 @@ import java.io.File;
  */
 public interface VirtuosoFactory {
 
-  public void add(File inputFile, String fileName);
+  public void add(ByteArrayOutputStream baos, String fileName);
 
   public void dropGraph(String fileName);
 
