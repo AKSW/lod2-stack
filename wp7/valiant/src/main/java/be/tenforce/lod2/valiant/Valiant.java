@@ -56,10 +56,10 @@ public class Valiant {
 	}
       }
     }*/
-    String mode = args[0];
+    String mode = args[1];
     String fileName = null;
-    if(args.length > 1){
-	fileName = args[1];
+    if(args.length > 2){
+	fileName = args[2];
     }
     if(mode.equals("f")){
 	transformToFile(fileName);

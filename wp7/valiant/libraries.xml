@@ -24,9 +24,6 @@
     		<exclude>*</exclude>
   	</excludes>
     </fileSet>
-    <!--fileSet>
-	<outputDirectory>/log</outputDirectory>
-    </fileSet-->
   </fileSets>
   <dependencySets>
     <dependencySet>

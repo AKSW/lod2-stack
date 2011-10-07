@@ -3,7 +3,7 @@
  xmlns:fun="http://local-function/"
  xmlns:data="http://local-data/"
  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
- xmlns:ppuri="at.punkt.commons.uricreator.URIFactory"
+ xmlns:ppuri="java:at.punkt.commons.uricreator.URIFactory"
  exclude-result-prefixes="xsl xs fun data"
 >
 
