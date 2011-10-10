@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
@@ -31,6 +30,15 @@ public class Valiant {
   @Value("#{properties['virtuoso.load']}")
   private boolean loadInVirtuoso;
 
+  @Value("#{properties.transformMode}")
+  private String mode;
+
+  @Value("#{properties.inputfile}")
+  private String inputfile;
+
+  @Value("#{properties.implementationMode}")
+  private String implementationMode;
+
   @Autowired(required = true)
   private DavReader davReader;
 
@@ -43,8 +51,10 @@ public class Valiant {
   @Autowired(required = true)
   private VirtuosoFactory virtuosoFactory;
 
-  public void execute(String[] args) {
-    if (null == args) {
+  public void execute() {
+    if(implementationMode.equals("saxon")){System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");}
+    else if(implementationMode.equals("xalan")){System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");}
+    if (null == mode) {
       log.error("Mode needs to be selected");
       return;
     }
@@ -56,25 +66,20 @@ public class Valiant {
 	}
       }
     }*/
-    String mode = args[1];
-    String fileName = null;
-    if(args.length > 2){
-	fileName = args[2];
-    }
     if(mode.equals("f")){
-	transformToFile(fileName);
+	transformToFile(inputfile);
     }
     else if(mode.equals("v")){
-	transformToVirtuoso(fileName);
+	transformToVirtuoso(inputfile);
     }
     else if(mode.equals("w")){
-	transformToWebDav(fileName);
+	transformToWebDav(inputfile);
     }
     else if(mode.equals("fv")){
-	transformToFileAndVirtuoso(fileName);
+	transformToFileAndVirtuoso(inputfile);
     }
     else if(mode.equals("wv")){
-	transformToWebDavAndVirtuoso(fileName);
+	transformToWebDavAndVirtuoso(inputfile);
     }
   }
 
@@ -145,7 +150,7 @@ public class Valiant {
 	}
   }
   private void transformToFile(String file){
-	if(file == null){
+	if(file.length() == 0){
      		while (davReader.hasNext()) {
         		DavResource resource = davReader.getNextMatch();
 			if (resource != null) {
@@ -164,7 +169,7 @@ public class Valiant {
 	}
   }
   private void transformToVirtuoso(String file){
-	if(file == null){
+	if(file.length() == 0){
 	     	while (davReader.hasNext()) {
         		DavResource resource = davReader.getNextMatch();
 			if (resource != null) {
@@ -184,7 +189,7 @@ public class Valiant {
 	}
   }
   private void transformToWebDav(String file){
-	if(file == null){
+	if(file.length() == 0){
      		while (davReader.hasNext()) {
         		DavResource resource = davReader.getNextMatch();
 			if (resource != null) {
@@ -203,7 +208,7 @@ public class Valiant {
 	}
   }
   private void transformToFileAndVirtuoso(String file){
-	if(file == null){
+	if(file.length() == 0){
      		while (davReader.hasNext()) {
         		DavResource resource = davReader.getNextMatch();
 			if (resource != null) {
@@ -230,7 +235,7 @@ public class Valiant {
 	}
   }
   private void transformToWebDavAndVirtuoso(String file){
-	if(file == null){
+	if(file.length() == 0){
      		while (davReader.hasNext()) {
         		DavResource resource = davReader.getNextMatch();
 			if (resource != null) {
