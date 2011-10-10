@@ -2,19 +2,18 @@ lod2demo (1.1.17) lod2; urgency=low
 
   * make reference to sigmaee generic
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Tue, 04 Oct 2011 07:06:29 -0700
-
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 04 Oct 2011 07:06:29 -0700
 lod2demo (1.1.16) lod2; urgency=low
 
   * bug fix package building
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 03 Oct 2011 03:37:59 -0700
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 03:37:59 -0700
 
 lod2demo (1.1.15) lod2; urgency=low
 
   * bug fix in the EXML tab
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 03 Oct 2011 03:36:59 -0700
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 03:36:59 -0700
 
 lod2demo (1.1.14) lod2; urgency=low
 
@@ -22,7 +21,7 @@ lod2demo (1.1.14) lod2; urgency=low
   * make JDBC connection to virtuoso configurable
   * add SameAs linking page
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 03 Oct 2011 02:36:45 -0700
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 02:36:45 -0700
 
 lod2demo (1.1.13) lod2; urgency=low
 
@@ -30,13 +29,13 @@ lod2demo (1.1.13) lod2; urgency=low
   * add intro page
   * apply more mockup style
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Tue, 30 Aug 2011 15:40:21 -0700
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 30 Aug 2011 15:40:21 -0700
 
 lod2demo (1.1.12) lod2; urgency=low
 
   * add widget reference back
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 29 Aug 2011 03:22:49 -0700
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 29 Aug 2011 03:22:49 -0700
 
 lod2demo (1.1.11) lod2; urgency=low
 
@@ -46,7 +45,7 @@ lod2demo (1.1.11) lod2; urgency=low
     Mondeca,
   * add target RDF graph widget and apply it for EPoolPartyExtractor
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Mon, 29 Aug 2011 02:30:24 -0700
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 29 Aug 2011 02:30:24 -0700
 
 lod2demo (1.1.10) lod2; urgency=low
 

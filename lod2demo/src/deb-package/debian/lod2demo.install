@@ -2,3 +2,6 @@ html/lod2.sigma.html /var/www/
 lod2.sigma.html /var/www/
 lod2demo.war /var/lib/tomcat6/webapps
 lod2demo.conf etc/lod2demo
+configuration/load.sql var/lib/lod2demo
+configuration/unload.sql var/lib/lod2demo
+configuration/configuration.nt var/lib/lod2demo
