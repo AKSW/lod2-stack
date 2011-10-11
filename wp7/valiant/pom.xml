@@ -87,11 +87,6 @@
       <version>${httpclient.version}</version>
     </dependency>
     <dependency>
-      <groupId>net.sf.saxon</groupId>
-      <artifactId>saxonhe</artifactId>
-      <version>${saxonhe.version}</version>
-    </dependency>
-    <dependency>
       <groupId>virtuoso.jena</groupId>
       <artifactId>jena-driver</artifactId>
       <version>${virtuoso-jena-driver.version}</version>
@@ -110,6 +105,21 @@
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>arq</artifactId>
       <version>${jena-arq.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>at.punkt.commons</groupId>
+      <artifactId>URICreator</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <version>9</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.saxon.dom</groupId>
+      <artifactId>saxon-dom</artifactId>
+      <version>9</version>
     </dependency>
   </dependencies>
 
