@@ -1,0 +1,482 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY swrl "http://www.w3.org/2003/11/swrl#" >
+    <!ENTITY swrlb "http://www.w3.org/2003/11/swrlb#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY protege "http://protege.stanford.edu/plugins/owl/protege#" >
+    <!ENTITY xsp "http://www.owl-ontologies.com/2005/08/07/xsp.owl#" >
+    <!ENTITY lod2 "http://lod2.eu/tools.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://lod2.eu/tools.owl#"
+     xml:base="http://lod2.eu/tools.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+     xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:lod2="http://lod2.eu/tools.owl#" 
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://lod2.eu/tools.owl">
+        <rdfs:comment rdf:datatype="&xsd;string">&lt;p style=&quot;margin-top: 0&quot;&gt;
+      This ontology describes the architecture of the LOD2 stack.
+    &lt;/p&gt;
+    &lt;p style=&quot;margin-top: 0&quot;&gt;
+      It contains management information about each tool w.r.t. the 
+      architecture and it defines the base architecture components.
+    &lt;/p&gt;</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://lod2.eu/tools.owl#contributed_by_partner -->
+
+    <owl:ObjectProperty rdf:about="http://lod2.eu/tools.owl#contributed_by_partner">
+        <rdfs:comment rdf:datatype="&xsd;string">&lt;p style=&quot;margin-top: 0&quot;&gt;
+      The partner in the LOD2 consortium who contributes the tool.
+    &lt;/p&gt;</rdfs:comment>
+        <rdfs:range rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#debian_package -->
+
+    <owl:ObjectProperty rdf:about="http://lod2.eu/tools.owl#debian_package">
+        <rdfs:comment rdf:datatype="&xsd;string">&lt;p style=&quot;margin-top: 0&quot;&gt;
+      The debian package under which this tools is available.
+    &lt;/p&gt;</rdfs:comment>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#DebianPackage"/>
+        <rdfs:range rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#license -->
+
+    <owl:ObjectProperty rdf:about="http://lod2.eu/tools.owl#license">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment rdf:datatype="&xsd;string">&lt;p style=&quot;margin-top: 0&quot;&gt;
+      The license under which the tool is distributed.
+    &lt;/p&gt;</rdfs:comment>
+        <rdfs:range rdf:resource="http://lod2.eu/tools.owl#SoftwareLicense"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#responsible -->
+
+    <owl:ObjectProperty rdf:about="http://lod2.eu/tools.owl#responsible">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+        <rdfs:range rdf:resource="http://lod2.eu/tools.owl#ToolResponsible"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://lod2.eu/tools.owl#acknowledgement -->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#acknowledgement">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#license_description -->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#license_description">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#SoftwareLicense"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#license_url">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#SoftwareLicense"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+
+    <!-- http://lod2.eu/tools.owl#person_email -->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#person_email">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#ToolResponsible"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#person_name -->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#person_name">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#ToolResponsible"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#tool_description -->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#tool_description">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#tool_homepage -->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#tool_homepage">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+    <!-- http://lod2.eu/tools.owl#tool_icon-->
+
+    <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#tool_icon">
+        <rdfs:comment rdf:datatype="&xsd;string">the name of the icon used to display the tool. Make sure the name of the tool is included in the picture.</rdfs:comment>
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://lod2.eu/tools.owl#DebianPackage -->
+
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#DebianPackage"/>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#LOD2_partner -->
+
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#LOD2_partner">
+        <rdfs:comment rdf:datatype="&xsd;string">An LOD2 partner.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#SoftwareLicense -->
+
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#SoftwareLicense"/>
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#OpenSource">
+	<rdfs:subClassOf rdf:resource="&lod2;SoftwareLicense"/>
+	</owl:Class>
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#Both">
+	<rdfs:subClassOf rdf:resource="&lod2;SoftwareLicense"/>
+	</owl:Class>
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#Commercial">
+	<rdfs:subClassOf rdf:resource="&lod2;SoftwareLicense"/>
+	</owl:Class>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#Tool -->
+
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#Tool">
+        <rdfs:comment rdf:datatype="&xsd;string">A tool contributed to the LOD2 stack</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#ToolResponsible -->
+
+    <owl:Class rdf:about="http://lod2.eu/tools.owl#ToolResponsible">
+        <rdfs:comment rdf:datatype="&xsd;string">A reposible person or organisation for a tool</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://lod2.eu/tools.owl#Apache_2.0 -->
+
+    <owl:NamedIndividual rdf:about="&lod2;Apache_2.0">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.apache.org/licenses/LICENSE-2.0</license_url>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#CWI -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#CWI">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#Commercial -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#CommercialLicense">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#Commercial"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#EXALEAD -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#EXALEAD">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#FUB -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#FUB">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#GPL2 -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#GPL2">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</license_url>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#GPL3 -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#GPL3">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/gpl.html</license_url>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#I2G -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#I2G">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">I2G</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#IMP -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#IMP">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">IMP</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#KAIST -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#KAIST">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">KAIST</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#Mozilla_1.1 -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#Mozilla_1.1">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://monetdb.cwi.nl/Development/Legal/MonetDBLicense-1.1/index.html</license_url>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#NUIG -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#NUIG">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">NUIG</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#OGL -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#OGL">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">OGL</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#OKNF -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#OKNF">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">OKNF</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#Proprietary -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#Proprietary">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#Commercial"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#SWCG -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#SWCG">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">SWCG</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#TenForce -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#TenForce">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">TenForce</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#UEP -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#UEP">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">UEP</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#ULEI -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#ULEI">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">ULEI</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#WKD -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#WKD">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">WKD</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://lod2.eu/tools.owl#ZEM -->
+
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#ZEM">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+        <rdfs:label xml:lang="en">ZEM</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <lod2:Tool rdf:about="http://localhost/ontowiki">
+      <lod2:responsible rdf:resource="&lod2;SebastianTramp"/>
+      <lod2:contributed_by_partner rdf:resource="&lod2;ULEI"/>
+      <lod2:license rdf:resource="&lod2;Apache_2.0"/>
+      <rdfs:label xml:lang="en">OntoWiki</rdfs:label>
+      <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://aksw.org/Projects/OntoWiki/</lod2:tool_homepage>
+      <lod2:tool_description xml:lang="en">&lt;b&gt;OntoWiki&lt;/b&gt; facilitates the visual presentation of a knowledge base as an information map, with different views on instance data. It enables intuitive authoring of semantic content, with an inline editing mode for editing RDF content, similar to WYSIWIG for text documents.</lod2:tool_description>
+    </lod2:Tool>
+
+    <lod2:ToolResponsible rdf:ID="SebastianTramp">
+	<lod2:person_email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tramp@informatik.uni-leipzig.de</lod2:person_email>
+	<lod2:person_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sebastian Tramp</lod2:person_name>
+    </lod2:ToolResponsible>
+
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.2.1789) http://owlapi.sourceforge.net -->
+

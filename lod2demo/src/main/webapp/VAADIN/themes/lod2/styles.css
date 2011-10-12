@@ -20,6 +20,10 @@
     background-image: url("/lod2demo/VAADIN/themes/lod2/app-images/LOD2.logo.jpg");
 }
 
+.v-table-cell-wrapper {
+    white-space: normal;
+}
+
 .slagzin {
     font-family:'Droid Sans', Arial, sans-serif; 
     font-weight:normal;

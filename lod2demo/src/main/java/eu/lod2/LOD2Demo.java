@@ -55,16 +55,6 @@ public class LOD2Demo extends Application
     private LOD2DemoState state;
 
 
-
-    private TabSheet tabsheet = new TabSheet();
-    private QueryingTab queryingTab;
-    private AuthoringTab authoringTab;
-    private ExtractionTab extractionTab;
-    private LinkingTab linkingTab;
-    private EnrichmentTab enrichmentTab;
-    private OnlineToolsTab onlineToolsTab;
-    private ConfigurationTab configurationTab;
-
     private TextField currentgraph;
     private Label     currentgraphlabel;
     private VerticalLayout workspace;
@@ -162,7 +152,7 @@ public class LOD2Demo extends Application
 	    MenuBar.Command me4c = new MenuBar.Command() {
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
-			ESpotlight me4c_content = new ESpotlight(extractionTab);
+			ESpotlight me4c_content = new ESpotlight(state);
 			workspace.addComponent(me4c_content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("110px");
@@ -247,6 +237,16 @@ public class LOD2Demo extends Application
 			// stretch the content to the full workspace area
 			welcome.setHeight("110px");
 			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mabout = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			About content = new About(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
 		    }  
 		};
 
@@ -413,7 +413,7 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem linking       = menubar.addItem("Linking", null, null);
 	    MenuBar.MenuItem enrichment    = menubar.addItem("Enrichment", null, null);
 	    MenuBar.MenuItem onlinetools   = menubar.addItem("Online Tools and Services", null, null);
-	    MenuBar.MenuItem configuration = menubar.addItem("Configuration", null, mconfiguration);
+	    MenuBar.MenuItem configuration = menubar.addItem("Configuration", null, null);
 
 	    // sub menu's 
 	    MenuBar.MenuItem me1 = extraction.addItem("Upload RDF file", null, me1c);
@@ -448,6 +448,8 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem sparqlpoolparty = sparqlonline.addItem("PoolParty SPARQL endpoint", null, mo5c);
 	    MenuBar.MenuItem mondecalist     = sparqlonline.addItem("Mondeca SPARQL endpoint Collection", null, mo7c);
 
+	    MenuBar.MenuItem conf  = configuration.addItem("Demonstrator configuration", null, mconfiguration);
+	    MenuBar.MenuItem about = configuration.addItem("About", null, mabout);
 
 /*
 	    // the current graph selection widget

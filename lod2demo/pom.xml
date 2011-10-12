@@ -333,11 +333,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>be.tenforce.lod2</groupId>
-      <artifactId>valiant</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin</artifactId>
       <version>6.5.3</version>

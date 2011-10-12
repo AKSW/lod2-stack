@@ -74,6 +74,11 @@ case "$1" in
         else 
 		exit 1;
 	fi
+
+	# create a upload directory
+	test -d /tmp/uploads || sudo mkdir /tmp/uploads
+	sudo chmod 777 /tmp/uploads 
+
     ;;
     
 
