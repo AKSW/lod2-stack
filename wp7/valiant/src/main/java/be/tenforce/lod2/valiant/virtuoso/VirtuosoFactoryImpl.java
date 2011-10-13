@@ -16,11 +16,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @Service
 public class VirtuosoFactoryImpl implements VirtuosoFactory {
 
   private static final Logger log = Logger.getLogger(VirtuosoFactoryImpl.class);
+
+  @Value("#{properties.rdfFolder}")
+  private String rdfFolder;
 
   @Value("#{properties['virtuoso.host']}")
   private String host;
@@ -39,6 +45,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
 
   private VirtuosoDataSource virtuosoDataSource;
   private String jdbcUrl;
+  private FileWriter fw;
 
   @PostConstruct
   private void initialize() {
@@ -62,8 +69,12 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
     try {
+      File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      fw = new FileWriter(graphFile,true);
       model.read(new ByteArrayInputStream(outputStream.toByteArray()), namespace.getBaseURI());
       log.info("graph '<" + graphName + ">' loaded in virtuoso");
+      fw.write(graphName);
+      fw.close();
     }
     catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -73,12 +84,33 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     }
   }
 
+   public void addToGraph(ByteArrayOutputStream outputStream, String fileName, String graphName) {
+    VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
+    Model model = new VirtModel(graph);
+    try {
+      File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      fw = new FileWriter(graphFile,true);
+      model.read(new ByteArrayInputStream(outputStream.toByteArray()), namespace.getBaseURI());
+      log.info("graph '<" + graph.getGraphName() + ">' loaded in virtuoso");
+      fw.write(namespace.getBaseURI() + graphName);
+      fw.close();
+    }
+    catch (Exception e) {
+      log.error(e.getMessage(), e);
+    }
+    finally {
+      model.close();
+    }
+  }
+ 
+
   private void setup() {
     virtuosoDataSource = new VirtuosoDataSource();
     virtuosoDataSource.setServerName(host);
     virtuosoDataSource.setPortNumber(Integer.parseInt(port));
     virtuosoDataSource.setUser(username);
     virtuosoDataSource.setPassword(password);
+   
   }
 
   private void validate() {

@@ -14,7 +14,9 @@ public interface VirtuosoFactory {
 
   public void add(ByteArrayOutputStream baos, String fileName);
 
-  public void dropGraph(String fileName);
+  public void addToGraph(ByteArrayOutputStream baos, String fileName, String graphName);
 
-  public void dropGraphSilent(String fileName);
+  //public void dropGraph(String fileName);
+
+  //public void dropGraphSilent(String fileName);
 }
