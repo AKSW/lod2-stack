@@ -58,13 +58,10 @@ public class WkdTransformer {
     FileWriter fw;
     SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
     try {
-      	    fw = new FileWriter(new File(logFolder + "valiant.log"),true);
-	MessageEmitter emitter = new MessageEmitter();
-	((Controller)transformer).setMessageEmitter(emitter);
+      	fw = new FileWriter(new File(logFolder + "valiant.log"),true);
 	((MessageEmitter)((Controller)transformer).getMessageEmitter()).setWriter(fw);	
-        if (emitter==null){log.info("Emitter is null");}
-            transformer.transform(inputSource, output);
-	    fw.close();
+        transformer.transform(inputSource, output);
+	fw.close();
     }
     catch (TransformerException e) {
 	//log.error(fileName.substring(fileName.lastIndexOf('/') + 1));  
@@ -106,6 +103,9 @@ public class WkdTransformer {
   private void loadTransformer() {
     try {
       transformer = transformerFactory.newTransformer(new StreamSource(new File(xsltUrl)));
+      MessageEmitter emitter = new MessageEmitter();
+      ((Controller)transformer).setMessageEmitter(emitter);
+
     }
     catch (Exception e) {
       log.error("Failed to compile stylesheet: " + e.getMessage(), e);
