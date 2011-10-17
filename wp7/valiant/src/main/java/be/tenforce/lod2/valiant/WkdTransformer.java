@@ -17,8 +17,12 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+
+import net.sf.saxon.Controller;
+import net.sf.saxon.event.MessageEmitter;
 
 @Service
 public class WkdTransformer {
@@ -45,25 +49,28 @@ public class WkdTransformer {
 	return "test";
   }
 
-  public void transform(InputStream input, StreamResult output) {
-    if (input == null){
-    	log.info("InputStream is null");
-    }
-    if (output == null){
-	log.info("StreamResult is null");
-    }
-    if (transformer == null){
-	log.info("transformer is null");
-    }
+  public void transform(InputStream input, StreamResult output, String fileName) {
     if (null == input || null == output || null == transformer) return;
-   	
+
+    FileWriter fw;
     SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
     try {
-      transformer.transform(inputSource, output);
+      	    fw = new FileWriter(new File("/home/jand/valiant/log/valiant.log"),true);
+	MessageEmitter emitter = new MessageEmitter();
+	((Controller)transformer).setMessageEmitter(emitter);
+	((MessageEmitter)((Controller)transformer).getMessageEmitter()).setWriter(fw);	
+        if (emitter==null){log.info("Emitter is null");}
+            transformer.transform(inputSource, output);
+	    fw.close();
     }
     catch (TransformerException e) {
-       log.error("Transform failed: " + e.getMessage(), e);
+	//log.error(fileName.substring(fileName.lastIndexOf('/') + 1));  
+        log.error(fileName);
+	log.info("Transform failed: " + e.getMessage(), e);
     }
+    catch (IOException e){
+	log.error("Logfile not found.");
+     }
     //log.info("Exiting transform method");
     finally {
       try {

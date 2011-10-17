@@ -45,7 +45,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
 
   private VirtuosoDataSource virtuosoDataSource;
   private String jdbcUrl;
-  private FileWriter fw;
+  //private FileWriter fw;
 
   @PostConstruct
   private void initialize() {
@@ -69,12 +69,12 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
     try {
-      File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
-      fw = new FileWriter(graphFile,true);
+      //File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      //fw = new FileWriter(graphFile,true);
       model.read(new ByteArrayInputStream(outputStream.toByteArray()), namespace.getBaseURI());
       log.info("graph '<" + graphName + ">' loaded in virtuoso");
-      fw.write(graphName);
-      fw.close();
+      //fw.write(graphName);
+      //fw.close();
     }
     catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -88,12 +88,12 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
     try {
-      File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
-      fw = new FileWriter(graphFile,true);
+      //File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      //fw = new FileWriter(graphFile,true);
       model.read(new ByteArrayInputStream(outputStream.toByteArray()), namespace.getBaseURI());
       log.info("graph '<" + graph.getGraphName() + ">' loaded in virtuoso");
-      fw.write(namespace.getBaseURI() + graphName);
-      fw.close();
+      //fw.write(namespace.getBaseURI() + graphName);
+      //fw.close();
     }
     catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -110,7 +110,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     virtuosoDataSource.setPortNumber(Integer.parseInt(port));
     virtuosoDataSource.setUser(username);
     virtuosoDataSource.setPassword(password);
-   
+    virtuosoDataSource.setCharset("UTF-8");
   }
 
   private void validate() {

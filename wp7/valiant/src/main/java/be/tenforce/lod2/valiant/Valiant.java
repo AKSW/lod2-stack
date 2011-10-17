@@ -14,8 +14,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -50,6 +52,10 @@ public class Valiant {
 
   @Autowired(required = true)
   private VirtuosoFactory virtuosoFactory;
+
+  @Autowired(required = true)
+  private Namespace namespace;
+
 
   public void execute() {
     if(implementationMode.equals("saxon")){System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");}
@@ -93,7 +99,7 @@ public class Valiant {
     /*File outputFile = new File(rdfFolder + outputName);
     StreamResult outputStream = new StreamResult(outputFile);*/
     log.info(inputName+ ": Transformation started");
-    wkdTransformer.transform(davReader.getInputStream(resource), outputStream);
+    wkdTransformer.transform(davReader.getInputStream(resource), outputStream, inputName);
     log.info(inputName+ ": Transformation finished");
     return baos;
 
@@ -104,7 +110,6 @@ public class Valiant {
 
   private ByteArrayOutputStream transform(String filename) {
     if (filename.length() <= 0) return null;
-    log.info(filename);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     File inputFile = new File(filename);
     //String outputName = inputFile.getName().replaceAll("(?i).xml", ".rdf");
@@ -116,7 +121,7 @@ public class Valiant {
       InputStream inputStream = new FileInputStream(inputFile);
       StreamResult outputStream = new StreamResult(baos);
       log.info(filename + ": Transformation started");
-      wkdTransformer.transform(inputStream, outputStream);
+      wkdTransformer.transform(inputStream, outputStream, filename);
       log.info(filename + ": Transformation finished");
       //writeToVirtuoso(outputFile, outputName);
       return baos;
@@ -151,25 +156,36 @@ public class Valiant {
 	if(file.length() == 0){
      		while (davReader.hasNext()) {
         		DavResource resource = davReader.getNextMatch();
+			//log.info("Hier geraak ik");
+			//if (resource == null){log.info("Resource is null");}
 			if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
 				String fileName = resource.getName().replaceAll("(?i).xml", ".rdf");
 				try{
+				String graphName = namespace.getBaseURI() + fileName;
+				File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      				FileWriter fw = new FileWriter(graphFile,true);
+      				fw.write(graphName);
+      				fw.close();
 				FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
 				log.info(fileName + ": Writing to file started");
 				writeToFile(transform(resource),outputStream);
 				log.info(fileName + ": Writing of file finished");
-				} catch (FileNotFoundException e){}
+				} catch (Exception e){}
 			}
       		}
 	}
 	else{	
-		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-		log.info(fileName +": Writing to file started");
-		try{	
-		FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
-		writeToFile(transform(file),outputStream);
-		log.info(fileName + ": Writing of file finished");
-		} catch (FileNotFoundException e){}
+		if(file.endsWith(".xml")){
+			transformToFileFromFile(file);
+		}
+		else{
+			File dir = new File (file);
+			FilenameFilter select = new FileListFilter("xml");
+			File[] files = dir.listFiles(select);
+			for(int i = 0; i<files.length;i++){
+				transformToFileFromFile(files[i].getPath());
+			}		
+		}
 	}
   }
   private void transformToVirtuoso(String file){
@@ -189,10 +205,17 @@ public class Valiant {
 
 	}
 	else{
-		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-		log.info(fileName + ": Writing to virtuoso");
-		writeToVirtuoso(transform(file),fileName);
-		log.info(fileName + ": Writing in virtuoso finished");
+		if(file.endsWith(".xml")){
+			transformToVirtuosoFromFile(file);
+		}
+		else{
+			File dir = new File (file);
+			FilenameFilter select = new FileListFilter("xml");
+			File[] files = dir.listFiles(select);
+			for(int i = 0; i<files.length;i++){
+				transformToVirtuosoFromFile(files[i].getPath());
+			}		
+		}
 	}
   }
   private void transformToWebDav(String file){
@@ -211,10 +234,18 @@ public class Valiant {
       		}
 	}
 	else{
-		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-		log.info(fileName + ": Writing to webdav");
-		writeToWebdav(transform(file),file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf"));
-		log.info(fileName + ": Writing in webdav finished");
+	
+		if(file.endsWith(".xml")){
+			transformToWebdavFromFile(file);
+		}
+		else{
+			File dir = new File (file);
+			FilenameFilter select = new FileListFilter("xml");
+			File[] files = dir.listFiles(select);
+			for(int i = 0; i<files.length;i++){
+				transformToWebdavFromFile(files[i].getPath());
+			}		
+		}
 	}
   }
   private void transformToFileAndVirtuoso(String file){
@@ -224,6 +255,11 @@ public class Valiant {
 			if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
 				String fileName = resource.getName().replaceAll("(?i).xml",".rdf");
 				try{
+				String graphName = namespace.getBaseURI() + fileName;
+				File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      				FileWriter fw = new FileWriter(graphFile,true);
+      				fw.write(graphName);
+      				fw.close();
 				FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
 				ByteArrayOutputStream baos = transform(resource);
 				log.info(fileName + ": Writing to file started");
@@ -232,23 +268,25 @@ public class Valiant {
 				log.info(fileName + ": Writing to virtuoso");
 				writeToVirtuoso(baos,fileName);
 				log.info(fileName + ": Writing in virtuoso finised");
-				} catch (FileNotFoundException e){}
+				} catch (Exception e){}
 
 			}
       		}
 	}
 	else{	
-		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-		ByteArrayOutputStream baos = transform(file);
-		log.info(fileName + ": Writing to file started");
-		try{
-		FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
-		writeToFile(baos,outputStream);
-		log.info(fileName + ": Writing of file finished");
-		log.info(fileName + ": Writing to virtuoso:");
-		writeToVirtuoso(baos,fileName);
-		log.info(fileName + ": Writing in virtuoso finished");
-		} catch (FileNotFoundException e){}
+		if(file.endsWith(".xml")){
+			transformToFileFromFile(file);
+			transformToVirtuosoFromFile(file);
+		}
+		else{
+			File dir = new File (file);
+			FilenameFilter select = new FileListFilter("xml");
+			File[] files = dir.listFiles(select);
+			for(int i = 0; i<files.length;i++){
+				transformToFileFromFile(files[i].getPath());
+				transformToVirtuosoFromFile(files[i].getPath());
+			}		
+		}
 	}
   }
   private void transformToWebDavAndVirtuoso(String file){
@@ -271,15 +309,58 @@ public class Valiant {
       		}
 	}
 	else{
-		String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-		ByteArrayOutputStream baos = transform(file);
-		log.info(fileName + ": Writing to webdav:");
-		writeToWebdav(baos,fileName);
-		log.info(fileName + ": writing in webdav finished");
-		log.info(fileName + ": Writing to virtuoso");
-		writeToVirtuoso(baos,fileName);
-		log.info(fileName + ": Writing in virtuoso finished");
+		if(file.endsWith(".xml")){
+			transformToWebdavFromFile(file);
+			transformToVirtuosoFromFile(file);
+		}
+		else{
+			File dir = new File (file);
+			FilenameFilter select = new FileListFilter("xml");
+			File[] files = dir.listFiles(select);
+			for(int i = 0; i<files.length;i++){
+				transformToWebdavFromFile(files[i].getPath());
+				transformToVirtuosoFromFile(files[i].getPath());
+			}		
+		}
+	}
+  }
+  private void transformToFileFromFile(String file){
+	String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+	if(!(new File(rdfFolder + fileName).exists())){
+	try{	
+	FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
+	String graphName = namespace.getBaseURI() + fileName;
+	log.info(fileName +": Writing to file started");	
+	writeToFile(transform(file),outputStream);
+	log.info(fileName + ": Writing of file finished");
+	File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+      	FileWriter fw = new FileWriter(graphFile,true);
+      	fw.write(graphName);
+      	fw.close();
+	} catch (Exception e){}
+	}
+  }
+  private void transformToVirtuosoFromFile(String file){
+	String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+	if(!(new File(rdfFolder + fileName).exists())){
+	try{	
+	FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
+	log.info(fileName + ": Writing to virtuoso");
+	writeToVirtuoso(transform(file),fileName);
+	log.info(fileName + ": Writing in virtuoso finished");
+	} catch (Exception e){}
+	}
 
+  }
+  private void transformToWebdavFromFile(String file){
+	String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+	if(!(new File(rdfFolder + fileName).exists())){
+	try{	
+	FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
+	log.info(fileName + ": Writing to webdav");
+	writeToWebdav(transform(file),file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf"));
+	log.info(fileName + ": Writing in webdav finished");
+	} catch (Exception e){}
 	}
   }
 }
