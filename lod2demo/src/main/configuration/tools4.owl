@@ -482,7 +482,7 @@
       <rdfs:label xml:lang="en">LOD2 Demonstrator</rdfs:label>
       <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://http://code.google.com/p/lod2-stack/</lod2:tool_homepage>
       <lod2:tool_description xml:lang="en">The LOD2 demonstrator is a web application that offers a central access to all components in the LOD2 stack.</lod2:tool_description>
-      <lod2:acknowledgement xml:lang="en"></lod2:acknowledgement>
+      <lod2:acknowledgement xml:lang="en">Acknowledgement:&lt;ul&gt;&lt;li&gt;VAADIN - UI web toolkit&lt;/li&gt;&lt;li&gt;OpenRDF (Sesame) - RDF toolkit&lt;/li&gt;&lt;li&gt;xalan - XSLT toolkit&lt;/li&gt;&lt;li&gt;Xerces - XML toolkit&lt;/li&gt;&lt;/ul&gt;</lod2:acknowledgement>
     </lod2:Tool>
 
     <lod2:ToolResponsible rdf:ID="BertVanNuffelen">

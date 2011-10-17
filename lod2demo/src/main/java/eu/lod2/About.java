@@ -123,7 +123,7 @@ public class About extends CustomComponent
 		final ThemeResource closedsource = new ThemeResource("app_images/commercial.png");
 		final ThemeResource bothsource = new ThemeResource("app_images/com-open.png");
 
-		public AboutTable(String c, String p, String con, String h, String l, String lm, String d) {
+		public AboutTable(String c, String p, String con, String h, String l, String lm, String d, String ack) {
 			component = c;
 			partner = p;
 			if (!con.equals("")) {
@@ -149,7 +149,13 @@ public class About extends CustomComponent
 					license.setIcon(bothsource);
 				};
 			};
-			description = new Label(d, Label.CONTENT_XHTML);
+			String desc;
+			if (!ack.equals("")) {
+				desc = d + "<p/>" + ack;
+			} else {
+				desc = d;
+			};
+			description = new Label(desc, Label.CONTENT_XHTML);
 //			description.setValue(d);
 //			description.setWidth("100%");
 //			description.setReadOnly(true);
@@ -221,12 +227,13 @@ public class About extends CustomComponent
 
 		// initialize the hostname and portnumber
 		String query = "PREFIX lod2: <http://lod2.eu/tools.owl#>" +
-			"SELECT  DISTINCT ?complabel ?partner ?responsible ?homepage ?license ?licenseModel ?desc from <http://lod2.eu/tools.owl> where {" +
+			"SELECT  DISTINCT ?complabel ?partner ?responsible ?homepage ?license ?licenseModel ?desc ?ack from <http://lod2.eu/tools.owl> where {" +
 			"?comp rdf:type lod2:Tool. ?comp rdfs:label ?complabel. " + 
 			"OPTIONAL {?comp lod2:contributed_by_partner ?partnerId. ?partnerId rdfs:label ?partner.}" +
 			"OPTIONAL {?comp lod2:responsible ?r. ?r lod2:person_email ?responsible.}" +
 			"OPTIONAL {?comp lod2:tool_homepage ?homepage.}" +
 			"OPTIONAL {?comp lod2:license ?licenseId. ?licenseId lod2:license_url ?license. ?licenseId rdf:type ?licenseModel.}" +
+			"OPTIONAL {?comp lod2:acknowledgement ?ack.}" + 
 			"OPTIONAL {?comp lod2:tool_description ?desc.}}";
 		TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 		TupleQueryResult result = tupleQuery.evaluate();
@@ -241,10 +248,12 @@ public class About extends CustomComponent
 			Value valueOf5 = bindingSet.getValue("license");
 			Value valueOf6 = bindingSet.getValue("desc");
 			Value valueOf7 = bindingSet.getValue("licenseModel");
+			Value valueOf8 = bindingSet.getValue("ack");
 		
 
 			abouts.addBean(new AboutTable(getStringValue(valueOf1), getStringValue(valueOf2), getStringValue(valueOf3), 
-				getStringValue(valueOf4), getStringValue(valueOf5), getStringValue(valueOf7), getStringValue(valueOf6)));
+				getStringValue(valueOf4), getStringValue(valueOf5), getStringValue(valueOf7), getStringValue(valueOf6),
+				getStringValue(valueOf8)));
 		};
 
 		} catch (RepositoryException e) {
