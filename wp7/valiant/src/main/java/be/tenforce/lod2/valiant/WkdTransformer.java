@@ -34,6 +34,9 @@ public class WkdTransformer {
   @Value("#{properties.catalogUrl}")
   private String catalogUrl;
 
+  @Value("#{properties.logFolder}")
+  private String logFolder;
+
   private TransformerFactory transformerFactory;
   private Transformer transformer;
   private XMLCatalogResolver resolver;
@@ -55,7 +58,7 @@ public class WkdTransformer {
     FileWriter fw;
     SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
     try {
-      	    fw = new FileWriter(new File("/home/jand/valiant/log/valiant.log"),true);
+      	    fw = new FileWriter(new File(logFolder + "valiant.log"),true);
 	MessageEmitter emitter = new MessageEmitter();
 	((Controller)transformer).setMessageEmitter(emitter);
 	((MessageEmitter)((Controller)transformer).getMessageEmitter()).setWriter(fw);	
