@@ -26,6 +26,7 @@ import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
+import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field.ValueChangeEvent;
@@ -84,6 +85,7 @@ implements AbstractSelect.NewItemHandler
 	graphSelector.setNewItemsAllowed(true);
 	graphSelector.setImmediate(true);
 	graphSelector.setNewItemHandler(this);
+	graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
 	addCandidateGraphs(graphSelector);
 	layout.addComponent(graphSelector);
 

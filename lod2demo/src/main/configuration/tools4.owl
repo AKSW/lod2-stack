@@ -131,6 +131,7 @@
     <!-- http://lod2.eu/tools.owl#acknowledgement -->
 
     <owl:DatatypeProperty rdf:about="http://lod2.eu/tools.owl#acknowledgement">
+        <rdfs:comment rdf:datatype="&xsd;string">Acknowledgements about used software and more.</rdfs:comment>
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdfs:range rdf:resource="&xsd;string"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
@@ -473,6 +474,22 @@
 	<lod2:person_email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tramp@informatik.uni-leipzig.de</lod2:person_email>
 	<lod2:person_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sebastian Tramp</lod2:person_name>
     </lod2:ToolResponsible>
+
+    <lod2:Tool rdf:about="http://localhost/lod2demo">
+      <lod2:responsible rdf:resource="&lod2;BertVanNuffelen"/>
+      <lod2:contributed_by_partner rdf:resource="&lod2;TenForce"/>
+      <lod2:license rdf:resource="&lod2;Apache_2.0"/>
+      <rdfs:label xml:lang="en">LOD2 Demonstrator</rdfs:label>
+      <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://http://code.google.com/p/lod2-stack/</lod2:tool_homepage>
+      <lod2:tool_description xml:lang="en">The LOD2 demonstrator is a web application that offers a central access to all components in the LOD2 stack.</lod2:tool_description>
+      <lod2:acknowledgement xml:lang="en"></lod2:acknowledgement>
+    </lod2:Tool>
+
+    <lod2:ToolResponsible rdf:ID="BertVanNuffelen">
+	<lod2:person_email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bert.Van.Nuffelen@tenforce.com</lod2:person_email>
+	<lod2:person_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bert Van Nuffelen</lod2:person_name>
+    </lod2:ToolResponsible>
+
 
 </rdf:RDF>
 

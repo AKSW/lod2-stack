@@ -26,6 +26,7 @@ import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
+import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field.ValueChangeEvent;
@@ -97,6 +98,7 @@ public class ConfigurationTab extends CustomComponent
 		graphSelector.setValue(cg.getValue());
 		graphSelector.setColumns(cg.toString().length());
 	};
+	graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
 	t2f.getLayout().addComponent(graphSelector);
 
         // initialize the footer area of the form
