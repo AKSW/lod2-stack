@@ -236,9 +236,9 @@
 	<xsl:element namespace="{$namespace}" name="{$property}">
 		<skos:Concept>
 			<rdf:type rdf:resource="{$foaf}Person"/>
-			<xsl:if test="name/titel-zu-name">
-				<foaf:title><xsl:value-of select="string(name/titel-zu-name)"/></foaf:title>
-			</xsl:if>
+			<xsl:for-each select="name/titel-zu-name">
+				<foaf:title><xsl:value-of select="string(.)"/></foaf:title>
+			</xsl:for-each>
 			<xsl:if test="name/vorname">
 				<foaf:firstName><xsl:value-of select="string(name/vorname)"/></foaf:firstName>
 			</xsl:if>
