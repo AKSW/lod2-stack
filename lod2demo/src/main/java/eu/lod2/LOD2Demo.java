@@ -38,6 +38,7 @@ import com.vaadin.ui.AbstractOrderedLayout.*;
 import com.vaadin.data.Property.*;
 import com.vaadin.ui.MenuBar.*;
 import com.vaadin.ui.Window.Notification;
+import org.vaadin.googleanalytics.tracking.*;
 
 
 
@@ -518,6 +519,12 @@ public class LOD2Demo extends Application
 //	    Iterator<Component> iterator = mainWindow.getContent().getComponentIterator();
 //	    Component second = iterator.next();
 //	    second.setSizeFull();
+
+	    // Create a tracker for the demo.lod2.eu domain.
+            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
+            mainWindow.addComponent(tracker);
+            tracker.trackPageview("/lod2demo");
+
 
 
             setMainWindow(mainWindow);

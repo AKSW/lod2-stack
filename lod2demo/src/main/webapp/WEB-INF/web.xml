@@ -15,6 +15,10 @@
                         <param-name>application</param-name>
                         <param-value>eu.lod2.LOD2Demo</param-value>
 		</init-param>
+        <init-param>
+    	<param-name>widgetset</param-name>
+    	<param-value>eu.lod2.widgetset.LOD2Demo</param-value>
+	</init-param>
         </servlet>
         <servlet-mapping>
                 <servlet-name>LOD2 Demo Servlet</servlet-name>
