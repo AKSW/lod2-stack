@@ -300,7 +300,7 @@
     produkt, band, heft, start-seite
 -->
 	<xsl:variable name="uri">
-		<xsl:value-of select="concat($r-base-uri,'journal_article/',fun:percentEncode($e/@produkt),'/',fun:percentEncode(concat($e/@jahr,$e/@band)))"/>
+		<xsl:value-of select="concat(fun:percentEncode($e/@produkt),'/',fun:percentEncode(concat($e/@jahr,$e/@band)))"/>
 		<xsl:value-of select="if (string-length($e/@heft) &gt; 0) then concat('/issue.',fun:percentEncode($e/@heft)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@beilage) &gt; 0) then concat('/supplement.',fun:percentEncode($e/@beilage)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start-p.',fun:percentEncode($e/@start-seite)) else ''"/>
