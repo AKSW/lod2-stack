@@ -180,13 +180,21 @@ public class Valiant {
 		}
 		else{
 			File dir = new File (file);
-			FilenameFilter select = new FileListFilter("xml");
-			File[] files = dir.listFiles(select);
-			for(int i = 0; i<files.length;i++){
-				transformToFileFromFile(files[i].getPath());
-			}		
+			//FilenameFilter select = new FileListFilter("xml");
+			File[] files = dir.listFiles();
+			loadDir(files);		
 		}
 	}
+  }
+  private void loadDir(File [] files){
+	for(int i = 0; i<files.length;i++){
+		if(files[i].getName().endsWith(".xml")){		
+			transformToFileFromFile(files[i].getPath());
+		}
+		else if(files[i].isDirectory()){
+			loadDir(files[i].listFiles());
+		}
+	}	
   }
   private void transformToVirtuoso(String file){
 	if(file.length() == 0){
