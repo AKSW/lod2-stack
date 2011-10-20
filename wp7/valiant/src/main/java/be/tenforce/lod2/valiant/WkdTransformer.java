@@ -66,7 +66,7 @@ public class WkdTransformer {
     catch (TransformerException e) {
 	//log.error(fileName.substring(fileName.lastIndexOf('/') + 1));  
         log.error(fileName);
-	log.info("Transform failed: " + e.getMessage(), e);
+	log.error("Transform failed: " + e.getMessage(), e);
     }
     catch (IOException e){
 	log.error("Logfile not found.");

@@ -176,23 +176,24 @@ public class Valiant {
 	}
 	else{	
 		if(file.endsWith(".xml")){
-			transformToFileFromFile(file);
+			transformToFileFromFile(file, "");
 		}
 		else{
 			File dir = new File (file);
 			//FilenameFilter select = new FileListFilter("xml");
 			File[] files = dir.listFiles();
-			loadDir(files);		
+			loadDir(files, "");		
 		}
 	}
   }
-  private void loadDir(File [] files){
+  private void loadDir(File [] files, String outputPath){
 	for(int i = 0; i<files.length;i++){
 		if(files[i].getName().endsWith(".xml")){		
-			transformToFileFromFile(files[i].getPath());
+			transformToFileFromFile(files[i].getPath(),outputPath);
 		}
 		else if(files[i].isDirectory()){
-			loadDir(files[i].listFiles());
+			(new File(rdfFolder + files[i].getName())).mkdir();
+			loadDir(files[i].listFiles(), files[i].getName() + "/");
 		}
 	}	
   }
@@ -283,15 +284,15 @@ public class Valiant {
 	}
 	else{	
 		if(file.endsWith(".xml")){
-			transformToFileFromFile(file);
+			transformToFileFromFile(file, "");
 			transformToVirtuosoFromFile(file);
 		}
 		else{
 			File dir = new File (file);
-			FilenameFilter select = new FileListFilter("xml");
 			File[] files = dir.listFiles(select);
+			loadDir(files, "");
 			for(int i = 0; i<files.length;i++){
-				transformToFileFromFile(files[i].getPath());
+			//	transformToFileFromFile(files[i].getPath(), null);
 				transformToVirtuosoFromFile(files[i].getPath());
 			}		
 		}
@@ -332,16 +333,16 @@ public class Valiant {
 		}
 	}
   }
-  private void transformToFileFromFile(String file){
+  private void transformToFileFromFile(String file,String outputPath){
 	String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-	if(!(new File(rdfFolder + fileName).exists())){
+	if(!(new File(rdfFolder + outputPath + fileName).exists())){
 	try{	
-	FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
+	FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + outputPath + fileName));
 	String graphName = namespace.getBaseURI() + fileName;
 	log.info(fileName +": Writing to file started");	
 	writeToFile(transform(file),outputStream);
 	log.info(fileName + ": Writing of file finished");
-	File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+	File graphFile = new File(rdfFolder + outputPath + fileName.replaceAll("(?i).rdf",".graph"));
       	FileWriter fw = new FileWriter(graphFile,true);
       	fw.write(graphName);
       	fw.close();
