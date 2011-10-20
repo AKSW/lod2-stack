@@ -65,17 +65,17 @@
 					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
 				</xsl:if>
 				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
-				<xsl:value-of select="fun:verweis-zs($identifier)"/>
+				<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
 			</xsl:when>
 			<xsl:when test="$doc-type='aufsatz-es'">
 				<xsl:choose>
 					<xsl:when test="$doc/zuordnung-produkt/verweis-zs">
 						<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
-						<xsl:value-of select="fun:verweis-zs($identifier)"/>
+						<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
 					</xsl:when>
 					<xsl:when test="$doc/@bezugsquelle and $doc/verbundene-dokumente/verweis-es">
 						<xsl:variable name="identifier" select="$doc/verbundene-dokumente/verweis-es[1]" as="element()"/>
-						<xsl:value-of select="concat(fun:verweis-es($identifier),'_',$doc/@bezugsquelle)"/>
+						<xsl:value-of select="concat(fun:verweis-es-id($identifier),'_',$doc/@bezugsquelle)"/>
 					</xsl:when>
 					<xsl:when test="$doc/metadaten/metadaten-text[@bezeichnung='link-id']">
 						<xsl:value-of select="fun:percentEncode(normalize-space($doc/metadaten/metadaten-text[@bezeichnung='link-id']))"/>
@@ -85,6 +85,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
+			<!--xsl:when test="$doc-type='pressemitteilung'">
+				<xsl:value-of select="$doc/@vtext-id"/>
+			</xsl:when-->
 			<xsl:otherwise>
 				<xsl:message terminate="yes">ERROR: invalid document type - got <xsl:value-of select="$doc-type"/>.</xsl:message>
 			</xsl:otherwise>
@@ -131,11 +134,15 @@
 		<xsl:when test="name($element)='vs-ebene'">
 			<xsl:variable name="id" as="xs:string">
 				<xsl:variable name="temp">
-					<xsl:value-of select="fun:percentEncode($element/@bez)"/>
+					<xsl:if test="$element/@bez">
+						<xsl:value-of select="fun:percentEncode($element/@bez)"/>
+					</xsl:if>
 					<xsl:if test="$element/@bez and $element/@wert">
 						<xsl:value-of select="'/'"/>
 					</xsl:if>
-					<xsl:value-of select="fun:percentEncode($element/@wert)"/>
+					<xsl:if test="$element/@wert">
+						<xsl:value-of select="fun:percentEncode($element/@wert)"/>
+					</xsl:if>
 				</xsl:variable>
 				<xsl:value-of select="string-join($temp,'')"/>
 			</xsl:variable>
@@ -253,11 +260,11 @@
 	<xsl:value-of select="$target"/>
 </xsl:function>
 
-<xsl:function name="fun:verweis-es" as="xs:string">
+<xsl:function name="fun:verweis-es-id" as="xs:string">
 	<xsl:param name="e" as="element()"/>
-	<xsl:variable name="linked-doc-base-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('entscheidung'),'/')"/>
 	<xsl:variable name="linked-doc-id" as="xs:string">
-		<xsl:variable name="court" select="$e/@gericht" as="xs:string"/>
+		<xsl:variable name="court-id" select="fun:courtId($e/@gericht)"/>
+		<xsl:variable name="court" select="if (string-length($court-id)=0) then fun:percentEncode($e/@gericht) else $court-id" as="xs:string"/>
 		<xsl:variable name="file"
 		              select="concat(
 		                       fun:percentEncode(normalize-space($e/@az)),
@@ -269,12 +276,17 @@
 		<xsl:variable name="date" select="fun:dateDe2Iso(normalize-space($e/@datum))" as="xs:string"/>
 		<xsl:value-of select="concat($court,'_',$file,'_',$date)"/>
 	</xsl:variable>
+	<xsl:value-of select="$linked-doc-id"/>
+</xsl:function>
+
+<xsl:function name="fun:verweis-es" as="xs:string">
+	<xsl:param name="e" as="element()"/>
+	<xsl:variable name="linked-doc-base-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('entscheidung'),'/')"/>
 	<xsl:variable name="target" as="xs:string">
-		<xsl:value-of select="concat($linked-doc-base-uri,$linked-doc-id)"/>
+		<xsl:value-of select="concat($linked-doc-base-uri,fun:verweis-es-id($e))"/>
 	</xsl:variable>
 	<xsl:value-of select="$target"/>
 </xsl:function>
-
 <xsl:function name="fun:verweis-esa" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 	<xsl:value-of select="''"/>
@@ -285,7 +297,7 @@
 	<xsl:value-of select="''"/>
 </xsl:function>
 
-<xsl:function name="fun:verweis-zs" as="xs:string">
+<xsl:function name="fun:verweis-zs-id" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 <!--
     produkt, jahr, heft, beilage, start-seite, end-seite
@@ -305,6 +317,14 @@
 		<xsl:value-of select="if (string-length($e/@beilage) &gt; 0) then concat('/supplement.',fun:percentEncode($e/@beilage)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start-p.',fun:percentEncode($e/@start-seite)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end-p.',fun:percentEncode($e/@end-seite)) else ''"/>
+	</xsl:variable>
+	<xsl:value-of select="normalize-space($uri)"/>
+</xsl:function>
+
+<xsl:function name="fun:verweis-zs" as="xs:string">
+	<xsl:param name="e" as="element()"/>
+	<xsl:variable name="uri">
+		<xsl:value-of select="concat($r-base-uri,'journal_article/',fun:verweis-zs-id($e))"/>
 	</xsl:variable>
 	<xsl:value-of select="normalize-space($uri)"/>
 </xsl:function>
