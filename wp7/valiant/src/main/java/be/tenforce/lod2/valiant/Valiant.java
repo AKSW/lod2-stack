@@ -192,8 +192,8 @@ public class Valiant {
 			transformToFileFromFile(files[i].getPath(),outputPath);
 		}
 		else if(files[i].isDirectory()){
-			(new File(rdfFolder + files[i].getName())).mkdir();
-			loadDir(files[i].listFiles(), files[i].getName() + "/");
+			(new File(rdfFolder + outputPath + files[i].getName())).mkdir();
+			loadDir(files[i].listFiles(), outputPath + files[i].getName() + "/");
 		}
 	}	
   }
@@ -289,7 +289,7 @@ public class Valiant {
 		}
 		else{
 			File dir = new File (file);
-			File[] files = dir.listFiles(select);
+			File[] files = dir.listFiles();
 			loadDir(files, "");
 			for(int i = 0; i<files.length;i++){
 			//	transformToFileFromFile(files[i].getPath(), null);
