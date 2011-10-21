@@ -85,9 +85,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<!--xsl:when test="$doc-type='pressemitteilung'">
+			<xsl:when test="$doc-type='pressemitteilung'">
 				<xsl:value-of select="$doc/@vtext-id"/>
-			</xsl:when-->
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">ERROR: invalid document type - got <xsl:value-of select="$doc-type"/>.</xsl:message>
 			</xsl:otherwise>
@@ -109,6 +109,9 @@
 		</xsl:when>
 		<xsl:when test="$doc-type=('aufsatz','aufsatz-es')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type)"/>
+		</xsl:when>
+		<xsl:when test="$doc-type='pressemitteilung'">
+			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="yes">ERROR: invalid document type - "<xsl:value-of select="$doc-type"/>" is not supported yet.</xsl:message>
@@ -192,7 +195,7 @@
 			<xsl:value-of select="concat($b-uri,'/aufsatz-ebene/', if (string-length($id) = 0) then 'noId' else $id)"/>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:message terminate="yes">ERROR - unknown identifier type.</xsl:message>
+			<xsl:message terminate="yes">ERROR - unknown identifier type for element: <xsl:value-of select="name($element)"/>.</xsl:message>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:function>
@@ -273,8 +276,8 @@
 								   else ''
 							   )" 
 				      as="xs:string"/>
-		<xsl:variable name="date" select="fun:dateDe2Iso(normalize-space($e/@datum))" as="xs:string"/>
-		<xsl:value-of select="concat($court,'_',$file,'_',$date)"/>
+		<xsl:variable name="date" select="if (string-length($e/@datum)=0) then '' else concat('_',fun:dateDe2Iso(normalize-space($e/@datum)))" as="xs:string"/>
+		<xsl:value-of select="concat($court,'_',$file,$date)"/>
 	</xsl:variable>
 	<xsl:value-of select="$linked-doc-id"/>
 </xsl:function>

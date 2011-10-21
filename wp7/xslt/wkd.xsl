@@ -29,7 +29,7 @@
 <!--
 Modes used by the template
 - top-level
-  top level output is generated in the rdf:RDF wrapper.
+  top level output is generated in the rdf:RDF wrapper, not in the document rdf:Description wrapper.
   typically used when axioms are generated on the produced statements.
   e.g. to set priority on subject tagging of content parts.
 - build-hierarchy
@@ -71,6 +71,8 @@ Tunnel parameters used
 <xsl:include href="wkd/vs.xsl"/>
 <!-- entscheidung DOCUMENT TYPE  -->
 <xsl:include href="wkd/es.xsl"/>
+<!-- pressemitteilung DOCUMENT TYPE  -->
+<xsl:include href="wkd/pm.xsl"/>
 <!-- aufsatz DOCUMENT TYPE  -->
 <xsl:include href="wkd/zs.xsl"/>
 
@@ -148,15 +150,20 @@ Tunnel parameters used
 					<xsl:value-of select="if (string-length($cited-base-part) = 0) then ''
 					                      else concat($cited-doc-uri,$cited-base-part,'/section/',fun:percentEncode(string(@nr)))"/>
 				</xsl:when>
+				<xsl:when test="name(.) = ('quelle','beschriftung')">
+					<xsl:value-of select="''"/>
+				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="fun:getPartId(.,$cited-doc-uri)"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:call-template name="write-cite">
-			<xsl:with-param name="cite-type-name" select="name()" as="xs:string"/>
-			<xsl:with-param name="cited-target" select="$cited-target" as="xs:string"/>
-		</xsl:call-template>
+		<xsl:if test="$cited-target != ''">
+			<xsl:call-template name="write-cite">
+				<xsl:with-param name="cite-type-name" select="name()" as="xs:string"/>
+				<xsl:with-param name="cited-target" select="$cited-target" as="xs:string"/>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:for-each>
 </xsl:template>
 
@@ -543,7 +550,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="yes" name="aus lag_bw_2003-11-04_17-sa-113-98_jurion" userelativepaths="yes" externalpreview="no" url="..\Data\Doctrine\lag_bw_2003-11-04_17-sa-113-98_jurion.xml" htmlbaseurl=""
+		<scenario default="no" name="aus lag_bw_2003-11-04_17-sa-113-98_jurion" userelativepaths="yes" externalpreview="no" url="..\Data\Doctrine\lag_bw_2003-11-04_17-sa-113-98_jurion.xml" htmlbaseurl=""
 		          outputurl="..\result\doc\lag_bw_2003-11-04_17-sa-113-98_jurion.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2"
 		          additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
@@ -615,7 +622,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="PM lag_bw_2011-04-29_7-tabv-7-10_pm" userelativepaths="yes" externalpreview="no" url="..\Data\pm\lag_bw_2010-03-26_7-sa-67-09_pm.xml" htmlbaseurl="" outputurl="..\result\lag_bw_2011-04-29_7-tabv-7-10_pm.rdf"
+		<scenario default="no" name="PM lag_bw_2006-06-12_4-sa-68-05_pm" userelativepaths="yes" externalpreview="no" url="..\Data\pm\lag_bw_2006-06-12_4-sa-68-05_pm.xml" htmlbaseurl="" outputurl="..\result\lag_bw_2006-06-12_4-sa-68-05_pm.rdf"
 		          processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -638,6 +645,24 @@ Tunnel parameters used
 		          additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
+			<advancedProp name="sInitialMode" value=""/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bXml11" value="false"/>
+			<advancedProp name="iValidation" value="0"/>
+			<advancedProp name="bExtensions" value="true"/>
+			<advancedProp name="iWhitespace" value="0"/>
+			<advancedProp name="sInitialTemplate" value=""/>
+			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="iErrorHandling" value="0"/>
+		</scenario>
+		<scenario default="yes" name="error" userelativepaths="yes" externalpreview="no" url="..\Data\xslterror\Fielitz_PBefG_C4.xml" htmlbaseurl="" outputurl="..\result\error.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
+		          profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
+		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
+		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
+			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bSchemaAware" value="false"/>

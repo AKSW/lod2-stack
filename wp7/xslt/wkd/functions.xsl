@@ -21,6 +21,8 @@
 	<data:entry><data:de>vorschrift/typ</data:de><data:en>legislation/type</data:en></data:entry>
 	<data:entry><data:de>entscheidung</data:de><data:en>jurisprudence</data:en></data:entry>
 	<data:entry><data:de>entscheidung/typ</data:de><data:en>jurisprudence/type</data:en></data:entry>
+	<data:entry><data:de>pressemitteilung</data:de><data:en>press_release</data:en></data:entry>
+	<data:entry><data:de>pressemitteilung/typ</data:de><data:en>press_release/type</data:en></data:entry>
 	<data:entry><data:de>aufsatz</data:de><data:en>journal_article</data:en></data:entry>
 	<data:entry><data:de>herkunft</data:de><data:en>origin</data:en></data:entry>
 	<data:entry><data:de>organisation</data:de><data:en>organisation</data:en></data:entry>
@@ -47,9 +49,10 @@
 <!-- BIBO DOCUMENT TYPE IDENTIFICATION -->
 <xsl:variable name="deuDT2biboDT">
 	<data:entry><data:de>vorschrift</data:de><data:bibo>Legislation</data:bibo></data:entry>
-	<data:entry><data:de>entscheidung</data:de><data:bibo>LegalCaseDocument</data:bibo></data:entry>
+	<data:entry><data:de>entscheidung</data:de><data:bibo>LegalDecision</data:bibo></data:entry>
 	<data:entry><data:de>aufsatz</data:de><data:bibo>Article</data:bibo></data:entry>
 	<data:entry><data:de>aufsatz-es</data:de><data:bibo>Article</data:bibo></data:entry>
+	<data:entry><data:de>pressemitteilung</data:de><data:bibo>LegalCaseDocument</data:bibo></data:entry>
 </xsl:variable>
 
 <xsl:key name="bibo-class" match="data:entry" use="data:de"/>

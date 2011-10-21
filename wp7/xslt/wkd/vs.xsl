@@ -61,10 +61,10 @@
 
 <xsl:template match="vs-metadaten">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<xsl:if test="vs-aenderung/@datum">
+	<xsl:if test="string-length(vs-aenderung/@datum) != 0">
 		<dcterms:modified><xsl:value-of select="fun:dateDe2Iso(string(vs-aenderung/@datum))"/></dcterms:modified>
 	</xsl:if>
-	<xsl:for-each select="vs-fassung">
+	<xsl:for-each select="vs-fassung[string-length(@datum) != 0]">
 		<dcterms:issued><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:issued>
 		<xsl:if test="@inkraft">
 			<dcterms:temporal><xsl:value-of select="fun:dateDe2Iso(string(@inkraft))"/></dcterms:temporal>
