@@ -35,7 +35,9 @@
 	<wkd:pressReleaseType>
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('pressemitteilung/typ')}/{@typ}"/>
 	</wkd:pressReleaseType>
-	<dcterms:issued><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:issued>
+	<xsl:if test="string-length(@datum) &gt; 0">
+		<dcterms:issued><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:issued>
+	</xsl:if>
 	<xsl:if test="@pm-nr">
 		<bibo:number><xsl:value-of select="@pm-nr"/></bibo:number>
 	</xsl:if>
@@ -48,7 +50,17 @@
 
 <!-- titel -->
 <xsl:template match="pressemitteilung/titel">
-	<dcterms:title><xsl:apply-templates select="titel" mode="plain-literal"/></dcterms:title>
+	<dcterms:title><xsl:apply-templates select="." mode="plain-literal"/></dcterms:title>
+</xsl:template>
+
+<xsl:template match="pm-quelle">
+	<xsl:apply-templates select="verweis-url">
+		<xsl:with-param name="referenceType" as="xs:string" tunnel="yes" select="name()"/>
+	</xsl:apply-templates>
+	<xsl:apply-templates select="organisation">
+		<xsl:with-param name="namespace" select="$dcterms" as="xs:string"/>
+		<xsl:with-param name="property" select="'source'" as="xs:string"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <!-- Set base reference -->

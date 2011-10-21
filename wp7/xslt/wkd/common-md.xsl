@@ -146,6 +146,22 @@
 	</wkd:mdProperty>
 </xsl:template>
 
+<xsl:template match="metadaten-gruppe[@bezeichnung='rechtsgebiete-red']">
+	<xsl:for-each select="metadaten-text[@bezeichnung='rg-eintrag-hierarchie']">
+		<wkd:practiceArea>
+			<skos:Concept>
+				<rdf:type rdf:resource="{$wkd}PracticeArea"/>
+				<xsl:call-template name="printHierarchy">
+					<xsl:with-param name="label" select="normalize-space(.)" as="xs:string"/>
+					<xsl:with-param name="token" select="'-&gt;'" as="xs:string" tunnel="yes"/>
+					<xsl:with-param name="ns" select="$wkd" as="xs:string" tunnel="yes"/>
+					<xsl:with-param name="name" select="'PracticeArea'" as="xs:string" tunnel="yes"/>
+				</xsl:call-template>
+			</skos:Concept>
+		</wkd:practiceArea>
+	</xsl:for-each>
+</xsl:template>
+
 <!-- Practice Area -->
 <xsl:template match="rechtsgebiete/rechtsgebiet-eintrag">
 	<xsl:variable name="p" select="normalize-space(@produkt)"/>

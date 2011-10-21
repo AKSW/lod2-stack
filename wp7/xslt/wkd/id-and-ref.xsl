@@ -334,7 +334,9 @@
 
 <xsl:function name="fun:verweis-url" as="xs:string">
 	<xsl:param name="e" as="element()"/>
-	<xsl:value-of select="$e/adresse"/>
+	<xsl:variable name="a" select="string($e)" as="xs:string"/>
+	<xsl:variable name="h" select="string($e/@adresse)" as="xs:string"/>
+	<xsl:value-of select="if (starts-with($a,'http://') and (string-length($h)=0)) then $a else $h"/>
 </xsl:function>
 
 <xsl:function name="fun:verweis-obj" as="xs:string">
@@ -417,6 +419,9 @@
 	<xsl:if test="string-length($target) &gt; 0">
 		<xsl:choose>
 			<xsl:when test="$referenceType = 'fundstelle'">
+				<dcterms:source rdf:resource="{$target}"/>
+			</xsl:when>
+			<xsl:when test="$referenceType = 'pm-quelle'">
 				<dcterms:source rdf:resource="{$target}"/>
 			</xsl:when>
 			<xsl:when test="$referenceType = 'fundstellen'">
