@@ -436,6 +436,11 @@
 			<xsl:when test="$referenceType = 'mailto'">
 				<foaf:mbox rdf:resource="{$target}"/>
 			</xsl:when>
+			<xsl:when test="$referenceType = 'pm-entscheidung'">
+				<dcterms:references>
+					<bibo:ReferenceSource rdf:about="{$target}"/>
+				</dcterms:references>
+			</xsl:when>
 			<xsl:otherwise>
 				<dcterms:references rdf:resource="{$target}"/>
 			</xsl:otherwise>

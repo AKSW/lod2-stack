@@ -41,6 +41,21 @@
 	<xsl:if test="@pm-nr">
 		<bibo:number><xsl:value-of select="@pm-nr"/></bibo:number>
 	</xsl:if>
+	<xsl:if test="string-length(@rechteinhaber) &gt; 0">
+		<bibo:owner>
+			<dcterms:Agent>
+				<rdf:type rdf:resource="{$skos}Concept"/>
+				<skos:notation><xsl:value-of select="@rechteinhaber"/></skos:notation>
+			</dcterms:Agent>
+		</bibo:owner>
+	</xsl:if>
+	<xsl:if test="string-length(@bezugsquelle) &gt; 0">
+		<dcterms:source>
+			<bibo:ReferenceSource>
+				<bibo:identifier><xsl:value-of select="@bezugsquelle"/></bibo:identifier>
+			</bibo:ReferenceSource>
+		</dcterms:source>
+	</xsl:if>
 	<xsl:apply-templates select="*"/>
 </xsl:template>
 
@@ -60,6 +75,12 @@
 	<xsl:apply-templates select="organisation">
 		<xsl:with-param name="namespace" select="$dcterms" as="xs:string"/>
 		<xsl:with-param name="property" select="'source'" as="xs:string"/>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="pm-entscheidung">
+	<xsl:apply-templates select="verweis-es">
+		<xsl:with-param name="referenceType" as="xs:string" tunnel="yes" select="name()"/>
 	</xsl:apply-templates>
 </xsl:template>
 
