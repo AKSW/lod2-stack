@@ -14,7 +14,6 @@
      xmlns:dcterms="http://purl.org/dc/terms/"
      xmlns:history="http://dublincore.org/usage/terms/history/#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:wkd="http://schema.wolterskluwer.de/"
      xmlns:bibo="http://purl.org/ontology/bibo/"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -1266,6 +1265,15 @@
     <owl:ObjectProperty rdf:about="http://schema.wolterskluwer.de/practiceArea">
         <rdfs:label>practiceArea</rdfs:label>
         <rdfs:range rdf:resource="http://schema.wolterskluwer.de/PracticeArea"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://schema.wolterskluwer.de/pressReleaseType -->
+
+    <owl:ObjectProperty rdf:about="http://schema.wolterskluwer.de/pressReleaseType">
+        <rdfs:label>pressReleaseType</rdfs:label>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/type"/>
     </owl:ObjectProperty>
     
 
