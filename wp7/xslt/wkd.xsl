@@ -214,7 +214,7 @@ Tunnel parameters used
 
 <metaInformation>
 	<scenarios>
-		<scenario default="yes" name="bd_baugb" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\Schlichter_Berliner_K_BauGB-BauGB_2004.xml" htmlbaseurl="" outputurl="..\result\Schlichter_Berliner_K_BauGB-BauGB_2004_tn3.rdf"
+		<scenario default="no" name="bd_baugb" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\Schlichter_Berliner_K_BauGB-BauGB_2004.xml" htmlbaseurl="" outputurl="..\result\Schlichter_Berliner_K_BauGB-BauGB_2004_tn3.rdf"
 		          processortype="saxon8" useresolver="no" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -389,7 +389,7 @@ Tunnel parameters used
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="jur fg_st_2003-04-16_2-k-38-02_lsr" userelativepaths="yes" externalpreview="no" url="..\Data\Jurisprudence\fg_st_2003-04-16_2-k-38-02_lsr.xml" htmlbaseurl=""
+		<scenario default="yes" name="jur fg_st_2003-04-16_2-k-38-02_lsr" userelativepaths="yes" externalpreview="no" url="..\Data\Jurisprudence\fg_st_2003-04-16_2-k-38-02_lsr.xml" htmlbaseurl=""
 		          outputurl="..\result\jur\fg_st_2003-04-16_2-k-38-02_lsr-tn3.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2"
 		          additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"

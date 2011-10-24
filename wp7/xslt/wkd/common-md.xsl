@@ -309,7 +309,7 @@
 		<xsl:for-each select="siehe-stw">
 			<skos:related>
 				<xsl:variable name="r-uri" select="concat($v-base-uri,'stw/',fun:stwSegmentId(string(.)))" as="xs:string"/>
-				<wkd:Subject>
+				<wkd:Subject rdf:about="{$r-uri}">
 					<xsl:call-template name="buildLabel">
 						<xsl:with-param name="e" select="." as="element()"/>
 						<xsl:with-param name="lt" select="'prefLabel'" as="xs:string"/>
