@@ -307,10 +307,15 @@
 			<xsl:with-param name="e" select="haupt-stw" as="element()"/>
 		</xsl:call-template>
 		<xsl:for-each select="siehe-stw">
-			<xsl:call-template name="buildLabel">
-				<xsl:with-param name="e" select="." as="element()"/>
-				<xsl:with-param name="lt" select="'altLabel'" as="xs:string"/>
-			</xsl:call-template>
+			<skos:related>
+				<xsl:variable name="r-uri" select="concat($v-base-uri,'stw/',fun:stwSegmentId(string(.)))" as="xs:string"/>
+				<wkd:Subject>
+					<xsl:call-template name="buildLabel">
+						<xsl:with-param name="e" select="." as="element()"/>
+						<xsl:with-param name="lt" select="'prefLabel'" as="xs:string"/>
+					</xsl:call-template>
+				</wkd:Subject>
+			</skos:related>
 		</xsl:for-each>
 		<xsl:for-each select="unter-stw">
 			<skos:narrower>
