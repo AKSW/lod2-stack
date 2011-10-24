@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 @Component("valiant")
@@ -122,6 +123,7 @@ public class Valiant {
       StreamResult outputStream = new StreamResult(baos);
       log.info(filename + ": Transformation started");
       wkdTransformer.transform(inputStream, outputStream, filename);
+      inputStream.close();
       log.info(filename + ": Transformation finished");
       //writeToVirtuoso(outputFile, outputName);
       return baos;
@@ -129,6 +131,10 @@ public class Valiant {
     catch (FileNotFoundException e) {
       log.error(e.getMessage(), e);
       throw new RuntimeException(e.getMessage(), e);
+    }
+    catch (IOException ioe){
+      log.error(ioe.getMessage(),ioe);
+      throw new RuntimeException(ioe.getMessage(),ioe);
     }
   }
 
