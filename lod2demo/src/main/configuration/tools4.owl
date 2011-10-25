@@ -491,6 +491,38 @@
     </lod2:ToolResponsible>
 
 
+
+    <lod2:Tool rdf:about="http://localhost/sigmaee">
+        <lod2:responsible rdf:resource="&lod2;SzymonDanielczyk"/>
+        <lod2:contributed_by_partner rdf:resource="&lod2;DERI"/>
+        <lod2:license rdf:resource="GNU Affero General Public License v3"/>
+        <rdfs:label xml:lang="en">Sigma Enterprise Edition</rdfs:label>
+        <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://sig.ma</lod2:tool_homepage>
+        <lod2:tool_description xml:lang="en">
+ Sigma EE is an entity search engine and browser for the Web of Data.
+ Sig.ma EE is a standalone, deployable, customisable version of Sig.ma.
+ Sig.ma EE is deployed as a web application and will perform on the fly data integration
+ from both local data source and remote services (including Sindice.com).
+ Sig.ma EE currently supports the following data providers:
+ SPARQL endpoints (Virtuoso, 4store),
+ YBoss + the Web (Uses YBoss to search then Any23 to get the data),
+ Sindice.
+ It is very easy to customise visually and to implement new custom data providers
+ (e.g. for your relational or CMS data) by following documentation provided with Sig.ma EE.
+ Want to give it a quick try? Sig.ma EE now also powers the service on the http://sig.ma homepage
+ so you can add a custom datasource (e.g. your publicly available SPARQL endpoint)
+ directly from the "Options" menu you get after you search for something.
+ It is very easy to implement new custom data source (e.g. for your relational or web CMS data)
+ by implementing interfaces following the examples.
+ More info at http://sig.ma
+        </lod2:tool_description>
+    </lod2:Tool>
+
+    <lod2:ToolResponsible rdf:ID="SzymonDanielczyk">
+        <lod2:person_email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">danielczyk.szymon@gmail.com</lod2:person_email>
+        <lod2:person_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szymon Danielczyk</lod2:person_name>
+    </lod2:ToolResponsible>
+
 </rdf:RDF>
 
 
