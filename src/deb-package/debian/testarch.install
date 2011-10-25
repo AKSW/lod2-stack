@@ -1,0 +1,8 @@
+html/lod2.sigma.html /var/www/
+lod2.sigma.html /var/www/
+testarch.war /var/lib/tomcat6/webapps
+lod2demo.conf etc/testarch
+configuration/load.sql var/lib/testarch
+configuration/unload.sql var/lib/testarch
+configuration/configuration.nt var/lib/testarch
+configuration/tools4.owl var/lib/testarch

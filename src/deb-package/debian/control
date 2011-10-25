@@ -1,0 +1,12 @@
+Source: testarch
+Section: misc
+Priority: extra
+Maintainer: Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://lod2.eu
+
+Package: testarch
+Architecture: any-amd64
+Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki-virtuoso, virtuoso-opensource 
+Description: The test package for architecture differences testing

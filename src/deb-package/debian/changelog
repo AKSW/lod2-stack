@@ -1,0 +1,144 @@
+testarch (1.1.20) lod2; urgency=low
+
+  * add google analytics to that we can follow demo.lod2.eu
+  * add about page
+
+ -- Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>  Mon, 24 Oct 2011 05:28:42 -0700
+
+testarch (1.1.19) lod2; urgency=low
+
+  * add about page
+  * fix postinst script to create the /tmp/uploads dir
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 12 Oct 2011 06:23:34 -0700
+
+testarch (1.1.18) lod2; urgency=low
+
+  * improve debian packaging
+  * automatic installation of configuration graph
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 10 Oct 2011 06:09:54 -0700
+
+testarch (1.1.17) lod2; urgency=low
+
+  * make reference to sigmaee generic
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 04 Oct 2011 07:06:29 -0700
+
+testarch (1.1.16) lod2; urgency=low
+
+  * bug fix package building
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 03:37:59 -0700
+
+testarch (1.1.15) lod2; urgency=low
+
+  * bug fix in the EXML tab
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 03:36:59 -0700
+
+testarch (1.1.14) lod2; urgency=low
+
+  * Add XML-RDF pages
+  * make JDBC connection to virtuoso configurable
+  * add SameAs linking page
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 02:36:45 -0700
+
+testarch (1.1.13) lod2; urgency=low
+
+  [ Bert Van Nuffelen (TenForce/LOD2) ]
+  * add intro page
+  * apply more mockup style
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 30 Aug 2011 15:40:21 -0700
+
+testarch (1.1.12) lod2; urgency=low
+
+  * add widget reference back
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 29 Aug 2011 03:22:49 -0700
+
+testarch (1.1.11) lod2; urgency=low
+
+  * style header similar as mockup
+  * add authoring page: ontowiki
+  * add d2r-cordis, onlinePoolParty, onlinePoolPartySPARQL, CKAN page,
+    Mondeca,
+  * add target RDF graph widget and apply it for EPoolPartyExtractor
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 29 Aug 2011 02:30:24 -0700
+
+testarch (1.1.10) lod2; urgency=low
+
+  * implement configuration for ontowiki
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 25 Aug 2011 13:20:56 -0700
+
+testarch (1.1.9) lod2; urgency=low
+
+  * add switch for local virtuoso access as Virtuoso has a different port on
+    localhost.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 24 Aug 2011 15:41:58 -0700
+
+testarch (1.1.8) lod2; urgency=low
+
+  * add extra lod2 stack dependencies
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 22 Aug 2011  02:37:31 -0700
+
+testarch (1.1.7) lod2; urgency=low
+
+  * correct layout for rdf file upload, adjust pointers to tools
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 15 Aug 2011  02:37:31 -0700
+
+testarch (1.1.6) lod2; urgency=low
+
+  * new layout with menu's instead of tabs, split functionalities in separate
+    classes.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 14 Aug 2011  02:37:31 -0700
+
+testarch (1.1.5) lod2; urgency=low
+
+  * Make the demonstrator closer to the agreed view: global visible current
+    graph, embedded tools, different options for Extraction and Loading, ..
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 11 Aug 2011  02:37:31 -0700
+testarch (1.1.4) lod2; urgency=low
+
+  * take for the online 'lod2'-sigma also the hostname configuration into
+    account.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 8 Aug 2011  02:37:31 -0700
+testarch (1.1.3) lod2; urgency=low
+
+  * add references to packages d2r-cordis & silk. Add activation call for
+    to allow editing of graphs in OntoWiki.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 7 Aug 2011  02:37:31 -0700
+testarch (1.1.2) lod2; urgency=low
+
+  * add reading of configuration graph in virtuoso. This will enable to
+    specify configuration information in a system readable way.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+testarch (1.1.1) lod2; urgency=low
+
+  * alter lod2 dependency for ontowiki
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+testarch (1.1) lod2; urgency=low
+
+  * integrate online sigma page.
+  * add lod2 dependencies
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+
+testarch (1.0) lod2; urgency=low
+
+  * Initial Release .
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 24 May 2011 04:35:01 -0700
