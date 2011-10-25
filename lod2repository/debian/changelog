@@ -1,3 +1,9 @@
+lod2repository (1.13) lod2; urgency=low
+
+  * Add extra key for maintainer: Bert Van Nuffelen (TenForce) 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 25 Oct 2011 02:36:32 -0700
+
 lod2repository (1.12) lod2; urgency=low
 
   * Remove maintainer key: Stephen Mulcahy (DERI)
