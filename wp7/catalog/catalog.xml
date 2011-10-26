@@ -8,5 +8,6 @@
   <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
   <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.7//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
   <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC BEITARG ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
   <public publicId="-//WKD//DTD WKDSC STANDARD ENTITIES v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/xml-entities/wkdsc-standard.ent"/>
 </catalog>
