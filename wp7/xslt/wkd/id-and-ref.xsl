@@ -88,12 +88,41 @@
 			<xsl:when test="$doc-type='pressemitteilung'">
 				<xsl:value-of select="$doc/@vtext-id"/>
 			</xsl:when>
+			<!-- Todo
+			xsl:when test="$doc-type='beitrag'">
+				<xsl:if test="not($doc/zuordnung-produkt/verweis-komhbe/[verweis-es | verweis-vs])">
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-kom-hbe/verweis-(es|vs)) found for this document.</xsl:message>
+				</xsl:if>
+				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/(verweis-es | verweis-vs)[1]" as="element()"/>
+				<xsl:value-of select="if (name($identifer)='verweis-es') then fun:verweis-es-id($identifier) else fun:verweis-vs-id($identifier)"/>
+			</xsl:when-->
 			<xsl:otherwise>
 				<xsl:message terminate="yes">ERROR: invalid document type - got <xsl:value-of select="$doc-type"/>.</xsl:message>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:value-of select="concat($base,$id)"/>
+</xsl:function>
+
+<!-- todo
+xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
+	<xsl:param name="e" as="element()"/>
+	<xsl:variable name="zp">
+	</xsl:variable>
+	<xsl:value-of select="concat($zp, if ($e/zuordnung-rubrik) then '/rubrik' else '', fun:idOfZuordnungProduktRubrik($e/zuordnung-rubrik))"/>
+</xsl:function-->
+
+<xsl:function name="fun:idOfZuordnungProduktRubrik" as="xs:string">
+	<xsl:param name="e" as="element()"/>
+	<xsl:choose>
+		<xsl:when test="$e/zuordnung-rubrik">
+			<xsl:variable name="this-part" select="concat('/b',fun:percentEncode($e/zuordnung-rubrik/@bez),'_w',fun:percentEncode($e/zuordnung-rubrik/@wert))"/>
+			<xsl:value-of select="concat($this-part, fun:idOfZuordnungProduktRubrik($e/zuordnung-rubrik))"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="''"/>
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:function>
 
 <!-- current document sub-type -->
@@ -111,6 +140,9 @@
 			<xsl:value-of select="concat($s-base-uri,$doc-type)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type='pressemitteilung'">
+			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
+		</xsl:when>
+		<xsl:when test="$doc-type='beitrag'">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -153,7 +185,7 @@
 		</xsl:when>
 		<xsl:when test="name($element)='vs-anlage'">
 			<xsl:variable name="n" select="fun:percentEncode(normalize-space($element/@anlage-nr))" as="xs:string"/>
-			<xsl:value-of select="concat($b-uri,'/',fun:deu2eng($element/@typ),
+			<xsl:value-of select="concat($b-uri,'/',fun:deu2eng(if ($element/@typ) then $element/@typ else 'anlage'),
 			                             if (string-length($n) = 0) then '' else concat('/',$n))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-anlage-ebene'">
