@@ -168,7 +168,7 @@ public class Valiant {
 				String fileName = resource.getName().replaceAll("(?i).xml", ".rdf");
 				try{
 				String graphName = namespace.getBaseURI() + fileName;
-				File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
+				File graphFile = new File(rdfFolder + fileName + ".graph");
       				FileWriter fw = new FileWriter(graphFile,true);
       				fw.write(graphName);
       				fw.close();
@@ -271,8 +271,8 @@ public class Valiant {
 				String fileName = resource.getName().replaceAll("(?i).xml",".rdf");
 				try{
 				String graphName = namespace.getBaseURI() + fileName;
-				File graphFile = new File(rdfFolder + fileName.replaceAll("(?i).rdf",".graph"));
-      				FileWriter fw = new FileWriter(graphFile,true);
+				File graphFile = new File(rdfFolder + fileName + ".graph");
+				FileWriter fw = new FileWriter(graphFile,true);
       				fw.write(graphName);
       				fw.close();
 				FileOutputStream outputStream = new FileOutputStream(new File(rdfFolder + fileName));
@@ -348,7 +348,7 @@ public class Valiant {
 	log.info(fileName +": Writing to file started");	
 	writeToFile(transform(file),outputStream);
 	log.info(fileName + ": Writing of file finished");
-	File graphFile = new File(rdfFolder + outputPath + fileName.replaceAll("(?i).rdf",".graph"));
+	File graphFile = new File(rdfFolder + outputPath + fileName + ".graph");
       	FileWriter fw = new FileWriter(graphFile,true);
       	fw.write(graphName);
       	fw.close();
