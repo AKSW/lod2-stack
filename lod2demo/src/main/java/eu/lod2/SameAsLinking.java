@@ -87,7 +87,7 @@ public class SameAsLinking extends CustomComponent
                 exportGraph = new ExportSelector(state);
                 panel.addComponent(exportGraph);
 
-	            uriSelector = new ComboBox("Select URI to link: ");
+	        uriSelector = new ComboBox("Select URI to link: ");
                 uriSelector.setDescription("The selector contains uri's only if a current graph has a value.");
                 panel.addComponent(uriSelector);
 

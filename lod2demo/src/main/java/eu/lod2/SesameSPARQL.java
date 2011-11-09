@@ -85,8 +85,10 @@ public class SesameSPARQL extends CustomComponent
         	query.setRows(10);
 		query.setRequired(true);
 		query.setRequiredError("The query is missing. No call will be issued.");
+                query.setSizeFull();
 
-		Button okbutton = new Button("List graph content", new ClickListener() {
+
+		Button okbutton = new Button("evaluate", new ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				extractionQuery(event);
 			}

@@ -87,29 +87,46 @@ public class OntoWikiQuery extends CustomComponent
 			e.printStackTrace();
 		};
 
-//    loginRequest(queryingTab);
-
-		Label l = new Label(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
-		queryingTab.addComponent(l);
-
-		Embedded browser = new Embedded();
-		try { 
-			URL url;
-			if (encodedGraphName.equals("")) {
-				url = new URL(service + "/queries/editor/?query="+ encodedQuery);
+		if (encodedGraphName.equals("")) {
+			Label l = new Label("One must select a current graph to use this functionality.");
+			queryingTab.addComponent(l);
+		} else {
+			String redirecturi = service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName;
+			URL request = loginandqueryRequest(redirecturi);
+			if (request == null) {
+				Label l = new Label("The settings are incorrect to result in a valid URL which gives access to this functionality.");
+				queryingTab.addComponent(l);
 			} else {
-				url = new URL(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
-			};
-			browser = new Embedded("", new ExternalResource(url));
-			browser.setType(Embedded.TYPE_BROWSER);
-			browser.setSizeFull();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		};
+				Embedded browser = new Embedded("", new ExternalResource(request));
+				browser.setType(Embedded.TYPE_BROWSER);
+				browser.setSizeFull();
+				queryingTab.addComponent(browser);
+			}
+		}
+		/*
+		   Label l = new Label(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
+		   queryingTab.addComponent(l);
 
-    queryingTab.addComponent(browser);
+		   Embedded browser = new Embedded();
+		   try { 
+		   URL url;
+		   if (encodedGraphName.equals("")) {
+		   url = new URL(service + "/queries/editor/?query="+ encodedQuery);
+		   } else {
+		   url = new URL(service + "/queries/editor/?query="+ encodedQuery + "&m=" + encodedGraphName);
+		   };
+		   browser = new Embedded("", new ExternalResource(url));
+		   browser.setType(Embedded.TYPE_BROWSER);
+		   browser.setSizeFull();
+		   } catch (MalformedURLException e) {
+		   e.printStackTrace();
+		   };
+
+		   queryingTab.addComponent(browser);
+		 */
 		// The composition root MUST be set
-		setCompositionRoot(browser);
+		queryingTab.setSizeFull();
+		setCompositionRoot(queryingTab);
 	};
 
 	private void initLogin() {
@@ -158,41 +175,70 @@ public class OntoWikiQuery extends CustomComponent
 	};
 
 
-	private void loginRequest(VerticalLayout l) {
+	private URL loginandqueryRequest(String redirecturi) {
+
+		URL loginandqueryRequestURL = null ;
+		String encodedRedirectUri = "";
 		try {
-			java.net.URL loginrequest = new java.net.URL(service + "/application/login"); 
-			URLConnection connection = loginrequest.openConnection();
-			connection.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-			connection.setDoOutput(true);
-			Writer post = new OutputStreamWriter(connection.getOutputStream());
-      post.write("logintype=locallogin&password=" + password + "&username=" + username);
-			post.write("\r\n");
-			post.close();
-			connection.connect();
-			Map headers = connection.getHeaderFields();
-			Iterator it = headers.keySet().iterator();
-			while (it.hasNext()) {
-				String key = (String)it.next();
-				l.addComponent(new Label(key+": "+headers.get(key)));
+			encodedRedirectUri= URLEncoder.encode(redirecturi, "UTF-8");
+		} catch (UnsupportedEncodingException e) { 
+			e.printStackTrace();
+		};
+
+		if (!(service.equals("") | encodedRedirectUri.equals(""))) {
+
+			try {
+				loginandqueryRequestURL = new URL(service + "/application/login" +
+						"?logintype=locallogin&password=" + password + "&username=" + username +
+						"&redirect-uri=" + encodedRedirectUri
+						); 
+				} catch (MalformedURLException ex) {
+					System.err.println(ex);
+				}
 			}
-			System.out.println();
-      BufferedReader in = null;
-			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String line=null;
-			while ((line=in.readLine()) != null)
-				l.addComponent(new Label(line));
-		}
-		catch (MalformedURLException ex) {
-			System.err.println(ex);
-		}
-		catch (FileNotFoundException ex) {
-			System.err.println("Failed to open stream to URL: "+ex);
-		}
-		catch (IOException ex) {
-			System.err.println("Error reading URL content: "+ex);
-		}
+
+			return loginandqueryRequestURL;
+    };
+
+		private void loginRequest() {
+			try {
+				java.net.URL loginrequest = new java.net.URL("http://localhost/ontowiki/application/login"); 
+				URLConnection connection = loginrequest.openConnection();
+				//			connection.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+				connection.setDoOutput(true);
+				OutputStreamWriter post = new OutputStreamWriter(connection.getOutputStream());
+				//      			post.write("logintype=locallogin&password=" + password + "&username=" + username);
+				post.write("logintype=locallogin&password=dba&username=dba");
+				post.flush();
+				/*
+				   Map headers = connection.getHeaderFields();
+				   Iterator it = headers.keySet().iterator();
+				   while (it.hasNext()) {
+				   String key = (String)it.next();
+				//l.addComponent(new Label(key+": "+headers.get(key)));
+				}
+				System.out.println();
+				 */
+				BufferedReader in = null;
+				in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String line=null;
+				//			while ((line=in.readLine()) != null)
+				//				l.addComponent(new Label(line));
+
+				post.close();
+				in.close();
+			}
+			catch (MalformedURLException ex) {
+				System.err.println(ex);
+			}
+			catch (FileNotFoundException ex) {
+				System.err.println("Failed to open stream to URL: "+ex);
+			}
+			catch (IOException ex) {
+				System.err.println("Error reading URL content: "+ex);
+			}
+
+		};
 
 	};
-
-};
 

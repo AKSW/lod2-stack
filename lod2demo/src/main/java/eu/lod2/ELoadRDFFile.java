@@ -32,12 +32,22 @@ import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
 
+import org.openrdf.model.*;
+import org.openrdf.model.impl.*;
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.parser.ParsedQuery;
+import org.openrdf.query.parser.sparql.SPARQLParser;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
-import org.openrdf.model.*;
+
 
 import org.restlet.resource.ClientResource;
 import org.restlet.data.MediaType;
@@ -56,18 +66,26 @@ public class ELoadRDFFile extends CustomComponent
     // reference to the global internal state
     private LOD2DemoState state;
 
+    private String virtuoso_username;
+    private String virtuoso_password; 
+    private String virtuoso_service; 
+
     public ELoadRDFFile(LOD2DemoState st) {
 
         // The internal state and 
         state = st;
 
+	initVirtuoso();
+
 	Embedded browser = new Embedded();
 	try { 
 		URL url;
-		if (state.getHostName().equals("http://localhost:8080")) {
+		if (virtuoso_username.equals("") || virtuoso_password.equals("")) {
 			url = new URL("http://localhost:8890/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+		} else if (virtuoso_service.equals("")) {
+			url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=" + virtuoso_username+ "&t_login_pwd=" + virtuoso_password + "&password=" + virtuoso_password);
 		} else {
-	  		url = new URL(state.getHostName() + "/conductor/rdf_import.vspx?username=dba&t_login_pwd=dba&password=dba");
+			url = new URL(virtuoso_service + "/rdf_import.vspx?username=" + virtuoso_username+ "&t_login_pwd=" + virtuoso_password + "&password=" + virtuoso_password);
 		};
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
@@ -87,6 +105,54 @@ public class ELoadRDFFile extends CustomComponent
 	// propagate the information of one tab to another.
 	public void setDefaults() {
 	};
+
+	public void initVirtuoso() {
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+
+			// initialize the hostname and portnumber
+			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/virtuoso>. <http://localhost/virtuoso> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/virtuoso> <http://lod2.eu/lod2demo/username> ?u. OPTIONAL { <http://localhost/virtuoso> <http://lod2.eu/lod2demo/service> ?s.}} LIMIT 100";
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+			TupleQueryResult result = tupleQuery.evaluate();
+			while (result.hasNext()) {
+				BindingSet bindingSet = result.next();
+				Value valueOfH = bindingSet.getValue("u");
+				if (valueOfH instanceof LiteralImpl) {
+					LiteralImpl literalH = (LiteralImpl) valueOfH;
+					virtuoso_username = literalH.getLabel();
+				};	
+				Value valueOfP = bindingSet.getValue("p");
+				if (valueOfP instanceof LiteralImpl) {
+					LiteralImpl literalP = (LiteralImpl) valueOfP;
+					virtuoso_password = literalP.getLabel();
+				};	
+				Value valueOfS = bindingSet.getValue("s");
+				if (valueOfS != null && valueOfS instanceof LiteralImpl) {
+					LiteralImpl literalS = (LiteralImpl) valueOfS;
+					String service0 = literalS.getLabel();
+					if (service0 == null | service0.equals("")) {
+						virtuoso_service = "http://localhost:8890/conductor";
+					} else {
+						virtuoso_service = service0;
+					};
+				} else {
+					virtuoso_service = "http://localhost:8890/conductor";
+				};	
+			}
+
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	};
+
 
 };
 

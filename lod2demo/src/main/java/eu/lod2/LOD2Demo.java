@@ -269,7 +269,6 @@ public class LOD2Demo extends Application
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("110px");
-			content.setHeight("500px");
 		    }  
 		};
 

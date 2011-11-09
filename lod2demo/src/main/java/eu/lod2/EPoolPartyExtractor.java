@@ -44,7 +44,7 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
-import eu.lod2.ExportSelector;
+import eu.lod2.ExportSelector2;
 
 /**
  * The extract from a natural language text (english) the relevant
@@ -64,7 +64,7 @@ public class EPoolPartyExtractor extends CustomComponent
 
     private String textToAnnotate;
     private String annotatedText;
-    private ExportSelector exportGraph;
+    private ExportSelector2 exportGraph;
 
     public EPoolPartyExtractor(LOD2DemoState st) {
 
@@ -82,7 +82,7 @@ public class EPoolPartyExtractor extends CustomComponent
 	  );
 	panel.addComponent(description);
 
-	exportGraph = new ExportSelector(state);
+	exportGraph = new ExportSelector2(state);
 	panel.addComponent(exportGraph);
 
         Form t2f = new Form();
