@@ -122,7 +122,7 @@ implements 	TextChangeListener,
 
         private Form t2f;
 
-        public EXML(){
+        public EXML(){ 
         };
 
         public EXML(LOD2DemoState st) {
