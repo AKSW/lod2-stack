@@ -30,6 +30,7 @@ public class WkdTransformer {
     private XMLReader xmlReader = null;
 
     public WkdTransformer(StreamSource xslt) throws Exception {
+	xslt.setSystemId("/home/jand/lod2-stack/wp7/xslt/");
         if (this.transformerFactory == null)
             this.transformerFactory = TransformerFactory.newInstance();
         //this.xsltUrl = xsltUrl;
@@ -55,6 +56,7 @@ public class WkdTransformer {
     }
     public WkdTransformer(StreamSource xslt, File catalogFile){
 	catalogUrl[0] = catalogFile.getPath();
+	xslt.setSystemId("/home/jand/lod2-stack/wp7/xslt/");
 	if (this.transformerFactory == null)
             this.transformerFactory = TransformerFactory.newInstance();
         //this.xsltUrl = xsltUrl;
