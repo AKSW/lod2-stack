@@ -109,7 +109,7 @@ public class EXMLExtended extends CustomComponent
     File  rdfFile;         // The RDF file containing the triples derived via the XSLT
     File  xsltFile;	   // The XSLT transformation file
     File  catalogFile;
-    File  dtdFile;
+    //File  dtdFile;
 
     //
     //private Button annotateButton;
@@ -141,8 +141,8 @@ public class EXMLExtended extends CustomComponent
 
     final Upload uploadXSLTFile =
                 new Upload("Upload the XLST file here", this);
-    final Upload uploadCatalogFile = new Upload("Upload the catalog file here", this);
-    final Upload uploadDTDFile = new Upload("Upload the DTD file here", this);
+    final Upload uploadCatalogFile = new Upload("Upload the Catalog file here", this);
+   // final Upload uploadDTDFile = new Upload("Upload the DTD file here", this);
 
     public EXMLExtended(){
 
@@ -184,9 +184,9 @@ public class EXMLExtended extends CustomComponent
 
 	//Create the Upload component for the DTD file.
 
-	uploadDTDFile.setButtonCaption("Upload Now");
+     /*	uploadDTDFile.setButtonCaption("Upload Now");
 	uploadDTDFile.addListener((Upload.SucceededListener) this);
-	uploadDTDFile.addListener((Upload.FailedListener) this);
+	uploadDTDFile.addListener((Upload.FailedListener) this);*/
 
 	errorMsg = new Label("");
 
@@ -197,7 +197,7 @@ public class EXMLExtended extends CustomComponent
 	panel.addComponent(uploadXMLFile);
         panel.addComponent(uploadXSLTFile);
 	panel.addComponent(uploadCatalogFile);
-	panel.addComponent(uploadDTDFile);
+	//panel.addComponent(uploadDTDFile);
 	panel.addComponent(exportGraph);
 	panel.addComponent(uploadButton);
        	panel.addComponent(transformButton);
@@ -286,10 +286,10 @@ public class EXMLExtended extends CustomComponent
 			catalogFile = file;
 			uploadCatalogFile.setCaption("catalog file:"+catalogFile.getName() +" upload succeeded");
 		}
-		else if(event.getComponent() == uploadDTDFile){
+		/*else if(event.getComponent() == uploadDTDFile){
 			dtdFile = file;
 			uploadDTDFile.setCaption("DTD file:"+dtdFile.getName() +" upload succeeded");
-		}
+		}*/
 		
     }
 
@@ -316,8 +316,9 @@ public class EXMLExtended extends CustomComponent
 		InputStream xmlStream, xsltStream;
 		oStream = new ByteArrayOutputStream();
 		StreamResult sResult = new StreamResult(oStream);
-
-		System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
+		
+		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+		//System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
             	System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
             	System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
 
@@ -336,18 +337,18 @@ public class EXMLExtended extends CustomComponent
 			errorMsg.setValue("Upload a catalog file.");
 			return;
 		}
-		else if(dtdFile == null){
+	/*	else if(dtdFile == null){
 			errorMsg.setVisible(true);
 			errorMsg.setValue("Upload a dtd file");
 			return;
-		}
+		}*/
 		try{
 			xmlStream = new FileInputStream(xmlFile);
 			xsltStream = new FileInputStream(xsltFile);
             		WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream), catalogFile); 
 	    		wkdTransformer.transform(xmlStream, sResult);
         	} catch (Exception e){
-            		e.printStackTrace();
+			e.printStackTrace();
 		}
 		if(oStream.toString().isEmpty()){
 			textToAnnotateField.setValue("Transformation failed, please check if you entered a valid xml and xslt code.");
@@ -401,4 +402,3 @@ public class EXMLExtended extends CustomComponent
 	panel.addComponent(new Label("Upload succeeded!"));
     }
 };
-
