@@ -45,7 +45,7 @@
 	<xsl:variable name="id" as="xs:string">
 		<xsl:choose>
 			<xsl:when test="$doc-type='vorschrift'">
-				<xsl:value-of select="$doc/@vsk"/>
+				<xsl:value-of select="fun:percentEncode($doc/@vsk)"/>
 			</xsl:when>
 			<xsl:when test="$doc-type='entscheidung'">
 				<xsl:variable name="court" select="fun:courtId(normalize-space($doc/es-metadaten/gericht))" as="xs:string"/>
@@ -235,7 +235,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 <!-- link targets -->
 <xsl:function name="fun:verweis-vs" as="xs:string">
 	<xsl:param name="e" as="element()"/>
-	<xsl:variable name="linked-doc-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('vorschrift'),'/',$e/@vsk)"/>
+	<xsl:variable name="linked-doc-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('vorschrift'),'/',fun:percentEncode($e/@vsk))"/>
 	<xsl:variable name="linked-main-part" as="xs:string">
 		<xsl:choose>
 			<xsl:when test="$e/@par"><xsl:value-of select="concat('/par/',fun:percentEncode($e/@par))"/></xsl:when>
@@ -251,7 +251,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 			</xsl:when>
 			<xsl:when test="$e/@vs-ebene">
 				<xsl:variable name="w" select="fun:percentEncode(normalize-space($e/@vs-ebene))" as="xs:string"/>
-				<xsl:value-of select="concat('/vs-ebene/',$e/@vsk,
+				<xsl:value-of select="concat('/vs-ebene/',fun:percentEncode($e/@vsk),
 				                if (string-length($w) = 0) then '' else concat('/',$w))"/>
 			</xsl:when>
 			<xsl:when test="$e/@anlage-ebene">
@@ -259,7 +259,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 				<xsl:variable name="n" select="fun:percentEncode(normalize-space($e/@anlage-nr))" as="xs:string"/>
 				<xsl:value-of select="concat('/vs-anlage-ebene/',
 				                if (string-length($n) = 0) then '' else concat('/',$n),
-								concat('/',$e/@vsk),
+								concat('/',fun:percentEncode($e/@vsk)),
 				                if (string-length($w) = 0) then '' else concat('/',$w))"/>
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="''"/></xsl:otherwise>
@@ -298,8 +298,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 <xsl:function name="fun:verweis-es-id" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 	<xsl:variable name="linked-doc-id" as="xs:string">
-		<xsl:variable name="court-id" select="fun:courtId($e/@gericht)"/>
-		<xsl:variable name="court" select="if (string-length($court-id)=0) then fun:percentEncode($e/@gericht) else $court-id" as="xs:string"/>
+		<xsl:variable name="court" select="fun:courtId($e/@gericht)" as="xs:string"/>
 		<xsl:variable name="file"
 		              select="concat(
 		                       fun:percentEncode(normalize-space($e/@az)),

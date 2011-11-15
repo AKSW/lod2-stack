@@ -83,7 +83,7 @@
 	<xsl:value-of>
 		<xsl:for-each select="$courts">
 			<xsl:variable name="id" select="key('court',$name)" as="element()*"/>
-			<xsl:value-of select="if (count($id)=0) then '' else $id[1]/@technical"/>
+			<xsl:value-of select="fun:percentEncode(if (count($id)=0) then $name else $id[1]/@technical)"/>
 		</xsl:for-each>
 	</xsl:value-of>
 </xsl:function>
