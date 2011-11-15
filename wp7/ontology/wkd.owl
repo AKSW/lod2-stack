@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://schema.wolterskluwer.de/"
+<rdf:RDF xmlns:wkd="http://schema.wolterskluwer.de/"
      xml:base="http://schema.wolterskluwer.de/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:prismcv="http://prismstandard.org/namespaces/2.0/pcv/"
