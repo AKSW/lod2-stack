@@ -91,7 +91,8 @@ public class About extends CustomComponent
 	table.setColumnWidth("homepage",55);
 	table.setColumnWidth("license",55);
 	table.setColumnExpandRatio("component", 0.1f);
-	table.setColumnExpandRatio("description", 0.9f);
+	table.setColumnExpandRatio("partner", 0.2f);
+	table.setColumnExpandRatio("description", 0.8f);
 
 //	table.setColumnHeaders(new String[] {"Component", "LOD2 Partner", "Contact", "Homepage", "License", "Description" });
 	table.setColumnAlignments(new String[] { Table.ALIGN_LEFT,
@@ -113,7 +114,7 @@ public class About extends CustomComponent
 	// the table data structure as a bean.
 	public class AboutTable implements Serializable {
     		String component;
-    		String partner; 
+    		Link partner; 
 		Link contact;
 		Link homepage;
 		Link license;
@@ -123,9 +124,13 @@ public class About extends CustomComponent
 		final ThemeResource closedsource = new ThemeResource("app_images/commercial.png");
 		final ThemeResource bothsource = new ThemeResource("app_images/com-open.png");
 
-		public AboutTable(String c, String p, String con, String h, String l, String lm, String d, String ack) {
+		public AboutTable(String c, String pId, String p, String con, String h, String l, String lm, String d, String ack) {
 			component = c;
-			partner = p;
+			if (!p.equals("")) {
+				partner = new Link();
+        			partner.setResource(new ExternalResource(pId));
+        			partner.setCaption(p);
+			};
 			if (!con.equals("")) {
 				contact = new Link();
         			contact.setResource(new ExternalResource("mailto:"+con));
@@ -169,12 +174,12 @@ public class About extends CustomComponent
         		this.component = component;
     		};
 
-		public String getPartner() {
+		public Link getPartner() {
         		return partner;
     		};
     
     		public void setPartner(String partner) {
-        		this.partner = partner;
+        		this.partner.setResource(new ExternalResource(partner));
     		};
 
 		public Link getContact() {
@@ -227,7 +232,7 @@ public class About extends CustomComponent
 
 		// initialize the hostname and portnumber
 		String query = "PREFIX lod2: <http://lod2.eu/tools.owl#>" +
-			"SELECT  DISTINCT ?complabel ?partner ?responsible ?homepage ?license ?licenseModel ?desc ?ack from <http://lod2.eu/tools.owl> where {" +
+			"SELECT  DISTINCT ?complabel ?partnerId ?partner ?responsible ?homepage ?license ?licenseModel ?desc ?ack from <http://lod2.eu/tools.owl> where {" +
 			"?comp rdf:type lod2:Tool. ?comp rdfs:label ?complabel. " + 
 			"OPTIONAL {?comp lod2:contributed_by_partner ?partnerId. ?partnerId rdfs:label ?partner.}" +
 			"OPTIONAL {?comp lod2:responsible ?r. ?r lod2:person_email ?responsible.}" +
@@ -242,7 +247,8 @@ public class About extends CustomComponent
 		while (result.hasNext()) {
 			BindingSet bindingSet = result.next();
 			Value valueOf1 = bindingSet.getValue("complabel");
-			Value valueOf2 = bindingSet.getValue("partner");
+			Value valueOf2a = bindingSet.getValue("partnerId");
+			Value valueOf2b = bindingSet.getValue("partner");
 			Value valueOf3 = bindingSet.getValue("responsible");
 			Value valueOf4 = bindingSet.getValue("homepage");
 			Value valueOf5 = bindingSet.getValue("license");
@@ -251,7 +257,7 @@ public class About extends CustomComponent
 			Value valueOf8 = bindingSet.getValue("ack");
 		
 
-			abouts.addBean(new AboutTable(getStringValue(valueOf1), getStringValue(valueOf2), getStringValue(valueOf3), 
+			abouts.addBean(new AboutTable(getStringValue(valueOf1), getStringValue(valueOf2a), getStringValue(valueOf2b), getStringValue(valueOf3), 
 				getStringValue(valueOf4), getStringValue(valueOf5), getStringValue(valueOf7), getStringValue(valueOf6),
 				getStringValue(valueOf8)));
 		};

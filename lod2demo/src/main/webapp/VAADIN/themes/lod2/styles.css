@@ -42,6 +42,10 @@
     z-index: 1;
 }
 
+.logo .v-icon {
+   height: 75px;
+}
+
 .slagzin_image {
     font-family:'Droid Sans', Arial, sans-serif; font-weight:normal; font-style:normal;
 	font-size:1.4em;

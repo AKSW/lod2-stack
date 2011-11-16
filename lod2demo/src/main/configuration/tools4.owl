@@ -11,6 +11,7 @@
     <!ENTITY protege "http://protege.stanford.edu/plugins/owl/protege#" >
     <!ENTITY xsp "http://www.owl-ontologies.com/2005/08/07/xsp.owl#" >
     <!ENTITY lod2 "http://lod2.eu/tools.owl#" >
+    <!ENTITY lod2eu "http://lod2.eu/Partner/" >
 ]>
 
 
@@ -276,6 +277,10 @@
         <license_url rdf:datatype="&xsd;string">http://www.apache.org/licenses/LICENSE-2.0</license_url>
     </owl:NamedIndividual>
     
+    <owl:NamedIndividual rdf:about="&lod2;GnuAffero">
+        <rdf:type rdf:resource="http://lod2.eu/tools.owl#OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/agpl.html</license_url>
+    </owl:NamedIndividual>
 
 
     <!-- http://lod2.eu/tools.owl#CWI -->
@@ -366,9 +371,9 @@
 
     <!-- http://lod2.eu/tools.owl#NUIG -->
 
-    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#NUIG">
+    <owl:NamedIndividual rdf:about="http://lod2.eu/tools.owl#DERI">
         <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
-        <rdfs:label xml:lang="en">NUIG</rdfs:label>
+        <rdfs:label xml:lang="en">DERI</rdfs:label>
     </owl:NamedIndividual>
     
 
@@ -463,7 +468,7 @@
 
     <lod2:Tool rdf:about="http://localhost/ontowiki">
       <lod2:responsible rdf:resource="&lod2;SebastianTramp"/>
-      <lod2:contributed_by_partner rdf:resource="&lod2;ULEI"/>
+      <lod2:contributed_by_partner rdf:resource="&lod2eu;ulei"/>
       <lod2:license rdf:resource="&lod2;Apache_2.0"/>
       <rdfs:label xml:lang="en">OntoWiki</rdfs:label>
       <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://aksw.org/Projects/OntoWiki/</lod2:tool_homepage>
@@ -477,7 +482,7 @@
 
     <lod2:Tool rdf:about="http://localhost/lod2demo">
       <lod2:responsible rdf:resource="&lod2;BertVanNuffelen"/>
-      <lod2:contributed_by_partner rdf:resource="&lod2;TenForce"/>
+      <lod2:contributed_by_partner rdf:resource="&lod2eu;tenforce"/>
       <lod2:license rdf:resource="&lod2;Apache_2.0"/>
       <rdfs:label xml:lang="en">LOD2 Demonstrator</rdfs:label>
       <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://http://code.google.com/p/lod2-stack/</lod2:tool_homepage>
@@ -494,8 +499,8 @@
 
     <lod2:Tool rdf:about="http://localhost/sigmaee">
         <lod2:responsible rdf:resource="&lod2;SzymonDanielczyk"/>
-        <lod2:contributed_by_partner rdf:resource="&lod2;DERI"/>
-        <lod2:license rdf:resource="GNU Affero General Public License v3"/>
+        <lod2:contributed_by_partner rdf:resource="&lod2eu;nuig"/>
+        <lod2:license rdf:resource="&lod2;GnuAffero"/>
         <rdfs:label xml:lang="en">Sigma Enterprise Edition</rdfs:label>
         <lod2:tool_homepage rdf:datatype="http://www.w3.org/2001/XMLSchema#string">http://sig.ma</lod2:tool_homepage>
         <lod2:tool_description xml:lang="en">
@@ -514,7 +519,7 @@
  directly from the "Options" menu you get after you search for something.
  It is very easy to implement new custom data source (e.g. for your relational or web CMS data)
  by implementing interfaces following the examples.
- More info at http://sig.ma
+ More info at &lt;a href=&quot;http://sig.ma&quot;&gt;http://sig.ma&lt;/a&gt;
         </lod2:tool_description>
     </lod2:Tool>
 

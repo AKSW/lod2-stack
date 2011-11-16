@@ -38,7 +38,7 @@ import com.vaadin.ui.AbstractOrderedLayout.*;
 import com.vaadin.data.Property.*;
 import com.vaadin.ui.MenuBar.*;
 import com.vaadin.ui.Window.Notification;
-//import org.vaadin.googleanalytics.tracking.*;
+import org.vaadin.googleanalytics.tracking.*;
 
 
 
@@ -73,15 +73,14 @@ public class LOD2Demo extends Application
             final AbsoluteLayout welcomeSlagzin = new AbsoluteLayout();
             welcomeSlagzin.setWidth("370px");
             welcomeSlagzin.setHeight("75px");
-            Embedded lod2logo = new Embedded("", new ThemeResource("app_images/logo-lod2-small.png"));
-            lod2logo.setMimeType("image/png");
-//            lod2logo.addStyleName("lod2logo");
-//            Label slagzin = new Label("Creating Knowledge out of Interlinked Data");
-            //slagzin.setContentMode(Label.CONTENT_XHTML);
-            welcomeSlagzin.addComponent(lod2logo, "top:0px; left:5px");
-//            welcomeSlagzin.addComponent(slagzin, "top:5px; left:80px");
-            //	welcome.setComponentAlignment(lod2logo, Alignment.TOP_CENTER);
-//            slagzin.addStyleName("slagzin");
+	    final Link homepage = new Link();
+            homepage.setResource(new ExternalResource("http://lod2.eu"));
+	    final ThemeResource logo = new ThemeResource("app_images/logo-lod2-small.png");
+	    homepage.setIcon(logo);
+            welcomeSlagzin.addComponent(homepage, "top:0px; left:5px");
+	    homepage.setSizeFull();
+	    homepage.addStyleName("logo");
+		
 
 	   // the current graph as label
            currentgraphlabel = new Label("no current graph selected");
@@ -187,6 +186,17 @@ public class LOD2Demo extends Application
 		public void menuSelected(MenuItem selectedItem) {
 			workspace.removeAllComponents();
 			DebCKAN content = new DebCKAN(state);
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
+			content.setHeight("90%");
+		    }  
+		};
+
+	    MenuBar.Command me8c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			EURL content = new EURL(state);
 			workspace.addComponent(content);
 			// stretch the content to the full workspace area
 			welcome.setHeight("110px");
@@ -405,10 +415,32 @@ public class LOD2Demo extends Application
 		    }  
 		};
 
+	    MenuBar.Command mo10c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			IframedUrl content = new IframedUrl(state, "http://sig.ma");
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
+			content.setHeight("500px");
+		    }  
+		};
+
+	    MenuBar.Command mo11c = new MenuBar.Command() {
+		public void menuSelected(MenuItem selectedItem) {
+			workspace.removeAllComponents();
+			IframedUrl content = new IframedUrl(state, "http://sindice.com");
+			workspace.addComponent(content);
+			// stretch the content to the full workspace area
+			welcome.setHeight("110px");
+			content.setHeight("500px");
+		    }  
+		};
+
 	    // Secondly define menu layout
 	    // root menu's
 	    MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
-	    MenuBar.MenuItem querying      = menubar.addItem("Querying", null, null);
+	    MenuBar.MenuItem querying      = menubar.addItem("Querying & Exploration", null, null);
 	    MenuBar.MenuItem authoring     = menubar.addItem("Authoring", null, null);
 	    MenuBar.MenuItem linking       = menubar.addItem("Linking", null, null);
 	    MenuBar.MenuItem enrichment    = menubar.addItem("Enrichment", null, null);
@@ -416,19 +448,24 @@ public class LOD2Demo extends Application
 	    MenuBar.MenuItem configuration = menubar.addItem("Configuration", null, null);
 
 	    // sub menu's 
-	    MenuBar.MenuItem me1 = extraction.addItem("Upload RDF file", null, me1c);
-	    MenuBar.MenuItem me2 = extraction.addItem("Load RDF data from CKAN", null, me7c);
-	    MenuBar.MenuItem me3 = extraction.addItem("Extract RDF from XML", null, null);
-	    MenuBar.MenuItem exml = me3.addItem("Basic extraction", null, me3c);
-	    MenuBar.MenuItem extended = me3.addItem("Extended extraction", null, me3cbis);
-	    MenuBar.MenuItem me6 = extraction.addItem("Extract RDF from SQL", null, me6c);
-	    MenuBar.MenuItem me4 = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
-	    MenuBar.MenuItem me5 = extraction.addItem("Extract RDF from text w.r.t. a controlled vocabulary", null, me5c);
+	    MenuBar.MenuItem me1  = extraction.addItem("Upload RDF file", null, me1c);
+	    MenuBar.MenuItem me1b = extraction.addItem("Import RDF data from URL", null, me8c);
+	    MenuBar.MenuItem me2  = extraction.addItem("Load RDF data from CKAN", null, me7c);
+	    MenuBar.MenuItem me3  = extraction.addItem("Extract RDF from XML", null, null);
+	    MenuBar.MenuItem me6  = extraction.addItem("Extract RDF from SQL", null, me6c);
+	    MenuBar.MenuItem me4  = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
+	    MenuBar.MenuItem me5  = extraction.addItem("Extract RDF from text w.r.t. a controlled vocabulary", null, me5c);
 
-	    MenuBar.MenuItem mq1 = querying.addItem("Direct via Sesame", null, mq1c);
-	    MenuBar.MenuItem mq2 = querying.addItem("OntoWiki SPARQL endpoint", null, mq2c);
-	    MenuBar.MenuItem mq3 = querying.addItem("Virtuoso SPARQL endpoint", null, mq3c);
-	    MenuBar.MenuItem mq4 = querying.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
+	    MenuBar.MenuItem exml     = me3.addItem("Basic extraction", null, me3c);
+	    MenuBar.MenuItem extended = me3.addItem("Extended extraction", null, me3cbis);
+
+
+	    MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
+	    MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
+	    MenuBar.MenuItem mqs1 = mq1.addItem("Direct via Sesame API", null, mq1c);
+	    MenuBar.MenuItem mqs2 = mq1.addItem("OntoWiki SPARQL endpoint", null, mq2c);
+	    MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);
+	    MenuBar.MenuItem mqs4 = mq1.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
 
 	    MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
@@ -437,8 +474,9 @@ public class LOD2Demo extends Application
 
 	    MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
 
-	    MenuBar.MenuItem sameAs    = onlinetools.addItem("SameAs", null, mo1c);
-	    MenuBar.MenuItem sigma     = onlinetools.addItem("Sigma EE", null, mo2c);
+	    MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
+	    MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
+	    MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
 	    MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
 	    MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);
 	    MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);
@@ -520,9 +558,9 @@ public class LOD2Demo extends Application
 //	    second.setSizeFull();
 
 	    // Create a tracker for the demo.lod2.eu domain.
-            //GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
-            //mainWindow.addComponent(tracker);
-            //tracker.trackPageview("/lod2demo");
+            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
+            mainWindow.addComponent(tracker);
+            tracker.trackPageview("/lod2demo");
 
 
 

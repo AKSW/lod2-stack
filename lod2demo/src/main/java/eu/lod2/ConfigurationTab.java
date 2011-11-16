@@ -79,12 +79,6 @@ public class ConfigurationTab extends CustomComponent
         Form t2f = new Form();
         t2f.setCaption("Configuration");
 
-	// the localhost ip-address
-        TextField hostname = new TextField("Hostname:", state.getHostName());
-        hostname.setColumns(50);
-        hostname.setReadOnly(true);
-        t2f.getLayout().addComponent(hostname);
-
 
 	// the graph selector
 	// it displays all acceptable graphs in Virtuoso 
@@ -139,7 +133,6 @@ public class ConfigurationTab extends CustomComponent
 	try {
 		RepositoryConnection con = state.getRdfStore().getConnection();
 
-		// initialize the hostname and portnumber
 		String query = "SELECT  DISTINCT ?g { GRAPH  ?g   { ?s  ?p  ?o } } limit 100";
 		TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 		TupleQueryResult result = tupleQuery.evaluate();
