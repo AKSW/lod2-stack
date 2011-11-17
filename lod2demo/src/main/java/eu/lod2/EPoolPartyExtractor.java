@@ -64,7 +64,10 @@ public class EPoolPartyExtractor extends CustomComponent
 
     private String textToAnnotate;
     private String annotatedText;
+    
     private ExportSelector2 exportGraph;
+    private TextField ppProjectId;
+    private ComboBox textLanguage;
 
     public EPoolPartyExtractor(LOD2DemoState st) {
 
@@ -82,10 +85,21 @@ public class EPoolPartyExtractor extends CustomComponent
 	  );
 	panel.addComponent(description);
 
-	exportGraph = new ExportSelector2(state);
-	panel.addComponent(exportGraph);
 
         Form t2f = new Form();
+
+	exportGraph = new ExportSelector2(state);
+	t2f.getLayout().addComponent(exportGraph);
+
+        ppProjectId = new TextField("PoolParty project Id:");
+	ppProjectId.setDescription("The unique identifier of the PoolParty project to use for the extraction (usually a UUID like d06bd0f8-03e4-45e0-8683-fed428fca242) ");
+	t2f.getLayout().addComponent(ppProjectId);
+
+        textLanguage = new ComboBox("Language of the text:");
+	textLanguage.setDescription("This is the language of the text. Language can be en (english) or de (german).");
+	textLanguage.addItem("en");
+	textLanguage.addItem("de");
+	t2f.getLayout().addComponent(textLanguage);
 
         TextArea textToAnnotateField = new TextArea("text:");
         textToAnnotateField.setImmediate(false);
@@ -125,6 +139,8 @@ public class EPoolPartyExtractor extends CustomComponent
             annotateButton.setEnabled(false);
 	} else if (textToAnnotate == null || textToAnnotate.equals("")) {
             annotateButton.setEnabled(false);
+	} else if (textLanguage.getValue() == null || textLanguage.getValue().equals("")) {
+            annotateButton.setEnabled(false);
         } else {    
             String encoded = "";
             try {
@@ -143,13 +159,16 @@ public class EPoolPartyExtractor extends CustomComponent
             String encoded = "";
             encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
 
+	    String ppProjectIdVal = (String) ppProjectId.getValue();
+	    String textLanguageVal = (String) textLanguage.getValue();
+
 	    String restCallString = 
 		    "http://pilot1.poolparty.biz/extractor/api/extract?text=" + encoded + 
-			    "&project=2d5bb6fb-9aef-44f8-a587-15a1bd6332e1" +
-			    "&locale=en" +
+			    "&project=" + ppProjectIdVal +
+			    "&locale=" + textLanguageVal +
 			    "&format=rdfxml"+
 			    "&countConcepts=25"+
-			    "&countTerms=25";
+			    "&countTerms=0";
 
 	    /* A call with the restlet package
 

@@ -4,8 +4,11 @@ import org.apache.xerces.util.XMLCatalogResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+import org.apache.xml.resolver.tools.CatalogResolver;
+import org.apache.xml.resolver.CatalogManager;
 
 import javax.xml.transform.Transformer;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
@@ -25,7 +28,7 @@ public class WkdTransformer {
     private Transformer transformer = null;
     //private String xsltUrl;
     private InputStream toTransformStream = null;
-    private String[] catalogUrl = new String[]{"//home/jand/Project/jan/src/example/catalog/catalog.xml"};
+    private String[] catalogUrl = new String[]{"dummy"};
     private XMLCatalogResolver resolver = null;
     private XMLReader xmlReader = null;
 
@@ -55,25 +58,24 @@ public class WkdTransformer {
         }
     }
     public WkdTransformer(StreamSource xslt, File catalogFile){
-	catalogUrl[0] = catalogFile.getPath();
-	//xslt.setSystemId("/home/jand/lod2-stack/wp7/xslt/");
+//	catalogUrl[0] = catalogFile.getPath();
+//    this.resolver = new XMLCatalogResolver(catalogUrl);
 	if (this.transformerFactory == null)
             this.transformerFactory = TransformerFactory.newInstance();
-        //this.xsltUrl = xsltUrl;
-        //File xslt = new File(xsltUrl);
-        // boolean readable = xslt.canRead();
-        // System.out.println("file is readable: " + readable);
+           CatalogManager manager = new CatalogManager("CatalogManager.properties");
+           CatalogResolver uriResolver1  = new CatalogResolver(manager);
+           transformerFactory.setURIResolver(uriResolver1);
+
         try {
             this.transformer = this.transformerFactory.newTransformer(xslt);
         } catch (Exception e) {
             e.printStackTrace();
         //    throw new Exception("Failed to compile the stylesheet");
         }
-        // this.catalogUrl;
-        this.resolver = new XMLCatalogResolver(catalogUrl);
         try {
             this.xmlReader = XMLReaderFactory.createXMLReader();
-            this.xmlReader.setEntityResolver(this.resolver);
+            this.xmlReader.setEntityResolver(uriResolver1);
+
         }
         catch (org.xml.sax.SAXException e) {
             e.printStackTrace();

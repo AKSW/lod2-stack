@@ -202,7 +202,7 @@ public class OntoWikiQuery extends CustomComponent
 
 		private void loginRequest() {
 			try {
-				java.net.URL loginrequest = new java.net.URL("http://localhost/ontowiki/application/login"); 
+				java.net.URL loginrequest = new java.net.URL(service + "/application/login"); 
 				URLConnection connection = loginrequest.openConnection();
 				//			connection.setRequestProperty("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
 				connection.setDoOutput(true);
