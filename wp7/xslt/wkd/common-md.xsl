@@ -356,7 +356,7 @@
 	<xsl:element namespace="{$skos}" name="{$lt}">
 		<xsl:attribute name="xml:lang" select="fun:language($e/@sprache)"/>
 		<xsl:if test="$e/(hoch | tief)">
-			<xsl:attribute name="rdf:parseType" select="Literal"/>
+			<xsl:attribute name="rdf:parseType" select="'Literal'"/>
 		</xsl:if>
 		<xsl:apply-templates select="$e/(text() | hoch | tief)" mode="xml-literal"/>
 	</xsl:element>
