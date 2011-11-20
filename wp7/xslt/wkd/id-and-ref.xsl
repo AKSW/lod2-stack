@@ -125,7 +125,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 	</xsl:choose>
 </xsl:function>
 
-<!-- current document sub-type -->
+<!-- current document sub-type - typically used in wkd.xsl -->
 <xsl:function name="fun:rType" as="xs:string">
 	<xsl:param name="doc" as="element()"/>
 	<xsl:variable name="doc-type" select="name($doc)" as="xs:string"/>

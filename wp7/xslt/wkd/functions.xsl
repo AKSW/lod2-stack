@@ -16,6 +16,76 @@
  -->
 
 <!--  TRANSLATION LOGIC -->
+<!-- BCP47 - use iso 639-1 if available, else iso 639-2 -->
+<xsl:variable name="language-code">
+	<data:entry><data:wk>ara</data:wk><data:iso>ar</data:iso></data:entry>
+	<data:entry><data:wk>arg</data:wk><data:iso>an</data:iso></data:entry>
+	<data:entry><data:wk>bel</data:wk><data:iso>be</data:iso></data:entry>
+	<data:entry><data:wk>bos</data:wk><data:iso>bs</data:iso></data:entry>
+	<data:entry><data:wk>bre</data:wk><data:iso>br</data:iso></data:entry>
+	<data:entry><data:wk>bul</data:wk><data:iso>bg</data:iso></data:entry>
+	<data:entry><data:wk>cat</data:wk><data:iso>ca</data:iso></data:entry>
+	<data:entry><data:wk>ces</data:wk><data:iso>cs</data:iso></data:entry>
+	<data:entry><data:wk>cos</data:wk><data:iso>co</data:iso></data:entry>
+	<data:entry><data:wk>cym</data:wk><data:iso>cy</data:iso></data:entry>
+	<data:entry><data:wk>dan</data:wk><data:iso>da</data:iso></data:entry>
+	<data:entry><data:wk>deu</data:wk><data:iso>de</data:iso></data:entry>
+	<data:entry><data:wk>ell</data:wk><data:iso>el</data:iso></data:entry>
+	<data:entry><data:wk>eng</data:wk><data:iso>en</data:iso></data:entry>
+	<data:entry><data:wk>epo</data:wk><data:iso>eo</data:iso></data:entry>
+	<data:entry><data:wk>est</data:wk><data:iso>et</data:iso></data:entry>
+	<data:entry><data:wk>eus</data:wk><data:iso>eu</data:iso></data:entry>
+	<data:entry><data:wk>fao</data:wk><data:iso>fo</data:iso></data:entry>
+	<data:entry><data:wk>fin</data:wk><data:iso>fi</data:iso></data:entry>
+	<data:entry><data:wk>fra</data:wk><data:iso>fr</data:iso></data:entry>
+	<data:entry><data:wk>gle</data:wk><data:iso>ga</data:iso></data:entry>
+	<data:entry><data:wk>glg</data:wk><data:iso>gl</data:iso></data:entry>
+	<data:entry><data:wk>heb</data:wk><data:iso>he</data:iso></data:entry>
+	<data:entry><data:wk>hrv</data:wk><data:iso>hr</data:iso></data:entry>
+	<data:entry><data:wk>hun</data:wk><data:iso>hu</data:iso></data:entry>
+	<data:entry><data:wk>hye</data:wk><data:iso>hy</data:iso></data:entry>
+	<data:entry><data:wk>isl</data:wk><data:iso>is</data:iso></data:entry>
+	<data:entry><data:wk>ita</data:wk><data:iso>it</data:iso></data:entry>
+	<data:entry><data:wk>jpn</data:wk><data:iso>ja</data:iso></data:entry>
+	<data:entry><data:wk>kat</data:wk><data:iso>ka</data:iso></data:entry>
+	<data:entry><data:wk>kor</data:wk><data:iso>ko</data:iso></data:entry>
+	<data:entry><data:wk>lat</data:wk><data:iso>la</data:iso></data:entry>
+	<data:entry><data:wk>lav</data:wk><data:iso>lv</data:iso></data:entry>
+	<data:entry><data:wk>lit</data:wk><data:iso>lt</data:iso></data:entry>
+	<data:entry><data:wk>ltz</data:wk><data:iso>lb</data:iso></data:entry>
+	<data:entry><data:wk>mkd</data:wk><data:iso>mk</data:iso></data:entry>
+	<data:entry><data:wk>mlt</data:wk><data:iso>mt</data:iso></data:entry>
+	<data:entry><data:wk>mol</data:wk><data:iso>ro</data:iso></data:entry>
+	<data:entry><data:wk>nld</data:wk><data:iso>nl</data:iso></data:entry>
+	<data:entry><data:wk>nor</data:wk><data:iso>no</data:iso></data:entry>
+	<data:entry><data:wk>pol</data:wk><data:iso>pl</data:iso></data:entry>
+	<data:entry><data:wk>por</data:wk><data:iso>pt</data:iso></data:entry>
+	<data:entry><data:wk>ron</data:wk><data:iso>ro</data:iso></data:entry>
+	<data:entry><data:wk>rus</data:wk><data:iso>ru</data:iso></data:entry>
+	<data:entry><data:wk>slk</data:wk><data:iso>sk</data:iso></data:entry>
+	<data:entry><data:wk>slv</data:wk><data:iso>sl</data:iso></data:entry>
+	<data:entry><data:wk>spa</data:wk><data:iso>es</data:iso></data:entry>
+	<data:entry><data:wk>sqi</data:wk><data:iso>sq</data:iso></data:entry>
+	<data:entry><data:wk>srp</data:wk><data:iso>sr</data:iso></data:entry>
+	<data:entry><data:wk>swe</data:wk><data:iso>sv</data:iso></data:entry>
+	<data:entry><data:wk>tur</data:wk><data:iso>tr</data:iso></data:entry>
+	<data:entry><data:wk>ukr</data:wk><data:iso>uk</data:iso></data:entry>
+	<data:entry><data:wk>zho</data:wk><data:iso>zh</data:iso></data:entry>
+</xsl:variable>
+
+<xsl:key name="iso-639-1-2" match="data:entry" use="data:wk"/>
+
+<xsl:function name="fun:wk2iso-lang" as="xs:string">
+	<xsl:param name="wk" as="xs:string"/>
+	<xsl:value-of>
+		<xsl:for-each select="$language-code">
+			<xsl:variable name="iso" select="key('iso-639-1-2',$wk)" as="element()*"/>
+
+			<xsl:value-of select="if (count($iso)=0) then $wk else $iso[1]/data:iso"/>
+		</xsl:for-each>
+	</xsl:value-of>
+</xsl:function>
+
 <xsl:variable name="deu2eng">
 	<data:entry><data:de>vorschrift</data:de><data:en>legislation</data:en></data:entry>
 	<data:entry><data:de>vorschrift/typ</data:de><data:en>legislation/type</data:en></data:entry>
@@ -126,7 +196,7 @@
 
 <xsl:function name="fun:language" as="xs:string">
 	<xsl:param name="l"/>
-	<xsl:value-of select="if (normalize-space($l)=('','deu')) then 'de' else normalize-space($l)"/>
+	<xsl:value-of select="if (normalize-space($l)=('','deu')) then 'de' else fun:wk2iso-lang(normalize-space($l))"/>
 </xsl:function>
 
 <xsl:function name="fun:firstAndRest" as="xs:string*">

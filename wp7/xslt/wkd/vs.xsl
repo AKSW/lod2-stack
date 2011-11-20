@@ -35,15 +35,26 @@
 	<wkd:legislationType>
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('vorschrift/typ')}/{@vs-typ}"/>
 	</wkd:legislationType>
+	<xsl:if test="@auszug='ja'">
+		<rdf:type rdf:resource="bibo:Excerpt"/>
+	</xsl:if>
 	<dcterms:source>
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('herkunft')}/{@vs-herkunft}"/>
 	</dcterms:source>
 	<xsl:if test="string-length(@fna) &gt; 0">
 		<wkd:fna><xsl:value-of select="@fna"/></wkd:fna>
 	</xsl:if>
-	<dcterms:title><xsl:apply-templates select="vs-titel-kopf/titel"  mode="plain-literal"/></dcterms:title>
-	<xsl:if test="vs-titel-kopf/vs-kurztitel">
-		<bibo:shortTitle><xsl:value-of select="string(vs-titel-kopf/vs-kurztitel)"/></bibo:shortTitle>
+	<dcterms:title xml:lang="{fun:language(vs-titel-kopf/titel/@sprache)}"><xsl:apply-templates select="vs-titel-kopf/titel"  mode="plain-literal"/></dcterms:title>
+	<xsl:if test="string-length(vs-titel-kopf/vs-kurztitel) &gt; 0">
+		<bibo:shortTitle xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/vs-kurztitel)"/></bibo:shortTitle>
+	</xsl:if>
+	<xsl:if test="string-length(vs-titel-kopf/titel-zusatz) &gt; 0">
+		<wkd:subTitle xml:lang="{fun:language(vs-titel-kopf/titel-zusatz/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/titel-zusatz)"/></wkd:subTitle>
+	</xsl:if>
+	<xsl:if test="string-length(vs-titel-kopf/vs-abk) &gt; 0">
+		<wkd:abbreviation rdf:parseType="Literal" xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}">
+			<xsl:apply-templates select="vs-titel-kopf/vs-abk/(text() | *)" mode="xml-literal"/>
+		</wkd:abbreviation>
 	</xsl:if>
 	<xsl:if test="vs-vorspann">
 		<dcterms:description rdf:parseType="Literal">

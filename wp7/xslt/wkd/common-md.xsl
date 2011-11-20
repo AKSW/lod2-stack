@@ -44,7 +44,7 @@
 
 <!-- language -->
 <xsl:template name="setLanguage">
-	<dcterms:language><xsl:value-of select="if (@sprache) then @sprache else 'de'"/></dcterms:language>
+	<dcterms:language><xsl:value-of select="if (@sprache) then fun:wk2iso-lang(@sprache) else 'de'"/></dcterms:language>
 </xsl:template>
 
 <xsl:template match="titel" mode="plain-literal">
