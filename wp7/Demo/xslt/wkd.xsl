@@ -1,8 +1,14 @@
 <?xml version='1.0'?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<!DOCTYPE stylesheet [
+    <!ENTITY wkd_xslt "http://xslt.wolterskluwer.de/" >
+]>
+
+<xsl:stylesheet version="2.0" 
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:fun="http://local-function/"
  xmlns:data="http://local-data/"
  xmlns:wkd="http://schema.wolterskluwer.de/"
+ xmlns:wkd_xslt="http://xslt.wolterskluwer.de/"
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
  xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
  xmlns:dcterms="http://purl.org/dc/terms/" 
@@ -59,22 +65,22 @@ Tunnel parameters used
   name: class/type name of the type of term
 -->
 
-<xsl:import href="wkd/functions.xsl"/>
-<xsl:import href="wkd/aliases.xsl"/>
-<xsl:import href="wkd/content.xsl"/>
+<xsl:import href="&wkd_xslt;functions.xsl"/>
+<xsl:import href="&wkd_xslt;aliases.xsl"/>
+<xsl:import href="&wkd_xslt;content.xsl"/>
 <!-- metadata, practice area, taxonomy -->
-<xsl:include href="wkd/common-md.xsl"/>
+<xsl:include href="&wkd_xslt;common-md.xsl"/>
 <!-- document id -->
-<xsl:include href="wkd/id-and-ref.xsl"/>
+<xsl:include href="&wkd_xslt;id-and-ref.xsl"/>
 
 <!-- vorschrift DOCUMENT TYPE  -->
-<xsl:include href="wkd/vs.xsl"/>
+<xsl:include href="&wkd_xslt;vs.xsl"/>
 <!-- entscheidung DOCUMENT TYPE  -->
-<xsl:include href="wkd/es.xsl"/>
+<xsl:include href="&wkd_xslt;es.xsl"/>
 <!-- pressemitteilung DOCUMENT TYPE  -->
-<xsl:include href="wkd/pm.xsl"/>
+<xsl:include href="&wkd_xslt;pm.xsl"/>
 <!-- aufsatz DOCUMENT TYPE  -->
-<xsl:include href="wkd/zs.xsl"/>
+<xsl:include href="&wkd_xslt;zs.xsl"/>
 
 <!-- OUTPUT STREAM DEFINITIONS --> 
 <xsl:output method="xml" encoding="UTF-8" indent="yes" use-character-maps="NBSP"/>
