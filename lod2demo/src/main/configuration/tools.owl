@@ -528,6 +528,149 @@
         <lod2:person_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Szymon Danielczyk</lod2:person_name>
     </lod2:ToolResponsible>
 
+
+  <rdf:Description rdf:about="http://lod2.eu/Partner/cwi">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/exalead">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/fub">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/i2g">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/imp">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/kaist">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/nuig">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/okfn">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/openlink">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/swc">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/tenforce">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/uep">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/ulei">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/wkd">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/zemanta">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#LOD2_partner"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/cwi">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Centrum Wiskunde &amp; Informatica</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/exalead">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Exalead</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/fub">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Freie Universität Berlin</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/i2g">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Instytut Informatyki Gospodarczej, Poland</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/imp">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Institute Mihajlo Pupin, Serbia</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/kaist">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Korea Advanced Institute of Science and Technology (KAIST)</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/nuig">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Digital Enterprise Research Institute</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/okfn">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Open Knowledge Foundation</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/openlink">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">OpenLink Software</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/swc">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Semantic Web Company</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/tenforce">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">TenForce</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/uep">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">University of Economics, Czech Republic</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/ulei">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Universität Leipzig</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/wkd">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Wolters Kluwer</ns0:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://lod2.eu/Partner/zemanta">
+    <ns0:label xmlns:ns0="http://www.w3.org/2000/01/rdf-schema#">Zemanta d.o.o.</ns0:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://localhost/CKAN">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;okfn"/>
+    <rdfs:label xml:lang="en">CKAN</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">CKAN is a registry or catalogue system for datasets or other "knowledge" resources. CKAN aims to make it easy to find, share and reuse open content and data, especially in ways that are machine automatable.</ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/D2R-Server">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;fub"/>
+    <rdfs:label xml:lang="en">D2R Server</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">D2R Server is a tool for publishing relational databases on the Semantic Web. It enables RDF and HTML browsers to navigate the content of the database, and allows applications to query the database using the SPARQL query language.</ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/DBpedia">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;ulei"/>
+    <rdfs:label xml:lang="en">DBpedia</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">DBpedia is a community effort to extract structured information from Wikipedia and to make this information available on the Web. It currently already contains a tremendous amount of valuable knowledge extracted from Wikipedia. The DBpedia knowledge base will be used for evaluation LOD2’s interlinking, fusing, aggregation and visualization components. The DBpedia multi-domain ontology will be used as background-knowledge for the LOD2 applications (WP7, WP8 and WP9), and as an alignment and annotation ontology for LOD in general.</ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/DL-Learner">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;ulei"/>
+    <rdfs:label xml:lang="en">DL-Learner</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">DL-Learner is a tool for supervised Machine Learning in OWL and Description Logics. It can learn concepts in Description Logics (DLs) from user-provided examples. Equivalently, it can be used to learn classes in OWL ontologies from selected objects. It extends Inductive Logic Programming to Descriptions Logics and the Semantic Web. The goal of DL-Learner is to provide a DL/OWL-based machine learning tool to solve supervised learning tasks and support knowledge engineers in constructing knowledge and learning about the data they created. </ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/PoolParty">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;swc"/>
+    <rdfs:label xml:lang="en">PoolParty</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">PoolParty is a thesaurus management system and a SKOS editor for the Semantic Web including text mining and linked data  capabilities. The system helps to build and maintain multilingual thesauri providing an easy-to-use interface. PoolParty server provides semantic services to integrate semantic search or recommender systems into systems like CMS, DMS, CRM or Wikis.</ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/Silk">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;fub"/>
+    <rdfs:label xml:lang="en">SILK</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">The Silk Linking Framework supports data publishers in setting explicit RDF links between data items within different data sources. Using the declarative Silk - Link Specification Language (Silk-LSL), developers can specify which types of RDF links should be discovered between data sources as well as which conditions data items must fulfil in order to be interlinked. These link conditions may combine various similarity metrics and can take the graph around a data item into account, which is addressed using an RDF path language.</ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/Sindice">
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;nuig"/>
+    <rdfs:label xml:lang="en">Sindice</rdfs:label>
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">Sindice is a state of the art infrastructure to process, consolidate and query the Web of Data. Sindice collates these billions of pieces of metadata into an coherent umbrella of functionalities and services.</ns0:tool_description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/Virtuoso">
+    <rdf:type rdf:resource="http://lod2.eu/tools.owl#Tool"/>
+    <lod2:contributed_by_partner rdf:resource="&lod2eu;ogl"/>
+    <rdfs:label xml:lang="en">Virtuoso</rdfs:label>
+    <ns0:tool_description xmlns:ns0="http://lod2.eu/tools.owl#">
+Virtuoso is a knowledge store and virtualization platform that transparently integrates Data, Services, and Business Processes across the enterprise. Its product architecture enables it to deliver traditionally distinct server functionality within a single system offering along the following lines: Data Management &amp; Integration (SQL, XML and EII), Application Integration (Web Services &amp; SOA), Process Management &amp; Integration (BPEL), Distributed Collaborative Applications. The open-source data integration server and the highly efficient and scalable RDF triple store implementation in Virtuoso will be the basis for the knowledge store component in the LOD2 Stack.</ns0:tool_description>
+  </rdf:Description>
+
+
 </rdf:RDF>
 
 
