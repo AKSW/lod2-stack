@@ -1,3 +1,10 @@
+lod2demo (1.1.21) lod2; urgency=low
+
+  * ontowiki query page works
+  * rdf upload via virtuoso conductor now depends on credential info 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 09 Nov 2011 07:24:30 -0800
+
 lod2demo (1.1.20) lod2; urgency=low
 
   * add google analytics to that we can follow demo.lod2.eu
