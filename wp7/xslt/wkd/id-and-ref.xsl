@@ -321,6 +321,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 	</xsl:variable>
 	<xsl:value-of select="$target"/>
 </xsl:function>
+
 <xsl:function name="fun:verweis-esa" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 	<xsl:value-of select="''"/>
@@ -491,6 +492,10 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:for-each>
+	<xsl:apply-templates select="*/autor/*">
+		<xsl:with-param name="namespace" select="$dcterms" as="xs:string"/>
+		<xsl:with-param name="property" select="'creator'" as="xs:string"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="zuordnung-produkt" mode="top-level"/>

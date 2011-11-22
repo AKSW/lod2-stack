@@ -44,11 +44,6 @@
 	<xsl:if test="string-length(@fna) &gt; 0">
 		<wkd:fna><xsl:value-of select="@fna"/></wkd:fna>
 	</xsl:if>
-	<xsl:if test="vs-vorspann">
-		<dcterms:description rdf:parseType="Literal">
-			<xsl:apply-templates select="vs-vorspann/(text() | *)" mode="xml-literal"/>
-		</dcterms:description>
-	</xsl:if>
 	<!-- build the list of all containd parts, the list is flat, not hierarchical -->
 	<xsl:apply-templates select="*"/>
 	<xsl:call-template name="doc-parts-vs"/>
@@ -57,7 +52,7 @@
 <xsl:template match="vs-titel-kopf">
 	<dcterms:title xml:lang="{fun:language(vs-titel-kopf/titel/@sprache)}"><xsl:apply-templates select="vs-titel-kopf/titel"  mode="plain-literal"/></dcterms:title>
 	<xsl:if test="string-length(vs-titel-kopf/vs-kurztitel) &gt; 0">
-		<bibo:shortTitle xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/vs-kurztitel)"/></bibo:shortTitle>
+		<bibo:shortTitle xml:lang="{fun:language(vs-titel-kopf/vs-kurztitel/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/vs-kurztitel)"/></bibo:shortTitle>
 	</xsl:if>
 	<xsl:if test="string-length(vs-titel-kopf/titel-zusatz) &gt; 0">
 		<wkd:subTitle xml:lang="{fun:language(vs-titel-kopf/titel-zusatz/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/titel-zusatz)"/></wkd:subTitle>
@@ -66,6 +61,13 @@
 		<wkd:abbreviation xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}"><xsl:apply-templates select="vs-titel-kopf/vs-abk" mode="plain-literal"/></wkd:abbreviation>
 	</xsl:if>
 	<xsl:apply-templates select="*/*"/>
+</xsl:template>
+
+<xsl:template match="vs-vorspann">
+	<dcterms:description rdf:parseType="Literal">
+		<xsl:apply-templates select="vs-vorspann/(text() | *)" mode="xml-literal"/>
+	</dcterms:description>
+	<xsl:apply-templates select="*"/>
 </xsl:template>
 
 <xsl:template match="vorschrift" mode="top-level">
@@ -100,7 +102,7 @@
 	</xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="vs-verfasser/vs-vertragsparteien">
+<xsl:template match="vs-vertragsparteien">
 	<wkd:treatyParties rdf:parseType="Literal">
 		<xsl:apply-templates select="." mode="xml-literal"/>
 	</wkd:treatyParties>

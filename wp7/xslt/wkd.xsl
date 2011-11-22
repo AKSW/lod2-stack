@@ -28,6 +28,9 @@
 
 <!--
 Modes used by the template
+- default mode
+  walk the document to pick-up and identify all document parts and build the nested structure,
+  pick-up relevant metadata (metadata, titles, dates, descriptions) and references (verweis).
 - top-level
   top level output is generated in the rdf:RDF wrapper, not in the document rdf:Description wrapper.
   typically used when axioms are generated on the produced statements.
@@ -253,7 +256,7 @@ Tunnel parameters used
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="yes" name="abbergv" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\abbergv.xml" htmlbaseurl="" outputurl="..\result\abbergv.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
+		<scenario default="no" name="abbergv" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\abbergv.xml" htmlbaseurl="" outputurl="..\result\abbergv.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
 		          profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -662,7 +665,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="error" userelativepaths="yes" externalpreview="no" url="..\Data\errors\zpoeg.xml" htmlbaseurl="" outputurl="..\result\error.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength=""
+		<scenario default="yes" name="error" userelativepaths="yes" externalpreview="no" url="..\Data\errors\zpoeg.xml" htmlbaseurl="" outputurl="..\result\error.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength=""
 		          urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">

@@ -27,13 +27,8 @@
  Module: Content transformation - ROUGH XML-literal constructions
  -->
 
-<!-- vs-vertragsparteien is metadata value -->
-<xsl:template match="vorschrift/vs-metadaten/vs-verfasser/vs-vertragsparteien" mode="xml-literal">
-	<xsl:apply-templates mode="xml-literal"/>
-</xsl:template>
-
 <!-- vs-vertragsparteien is part of "vorspann" content -->
-<xsl:template match="vorschrift/vs-vorspann/vs-vertragsparteien" mode="xml-literal">
+<xsl:template match="vs-vertragsparteien" mode="xml-literal">
 	<xhtml:div>
 		<xsl:apply-templates mode="xml-literal"/>
 	</xhtml:div>
