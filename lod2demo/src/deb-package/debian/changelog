@@ -1,3 +1,12 @@
+lod2demo (1.1.22) lod2; urgency=low
+
+  * new about page
+  * improved xml processing
+  * improve poolparty integration
+  * reorganisation tools
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 22 Nov 2011 07:53:00 -0800
+
 lod2demo (1.1.21) lod2; urgency=low
 
   * ontowiki query page works
