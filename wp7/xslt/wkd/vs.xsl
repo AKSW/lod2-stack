@@ -52,8 +52,10 @@
 		<wkd:subTitle xml:lang="{fun:language(vs-titel-kopf/titel-zusatz/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/titel-zusatz)"/></wkd:subTitle>
 	</xsl:if>
 	<xsl:if test="string-length(vs-titel-kopf/vs-abk) &gt; 0">
-		<wkd:abbreviation rdf:parseType="Literal" xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}">
-			<xsl:apply-templates select="vs-titel-kopf/vs-abk/(text() | *)" mode="xml-literal"/>
+		<wkd:abbreviation rdf:parseType="Literal">
+			<xhtml:span xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}">
+				<xsl:apply-templates select="vs-titel-kopf/vs-abk/(text() | *)" mode="xml-literal"/>
+			</xhtml:span>
 		</wkd:abbreviation>
 	</xsl:if>
 	<xsl:if test="vs-vorspann">
