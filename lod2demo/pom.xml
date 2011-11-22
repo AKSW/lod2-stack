@@ -249,6 +249,10 @@
         <name>Sardine maven repo at Google Code</name>
         <url>http://sardine.googlecode.com/svn/maven/</url>
      </repository>
+    <repository>
+      <id>Public Maven repo for Saxon 9</id>
+      <url>http://www2.ph.ed.ac.uk/maven2/</url>
+    </repository>
 
   </repositories>
 
@@ -354,16 +358,30 @@
         <groupId>xml-resolver</groupId>
         <artifactId>xml-resolver</artifactId>
         <version>1.2</version>
-      </dependency>
+     </dependency>
+
+     <!-- available if done via local maven installation
       <dependency>
         <groupId>net.sf.saxon.dom</groupId>
         <artifactId>saxon-dom</artifactId>
-        <version>9</version>
+        <version>9.1.0.8</version>
       </dependency>
       <dependency>
         <groupId>net.sf.saxon</groupId>
         <artifactId>saxon</artifactId>
-        <version>9</version>
+        <version>9.1.0.8</version>
+      </dependency>
+	-->
+     <!-- available only via specific public maven repository -->
+      <dependency>
+        <groupId>net.sf.saxon</groupId>
+        <artifactId>saxon9-dom</artifactId>
+        <version>9.1.0.8</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.saxon</groupId>
+        <artifactId>saxon9</artifactId>
+        <version>9.1.0.8</version>
       </dependency>
      <!--dependency>
         <groupId>net.sf.saxon</groupId>
