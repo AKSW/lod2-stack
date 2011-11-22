@@ -125,6 +125,10 @@
 	<xhtml:sub><xsl:value-of select="."/></xhtml:sub>
 </xsl:template>
 
+<xsl:template match="sprache" mode="xml-literal">
+	<xhtml:span xml:lang="{fun:language(@sprache)}"><xsl:apply-templates mode="xml-literal"/></xhtml:span>
+</xsl:template>
+
 <xsl:template match="* | text()" mode="xml-literal">
 	<xsl:value-of select="string(.)"/>
 </xsl:template>

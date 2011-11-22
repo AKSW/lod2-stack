@@ -44,6 +44,17 @@
 	<xsl:if test="string-length(@fna) &gt; 0">
 		<wkd:fna><xsl:value-of select="@fna"/></wkd:fna>
 	</xsl:if>
+	<xsl:if test="vs-vorspann">
+		<dcterms:description rdf:parseType="Literal">
+			<xsl:apply-templates select="vs-vorspann/(text() | *)" mode="xml-literal"/>
+		</dcterms:description>
+	</xsl:if>
+	<!-- build the list of all containd parts, the list is flat, not hierarchical -->
+	<xsl:apply-templates select="*"/>
+	<xsl:call-template name="doc-parts-vs"/>
+</xsl:template>
+
+<xsl:template match="vs-titel-kopf">
 	<dcterms:title xml:lang="{fun:language(vs-titel-kopf/titel/@sprache)}"><xsl:apply-templates select="vs-titel-kopf/titel"  mode="plain-literal"/></dcterms:title>
 	<xsl:if test="string-length(vs-titel-kopf/vs-kurztitel) &gt; 0">
 		<bibo:shortTitle xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/vs-kurztitel)"/></bibo:shortTitle>
@@ -52,20 +63,9 @@
 		<wkd:subTitle xml:lang="{fun:language(vs-titel-kopf/titel-zusatz/@sprache)}"><xsl:value-of select="string(vs-titel-kopf/titel-zusatz)"/></wkd:subTitle>
 	</xsl:if>
 	<xsl:if test="string-length(vs-titel-kopf/vs-abk) &gt; 0">
-		<wkd:abbreviation rdf:parseType="Literal">
-			<xhtml:span xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}">
-				<xsl:apply-templates select="vs-titel-kopf/vs-abk/(text() | *)" mode="xml-literal"/>
-			</xhtml:span>
-		</wkd:abbreviation>
+		<wkd:abbreviation xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}"><xsl:apply-templates select="vs-titel-kopf/vs-abk" mode="plain-literal"/></wkd:abbreviation>
 	</xsl:if>
-	<xsl:if test="vs-vorspann">
-		<dcterms:description rdf:parseType="Literal">
-			<xsl:apply-templates select="vs-vorspann/(text() | *)" mode="xml-literal"/>
-		</dcterms:description>
-	</xsl:if>
-	<!-- build the list of all containd parts, the list is flat, not hierarchical -->
-	<xsl:call-template name="doc-parts-vs"/>
-	<xsl:apply-templates select="*"/>
+	<xsl:apply-templates select="*/*"/>
 </xsl:template>
 
 <xsl:template match="vorschrift" mode="top-level">
@@ -130,9 +130,6 @@
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$uri}">
 			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<xsl:if test="titel-kopf/titel">
-				<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-			</xsl:if>
 			<xsl:apply-templates select="*">
 				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 			</xsl:apply-templates>
@@ -154,9 +151,6 @@
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$uri}">
 			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<xsl:if test="titel-kopf/titel">
-				<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-			</xsl:if>
 			<xsl:apply-templates select="*">
 				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 			</xsl:apply-templates>
@@ -207,9 +201,6 @@
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$uri}">
 			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<xsl:if test="titel-kopf/titel">
-				<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-			</xsl:if>
 			<xsl:apply-templates select="*">
 				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 			</xsl:apply-templates>
@@ -256,9 +247,6 @@
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$uri}">
 			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<xsl:if test="titel-kopf/titel">
-				<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-			</xsl:if>
 			<xsl:apply-templates select="*">
 				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 			</xsl:apply-templates>
@@ -280,9 +268,6 @@
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$uri}">
 			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<xsl:if test="titel-kopf/titel">
-				<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-			</xsl:if>
 			<xsl:apply-templates select="*">
 				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 			</xsl:apply-templates>

@@ -47,14 +47,25 @@
 	<dcterms:language><xsl:value-of select="if (@sprache) then fun:wk2iso-lang(@sprache) else 'de'"/></dcterms:language>
 </xsl:template>
 
-<xsl:template match="titel" mode="plain-literal">
+<xsl:template match="titel-kopf">
+	<xsl:if test="string-length(normalize-space(titel)) &gt; 0">
+		<dcterms:title xml:lang="{fun:language(titel/@sprache)}"><xsl:apply-templates select="titel" mode="plain-literal"/></dcterms:title>
+	</xsl:if>
+	<xsl:if test="string-length(normalize-space(kurztitel)) &gt; 0">
+		<bibo:shortTitle xml:lang="{fun:language(kurztitel/@sprache)}"><xsl:value-of select="string(kurztitel)"/></bibo:shortTitle>
+	</xsl:if>
+	<xsl:if test="string-length(titel-zusatz) &gt; 0">
+		<wkd:subTitle xml:lang="{fun:language(titel-zusatz/@sprache)}"><xsl:value-of select="string(titel-zusatz)"/></wkd:subTitle>
+	</xsl:if>
+	<xsl:for-each select="titel-trefferliste">
+		<dcterms:alternative xml:lang="{fun:language(@sprache)}"><xsl:apply-templates select="." mode="plain-literal"/></dcterms:alternative>
+	</xsl:for-each>
+	<xsl:apply-templates select="*/*"/>
+</xsl:template>
+
+<xsl:template match="titel | titel-trefferliste" mode="plain-literal">
 	<xsl:variable name="title">
-		<xsl:for-each select="text()">
-			<xsl:value-of select="."/>
-			<xsl:if test="not(last() = position())">
-				<xsl:text> </xsl:text>
-			</xsl:if>
-		</xsl:for-each>
+		<xsl:apply-templates mode="plain-literal"/>
 	</xsl:variable>
 	<xsl:value-of select="normalize-space($title)"/>
 </xsl:template>
@@ -117,7 +128,7 @@
 
 <xsl:template match="metadaten-text">
 	<wkd:mdProperty rdf:parseType="Resource">
-   		<rdfs:label><xsl:value-of select="@bezeichnung"/></rdfs:label>
+   		<rdfs:label xml:lang="{fun:language(@sprache)}"><xsl:value-of select="@bezeichnung"/></rdfs:label>
 		<xsl:variable name="t" as="xs:string">
 			<xsl:choose>
 				<xsl:when test="@typ='nummer'"><xsl:value-of select="concat($xsd,'decimal')"/></xsl:when>
@@ -355,10 +366,7 @@
 	<xsl:param name="e" as="element()"/>
 	<xsl:element namespace="{$skos}" name="{$lt}">
 		<xsl:attribute name="xml:lang" select="fun:language($e/@sprache)"/>
-		<xsl:if test="$e/(hoch | tief)">
-			<xsl:attribute name="rdf:parseType" select="'Literal'"/>
-		</xsl:if>
-		<xsl:apply-templates select="$e/(text() | hoch | tief)" mode="xml-literal"/>
+		<xsl:apply-templates select="$e/(text() | hoch | tief)" mode="plain-literal"/>
 	</xsl:element>
 </xsl:template>
 

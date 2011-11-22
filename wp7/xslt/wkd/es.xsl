@@ -35,11 +35,22 @@
 	<wkd:jurisprudenceType>
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('entscheidung/typ')}/{@es-typ}"/>
 	</wkd:jurisprudenceType>
-	<xsl:if test="es-titel-kopf/titel">
-		<dcterms:title><xsl:apply-templates select="es-titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-	</xsl:if>
 	<xsl:apply-templates select="*"/>
 </xsl:template>
+
+<xsl:template match="es-titel-kopf">
+	<xsl:if test="string-length(normalize-space(titel)) &gt; 0">
+		<dcterms:title xml:lang="{fun:language(titel/@sprache)}"><xsl:apply-templates select="titel" mode="plain-literal"/></dcterms:title>
+	</xsl:if>
+	<xsl:if test="string-length(titel-zusatz) &gt; 0">
+		<wkd:subTitle xml:lang="{fun:language(titel-zusatz/@sprache)}"><xsl:value-of select="string(titel-zusatz)"/></wkd:subTitle>
+	</xsl:if>
+	<xsl:for-each select="titel-trefferliste">
+		<dcterms:alternative xml:lang="{fun:language(@sprache)}"><xsl:apply-templates select="." mode="plain-literal"/></dcterms:alternative>
+	</xsl:for-each>
+	<xsl:apply-templates select="*/*"/>
+</xsl:template>
+
 
 <xsl:template match="entscheidung" mode="top-level">
 	<xsl:apply-templates select="*" mode="top-level"/>

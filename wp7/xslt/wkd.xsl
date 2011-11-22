@@ -33,10 +33,10 @@ Modes used by the template
   typically used when axioms are generated on the produced statements.
   e.g. to set priority on subject tagging of content parts.
 - build-hierarchy
-  used for global search on stichwort (STW) ans inline-stichwort to build the stichwort graph 
+  used for global search on stichwort (STW) and inline-stichwort to build the stichwort graph 
   (not considering the document - stichwort relationship)
   Typically an STW is given with its hierarchy and synonyms.
-  - templates in build-hierarchy reconstruct this structure in SKOS and assign concpt URI
+  - templates in build-hierarchy reconstruct this structure in SKOS and assign concept URI
   - top-level mode templates tag an ellement with the most specific STW SKOS concept (occsionally adding priority).
 - xml-literal
   Build an RDFs XML-Literal value
@@ -210,6 +210,10 @@ Tunnel parameters used
 	<xsl:value-of select="normalize-space(.)"/>
 </xsl:template>
 
+<xsl:template match="hoch | tief" mode="plain-literal">
+	<xsl:value-of select="concat('[',normalize-space(.),']')"/>
+</xsl:template>
+
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
@@ -249,7 +253,7 @@ Tunnel parameters used
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="abbergv" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\abbergv.xml" htmlbaseurl="" outputurl="..\result\abbergv.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
+		<scenario default="yes" name="abbergv" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\abbergv.xml" htmlbaseurl="" outputurl="..\result\abbergv.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
 		          profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -481,7 +485,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="yes" name="bmv-ae" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\bmv-ae.xml" htmlbaseurl="" outputurl="..\result\bmv-ae.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
+		<scenario default="no" name="bmv-ae" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\bmv-ae.xml" htmlbaseurl="" outputurl="..\result\bmv-ae.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
 		          profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">

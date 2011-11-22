@@ -41,12 +41,6 @@
 	<xsl:if test="@end-seite">
 		<bibo:pageEnd><xsl:value-of select="@end-seite"/></bibo:pageEnd>
 	</xsl:if>
-	<xsl:if test="titel-kopf/titel">
-		<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-	</xsl:if>
-	<xsl:if test="titel-kopf/kurztitel">
-		<bibo:shortTitle><xsl:value-of select="string(titel-kopf/kurztitel)"/></bibo:shortTitle>
-	</xsl:if>
 	<xsl:if test="@datum">
 		<dcterms:created><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:created>
 	</xsl:if>
@@ -87,9 +81,6 @@
 	<dcterms:hasPart>
 		<metalex:BlockFragment rdf:about="{$uri}">
 			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
-			<xsl:if test="titel-kopf/titel">
-				<dcterms:title><xsl:apply-templates select="titel-kopf/titel" mode="plain-literal"/></dcterms:title>
-			</xsl:if>
 			<xsl:apply-templates select="*">
 				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 			</xsl:apply-templates>
