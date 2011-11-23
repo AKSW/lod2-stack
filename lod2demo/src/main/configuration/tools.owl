@@ -34,14 +34,14 @@
       This ontology describes the architecture of the LOD2 stack.
     &lt;/p&gt;
     &lt;p style=&quot;margin-top: 0&quot;&gt;
-      It contains management information about each tool w.r.t. the 
+      It contains management information about each tool w.r.t. the
       architecture and it defines the base architecture components.
     &lt;/p&gt;</rdfs:comment>
     </owl:Ontology>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Annotation properties
@@ -49,10 +49,10 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Datatypes
@@ -60,10 +60,10 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Object Properties
@@ -71,7 +71,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#contributed_by_partner -->
@@ -83,7 +83,7 @@
         <rdfs:range rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:domain rdf:resource="&lod2;Tool"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#debian_package -->
@@ -95,7 +95,7 @@
         <rdfs:domain rdf:resource="&lod2;DebianPackage"/>
         <rdfs:range rdf:resource="&lod2;Tool"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#license -->
@@ -108,7 +108,7 @@
         <rdfs:range rdf:resource="&lod2;SoftwareLicense"/>
         <rdfs:domain rdf:resource="&lod2;Tool"/>
     </owl:ObjectProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#responsible -->
@@ -118,10 +118,10 @@
         <rdfs:domain rdf:resource="&lod2;Tool"/>
         <rdfs:range rdf:resource="&lod2;ToolResponsible"/>
     </owl:ObjectProperty>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Data properties
@@ -129,7 +129,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#acknowledgement -->
@@ -140,7 +140,7 @@
         <rdfs:range rdf:resource="&xsd;string"/>
         <rdfs:subPropertyOf rdf:resource="&owl;topDataProperty"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#license_description -->
@@ -150,7 +150,7 @@
         <rdfs:domain rdf:resource="&lod2;SoftwareLicense"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#license_url -->
@@ -160,7 +160,7 @@
         <rdfs:domain rdf:resource="&lod2;SoftwareLicense"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#person_email -->
@@ -170,7 +170,7 @@
         <rdfs:domain rdf:resource="&lod2;ToolResponsible"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#person_name -->
@@ -180,7 +180,7 @@
         <rdfs:domain rdf:resource="&lod2;ToolResponsible"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#tool_description -->
@@ -190,7 +190,7 @@
         <rdfs:domain rdf:resource="&lod2;Tool"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#tool_homepage -->
@@ -200,7 +200,7 @@
         <rdfs:domain rdf:resource="&lod2;Tool"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#tool_icon -->
@@ -211,10 +211,10 @@
         <rdfs:domain rdf:resource="&lod2;Tool"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Classes
@@ -222,7 +222,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#Both -->
@@ -230,7 +230,7 @@
     <owl:Class rdf:about="&lod2;Both">
         <rdfs:subClassOf rdf:resource="&lod2;SoftwareLicense"/>
     </owl:Class>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#Commercial -->
@@ -238,13 +238,13 @@
     <owl:Class rdf:about="&lod2;Commercial">
         <rdfs:subClassOf rdf:resource="&lod2;SoftwareLicense"/>
     </owl:Class>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#DebianPackage -->
 
     <owl:Class rdf:about="&lod2;DebianPackage"/>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#LOD2_partner -->
@@ -252,7 +252,7 @@
     <owl:Class rdf:about="&lod2;LOD2_partner">
         <rdfs:comment rdf:datatype="&xsd;string">An LOD2 partner.</rdfs:comment>
     </owl:Class>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#OpenSource -->
@@ -260,13 +260,13 @@
     <owl:Class rdf:about="&lod2;OpenSource">
         <rdfs:subClassOf rdf:resource="&lod2;SoftwareLicense"/>
     </owl:Class>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#SoftwareLicense -->
 
     <owl:Class rdf:about="&lod2;SoftwareLicense"/>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#Tool -->
@@ -274,7 +274,7 @@
     <owl:Class rdf:about="&lod2;Tool">
         <rdfs:comment rdf:datatype="&xsd;string">A tool contributed to the LOD2 stack</rdfs:comment>
     </owl:Class>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#ToolResponsible -->
@@ -282,10 +282,10 @@
     <owl:Class rdf:about="&lod2;ToolResponsible">
         <rdfs:comment rdf:datatype="&xsd;string">A reposible person or organisation for a tool</rdfs:comment>
     </owl:Class>
-    
 
 
-    <!-- 
+
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Individuals
@@ -293,7 +293,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    
+
 
 
     <!-- http://localhost/CKAN -->
@@ -304,7 +304,7 @@
         <tool_description>CKAN is a registry or catalogue system for datasets or other &quot;knowledge&quot; resources. CKAN aims to make it easy to find, share and reuse open content and data, especially in ways that are machine automatable.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;okfn"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/D2R-Server -->
@@ -318,7 +318,7 @@
 		<license rdf:resource="&lod2;Apache_2.0"/>
 		<responsible rdf:resource="&lod2;RobertIsele"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/DBpedia -->
@@ -331,7 +331,7 @@
         <contributed_by_partner rdf:resource="&Partner;ulei"/>
 		<contributed_by_partner rdf:resource="&Partner;fub"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/DL-Learner -->
@@ -342,7 +342,7 @@
         <tool_description>DL-Learner is a tool for supervised Machine Learning in OWL and Description Logics. It can learn concepts in Description Logics (DLs) from user-provided examples. Equivalently, it can be used to learn classes in OWL ontologies from selected objects. It extends Inductive Logic Programming to Descriptions Logics and the Semantic Web. The goal of DL-Learner is to provide a DL/OWL-based machine learning tool to solve supervised learning tasks and support knowledge engineers in constructing knowledge and learning about the data they created. </tool_description>
         <contributed_by_partner rdf:resource="&Partner;ulei"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/PoolParty -->
@@ -353,7 +353,7 @@
         <tool_description>PoolParty is a thesaurus management system and a SKOS editor for the Semantic Web including text mining and linked data  capabilities. The system helps to build and maintain multilingual thesauri providing an easy-to-use interface. PoolParty server provides semantic services to integrate semantic search or recommender systems into systems like CMS, DMS, CRM or Wikis.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;swc"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/Silk -->
@@ -368,7 +368,7 @@
 		<responsible rdf:resource="&lod2;RobertIsele"/>
 		<acknowledgement xml:lang="en">Scala, Lift Web Framework, Paranamer, Classutil</acknowledgement>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/Sindice -->
@@ -379,7 +379,7 @@
         <tool_description>Sindice is a state of the art infrastructure to process, consolidate and query the Web of Data. Sindice collates these billions of pieces of metadata into an coherent umbrella of functionalities and services.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;nuig"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/Virtuoso -->
@@ -391,7 +391,7 @@
 Virtuoso is a knowledge store and virtualization platform that transparently integrates Data, Services, and Business Processes across the enterprise. Its product architecture enables it to deliver traditionally distinct server functionality within a single system offering along the following lines: Data Management &amp; Integration (SQL, XML and EII), Application Integration (Web Services &amp; SOA), Process Management &amp; Integration (BPEL), Distributed Collaborative Applications. The open-source data integration server and the highly efficient and scalable RDF triple store implementation in Virtuoso will be the basis for the knowledge store component in the LOD2 Stack.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;openlink"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://localhost/lod2demo -->
@@ -406,22 +406,30 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <license rdf:resource="&lod2;Apache_2.0"/>
         <responsible rdf:resource="&lod2;BertVanNuffelen"/>
     </owl:NamedIndividual>
-    
 
 
-    <!-- http://localhost/ontowiki -->
 
-    <owl:NamedIndividual rdf:about="&localhost;ontowiki">
+    <owl:NamedIndividual rdf:about="http://aksw.org/Projects/OntoWiki">
         <rdf:type rdf:resource="&lod2;Tool"/>
-        <rdfs:label xml:lang="en">OntoWiki</rdfs:label>
-        <tool_homepage rdf:datatype="&xsd;string">http://aksw.org/Projects/OntoWiki/</tool_homepage>
-        <tool_description xml:lang="en">&lt;b&gt;OntoWiki&lt;/b&gt; facilitates the visual presentation of a knowledge base as an information map, with different views on instance data. It enables intuitive authoring of semantic content, with an inline editing mode for editing RDF content, similar to WYSIWIG for text documents.</tool_description>
+        <rdfs:label>OntoWiki</rdfs:label>
+        <tool_homepage rdf:datatype="&xsd;string">http://ontowiki.net</tool_homepage>
+        <tool_description xml:lang="en">&lt;strong&gt;OntoWiki&lt;/strong&gt; is a tool providing support for agile, distributed knowledge engineering scenarios.
+            OntoWiki facilitates the visual presentation of a knowledge base as an information map, with different views on instance data.
+            It enables intuitive authoring of semantic content.
+            It fosters social collaboration aspects by keeping track of changes, allowing to comment and discuss every single part of a knowledge base.
+
+            Other remarkable features are:
+
+            &lt;ol&gt;
+                &lt;li&gt;OntoWiki is a Linked Data Server for you data as well as a Linked Data client to fetch additional data from the web.&lt;/li&gt;
+                &lt;li&gt;OntoWiki is a Semantic Pingback Client in order to receive and send back-linking request as known from the blogosphere.&lt;/li&gt;
+                &lt;li&gt;OntoWiki is easily extendible by you, since it features a sophisticated Extension System.&lt;/li&gt;
+            &lt;/ol&gt;
+        </tool_description>
         <contributed_by_partner rdf:resource="&Partner;ulei"/>
-        <license rdf:resource="&lod2;Apache_2.0"/>
+        <license rdf:resource="&lod2;GPL2"/>
         <responsible rdf:resource="&lod2;SebastianTramp"/>
     </owl:NamedIndividual>
-    
-
 
     <!-- http://localhost/sigmaee -->
 
@@ -451,7 +459,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <license rdf:resource="&lod2;GnuAffero"/>
         <responsible rdf:resource="&lod2;SzymonDanielczyk"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/cwi -->
@@ -460,7 +468,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Centrum Wiskunde &amp; Informatica</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/exalead -->
@@ -469,7 +477,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Exalead</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/fub -->
@@ -478,7 +486,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Freie Universität Berlin</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/i2g -->
@@ -487,7 +495,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Instytut Informatyki Gospodarczej, Poland</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/imp -->
@@ -496,7 +504,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Institute Mihajlo Pupin, Serbia</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/kaist -->
@@ -505,7 +513,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Korea Advanced Institute of Science and Technology (KAIST)</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/nuig -->
@@ -514,13 +522,13 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Digital Enterprise Research Institute</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/ogl -->
 
     <owl:NamedIndividual rdf:about="&Partner;ogl"/>
-    
+
 
 
     <!-- http://lod2.eu/Partner/okfn -->
@@ -529,7 +537,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Open Knowledge Foundation</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/openlink -->
@@ -538,7 +546,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>OpenLink Software</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/swc -->
@@ -547,7 +555,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Semantic Web Company</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/tenforce -->
@@ -556,7 +564,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>TenForce</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/uep -->
@@ -565,7 +573,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>University of Economics, Czech Republic</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/ulei -->
@@ -574,7 +582,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Universität Leipzig</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/wkd -->
@@ -583,7 +591,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Wolters Kluwer</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/Partner/zemanta -->
@@ -592,7 +600,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label>Zemanta d.o.o.</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#Apache_2.0 -->
@@ -601,7 +609,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;OpenSource"/>
         <license_url rdf:datatype="&xsd;string">http://www.apache.org/licenses/LICENSE-2.0</license_url>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#BertVanNuffelen -->
@@ -611,7 +619,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_name rdf:datatype="&xsd;string">Bert Van Nuffelen</person_name>
         <person_email rdf:datatype="&xsd;string">Bert.Van.Nuffelen@tenforce.com</person_email>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#CWI -->
@@ -619,7 +627,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;CWI">
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#CommercialLicense -->
@@ -627,7 +635,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;CommercialLicense">
         <rdf:type rdf:resource="&lod2;Commercial"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#DERI -->
@@ -636,7 +644,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">DERI</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#EXALEAD -->
@@ -644,7 +652,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;EXALEAD">
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#FUB -->
@@ -652,7 +660,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;FUB">
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#GPL2 -->
@@ -661,7 +669,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;OpenSource"/>
         <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</license_url>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#GPL3 -->
@@ -670,7 +678,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;OpenSource"/>
         <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/gpl.html</license_url>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#GnuAffero -->
@@ -679,7 +687,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;OpenSource"/>
         <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/agpl.html</license_url>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#I2G -->
@@ -688,7 +696,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">I2G</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#IMP -->
@@ -697,7 +705,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">IMP</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#KAIST -->
@@ -706,7 +714,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">KAIST</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#Mozilla_1.1 -->
@@ -715,7 +723,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;OpenSource"/>
         <license_url rdf:datatype="&xsd;string">http://monetdb.cwi.nl/Development/Legal/MonetDBLicense-1.1/index.html</license_url>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#OGL -->
@@ -724,7 +732,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">OGL</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#OKNF -->
@@ -733,7 +741,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">OKNF</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#Proprietary -->
@@ -741,9 +749,9 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;Proprietary">
         <rdf:type rdf:resource="&lod2;Commercial"/>
     </owl:NamedIndividual>
-	
-	
-	
+
+
+
     <!-- http://lod2.eu/tools.owl#RobertIsele -->
 
     <owl:NamedIndividual rdf:about="&lod2;RobertIsele">
@@ -751,8 +759,8 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_name rdf:datatype="&xsd;string">Robert Isele</person_name>
         <person_email rdf:datatype="&xsd;string">mail@robertisele.com</person_email>
     </owl:NamedIndividual>
-	
-	
+
+
 
     <!-- http://lod2.eu/tools.owl#SWCG -->
 
@@ -760,7 +768,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">SWCG</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#SebastianTramp -->
@@ -770,7 +778,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_name rdf:datatype="&xsd;string">Sebastian Tramp</person_name>
         <person_email rdf:datatype="&xsd;string">tramp@informatik.uni-leipzig.de</person_email>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#SzymonDanielczyk -->
@@ -780,7 +788,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_name rdf:datatype="&xsd;string">Szymon Danielczyk</person_name>
         <person_email rdf:datatype="&xsd;string">danielczyk.szymon@gmail.com</person_email>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#TenForce -->
@@ -789,7 +797,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">TenForce</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#UEP -->
@@ -798,7 +806,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">UEP</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#ULEI -->
@@ -807,7 +815,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">ULEI</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#WKD -->
@@ -816,7 +824,7 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
         <rdfs:label xml:lang="en">WKD</rdfs:label>
     </owl:NamedIndividual>
-    
+
 
 
     <!-- http://lod2.eu/tools.owl#ZEM -->
