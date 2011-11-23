@@ -312,8 +312,11 @@
     <owl:NamedIndividual rdf:about="&localhost;D2R-Server">
         <rdf:type rdf:resource="&lod2;Tool"/>
         <rdfs:label xml:lang="en">D2R Server</rdfs:label>
+		<tool_homepage rdf:datatype="&xsd;string">http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/</tool_homepage>
         <tool_description>D2R Server is a tool for publishing relational databases on the Semantic Web. It enables RDF and HTML browsers to navigate the content of the database, and allows applications to query the database using the SPARQL query language.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;fub"/>
+		<license rdf:resource="&lod2;Apache_2.0"/>
+		<responsible rdf:resource="&lod2;RobertIsele"/>
     </owl:NamedIndividual>
     
 
@@ -323,8 +326,10 @@
     <owl:NamedIndividual rdf:about="&localhost;DBpedia">
         <rdf:type rdf:resource="&lod2;Tool"/>
         <rdfs:label xml:lang="en">DBpedia</rdfs:label>
+		<tool_homepage rdf:datatype="&xsd;string">http://dbpedia.org/</tool_homepage>
         <tool_description>DBpedia is a community effort to extract structured information from Wikipedia and to make this information available on the Web. It currently already contains a tremendous amount of valuable knowledge extracted from Wikipedia. The DBpedia knowledge base will be used for evaluation LOD2's interlinking, fusing, aggregation and visualization components. The DBpedia multi-domain ontology will be used as background-knowledge for the LOD2 applications (WP7, WP8 and WP9), and as an alignment and annotation ontology for LOD in general.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;ulei"/>
+		<contributed_by_partner rdf:resource="&Partner;fub"/>
     </owl:NamedIndividual>
     
 
@@ -356,8 +361,12 @@
     <owl:NamedIndividual rdf:about="&localhost;Silk">
         <rdf:type rdf:resource="&lod2;Tool"/>
         <rdfs:label xml:lang="en">SILK</rdfs:label>
+		<tool_homepage rdf:datatype="&xsd;string">http://www4.wiwiss.fu-berlin.de/bizer/silk/</tool_homepage>
         <tool_description>The Silk Linking Framework supports data publishers in setting explicit RDF links between data items within different data sources. Using the declarative Silk - Link Specification Language (Silk-LSL), developers can specify which types of RDF links should be discovered between data sources as well as which conditions data items must fulfil in order to be interlinked. These link conditions may combine various similarity metrics and can take the graph around a data item into account, which is addressed using an RDF path language.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;fub"/>
+		<license rdf:resource="&lod2;Apache_2.0"/>
+		<responsible rdf:resource="&lod2;RobertIsele"/>
+		<acknowledgement xml:lang="en">Scala, Lift Web Framework, Paranamer, Classutil</acknowledgement>
     </owl:NamedIndividual>
     
 
@@ -732,8 +741,18 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;Proprietary">
         <rdf:type rdf:resource="&lod2;Commercial"/>
     </owl:NamedIndividual>
-    
+	
+	
+	
+    <!-- http://lod2.eu/tools.owl#RobertIsele -->
 
+    <owl:NamedIndividual rdf:about="&lod2;RobertIsele">
+        <rdf:type rdf:resource="&lod2;ToolResponsible"/>
+        <person_name rdf:datatype="&xsd;string">Robert Isele</person_name>
+        <person_email rdf:datatype="&xsd;string">mail@robertisele.com</person_email>
+    </owl:NamedIndividual>
+	
+	
 
     <!-- http://lod2.eu/tools.owl#SWCG -->
 
