@@ -294,6 +294,11 @@
      -->
 
 
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // Tools
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
 
 
     <!-- http://localhost/CKAN -->
@@ -345,15 +350,41 @@
 
 
 
-    <!-- http://localhost/PoolParty -->
+    <!-- http://localhost/PPT -->
 
-    <owl:NamedIndividual rdf:about="&localhost;PoolParty">
+    <owl:NamedIndividual rdf:about="&localhost;PPT">
         <rdf:type rdf:resource="&lod2;Tool"/>
-        <rdfs:label xml:lang="en">PoolParty</rdfs:label>
+        <rdfs:label xml:lang="en">PoolParty Thesaurus Manager</rdfs:label>
+	<tool_homepage>http://poolparty.biz</tool_homepage>
         <tool_description>PoolParty is a thesaurus management system and a SKOS editor for the Semantic Web including text mining and linked data  capabilities. The system helps to build and maintain multilingual thesauri providing an easy-to-use interface. PoolParty server provides semantic services to integrate semantic search or recommender systems into systems like CMS, DMS, CRM or Wikis.</tool_description>
-        <contributed_by_partner rdf:resource="&Partner;swc"/>
+        <contributed_by_partner rdf:resource="&Partner;SWCG"/>
+	<license rdf:resource="&lod2;CommercialLicence"/>
+	<responsible rdf:resource="&lod2;AndreasBlumauer"/>
     </owl:NamedIndividual>
 
+    <!-- http://localhost/PPX -->
+
+    <owl:NamedIndividual rdf:about="&localhost;PPX">
+        <rdf:type rdf:resource="&lod2;Tool"/>
+        <rdfs:label xml:lang="en">PoolParty Extractor</rdfs:label>
+	<tool_homepage>http://poolparty.biz</tool_homepage>
+        <tool_description>The PoolParty Extractor (PPX) offers an API providing text mining algorithms based on semantic knowledge models. With the PoolParty Extractor you can analyse documents in an automated fashion, extracting meaningful phrases, named entities, categories or other metadata. Different data or metadata schemas can be mapped to a SKOS thesaurus that is used as a unified semantic knowledge model.</tool_description>
+        <contributed_by_partner rdf:resource="&Partner;SWCG"/>
+	<license rdf:resource="&lod2;CommercialLicence"/>
+	<responsible rdf:resource="&lod2;AndreasBlumauer"/>
+    </owl:NamedIndividual>
+
+    <!-- http://localhost/PP-WP-Plugin -->
+
+    <owl:NamedIndividual rdf:about="&localhost;PP-WP-Plugin">
+        <rdf:type rdf:resource="&lod2;Tool"/>
+        <rdfs:label xml:lang="en">PoolParty Wordpress Plugin</rdfs:label>
+	<tool_homepage>http://wordpress.org/extend/plugins/poolparty-thesaurus/</tool_homepage>
+        <tool_description>PoolParty thesaurus plugin helps to make WordPress blogs and websites more understandable. The website will be improved by linking posts with key terms and key terms with other key terms. The plugin imports a controlled vocabulary (SKOS thesaurus) or retrieves a thesaurus from a (public) SPARQL endpoint via web. Based on the thesaurus, terms in articles are high-lighted automatically, definitions are provided "inline" (as mouse-over effect) and links to the thesaurus terms are generated on-the-fly.</tool_description>
+        <contributed_by_partner rdf:resource="&Partner;SWCG"/>
+	<license rdf:resource="&lod2;GPL2"/>
+	<responsible rdf:resource="&lod2;AndreasBlumauer"/>
+    </owl:NamedIndividual>
 
 
     <!-- http://localhost/Silk -->
@@ -461,6 +492,13 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     </owl:NamedIndividual>
 
 
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // Partner
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
 
     <!-- http://lod2.eu/Partner/cwi -->
 
@@ -557,16 +595,6 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     </owl:NamedIndividual>
 
 
-
-    <!-- http://lod2.eu/Partner/tenforce -->
-
-    <owl:NamedIndividual rdf:about="&Partner;tenforce">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label>TenForce</rdfs:label>
-    </owl:NamedIndividual>
-
-
-
     <!-- http://lod2.eu/Partner/uep -->
 
     <owl:NamedIndividual rdf:about="&Partner;uep">
@@ -592,32 +620,11 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdfs:label>Wolters Kluwer</rdfs:label>
     </owl:NamedIndividual>
 
+    <!-- http://lod2.eu/tools.owl#WKD -->
 
-
-    <!-- http://lod2.eu/Partner/zemanta -->
-
-    <owl:NamedIndividual rdf:about="&Partner;zemanta">
+    <owl:NamedIndividual rdf:about="&lod2;WKD">
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label>Zemanta d.o.o.</rdfs:label>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#Apache_2.0 -->
-
-    <owl:NamedIndividual rdf:about="&lod2;Apache_2.0">
-        <rdf:type rdf:resource="&lod2;OpenSource"/>
-        <license_url rdf:datatype="&xsd;string">http://www.apache.org/licenses/LICENSE-2.0</license_url>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#BertVanNuffelen -->
-
-    <owl:NamedIndividual rdf:about="&lod2;BertVanNuffelen">
-        <rdf:type rdf:resource="&lod2;ToolResponsible"/>
-        <person_name rdf:datatype="&xsd;string">Bert Van Nuffelen</person_name>
-        <person_email rdf:datatype="&xsd;string">Bert.Van.Nuffelen@tenforce.com</person_email>
+        <rdfs:label xml:lang="en">WKD</rdfs:label>
     </owl:NamedIndividual>
 
 
@@ -627,16 +634,6 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;CWI">
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
     </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#CommercialLicense -->
-
-    <owl:NamedIndividual rdf:about="&lod2;CommercialLicense">
-        <rdf:type rdf:resource="&lod2;Commercial"/>
-    </owl:NamedIndividual>
-
-
 
     <!-- http://lod2.eu/tools.owl#DERI -->
 
@@ -660,35 +657,6 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;FUB">
         <rdf:type rdf:resource="&lod2;LOD2_partner"/>
     </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#GPL2 -->
-
-    <owl:NamedIndividual rdf:about="&lod2;GPL2">
-        <rdf:type rdf:resource="&lod2;OpenSource"/>
-        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</license_url>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#GPL3 -->
-
-    <owl:NamedIndividual rdf:about="&lod2;GPL3">
-        <rdf:type rdf:resource="&lod2;OpenSource"/>
-        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/gpl.html</license_url>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#GnuAffero -->
-
-    <owl:NamedIndividual rdf:about="&lod2;GnuAffero">
-        <rdf:type rdf:resource="&lod2;OpenSource"/>
-        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/agpl.html</license_url>
-    </owl:NamedIndividual>
-
-
 
     <!-- http://lod2.eu/tools.owl#I2G -->
 
@@ -715,17 +683,6 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdfs:label xml:lang="en">KAIST</rdfs:label>
     </owl:NamedIndividual>
 
-
-
-    <!-- http://lod2.eu/tools.owl#Mozilla_1.1 -->
-
-    <owl:NamedIndividual rdf:about="&lod2;Mozilla_1.1">
-        <rdf:type rdf:resource="&lod2;OpenSource"/>
-        <license_url rdf:datatype="&xsd;string">http://monetdb.cwi.nl/Development/Legal/MonetDBLicense-1.1/index.html</license_url>
-    </owl:NamedIndividual>
-
-
-
     <!-- http://lod2.eu/tools.owl#OGL -->
 
     <owl:NamedIndividual rdf:about="&lod2;OGL">
@@ -742,12 +699,133 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <rdfs:label xml:lang="en">OKNF</rdfs:label>
     </owl:NamedIndividual>
 
+    <!-- http://lod2.eu/tools.owl#SWCG -->
 
+    <owl:NamedIndividual rdf:about="&lod2;SWCG">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label xml:lang="en">SWCG</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://lod2.eu/tools.owl#TenForce -->
+
+    <owl:NamedIndividual rdf:about="&lod2;TenForce">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label xml:lang="en">TenForce</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- http://lod2.eu/Partner/tenforce -->
+
+    <owl:NamedIndividual rdf:about="&Partner;tenforce">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label>TenForce</rdfs:label>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://lod2.eu/tools.owl#UEP -->
+
+    <owl:NamedIndividual rdf:about="&lod2;UEP">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label xml:lang="en">UEP</rdfs:label>
+    </owl:NamedIndividual>
+
+
+    <!-- http://lod2.eu/tools.owl#ULEI -->
+
+    <owl:NamedIndividual rdf:about="&lod2;ULEI">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label xml:lang="en">ULEI</rdfs:label>
+    </owl:NamedIndividual>
+
+
+    <!-- http://lod2.eu/Partner/zemanta -->
+
+    <owl:NamedIndividual rdf:about="&Partner;zemanta">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label>Zemanta d.o.o.</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!-- http://lod2.eu/tools.owl#ZEM -->
+
+    <owl:NamedIndividual rdf:about="&lod2;ZEM">
+        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
+        <rdfs:label xml:lang="en">ZEM</rdfs:label>
+    </owl:NamedIndividual>
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // Licences
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- http://lod2.eu/tools.owl#Apache_2.0 -->
+
+    <owl:NamedIndividual rdf:about="&lod2;Apache_2.0">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.apache.org/licenses/LICENSE-2.0</license_url>
+    </owl:NamedIndividual>
+
+    <!-- http://lod2.eu/tools.owl#CommercialLicense -->
+
+    <owl:NamedIndividual rdf:about="&lod2;CommercialLicense">
+        <rdf:type rdf:resource="&lod2;Commercial"/>
+    </owl:NamedIndividual>
+
+    <!-- http://lod2.eu/tools.owl#GPL2 -->
+
+    <owl:NamedIndividual rdf:about="&lod2;GPL2">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</license_url>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://lod2.eu/tools.owl#GPL3 -->
+
+    <owl:NamedIndividual rdf:about="&lod2;GPL3">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/gpl.html</license_url>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://lod2.eu/tools.owl#GnuAffero -->
+
+    <owl:NamedIndividual rdf:about="&lod2;GnuAffero">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/agpl.html</license_url>
+    </owl:NamedIndividual>
+
+    <!-- http://lod2.eu/tools.owl#Mozilla_1.1 -->
+
+    <owl:NamedIndividual rdf:about="&lod2;Mozilla_1.1">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://monetdb.cwi.nl/Development/Legal/MonetDBLicense-1.1/index.html</license_url>
+    </owl:NamedIndividual>
 
     <!-- http://lod2.eu/tools.owl#Proprietary -->
 
     <owl:NamedIndividual rdf:about="&lod2;Proprietary">
         <rdf:type rdf:resource="&lod2;Commercial"/>
+    </owl:NamedIndividual>
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // ToolResponsible
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <!-- http://lod2.eu/tools.owl#BertVanNuffelen -->
+
+    <owl:NamedIndividual rdf:about="&lod2;BertVanNuffelen">
+        <rdf:type rdf:resource="&lod2;ToolResponsible"/>
+        <person_name rdf:datatype="&xsd;string">Bert Van Nuffelen</person_name>
+        <person_email rdf:datatype="&xsd;string">Bert.Van.Nuffelen@tenforce.com</person_email>
     </owl:NamedIndividual>
 
 
@@ -759,16 +837,6 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_name rdf:datatype="&xsd;string">Robert Isele</person_name>
         <person_email rdf:datatype="&xsd;string">mail@robertisele.com</person_email>
     </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#SWCG -->
-
-    <owl:NamedIndividual rdf:about="&lod2;SWCG">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label xml:lang="en">SWCG</rdfs:label>
-    </owl:NamedIndividual>
-
 
 
     <!-- http://lod2.eu/tools.owl#SebastianTramp -->
@@ -789,52 +857,16 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_email rdf:datatype="&xsd;string">danielczyk.szymon@gmail.com</person_email>
     </owl:NamedIndividual>
 
+    <!-- http://lod2.eu/tools.owl#SzymonDanielczyk -->
 
-
-    <!-- http://lod2.eu/tools.owl#TenForce -->
-
-    <owl:NamedIndividual rdf:about="&lod2;TenForce">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label xml:lang="en">TenForce</rdfs:label>
+    <owl:NamedIndividual rdf:about="&lod2;AndreasBlumauer">
+        <rdf:type rdf:resource="&lod2;ToolResponsible"/>
+        <person_name rdf:datatype="&xsd;string">Andreas Blumauer</person_name>
+        <person_email rdf:datatype="&xsd;string">a.blumauer@semantic-web.at</person_email>
     </owl:NamedIndividual>
 
 
-
-    <!-- http://lod2.eu/tools.owl#UEP -->
-
-    <owl:NamedIndividual rdf:about="&lod2;UEP">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label xml:lang="en">UEP</rdfs:label>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#ULEI -->
-
-    <owl:NamedIndividual rdf:about="&lod2;ULEI">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label xml:lang="en">ULEI</rdfs:label>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#WKD -->
-
-    <owl:NamedIndividual rdf:about="&lod2;WKD">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label xml:lang="en">WKD</rdfs:label>
-    </owl:NamedIndividual>
-
-
-
-    <!-- http://lod2.eu/tools.owl#ZEM -->
-
-    <owl:NamedIndividual rdf:about="&lod2;ZEM">
-        <rdf:type rdf:resource="&lod2;LOD2_partner"/>
-        <rdfs:label xml:lang="en">ZEM</rdfs:label>
-    </owl:NamedIndividual>
 </rdf:RDF>
-
 
 
 <!-- Generated by the OWL API (version 3.2.2.1789) http://owlapi.sourceforge.net -->
