@@ -88,14 +88,38 @@
 			<xsl:when test="$doc-type='pressemitteilung'">
 				<xsl:value-of select="$doc/@vtext-id"/>
 			</xsl:when>
-			<!-- Todo
-			xsl:when test="$doc-type='beitrag'">
-				<xsl:if test="not($doc/zuordnung-produkt/verweis-komhbe/[verweis-es | verweis-vs])">
-					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-kom-hbe/verweis-(es|vs)) found for this document.</xsl:message>
+			<!-- Todo-->
+			<xsl:when test="$doc-type=('beitrag','beitrag-rn')">
+			    <!-- take the first link giving a product -->
+				<xsl:variable name="product" select="$doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0][1]" as="element()"/>
+				<xsl:if test="count($product)=0">
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/*[@produkt]) found for this document.</xsl:message>
 				</xsl:if>
-				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/(verweis-es | verweis-vs)[1]" as="element()"/>
-				<xsl:value-of select="if (name($identifer)='verweis-es') then fun:verweis-es-id($identifier) else fun:verweis-vs-id($identifier)"/>
-			</xsl:when-->
+				<xsl:variable name="identifier">
+					<xsl:choose>
+						<xsl:when test="name($product)='verweis-esa'">
+							<xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-esa.</xsl:message>
+						</xsl:when>
+						<xsl:when test="name($product)='verweis-zs'">
+							<xsl:value-of select="fun:verweis-zs-id($product)"/>
+						</xsl:when>
+						<xsl:when test="name($product)='verweis-komhbe'">
+							<xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-komhbe.</xsl:message>
+						</xsl:when>
+						<xsl:when test="name($product)='ep-produkt'">
+							<xsl:value-of select="concat('/', $product/@produkt,
+								if ($product/@newsletter) then concat('/newsletter.',fun:percentEncode($product/@newsletter)) else '',
+								if ($product/@datum-gueltig-von) then concat('/from.',fun:dateDe2Iso($product/@datum-gueltig-von)) else ''
+								)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:message terminate="yes">Unknown identifier (zuordnung-produkt/<xsl:value-of select="name($product)"/>.</xsl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:value-of select="concat($doc/@typ, fun:bez-wert-id($doc/@bez,$doc/@wert),'/',$identifier,fun:idOfZuordnungProduktRubrik($doc/zuordnung-produkt))"/>
+			</xsl:when>
+			<!-- next type -->
 			<xsl:otherwise>
 				<xsl:message terminate="yes">ERROR: invalid document type - got <xsl:value-of select="$doc-type"/>.</xsl:message>
 			</xsl:otherwise>
@@ -104,19 +128,11 @@
 	<xsl:value-of select="concat($base,$id)"/>
 </xsl:function>
 
-<!-- todo
-xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
-	<xsl:param name="e" as="element()"/>
-	<xsl:variable name="zp">
-	</xsl:variable>
-	<xsl:value-of select="concat($zp, if ($e/zuordnung-rubrik) then '/rubrik' else '', fun:idOfZuordnungProduktRubrik($e/zuordnung-rubrik))"/>
-</xsl:function-->
-
 <xsl:function name="fun:idOfZuordnungProduktRubrik" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 	<xsl:choose>
 		<xsl:when test="$e/zuordnung-rubrik">
-			<xsl:variable name="this-part" select="concat('/b',fun:percentEncode($e/zuordnung-rubrik/@bez),'_w',fun:percentEncode($e/zuordnung-rubrik/@wert))"/>
+			<xsl:variable name="this-part" select="fun:bez-wert-id($e/zuordnung-rubrik/@bez,$e/zuordnung-rubrik/@wert)"/>
 			<xsl:value-of select="concat($this-part, fun:idOfZuordnungProduktRubrik($e/zuordnung-rubrik))"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -167,21 +183,8 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 			<xsl:value-of select="concat($b-uri,'/art/',fun:percentEncode($element/@art))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-ebene'">
-			<xsl:variable name="id" as="xs:string">
-				<xsl:variable name="temp">
-					<xsl:if test="$element/@bez">
-						<xsl:value-of select="fun:percentEncode($element/@bez)"/>
-					</xsl:if>
-					<xsl:if test="$element/@bez and $element/@wert">
-						<xsl:value-of select="'/'"/>
-					</xsl:if>
-					<xsl:if test="$element/@wert">
-						<xsl:value-of select="fun:percentEncode($element/@wert)"/>
-					</xsl:if>
-				</xsl:variable>
-				<xsl:value-of select="string-join($temp,'')"/>
-			</xsl:variable>
-			<xsl:value-of select="concat($b-uri,'/vs-ebene/',$id)"/>
+			<xsl:variable name="id" select="fun:bez-wert-id($element/@bez,$element/@wert)" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/vs-ebene',$id)"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-anlage'">
 			<xsl:variable name="n" select="fun:percentEncode(normalize-space($element/@anlage-nr))" as="xs:string"/>
@@ -189,20 +192,11 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 			                             if (string-length($n) = 0) then '' else concat('/',$n))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-anlage-ebene'">
-			<xsl:variable name="id" as="xs:string">
-				<xsl:variable name="temp">
-					<xsl:value-of select="fun:percentEncode(if ($element/@bez) then $element/@bez else '')"/>
-					<xsl:if test="$element/@bez and $element/@wert">
-						<xsl:value-of select="'/'"/>
-					</xsl:if>
-					<xsl:value-of select="fun:percentEncode(if ($element/@wert) then $element/@wert else '')"/>
-				</xsl:variable>
-				<xsl:value-of select="string-join($temp,'')"/>
-			</xsl:variable>
+			<xsl:variable name="id" select="fun:bez-wert-id($element/@bez,$element/@wert)" as="xs:string"/>
 			<xsl:variable name="n" select="fun:percentEncode(normalize-space($element/@anlage-nr))" as="xs:string"/>
 			<xsl:value-of select="concat($b-uri,'/vs-anlage-ebene',
 			                if (string-length($n) = 0) then '' else concat('/',$n),
-			                if (string-length($id) = 0) then '' else concat('/',$id))"/>
+			                if (string-length($id) = 0) then '' else $id)"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-objekt'">
 			<xsl:variable name="n" select="fun:percentEncode(normalize-space($element/@nr))" as="xs:string"/>
@@ -210,21 +204,8 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 			                if (string-length($n) = 0) then '' else concat('/',$n))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='aufsatz-ebene'">
-			<xsl:variable name="id" as="xs:string">
-				<xsl:variable name="temp">
-					<xsl:if test="$element/@bez">
-						<xsl:value-of select="fun:percentEncode($element/@bez)"/>
-					</xsl:if>
-					<xsl:if test="$element/@bez and $element/@wert">
-						<xsl:value-of select="'/'"/>
-					</xsl:if>
-					<xsl:if test="$element/@wert">
-						<xsl:value-of select="fun:percentEncode($element/@wert)"/>
-					</xsl:if>
-				</xsl:variable>
-				<xsl:value-of select="string-join($temp,'')"/>
-			</xsl:variable>
-			<xsl:value-of select="concat($b-uri,'/aufsatz-ebene/', if (string-length($id) = 0) then 'noId' else $id)"/>
+			<xsl:variable name="id" select="fun:bez-wert-id($element/@bez,$element/@wert)" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/aufsatz-ebene',$id)"/>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="yes">ERROR - unknown identifier type for element: <xsl:value-of select="name($element)"/>.</xsl:message>
@@ -329,28 +310,37 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 
 <xsl:function name="fun:verweis-komhbe" as="xs:string">
 	<xsl:param name="e" as="element()"/>
+<!--
+The target document of that link is either beitrag or kommentierung.
+- If you want to know about link patterns for that kind of link, I would say the following:
+produkt + rn
+produkt + bez + wert
+produkt + bez + wert + rn
+produkt + vsk + rn
+produkt + vsk + par + rn
+produkt + vsk  + art
+produkt + vsk + art + rn
+produkt + vsk + par + abs
+produkt + vsk + art + abs
+-->
 	<xsl:value-of select="''"/>
 </xsl:function>
 
 <xsl:function name="fun:verweis-zs-id" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 <!--
-    produkt, jahr, heft, beilage, start-seite, end-seite
-    produkt, jahr, heft, beilage, start-seite
-    produkt, jahr, heft, start-seite, end-seite
-    produkt, jahr, heft, start-seite
-    produkt, jahr, start-seite, end-seite
-    produkt, jahr, start-seite
-    produkt, band, heft, beilage, start-seite, end-seite
-    produkt, band, heft, beilage, start-seite
-    produkt, band, heft, start-seite, end-seite
-    produkt, band, heft, start-seite
+    produkt, jahr, heft, beilage, start-seite [, pos-auf-seite][, end-seite]
+    produkt, jahr, heft, start-seite [, pos-auf-seite][, end-seite]
+    produkt, jahr, start-seite [, pos-auf-seite][, end-seite]
+    produkt, band, heft, beilage, start-seite [, pos-auf-seite][, end-seite]
+    produkt, band, heft, start-seite [, pos-auf-seite][, end-seite]
 -->
 	<xsl:variable name="uri">
-		<xsl:value-of select="concat(fun:percentEncode($e/@produkt),'/',fun:percentEncode(concat($e/@jahr,$e/@band)))"/>
+		<xsl:value-of select="concat(fun:percentEncode($e/@produkt),'/volume.',fun:percentEncode(concat($e/@jahr,$e/@band)))"/>
 		<xsl:value-of select="if (string-length($e/@heft) &gt; 0) then concat('/issue.',fun:percentEncode($e/@heft)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@beilage) &gt; 0) then concat('/supplement.',fun:percentEncode($e/@beilage)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start-p.',fun:percentEncode($e/@start-seite)) else ''"/>
+		<xsl:value-of select="if (string-length($e/@pos-auf-seite) &gt; 0) then concat('/position.',fun:percentEncode($e/@pos-auf-seite)) else ''"/>
 		<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end-p.',fun:percentEncode($e/@end-seite)) else ''"/>
 	</xsl:variable>
 	<xsl:value-of select="normalize-space($uri)"/>
@@ -492,10 +482,7 @@ xsl:function name="fun:idOfZuordnungProdukt" as="xs:string">
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:for-each>
-	<xsl:apply-templates select="*/autor/*">
-		<xsl:with-param name="namespace" select="$dcterms" as="xs:string"/>
-		<xsl:with-param name="property" select="'creator'" as="xs:string"/>
-	</xsl:apply-templates>
+	<xsl:apply-templates select="*/autor"/>
 </xsl:template>
 
 <xsl:template match="zuordnung-produkt" mode="top-level"/>

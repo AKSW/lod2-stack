@@ -69,10 +69,7 @@
 				<xsl:if test="@nr">
 					<bibo:number><xsl:value-of select="@nr"/></bibo:number>
 				</xsl:if>
-				<xsl:apply-templates select="autor/*">
-					<xsl:with-param name="namespace" select="$dcterms" as="xs:string"/>
-					<xsl:with-param name="property" select="'creator'" as="xs:string"/>
-				</xsl:apply-templates>
+				<xsl:apply-templates select="autor"/>
 				<rdf:value rdf:parseType="Literal">
 					<xsl:apply-templates mode="xml-literal"/>
 				</rdf:value>

@@ -60,7 +60,17 @@
 	<xsl:for-each select="titel-trefferliste">
 		<dcterms:alternative xml:lang="{fun:language(@sprache)}"><xsl:apply-templates select="." mode="plain-literal"/></dcterms:alternative>
 	</xsl:for-each>
-	<xsl:apply-templates select="*/*"/>
+	<xsl:apply-templates select="*"/>
+</xsl:template>
+
+<xsl:template match="zwischen-titel">
+	<xsl:if test="string-length(normalize-space(titel)) &gt; 0">
+		<wkd:heading xml:lang="{fun:language(titel/@sprache)}"><xsl:apply-templates select="titel" mode="plain-literal"/></wkd:heading>
+	</xsl:if>
+	<xsl:if test="string-length(titel-zusatz) &gt; 0">
+		<wkd:subheading xml:lang="{fun:language(titel-zusatz/@sprache)}"><xsl:value-of select="string(titel-zusatz)"/></wkd:subheading>
+	</xsl:if>
+	<xsl:apply-templates select="*"/>
 </xsl:template>
 
 <xsl:template match="titel | titel-trefferliste" mode="plain-literal">
@@ -148,7 +158,7 @@
    	</wkd:mdProperty>
 </xsl:template>
 
-<xsl:template match="metadaten-gruppe[not(@bezeichnung=('createmodifiedat','handler[[keywords]]','handler[[categories]]','handler[[vwdata]]'))]">
+<xsl:template match="metadaten-gruppe[not(@bezeichnung=('createmodifiedat','handler[[keywords]]','handler[[categories]]','handler[[vwdata]]','rechtsgebiete-red'))]">
 	<wkd:mdProperty rdf:parseType="Resource">
 		<rdfs:label><xsl:value-of select="@bezeichnung"/></rdfs:label>
 		<rdf:value rdf:parseType="Resource">
@@ -236,6 +246,14 @@
 	</xsl:apply-templates>
 </xsl:template>
 
+<!-- autor -->
+<xsl:template match="autor">
+	<xsl:apply-templates select="*">
+		<xsl:with-param name="namespace" select="$dcterms" as="xs:string"/>
+		<xsl:with-param name="property" select="'creator'" as="xs:string"/>
+	</xsl:apply-templates>
+</xsl:template>
+
 <!-- Organisation Concept -->
 <xsl:template match="organisation">
 	<xsl:param name="namespace" select="$dcterms" as="xs:string"/>
@@ -256,7 +274,7 @@
 	</xsl:element>
 </xsl:template>
 
-<!-- Organisation Concept -->
+<!-- Person Concept -->
 <xsl:template match="person">
 	<xsl:param name="namespace" select="$dcterms" as="xs:string"/>
 	<xsl:param name="property" select="'creator'" as="xs:string"/>

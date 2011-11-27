@@ -55,7 +55,6 @@
 			</dcterms:Agent>
 		</bibo:owner>
 	</xsl:if>
-	<xsl:apply-templates select="autor/*"/>
 	<xsl:call-template name="doc-parts-b"/>
 	<xsl:apply-templates select="*"/>
 </xsl:template>

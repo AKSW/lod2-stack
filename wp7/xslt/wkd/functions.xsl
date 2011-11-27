@@ -94,6 +94,8 @@
 	<data:entry><data:de>pressemitteilung</data:de><data:en>press_release</data:en></data:entry>
 	<data:entry><data:de>pressemitteilung/typ</data:de><data:en>press_release/type</data:en></data:entry>
 	<data:entry><data:de>aufsatz</data:de><data:en>journal_article</data:en></data:entry>
+	<data:entry><data:de>beitrag</data:de><data:en>contribution</data:en></data:entry>
+	<data:entry><data:de>beitrag-rn</data:de><data:en>contribution</data:en></data:entry>
 	<data:entry><data:de>herkunft</data:de><data:en>origin</data:en></data:entry>
 	<data:entry><data:de>organisation</data:de><data:en>organisation</data:en></data:entry>
 	<data:entry><data:de>anhang</data:de><data:en>appendix</data:en></data:entry>
@@ -230,6 +232,12 @@
 			<xsl:sequence select="($segments[$l], string-join(subsequence($segments, 1, $l - 1),$token))"/>
 		</xsl:otherwise>
 	</xsl:choose>
+</xsl:function>
+
+<xsl:function name="fun:bez-wert-id" as="xs:string">
+	<xsl:param name="bez" as="xs:string"/>
+	<xsl:param name="wert" as="xs:string"/>
+	<xsl:value-of select="concat('/b.',fun:percentEncode($bez),'_w.',fun:percentEncode($wert))"/>
 </xsl:function>
 
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.

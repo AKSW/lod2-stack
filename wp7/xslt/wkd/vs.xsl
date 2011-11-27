@@ -60,7 +60,7 @@
 	<xsl:if test="string-length(vs-titel-kopf/vs-abk) &gt; 0">
 		<wkd:abbreviation xml:lang="{fun:language(vs-titel-kopf/vs-abk/@sprache)}"><xsl:apply-templates select="vs-titel-kopf/vs-abk" mode="plain-literal"/></wkd:abbreviation>
 	</xsl:if>
-	<xsl:apply-templates select="*/*"/>
+	<xsl:apply-templates select="*"/>
 </xsl:template>
 
 <xsl:template match="vs-vorspann">
@@ -220,10 +220,8 @@
 
 <xsl:template match="artikel-ebene">
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
-	<xsl:variable name="id" as="xs:string">
-		<xsl:value-of select="concat(@bez,'/',@wert)"/>
-	</xsl:variable>
-	<xsl:variable name="ae-uri" select="concat($p-uri,'/art-ebene/',fun:percentEncode($id))" as="xs:string"/>
+	<xsl:variable name="id" select="fun:bez-wert-id(@bez,@wert)" as="xs:string"/>
+	<xsl:variable name="ae-uri" select="concat($p-uri,'/art-ebene',$id)" as="xs:string"/>
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$ae-uri}">
 		<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
@@ -234,10 +232,8 @@
 
 <xsl:template match="artikel-ebene" mode="top-level">
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
-	<xsl:variable name="id" as="xs:string">
-		<xsl:value-of select="concat(@bez,'/',@wert)"/>
-	</xsl:variable>
-	<xsl:variable name="ae-uri" select="concat($p-uri,'/art-ebene/',fun:percentEncode($id))" as="xs:string"/>
+	<xsl:variable name="id" select="fun:bez-wert-id(@bez,@wert)" as="xs:string"/>
+	<xsl:variable name="ae-uri" select="concat($p-uri,'/art-ebene',$id)" as="xs:string"/>
 	<xsl:apply-templates select="*" mode="top-level">
 		<xsl:with-param name="p-uri" select="$ae-uri" as="xs:string" tunnel="yes"/>
 	</xsl:apply-templates>
@@ -284,8 +280,6 @@
 		<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
 	</xsl:apply-templates>
 </xsl:template>
-
-<xsl:template match="vz-inhalt-auto" mode="#all"/>
 
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
