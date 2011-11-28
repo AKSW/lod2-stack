@@ -220,7 +220,7 @@
 
 <xsl:template match="artikel-ebene">
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
-	<xsl:variable name="id" select="fun:bez-wert-id(@bez,@wert)" as="xs:string"/>
+	<xsl:variable name="id" select="fun:bez-wert-id(if (@bez) then @bez else '',if (@wert) then @wert else '')" as="xs:string"/>
 	<xsl:variable name="ae-uri" select="concat($p-uri,'/art-ebene',$id)" as="xs:string"/>
 	<dcterms:hasPart>
 		<metalex:Fragment rdf:about="{$ae-uri}">
@@ -232,7 +232,7 @@
 
 <xsl:template match="artikel-ebene" mode="top-level">
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
-	<xsl:variable name="id" select="fun:bez-wert-id(@bez,@wert)" as="xs:string"/>
+	<xsl:variable name="id" select="fun:bez-wert-id(if (@bez) then @bez else '',if (@wert) then @wert else '')" as="xs:string"/>
 	<xsl:variable name="ae-uri" select="concat($p-uri,'/art-ebene',$id)" as="xs:string"/>
 	<xsl:apply-templates select="*" mode="top-level">
 		<xsl:with-param name="p-uri" select="$ae-uri" as="xs:string" tunnel="yes"/>

@@ -104,7 +104,8 @@
 							<xsl:value-of select="fun:verweis-zs-id($product)"/>
 						</xsl:when>
 						<xsl:when test="name($product)='verweis-komhbe'">
-							<xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-komhbe.</xsl:message>
+							<xsl:value-of select="concat('/', $product/@produkt, fun:bez-wert-id(if ($doc/@bez) then $doc/@bez else '',if ($doc/@wert) then $doc/@wert else ''))"/>
+							<!--xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-komhbe.</xsl:message-->
 						</xsl:when>
 						<xsl:when test="name($product)='ep-produkt'">
 							<xsl:value-of select="concat('/', $product/@produkt,
@@ -117,7 +118,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:value-of select="concat($doc/@typ, fun:bez-wert-id($doc/@bez,$doc/@wert),'/',$identifier,fun:idOfZuordnungProduktRubrik($doc/zuordnung-produkt))"/>
+				<xsl:value-of select="concat($doc/@typ, fun:bez-wert-id(if ($doc/@bez) then $doc/@bez else '',if ($doc/@wert) then $doc/@wert else ''),'/',$identifier,fun:idOfZuordnungProduktRubrik($doc/zuordnung-produkt))"/>
 			</xsl:when>
 			<!-- next type -->
 			<xsl:otherwise>
@@ -158,7 +159,7 @@
 		<xsl:when test="$doc-type='pressemitteilung'">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
-		<xsl:when test="$doc-type='beitrag'">
+		<xsl:when test="$doc-type=('beitrag','beitrag-rn')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -183,7 +184,7 @@
 			<xsl:value-of select="concat($b-uri,'/art/',fun:percentEncode($element/@art))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-ebene'">
-			<xsl:variable name="id" select="fun:bez-wert-id($element/@bez,$element/@wert)" as="xs:string"/>
+			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
 			<xsl:value-of select="concat($b-uri,'/vs-ebene',$id)"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-anlage'">
@@ -192,7 +193,7 @@
 			                             if (string-length($n) = 0) then '' else concat('/',$n))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-anlage-ebene'">
-			<xsl:variable name="id" select="fun:bez-wert-id($element/@bez,$element/@wert)" as="xs:string"/>
+			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
 			<xsl:variable name="n" select="fun:percentEncode(normalize-space($element/@anlage-nr))" as="xs:string"/>
 			<xsl:value-of select="concat($b-uri,'/vs-anlage-ebene',
 			                if (string-length($n) = 0) then '' else concat('/',$n),
@@ -204,8 +205,12 @@
 			                if (string-length($n) = 0) then '' else concat('/',$n))"/>
 		</xsl:when>
 		<xsl:when test="name($element)='aufsatz-ebene'">
-			<xsl:variable name="id" select="fun:bez-wert-id($element/@bez,$element/@wert)" as="xs:string"/>
+			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
 			<xsl:value-of select="concat($b-uri,'/aufsatz-ebene',$id)"/>
+		</xsl:when>
+		<xsl:when test="name($element)=('beitrag-ebene','beitrag-rn-ebene')">
+			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/beitrag-ebene',$id)"/>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="yes">ERROR - unknown identifier type for element: <xsl:value-of select="name($element)"/>.</xsl:message>

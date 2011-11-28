@@ -30,7 +30,7 @@
  Module: beitrag module
  -->
 
-<xsl:template match="beitrag">
+<xsl:template match="beitrag | beitrag-rn">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:if test="@start-seite">
 		<bibo:pageStart><xsl:value-of select="@start-seite"/></bibo:pageStart>
@@ -59,14 +59,27 @@
 	<xsl:apply-templates select="*"/>
 </xsl:template>
 
-<xsl:template match="beitrag" mode="top-level">
+<xsl:template match="beitrag | beitrag-rn" mode="top-level">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:apply-templates select="*" mode="top-level"/>
 </xsl:template>
 
+<!-- todo
+add structure 
+- container-block ?
+- container-auspraegung ?
+- anlage
+- anlage-ebene
+- bearbeiter -> bibo:editor
+- beitrag-quelle (person, verweis-url, organisation) -> source
+- lexikon-eintrag
+handle
+- beitrag-rn
+- randnummer ? 
+ -->
 <xsl:template name="doc-parts-b">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<xsl:for-each-group select="/wkdsc/aufsatz//aufsatz-ebene" group-by="name()">
+	<xsl:for-each-group select="/wkdsc/(beitrag | beitrag-rn)//(beitrag-ebene | beitrag-rn-ebene)" group-by="name()">
 		<xsl:for-each select="current-group()">
 			<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)" as="xs:string"/>
 			<metalex:fragment rdf:resource="{$uri}"/>
@@ -74,7 +87,7 @@
 	</xsl:for-each-group>
 </xsl:template>
 
-<xsl:template match="beitrag-ebene">
+<xsl:template match="beitrag-ebene | beitrag-rn-ebene">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
 	<dcterms:hasPart>
@@ -87,7 +100,7 @@
 	</dcterms:hasPart>
 </xsl:template>
 
-<xsl:template match="beitrag-ebene" mode="top-level">
+<xsl:template match="beitrag-ebene | beitrag-rn-ebene" mode="top-level">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
 	<xsl:apply-templates select="*" mode="top-level">
