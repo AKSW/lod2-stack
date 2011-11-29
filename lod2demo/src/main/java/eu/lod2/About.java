@@ -70,10 +70,9 @@ public class About extends CustomComponent
 
 	Label general_info = new Label(
 		"The LOD2 Consortium partners bring the essential know-how and software, which is necessary to build the <a href=\"http://stack.lod2.eu\">LOD2 Stack</a>. " +
-                " In particular, we have considered existing state-of-the-art software components developed by the LOD2 members which are freely available under an Open Source license.<br/>" +
-		" In order to use the LOD2 Technology Stack in your Debian/Ubuntu System have a look at our <a href=\"http://lod2-stack.googlecode.com/svn/trunk/documents/HowToStart.pdf\">HOWTO start guide</a>.<br/>" + 
+        " In particular, we have considered existing state-of-the-art software components developed by the LOD2 members which are freely available under an Open Source license.<br/>" +
+		" In order to use the LOD2 Technology Stack in your Debian/Ubuntu System have a look at our <a href=\"http://wiki.semantic-web.at/display/LOD2DOC/Home\">LOD2 Documentation</a> wiki.<br/>" + 
 		" You are also welcome to contribute new components to the LOD2 stack." + 
-		" More information about how to add your component can be found in our <a href=\"http://lod2-stack.googlecode.com/svn/trunk/documents/HowToContribute.pdf\">HOWTO contribute guide</a>.<br/>" + 
 		" The LOD2 stack maintainers can be contacted at <a href=\"mailto:support-stack@lod2.eu\">support-stack@lod2.eu</a>.<p/>"
 		, 
 		Label.CONTENT_XHTML);
