@@ -1509,6 +1509,15 @@ may contain sup/sub tags</rdfs:comment>
     
 
 
+    <!-- http://schema.wolterskluwer.de/heading -->
+
+    <owl:DatatypeProperty rdf:about="http://schema.wolterskluwer.de/heading">
+        <rdfs:label>heading</rdfs:label>
+        <rdfs:label xml:lang="de">zwischen-titel</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://schema.wolterskluwer.de/pagePosition -->
 
     <owl:DatatypeProperty rdf:about="http://schema.wolterskluwer.de/pagePosition">
@@ -1533,7 +1542,7 @@ may contain sup/sub tags</rdfs:comment>
 
     <owl:DatatypeProperty rdf:about="http://schema.wolterskluwer.de/subheading">
         <rdfs:label>subheading</rdfs:label>
-        <rdfs:label xml:lang="de">zwischen-titel</rdfs:label>
+        <rdfs:label xml:lang="de">zwischen-titel/titel-zusatz</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     </owl:DatatypeProperty>
     
