@@ -105,7 +105,6 @@
 						</xsl:when>
 						<xsl:when test="name($product)='verweis-komhbe'">
 							<xsl:value-of select="concat('/', $product/@produkt, fun:bez-wert-id(if ($doc/@bez) then $doc/@bez else '',if ($doc/@wert) then $doc/@wert else ''))"/>
-							<!--xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-komhbe.</xsl:message-->
 						</xsl:when>
 						<xsl:when test="name($product)='ep-produkt'">
 							<xsl:value-of select="concat('/', $product/@produkt,
@@ -328,7 +327,37 @@ produkt + vsk + art + rn
 produkt + vsk + par + abs
 produkt + vsk + art + abs
 -->
-	<xsl:value-of select="''"/>
+	<xsl:variable name="linked-doc-base-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('kommentierung'),'/')"/>
+	<xsl:variable name="uri">
+		<xsl:value-of select="fun:percentEncode($e/@produkt)"/>
+		<xsl:choose>
+			<xsl:when test="$e/verweis-vs">
+				<xsl:variable name="vs" select="$e/verweis-vs[1]" as="element()"/>
+				<xsl:value-of select="concat('vs.',$vs/@vsk)"/>
+				<xsl:value-of select="if (string-length($vs/@art) &gt; 0) then concat('/art/',fun:percentEncode($vs/@art)) else ''"/>
+				<xsl:value-of select="if (string-length($vs/@par) &gt; 0) then concat('/par/',fun:percentEncode($vs/@par)) else ''"/>
+				<xsl:value-of select="if (string-length($vs/@abs) &gt; 0) then concat('/section/',fun:percentEncode($vs/@abs)) else ''"/>
+			</xsl:when>
+			<xsl:when test="$e/verweis-es">
+				<xsl:variable name="es" select="$e/verweis-es[1]" as="element()"/>
+				<xsl:value-of select="concat('es.',fun:verweis-es-id($es))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="if (string-length($e/@jahr) &gt; 0) then concat('/volume.',fun:percentEncode($e/@jahr)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@auflage) &gt; 0) then concat('/edition.',fun:percentEncode($e/@auflage)) else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez1,$e/@wert1)) &gt; 0) then fun:bez-wert-id(if ($e/@bez1) then $e/@bez1 else '',if ($e/@wert1) then $e/@wert1 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez2,$e/@wert2)) &gt; 0) then fun:bez-wert-id(if ($e/@bez2) then $e/@bez2 else '',if ($e/@wert2) then $e/@wert2 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez3,$e/@wert3)) &gt; 0) then fun:bez-wert-id(if ($e/@bez3) then $e/@bez3 else '',if ($e/@wert3) then $e/@wert3 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez4,$e/@wert4)) &gt; 0) then fun:bez-wert-id(if ($e/@bez4) then $e/@bez4 else '',if ($e/@wert4) then $e/@wert4 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez5,$e/@wert5)) &gt; 0) then fun:bez-wert-id(if ($e/@bez5) then $e/@bez5 else '',if ($e/@wert5) then $e/@wert5 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez6,$e/@wert6)) &gt; 0) then fun:bez-wert-id(if ($e/@bez6) then $e/@bez6 else '',if ($e/@wert6) then $e/@wert6 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez7,$e/@wert7)) &gt; 0) then fun:bez-wert-id(if ($e/@bez7) then $e/@bez7 else '',if ($e/@wert7) then $e/@wert7 else '') else ''"/>
+				<xsl:value-of select="if (string-length(concat($e/@bez8,$e/@wert8)) &gt; 0) then fun:bez-wert-id(if ($e/@bez8) then $e/@bez8 else '',if ($e/@wert8) then $e/@wert8 else '') else ''"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:value-of select="if (string-length($e/@rn) &gt; 0) then concat('/rn.',fun:percentEncode($e/@rn)) else ''"/>
+	</xsl:variable>
+	<xsl:value-of select="concat($linked-doc-base-uri,normalize-space($uri))"/>
 </xsl:function>
 
 <xsl:function name="fun:verweis-zs-id" as="xs:string">
@@ -406,6 +435,9 @@ produkt + vsk + art + abs
 </xsl:template>
 
 <xsl:template match="verweis-komhbe">
+	<xsl:call-template name="write-reference">
+		<xsl:with-param name="target" select="fun:verweis-komhbe(.)"/>
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template match="verweis-zs">

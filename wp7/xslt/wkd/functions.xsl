@@ -96,6 +96,8 @@
 	<data:entry><data:de>aufsatz</data:de><data:en>journal_article</data:en></data:entry>
 	<data:entry><data:de>beitrag</data:de><data:en>contribution</data:en></data:entry>
 	<data:entry><data:de>beitrag-rn</data:de><data:en>contribution</data:en></data:entry>
+	<data:entry><data:de>kommentierung</data:de><data:en>comment</data:en></data:entry>
+	<data:entry><data:de>kommentierung-rn</data:de><data:en>comment</data:en></data:entry>
 	<data:entry><data:de>herkunft</data:de><data:en>origin</data:en></data:entry>
 	<data:entry><data:de>organisation</data:de><data:en>organisation</data:en></data:entry>
 	<data:entry><data:de>anhang</data:de><data:en>appendix</data:en></data:entry>
