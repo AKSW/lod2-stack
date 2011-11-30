@@ -518,8 +518,8 @@ produkt + vsk + art + abs
 				<xsl:with-param name="target" select="$object" as="xs:string"/>
 			</xsl:call-template>
 		</xsl:if>
+		<xsl:apply-templates select="verweis-vs | verweis-es"/>
 	</xsl:for-each>
-	<xsl:apply-templates select="*/autor"/>
 </xsl:template>
 
 <xsl:template match="zuordnung-produkt" mode="top-level"/>
