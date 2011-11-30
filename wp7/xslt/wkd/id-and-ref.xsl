@@ -438,6 +438,7 @@ produkt + vsk + art + abs
 	<xsl:call-template name="write-reference">
 		<xsl:with-param name="target" select="fun:verweis-komhbe(.)"/>
 	</xsl:call-template>
+	<xsl:apply-templates select="verweis-vs | verweis-es"/>
 </xsl:template>
 
 <xsl:template match="verweis-zs">
