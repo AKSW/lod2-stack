@@ -310,6 +310,7 @@
 <xsl:function name="fun:verweis-esa" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 	<xsl:value-of select="''"/>
+	<!-- to do -->
 </xsl:function>
 
 <xsl:function name="fun:verweis-komhbe" as="xs:string">
@@ -411,6 +412,7 @@ produkt + vsk + art + abs
 <xsl:function name="fun:verweis-lex" as="xs:string">
 	<xsl:param name="e" as="element()"/>
 	<xsl:value-of select="''"/>
+	<!-- to do -->
 </xsl:function>
 
 <xsl:function name="fun:verweis-va" as="xs:string">
@@ -432,6 +434,7 @@ produkt + vsk + art + abs
 </xsl:template>
 
 <xsl:template match="verweis-esa">
+	<!-- to do -->
 </xsl:template>
 
 <xsl:template match="verweis-komhbe">
@@ -468,6 +471,7 @@ produkt + vsk + art + abs
 <xsl:template match="verweis-vtext-id"/>
 
 <xsl:template match="verweis-lex"/>
+	<!-- to do -->
 
 <xsl:template match="verweis-va"/>
 
