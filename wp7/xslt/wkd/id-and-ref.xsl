@@ -117,7 +117,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:value-of select="concat($doc/@typ, fun:bez-wert-id(if ($doc/@bez) then $doc/@bez else '',if ($doc/@wert) then $doc/@wert else ''),'/',$identifier,fun:idOfZuordnungProduktRubrik($doc/zuordnung-produkt))"/>
+				<xsl:value-of select="concat($doc/@typ, fun:bez-wert-id(if ($doc/@bez) then $doc/@bez else '',if ($doc/@wert) then $doc/@wert else ''),$identifier,fun:idOfZuordnungProduktRubrik($doc/zuordnung-produkt))"/>
 			</xsl:when>
 			<!-- next type -->
 			<xsl:otherwise>
@@ -212,6 +212,9 @@
 			<xsl:value-of select="concat($b-uri,'/beitrag-ebene',$id)"/>
 		</xsl:when>
 		<xsl:otherwise>
+			<!--
+			todo: rn, lex, kom, ...
+			 -->
 			<xsl:message terminate="yes">ERROR - unknown identifier type for element: <xsl:value-of select="name($element)"/>.</xsl:message>
 		</xsl:otherwise>
 	</xsl:choose>
@@ -451,12 +454,43 @@ produkt + vsk + art + abs
 </xsl:template>
 
 <xsl:template match="verweis-url">
+	<xsl:param name="referenceType" tunnel="yes" as="xs:string" select="''"/>
+	<xsl:variable name="t" as="xs:string*">
+		<xsl:variable name="href" select="fun:verweis-url(.)" as="xs:string"/>
+		<xsl:choose>
+			<xsl:when test="@typ = 'mailto'">
+				<xsl:value-of select="if (contains($href,'://')) then $href else concat('mailto://',$href)"/>
+			</xsl:when>
+			<xsl:when test="@typ = 'http'">
+				<xsl:value-of select="if (contains($href,'://')) then $href else concat('http://',$href)"/>
+			</xsl:when>
+			<xsl:when test="@typ = 'https'">
+				<xsl:value-of select="if (contains($href,'://')) then $href else concat('https://',$href)"/>
+			</xsl:when>
+			<xsl:when test="@typ = 'ftp'">
+				<xsl:value-of select="if (contains($href,'://')) then $href else concat('ftp://',$href)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$href"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="href" select="string-join($t,'')" as="xs:string"/>
 	<xsl:call-template name="write-reference">
-		<xsl:with-param name="target" select="fun:verweis-url(.)"/>
+		<xsl:with-param name="referenceType" tunnel="yes" as="xs:string" select="substring-before($href,'://')"/>
+		<xsl:with-param name="target" select="$href" as="xs:string"/>
 	</xsl:call-template>
 </xsl:template>
 
 <xsl:template match="fundstelle">
+	<xsl:param name="referenceType" tunnel="yes" as="xs:string"/>
+	<xsl:variable name="rt" as="xs:string" select="if ($referenceType=('quelle')) then $referenceType else name()"/>
+	<xsl:apply-templates select="*">
+		<xsl:with-param name="referenceType" as="xs:string" tunnel="yes" select="$rt"/>
+	</xsl:apply-templates>
+</xsl:template>
+
+<xsl:template match="quelle">
 	<xsl:apply-templates select="*">
 		<xsl:with-param name="referenceType" as="xs:string" tunnel="yes" select="name()"/>
 	</xsl:apply-templates>
@@ -486,6 +520,9 @@ produkt + vsk + art + abs
 				<dcterms:source rdf:resource="{$target}"/>
 			</xsl:when>
 			<xsl:when test="$referenceType = 'pm-quelle'">
+				<dcterms:source rdf:resource="{$target}"/>
+			</xsl:when>
+			<xsl:when test="$referenceType = ('quelle','beitrag-quelle')">
 				<dcterms:source rdf:resource="{$target}"/>
 			</xsl:when>
 			<xsl:when test="$referenceType = 'fundstellen'">

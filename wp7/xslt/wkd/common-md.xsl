@@ -246,6 +246,14 @@
 	</xsl:apply-templates>
 </xsl:template>
 
+<!-- bearbeiter -->
+<xsl:template match="bearbeiter">
+	<xsl:apply-templates select="*">
+		<xsl:with-param name="namespace" select="$bibo" as="xs:string"/>
+		<xsl:with-param name="property" select="'editor'" as="xs:string"/>
+	</xsl:apply-templates>
+</xsl:template>
+
 <!-- autor -->
 <xsl:template match="autor">
 	<xsl:apply-templates select="*">
@@ -272,6 +280,16 @@
 			</xsl:if>
 		</skos:Concept>
 	</xsl:element>
+</xsl:template>
+
+<xsl:template match="zu-organisation">
+	<skos:related>
+		<skos:Concept>
+			<rdf:type rdf:resource="{$foaf}Organization"/>
+			<foaf:name><xsl:value-of select="string(.)"/></foaf:name>
+			<skos:prefLabel xml:lang="de"><xsl:value-of select="string(.)"/></skos:prefLabel>
+		</skos:Concept>
+	</skos:related>
 </xsl:template>
 
 <!-- Person Concept -->
@@ -302,9 +320,17 @@
 				<xsl:apply-templates select="verweis-url">
 					<xsl:with-param name="referenceType" as="xs:string" select="if (@typ) then @typ else 'http'" tunnel="yes"/>
 				</xsl:apply-templates>
+				<xsl:apply-templates select="zu-organisation"/>
 			</xsl:for-each>
+			<xsl:apply-templates select="anmerkung"/>
 		</skos:Concept>
 	</xsl:element>
+</xsl:template>
+
+<xsl:template match="anmerkung">
+	<skos:note rdf:parseType="Literal">
+		<xsl:apply-templates select="." mode="xml-literal"/>
+	</skos:note>
 </xsl:template>
 
 <!-- Create hierarchy and for all used subjects -->

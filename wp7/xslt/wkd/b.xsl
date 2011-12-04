@@ -66,16 +66,13 @@
 
 <!-- todo
 add structure 
-- container-block ?
-- container-auspraegung ?
-- anlage
-- anlage-ebene
-- bearbeiter -> bibo:editor
-- beitrag-quelle (person, verweis-url, organisation) -> source
+- container-block - no (spec)
+- container-auspraegung - no (spec)
+- anlage - no (spec)
+- anlage-ebene - no (spec)
 - lexikon-eintrag
 handle
 - beitrag-rn
-- randnummer ? 
  -->
 <xsl:template name="doc-parts-b">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
@@ -85,6 +82,12 @@ handle
 			<metalex:fragment rdf:resource="{$uri}"/>
 		</xsl:for-each>
 	</xsl:for-each-group>
+</xsl:template>
+
+<xsl:template match="beitrag-quelle">
+	<xsl:apply-templates>
+		<xsl:with-param name="referenceType" as="xs:string" tunnel="yes" select="name(.)"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="beitrag-ebene | beitrag-rn-ebene">
@@ -125,16 +128,16 @@ handle
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 		<scenario default="yes" name="KommP_BY_2010_01_17" userelativepaths="yes" externalpreview="no" url="..\..\Data\Doctrine\KommP_BY_2010_01_17.xml" htmlbaseurl="" outputurl="..\..\result\doc\KommP_BY_2010_01_17.rdf" processortype="saxon8"
@@ -142,16 +145,16 @@ handle
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

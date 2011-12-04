@@ -124,9 +124,13 @@
 <xsl:variable name="deuDT2biboDT">
 	<data:entry><data:de>vorschrift</data:de><data:bibo>Legislation</data:bibo></data:entry>
 	<data:entry><data:de>entscheidung</data:de><data:bibo>LegalDecision</data:bibo></data:entry>
-	<data:entry><data:de>aufsatz</data:de><data:bibo>Article</data:bibo></data:entry>
-	<data:entry><data:de>aufsatz-es</data:de><data:bibo>Article</data:bibo></data:entry>
+	<data:entry><data:de>aufsatz</data:de><data:bibo>Thesis</data:bibo></data:entry>
+	<data:entry><data:de>aufsatz-es</data:de><data:bibo>Thesis</data:bibo></data:entry>
 	<data:entry><data:de>pressemitteilung</data:de><data:bibo>LegalCaseDocument</data:bibo></data:entry>
+	<data:entry><data:de>beitrag</data:de><data:bibo>Article</data:bibo></data:entry>
+	<data:entry><data:de>beitrag-rn</data:de><data:bibo>Article</data:bibo></data:entry>
+	<data:entry><data:de>kommentierung</data:de><data:bibo>Note</data:bibo></data:entry>
+	<data:entry><data:de>kommentierung-rn</data:de><data:bibo>Note</data:bibo></data:entry>
 </xsl:variable>
 
 <xsl:key name="bibo-class" match="data:entry" use="data:de"/>

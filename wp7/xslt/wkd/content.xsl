@@ -27,6 +27,12 @@
  Module: Content transformation - ROUGH XML-literal constructions
  -->
 
+<xsl:template match="anmerkung" mode="xml-literal">
+	<xhtml:div xml:lang="{fun:language(@sprache)}">
+		<xsl:apply-templates mode="xml-literal"/>
+	</xhtml:div>
+</xsl:template>
+
 <!-- vs-vertragsparteien is part of "vorspann" content -->
 <xsl:template match="vs-vertragsparteien" mode="xml-literal">
 	<xhtml:div>
