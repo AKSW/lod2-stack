@@ -149,6 +149,21 @@ Tunnel parameters used
 	<xsl:apply-templates/>
 </xsl:template>
 
+<!-- es general -->
+<xsl:template match="es-besprechung">
+	<wkd:hasCaseReview rdf:parseType="Resource">
+		<xsl:if test="string-length(normalize-space(titel)) &gt; 0">
+			<dcterms:title xml:lang="{fun:language(titel/@sprache)}"><xsl:apply-templates select="titel" mode="plain-literal"/></dcterms:title>
+		</xsl:if>
+		<xsl:if test="string-length(titel-zusatz) &gt; 0">
+			<wkd:subTitle xml:lang="{fun:language(titel-zusatz/@sprache)}"><xsl:value-of select="string(titel-zusatz)"/></wkd:subTitle>
+		</xsl:if>
+		<xsl:apply-templates/>
+	</wkd:hasCaseReview>
+</xsl:template>
+
+<xsl:template match="es-besprechung/titel | es-besprechung/titel-zusatz"/>
+
 <!-- cites -->
 <xsl:template match="zitat-vs">
 	<xsl:variable name="cited-doc-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('vorschrift'),'/',fun:percentEncode(@vsk))"/>
@@ -687,7 +702,7 @@ Tunnel parameters used
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="error" userelativepaths="yes" externalpreview="no" url="..\Data\xmlerrors\Frieser_FAK_ErbR_3_bd_erbstg_par_14.xml" htmlbaseurl="" outputurl="..\result\error.rdf" processortype="saxon8" useresolver="yes" profilemode="0"
+		<scenario default="yes" name="error" userelativepaths="yes" externalpreview="no" url="..\Data\xmlerrors\Frieser_FAK_ErbR_3_bd_erbstg_par_14.xml" htmlbaseurl="" outputurl="..\result\error.rdf" processortype="saxon8" useresolver="yes" profilemode="0"
 		          profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -705,7 +720,7 @@ Tunnel parameters used
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="yes" name="beitrag" userelativepaths="yes" externalpreview="no" url="..\Data\beitrag\KommP_BY_2010_01_40.xml" htmlbaseurl="" outputurl="..\result\beitrag.rdf" processortype="saxon8" useresolver="yes" profilemode="0"
+		<scenario default="no" name="beitrag" userelativepaths="yes" externalpreview="no" url="..\Data\beitrag\KommP_BY_2010_01_40.xml" htmlbaseurl="" outputurl="..\result\beitrag.rdf" processortype="saxon8" useresolver="yes" profilemode="0"
 		          profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
