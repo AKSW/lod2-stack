@@ -243,7 +243,7 @@
 <xsl:function name="fun:bez-wert-id" as="xs:string">
 	<xsl:param name="bez" as="xs:string"/>
 	<xsl:param name="wert" as="xs:string"/>
-	<xsl:value-of select="concat('/b.',fun:percentEncode($bez),'_w.',fun:percentEncode($wert))"/>
+	<xsl:value-of select="concat('/b.',fun:percentEncode($bez),'_w.',fun:percentEncode(if ($wert='0') then '' else $wert))"/>
 </xsl:function>
 
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
