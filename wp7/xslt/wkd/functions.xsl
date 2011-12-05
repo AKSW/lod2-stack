@@ -169,16 +169,23 @@
 <!-- GENERAL UTILITY FUNCTIONS -->
 <xsl:function name="fun:dateDe2Iso" as="xs:string">
 	<xsl:param name="date" as="xs:string"/>
-	<xsl:analyze-string select="$date" regex="^([0-9]{{1,2}})\.([0-9]{{1,2}})\.([0-9]{{4}})$">
-		<xsl:matching-substring>
-			<xsl:variable name="m" select="if (string-length(regex-group(2)) = 2) then '' else '0'"/>
-			<xsl:variable name="d" select="if (string-length(regex-group(1)) = 2) then '' else '0'"/>
-			<xsl:value-of select="concat(regex-group(3),'-',$m,regex-group(2),'-',$d,regex-group(1))"/>
-		</xsl:matching-substring>
-		<xsl:non-matching-substring>
-			<xsl:value-of select="."/>
-		</xsl:non-matching-substring>
-	</xsl:analyze-string>
+	<xsl:choose>
+		<xsl:when test="string-length($date) &gt; 0">
+			<xsl:analyze-string select="$date" regex="^([0-9]{{1,2}})\.([0-9]{{1,2}})\.([0-9]{{4}})$">
+				<xsl:matching-substring>
+					<xsl:variable name="m" select="if (string-length(regex-group(2)) = 2) then '' else '0'"/>
+					<xsl:variable name="d" select="if (string-length(regex-group(1)) = 2) then '' else '0'"/>
+					<xsl:value-of select="concat(regex-group(3),'-',$m,regex-group(2),'-',$d,regex-group(1))"/>
+				</xsl:matching-substring>
+				<xsl:non-matching-substring>
+					<xsl:value-of select="."/>
+				</xsl:non-matching-substring>
+			</xsl:analyze-string>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="''"/>
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:function>
 
 <xsl:function name="fun:percentEncode" as="xs:string">
