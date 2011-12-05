@@ -91,10 +91,10 @@
 			<!-- Todo-->
 			<xsl:when test="$doc-type=('beitrag','beitrag-rn')">
 			    <!-- take the first link giving a product -->
-				<xsl:variable name="product" select="$doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0][1]" as="element()"/>
-				<xsl:if test="count($product)=0">
+				<xsl:if test="count($doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0])=0">
 					<xsl:message terminate="yes">No identifier (zuordnung-produkt/*[@produkt]) found for this document.</xsl:message>
 				</xsl:if>
+				<xsl:variable name="product" select="$doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0][1]" as="element()"/>
 				<xsl:variable name="identifier">
 					<xsl:choose>
 						<xsl:when test="name($product)='verweis-esa'">
