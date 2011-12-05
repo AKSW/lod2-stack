@@ -483,7 +483,7 @@ produkt + vsk + art + abs
 </xsl:template>
 
 <xsl:template match="fundstelle">
-	<xsl:param name="referenceType" tunnel="yes" as="xs:string"/>
+	<xsl:param name="referenceType" tunnel="yes" as="xs:string" select="''"/>
 	<xsl:variable name="rt" as="xs:string" select="if ($referenceType=('quelle')) then $referenceType else name()"/>
 	<xsl:apply-templates select="*">
 		<xsl:with-param name="referenceType" as="xs:string" tunnel="yes" select="$rt"/>
