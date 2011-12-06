@@ -57,7 +57,7 @@
 	</xhtml:p>
 </xsl:template>
 
-<xsl:template match="abbildung-block | objekt-block | zitat-block | container-auspraegung | anmerkung | tabelle" mode="xml-literal">
+<xsl:template match="abbildung-block | objekt-block | zitat-block | container-auspraegung | tabelle" mode="xml-literal">
 	<xhtml:div>
 		<xsl:apply-templates mode="xml-literal"/>
 	</xhtml:div>
