@@ -59,51 +59,51 @@ import eu.lod2.LOD2DemoState;
 public class ConfigurationTab extends CustomComponent
 {
 
-	// reference to the global internal state
-	private LOD2DemoState state;
-	private Label currentgraph;
+    // reference to the global internal state
+    private LOD2DemoState state;
+    private Label currentgraph;
 
     // fields
-    	private ComboBox graphSelector;
+    private ComboBox graphSelector;
 
-	public ConfigurationTab(LOD2DemoState st, Label cg) {
+    public ConfigurationTab(LOD2DemoState st, Label cg) {
 
-		// The internal state and 
-		state = st;
-		currentgraph = cg;
+        // The internal state and 
+        state = st;
+        currentgraph = cg;
 
-		VerticalLayout configurationTab = new VerticalLayout();
+        VerticalLayout configurationTab = new VerticalLayout();
 
-	    // Configuration form start
+        // Configuration form start
         // Set all properties at once for the moment.
         Form t2f = new Form();
         t2f.setCaption("Configuration");
 
 
-	// the graph selector
-	// it displays all acceptable graphs in Virtuoso 
-	// XXX TODO show only those which are editable in OntoWiki
-	graphSelector = new ComboBox("Select default graph: ");
-	addCandidateGraphs(graphSelector);
-	if (cg.getValue() != null 
-			&& cg.getValue() != "no current  graph selected"
-			&& cg.getValue() != "null"
-			) {
-		graphSelector.setValue(cg.getValue());
-		graphSelector.setColumns(cg.toString().length());
-	};
-	graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
-	t2f.getLayout().addComponent(graphSelector);
+        // the graph selector
+        // it displays all acceptable graphs in Virtuoso 
+        // XXX TODO show only those which are editable in OntoWiki
+        graphSelector = new ComboBox("Select default graph: ");
+        addCandidateGraphs(graphSelector);
+        if (cg.getValue() != null 
+                && cg.getValue() != "no current  graph selected"
+                && cg.getValue() != "null"
+           ) {
+            graphSelector.setValue(cg.getValue());
+            graphSelector.setColumns(cg.toString().length());
+        };
+        graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
+        t2f.getLayout().addComponent(graphSelector);
 
         // initialize the footer area of the form
         HorizontalLayout t2ffooterlayout = new HorizontalLayout();
         t2f.setFooter(t2ffooterlayout);
 
         Button commitButton = new Button("Set configuration", new ClickListener() {
-            public void buttonClick(ClickEvent event) {
+                public void buttonClick(ClickEvent event) {
                 storeConfiguration(event);
-            }
-        });
+                }
+                });
         commitButton.setDescription("Commit the new configuration settings.");
         t2f.getFooter().addComponent(commitButton);
 
@@ -112,55 +112,55 @@ public class ConfigurationTab extends CustomComponent
         // Configuration form end
 
 
-		// The composition root MUST be set
-		setCompositionRoot(configurationTab);
-	}
+        // The composition root MUST be set
+        setCompositionRoot(configurationTab);
+    }
 
     private void storeConfiguration(ClickEvent event) {
-       state.setCurrentGraph((String) graphSelector.getValue());
-       currentgraph.setValue((String) graphSelector.getValue());
+        state.setCurrentGraph((String) graphSelector.getValue());
+        currentgraph.setValue((String) graphSelector.getValue());
 
     };
 
-	// propagate the information of one tab to another.
-	public void setDefaults() {
-		graphSelector.setValue(state.getCurrentGraph());
-	};
+    // propagate the information of one tab to another.
+    public void setDefaults() {
+        graphSelector.setValue(state.getCurrentGraph());
+    };
 
-	public void addCandidateGraphs(AbstractSelect selection) {
-	// SELECT ID_TO_IRI(REC_GRAPH_IID) AS GRAPH FROM DB.DBA.RDF_EXPLICITLY_CREATED_GRAPH
+    public void addCandidateGraphs(AbstractSelect selection) {
+        // SELECT ID_TO_IRI(REC_GRAPH_IID) AS GRAPH FROM DB.DBA.RDF_EXPLICITLY_CREATED_GRAPH
 
-	try {
-		RepositoryConnection con = state.getRdfStore().getConnection();
+        try {
+            RepositoryConnection con = state.getRdfStore().getConnection();
 
-		String query = "SELECT  DISTINCT ?g { GRAPH  ?g   { ?s  ?p  ?o } } limit 100";
-		TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-		TupleQueryResult result = tupleQuery.evaluate();
+            String query = "SELECT  DISTINCT ?g { GRAPH ?g { ?s  ?p  ?o }. OPTIONAL {?g <http://lod2.eu/lod2demo/SystemGraphFor> ?sys.}. FILTER (!bound(?sys))} limit 100";
+            TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+            TupleQueryResult result = tupleQuery.evaluate();
 
 
-		while (result.hasNext()) {
-			BindingSet bindingSet = result.next();
-			Value valueOfG = bindingSet.getValue("g");
-				// exclude some value to be candidates
-			if (valueOfG.stringValue() != "null") {
-				selection.addItem(valueOfG.stringValue());
-				// shortcut
-				String cgquery = "create silent GRAPH <" + valueOfG.stringValue() + ">";
-				TupleQuery cgtupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, cgquery);
-				TupleQueryResult cgresult = tupleQuery.evaluate();
-			};
-		};
+            while (result.hasNext()) {
+                BindingSet bindingSet = result.next();
+                Value valueOfG = bindingSet.getValue("g");
+                // exclude some value to be candidates
+                if (valueOfG.stringValue() != "null") {
+                    selection.addItem(valueOfG.stringValue());
+                    // shortcut
+                    String cgquery = "create silent GRAPH <" + valueOfG.stringValue() + ">";
+                    TupleQuery cgtupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, cgquery);
+                    TupleQueryResult cgresult = tupleQuery.evaluate();
+                };
+            };
 
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (QueryEvaluationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	};
+        } catch (RepositoryException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (MalformedQueryException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (QueryEvaluationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    };
 };
 

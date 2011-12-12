@@ -52,7 +52,7 @@ import eu.lod2.ExportSelector2;
  */
 //@SuppressWarnings("serial")
 public class EPoolPartyExtractor extends CustomComponent
-    implements TextChangeListener 
+implements TextChangeListener 
 {
 
     // reference to the global internal state
@@ -64,7 +64,7 @@ public class EPoolPartyExtractor extends CustomComponent
 
     private String textToAnnotate;
     private String annotatedText;
-    
+
     private ExportSelector2 exportGraph;
     private TextField ppProjectId;
     private ComboBox textLanguage;
@@ -72,34 +72,34 @@ public class EPoolPartyExtractor extends CustomComponent
     public EPoolPartyExtractor(LOD2DemoState st) {
 
         // The internal state 
-	state = st;
+        state = st;
 
 
-	// second component
+        // second component
         VerticalLayout panel = new VerticalLayout();
 
-	Label description = new Label(
-	  "This service will identify text elements (tags) which correspond to concepts in a given controlled vocabulary using the PoolParty Extractor (PPX).\n"+
-	  "At the moment we have fixed the controlled vocabulary to be the Social Semantic Web thesaurus also available at CKAN.\n" + 
-	  "The identified concepts will be inserted as triples in the current graph.\n"
-	  );
-	panel.addComponent(description);
+        Label description = new Label(
+                "This service will identify text elements (tags) which correspond to concepts in a given controlled vocabulary using the PoolParty Extractor (PPX).\n"+
+                "At the moment we have fixed the controlled vocabulary to be the Social Semantic Web thesaurus also available at CKAN.\n" + 
+                "The identified concepts will be inserted as triples in the current graph.\n"
+                );
+        panel.addComponent(description);
 
 
         Form t2f = new Form();
 
-	exportGraph = new ExportSelector2(state);
-	t2f.getLayout().addComponent(exportGraph);
+        exportGraph = new ExportSelector2(state, true);
+        t2f.getLayout().addComponent(exportGraph);
 
         ppProjectId = new TextField("PoolParty project Id:");
-	ppProjectId.setDescription("The unique identifier of the PoolParty project to use for the extraction (usually a UUID like d06bd0f8-03e4-45e0-8683-fed428fca242) ");
-	t2f.getLayout().addComponent(ppProjectId);
+        ppProjectId.setDescription("The unique identifier of the PoolParty project to use for the extraction (usually a UUID like d06bd0f8-03e4-45e0-8683-fed428fca242) ");
+        t2f.getLayout().addComponent(ppProjectId);
 
         textLanguage = new ComboBox("Language of the text:");
-	textLanguage.setDescription("This is the language of the text. Language can be en (english) or de (german).");
-	textLanguage.addItem("en");
-	textLanguage.addItem("de");
-	t2f.getLayout().addComponent(textLanguage);
+        textLanguage.setDescription("This is the language of the text. Language can be en (english) or de (german).");
+        textLanguage.addItem("en");
+        textLanguage.addItem("de");
+        t2f.getLayout().addComponent(textLanguage);
 
         TextArea textToAnnotateField = new TextArea("text:");
         textToAnnotateField.setImmediate(false);
@@ -113,10 +113,10 @@ public class EPoolPartyExtractor extends CustomComponent
         t2f.setFooter(t2ffooterlayout);
 
         annotateButton = new Button("Extract concepts", new ClickListener() {
-            public void buttonClick(ClickEvent event) {
+                public void buttonClick(ClickEvent event) {
                 annotateText(event);
-            }
-        });
+                }
+                });
         annotateButton.setDescription("Extract the relevant concepts w.r.t. the controlled vocabulary in PoolParty");
         annotateButton.setEnabled(false);
 
@@ -137,9 +137,9 @@ public class EPoolPartyExtractor extends CustomComponent
         textToAnnotate = event.getText();
         if (exportGraph.getExportGraph() == null || exportGraph.getExportGraph().equals("")) {
             annotateButton.setEnabled(false);
-	} else if (textToAnnotate == null || textToAnnotate.equals("")) {
+        } else if (textToAnnotate == null || textToAnnotate.equals("")) {
             annotateButton.setEnabled(false);
-	} else if (textLanguage.getValue() == null || textLanguage.getValue().equals("")) {
+        } else if (textLanguage.getValue() == null || textLanguage.getValue().equals("")) {
             annotateButton.setEnabled(false);
         } else {    
             String encoded = "";
@@ -159,41 +159,41 @@ public class EPoolPartyExtractor extends CustomComponent
             String encoded = "";
             encoded = URLEncoder.encode(textToAnnotate, "UTF-8");
 
-	    String ppProjectIdVal = (String) ppProjectId.getValue();
-	    String textLanguageVal = (String) textLanguage.getValue();
+            String ppProjectIdVal = (String) ppProjectId.getValue();
+            String textLanguageVal = (String) textLanguage.getValue();
 
-	    String restCallString = 
-		    "http://pilot1.poolparty.biz/extractor/api/extract?text=" + encoded + 
-			    "&project=" + ppProjectIdVal +
-			    "&locale=" + textLanguageVal +
-			    "&format=rdfxml"+
-			    "&countConcepts=25"+
-			    "&countTerms=0";
+            String restCallString = 
+                "http://pilot1.poolparty.biz/extractor/api/extract?text=" + encoded + 
+                "&project=" + ppProjectIdVal +
+                "&locale=" + textLanguageVal +
+                "&format=rdfxml"+
+                "&countConcepts=25"+
+                "&countTerms=0";
 
-	    /* A call with the restlet package
+            /* A call with the restlet package
 
-            ClientResource restcall = new ClientResource(RestCallString);
-            String result = restcall.get(MediaType.APPLICATION_RDF_XML).getText();  
-	    */
+               ClientResource restcall = new ClientResource(RestCallString);
+               String result = restcall.get(MediaType.APPLICATION_RDF_XML).getText();  
+             */
 
 
-	    java.net.URL data = new java.net.URL(restCallString);
-	    String baseURI = "http://poolparty.biz/defaultns#";
+            java.net.URL data = new java.net.URL(restCallString);
+            String baseURI = "http://poolparty.biz/defaultns#";
 
-	    RepositoryConnection con = state.getRdfStore().getConnection();
-	    Resource contextURI = con.getValueFactory().createURI(exportGraph.getExportGraph());
+            RepositoryConnection con = state.getRdfStore().getConnection();
+            Resource contextURI = con.getValueFactory().createURI(exportGraph.getExportGraph());
             Resource[] contexts = new Resource[] {contextURI};
-	    con.add(data, baseURI, RDFFormat.RDFXML, contexts);
+            con.add(data, baseURI, RDFFormat.RDFXML, contexts);
 
-	} catch (RepositoryException e) {
+        } catch (RepositoryException e) {
             annotateButton.setEnabled(false);
-		e.printStackTrace();
-	} catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
             annotateButton.setEnabled(false);
-		e.printStackTrace();
-	} catch (RDFParseException e) {
+            e.printStackTrace();
+        } catch (RDFParseException e) {
             annotateButton.setEnabled(false);
-		e.printStackTrace();
+            e.printStackTrace();
         } catch (UnsupportedEncodingException e) { 
             annotateButton.setEnabled(false);
             e.printStackTrace();
@@ -204,9 +204,9 @@ public class EPoolPartyExtractor extends CustomComponent
 
     };
 
-	// propagate the information of one tab to another.
-	public void setDefaults() {
-	};
+    // propagate the information of one tab to another.
+    public void setDefaults() {
+    };
 
 };
 

@@ -193,7 +193,7 @@ implements	Upload.SucceededListener,
                  */
                 errorMsg = new Label("");
 
-                exportGraph = new ExportSelector(state);
+                exportGraph = new ExportSelector(state, true);
                 uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
 
 
