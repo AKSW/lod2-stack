@@ -33,6 +33,7 @@ import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Alignment.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -40,18 +41,7 @@ import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
 import com.vaadin.terminal.FileResource;
-
-/*import javax.xml.transform.Transformer;
-  import javax.xml.transform.TransformerFactory;
-  import org.xml.sax.InputSource;
-  import org.xml.sax.SAXException;
-  import org.xml.sax.XMLReader;
-  import org.xml.sax.helpers.XMLReaderFactory;
-
-  import javax.annotation.PostConstruct;
-
-  import com.sun.org.apache.xerces.internal.util.XMLCatalogResolver;*/
-//import org.apache.log4j.Logger;
+import com.vaadin.ui.Window.Notification;
 
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
@@ -68,18 +58,6 @@ import eu.lod2.LOD2DemoState;
 
 import eu.lod2.slimvaliant.*;
 
-/*import be.tenforce.lod2.valiant.WkdTransformer;
-  import be.tenforce.lod2.valiant.Valiant;     */
-/*import be.tenforce.lod2.valiant.virtuoso.VirtuosoFactory;
-  import be.tenforce.lod2.valiant.webdav.DavReader;
-  import be.tenforce.lod2.valiant.webdav.DavWriter;
-
-  import com.googlecode.sardine.DavResource;
-
-  import org.apache.log4j.Logger;
-  import org.springframework.beans.factory.annotation.Autowired;
-  import org.springframework.beans.factory.annotation.Value;
-  import org.springframework.stereotype.Component;*/
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -88,332 +66,326 @@ import javax.xml.transform.stream.StreamSource;
 /**
  * extract RDF data from an XML file using an XSLT transformation
  */
-//@SuppressWarnings("serial")
-//@Configurable(preConstruction = true)
-//@Component
 public class EXMLExtended extends CustomComponent
 implements	Upload.SucceededListener,
             Upload.FailedListener,
             Upload.Receiver,
             Button.ClickListener
 {
-        //private static final Logger log = Logger.getLogger(EXML.class);
 
-        // reference to the global internal state
-        private ExtractionTab extractionTab;
+    // reference to the global internal state
+    private ExtractionTab extractionTab;
 
-        private VerticalLayout panel;
-        File  file;
-        File  xmlFile;         // The original file
-        File  rdfFile;         // The RDF file containing the triples derived via the XSLT
-        File  xsltFile;	   // The XSLT transformation file
-        File  catalogFile;
-        File  dtdFile;
+    private VerticalLayout panel;
+    File  file;
+    File  xmlFile;         // The original file
+    File  rdfFile;         // The RDF file containing the triples derived via the XSLT
+    File  xsltFile;	   // The XSLT transformation file
+    File  catalogFile;
+    File  dtdFile;
 
-        //
-        //private Button annotateButton;
-        private Label annotatedTextField;
-        private Label errorMsg;
+    //
+    //private Button annotateButton;
+    private Label annotatedTextField;
+    private Label errorMsg;
 
-        private LOD2DemoState state;
+    private LOD2DemoState state;
 
-        private String textToAnnotate;
-        private String annotatedText;
+    private String textToAnnotate;
+    private String annotatedText;
 
-        private TextArea textToAnnotateField;
-        private TextField dlPath;
-        private TextField dlFileName;
+    private TextArea textToAnnotateField;
+    private TextField dlPath;
+    private TextField dlFileName;
 
-        private Button transformButton;
-        private Button downloadButton;
-        private Button uploadButton;
+    private Button transformButton;
+    private Button downloadButton;
+    private Button uploadButton;
 
-        private Form downloadForm, t2f;
+    private Form downloadForm, t2f;
 
-        private ExportSelector exportGraph;
+    private ExportSelector exportGraph;
 
-        private ByteArrayOutputStream oStream;
-
-
-        final Upload uploadXMLFile =
-                new Upload("Upload the XML file here", this);
-
-        final Upload uploadXSLTFile =
-                new Upload("Upload the XLST file here", this);
-        final Upload uploadCatalogFile = new Upload("Upload the catalog file here", this);
-        //    final Upload uploadDTDFile = new Upload("Upload the DTD file here", this);
-
-        public EXMLExtended(){
-
-        }
-        public EXMLExtended(LOD2DemoState state) {
-                this();
-                this.state = state;
+    private ByteArrayOutputStream oStream;
 
 
-                // The internal state and
+    final Upload uploadXMLFile =
+        new Upload("Upload the XML file here", this);
 
-                panel = new VerticalLayout();
-                panel.setSpacing(true);
+    final Upload uploadXSLTFile =
+        new Upload("Upload the XLST file here", this);
+    final Upload uploadCatalogFile = new Upload("Upload the catalog file here", this);
+    //    final Upload uploadDTDFile = new Upload("Upload the DTD file here", this);
 
-                Label desc = new Label(
+    public EXMLExtended(){
+
+    }
+    public EXMLExtended(LOD2DemoState state) {
+        this();
+        this.state = state;
+
+
+        // The internal state and
+
+        panel = new VerticalLayout();
+        panel.setSpacing(true);
+
+        Label desc = new Label(
                 "This page aids the extraction of RDF out of an XML document.<br/>" + 
                 "This is done by defining an XSLT transformation which transforms the XML document into a set of RDF triples.<br/>" +
                 "The resulting triples are uploaded in the share RDF store.",
                 Label.CONTENT_XHTML
                 );
-            
 
 
-                // Create the Upload component for the XML file.
 
-                uploadXMLFile.setButtonCaption("Upload Now");
-                uploadXMLFile.addListener((Upload.SucceededListener) this);
-                uploadXMLFile.addListener((Upload.FailedListener) this);
-
-
-                // Create the Upload component for the XSLT file.
+        // Create the Upload component for the XML file.
+        uploadXMLFile.setButtonCaption("Upload Now");
+        uploadXMLFile.addListener((Upload.SucceededListener) this);
+        uploadXMLFile.addListener((Upload.FailedListener) this);
 
 
-                uploadXSLTFile.setButtonCaption("Upload Now");
-                uploadXSLTFile.addListener((Upload.SucceededListener) this);
-                uploadXSLTFile.addListener((Upload.FailedListener) this);
+        // Create the Upload component for the XSLT file.
+        uploadXSLTFile.setButtonCaption("Upload Now");
+        uploadXSLTFile.addListener((Upload.SucceededListener) this);
+        uploadXSLTFile.addListener((Upload.FailedListener) this);
 
-                // Create the Upload component for the Catalog file.
+        // Create the Upload component for the Catalog file.
+        uploadCatalogFile.setButtonCaption("Upload Now");
+        uploadCatalogFile.addListener((Upload.SucceededListener) this);
+        uploadCatalogFile.addListener((Upload.FailedListener) this);
 
-                uploadCatalogFile.setButtonCaption("Upload Now");
-                uploadCatalogFile.addListener((Upload.SucceededListener) this);
-                uploadCatalogFile.addListener((Upload.FailedListener) this);
+        //Create the Upload component for the DTD file.
+        /*
+           uploadDTDFile.setButtonCaption("Upload Now");
+           uploadDTDFile.addListener((Upload.SucceededListener) this);
+           uploadDTDFile.addListener((Upload.FailedListener) this);
+         */
+        errorMsg = new Label("");
 
-                //Create the Upload component for the DTD file.
-                /*
-                   uploadDTDFile.setButtonCaption("Upload Now");
-                   uploadDTDFile.addListener((Upload.SucceededListener) this);
-                   uploadDTDFile.addListener((Upload.FailedListener) this);
-                 */
-                errorMsg = new Label("");
-
-                exportGraph = new ExportSelector(state, true);
-                uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
-
-
-                transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
-
-                panel.addComponent(desc);
-                panel.addComponent(uploadXMLFile);
-                panel.addComponent(uploadXSLTFile);
-                panel.addComponent(uploadCatalogFile);
-                //	panel.addComponent(uploadDTDFile);
-                panel.addComponent(exportGraph);
-                panel.addComponent(uploadButton);
-                panel.addComponent(transformButton);
-                panel.addComponent(errorMsg);
-
-                errorMsg.setVisible(false);
+        exportGraph = new ExportSelector(state, true);
+        uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
 
 
-                t2f = new Form();
-                t2f.setCaption("");
+        transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
 
-                annotatedTextField = new Label("Extracted RDF", Label.CONTENT_XHTML);
-                t2f.getLayout().addComponent(annotatedTextField);
+        panel.addComponent(desc);
+        panel.addComponent(uploadXMLFile);
+        panel.addComponent(uploadXSLTFile);
+        panel.addComponent(uploadCatalogFile);
+        //	panel.addComponent(uploadDTDFile);
+        panel.addComponent(exportGraph);
+        panel.addComponent(uploadButton);
+        panel.addComponent(transformButton);
+        panel.addComponent(errorMsg);
 
-                textToAnnotateField = new TextArea();
-                textToAnnotateField.setImmediate(false);
-                //textToAnnotateField.addListener(this);
-                textToAnnotateField.setColumns(100);
-                textToAnnotateField.setRows(25);
-                t2f.getLayout().addComponent(textToAnnotateField);
+        errorMsg.setVisible(false);
 
-                panel.addComponent(t2f);
-                t2f.setVisible(false);
 
-                downloadForm = new Form();
-                downloadForm.setCaption("Download file.");
-                dlFileName = new TextField();
-                dlFileName.setRequired(true);
-                //dlFileName.setCaption("Give a filename. (Required)");
-                downloadForm.getLayout().addComponent(new Label("Give a filename."));
-                downloadForm.getLayout().addComponent(dlFileName);
-                dlPath = new TextField();
-                dlPath.setRequired(true);
-                //dlPath.setCaption("Specify a path. (Required for downloading)");
-                downloadForm.getLayout().addComponent(new Label("Specify a path."));
-                downloadForm.getLayout().addComponent(dlPath);
-                downloadButton = new Button("Download file", (Button.ClickListener) this);
-                downloadForm.getLayout().addComponent(downloadButton);
+        t2f = new Form();
+        t2f.setCaption("");
 
-                panel.addComponent(downloadForm);
-                downloadForm.setVisible(false);
+        annotatedTextField = new Label("Extracted RDF", Label.CONTENT_XHTML);
+        t2f.getLayout().addComponent(annotatedTextField);
 
-                // The composition root MUST be set
-                setCompositionRoot(panel);
+        textToAnnotateField = new TextArea();
+        textToAnnotateField.setImmediate(false);
+        //textToAnnotateField.addListener(this);
+        textToAnnotateField.setColumns(100);
+        textToAnnotateField.setRows(25);
+        t2f.getLayout().addComponent(textToAnnotateField);
 
+        panel.addComponent(t2f);
+        t2f.setVisible(false);
+
+        downloadForm = new Form();
+        downloadForm.setCaption("Download file.");
+        dlFileName = new TextField();
+        dlFileName.setRequired(true);
+        //dlFileName.setCaption("Give a filename. (Required)");
+        downloadForm.getLayout().addComponent(new Label("Give a filename."));
+        downloadForm.getLayout().addComponent(dlFileName);
+        dlPath = new TextField();
+        dlPath.setRequired(true);
+        //dlPath.setCaption("Specify a path. (Required for downloading)");
+        downloadForm.getLayout().addComponent(new Label("Specify a path."));
+        downloadForm.getLayout().addComponent(dlPath);
+        downloadButton = new Button("Download file", (Button.ClickListener) this);
+        downloadForm.getLayout().addComponent(downloadButton);
+
+        panel.addComponent(downloadForm);
+        downloadForm.setVisible(false);
+
+        // The composition root MUST be set
+        setCompositionRoot(panel);
+
+    }
+
+    // propagate the information of one tab to another.
+    public void setDefaults() {
+    };
+
+    // Callback method to begin receiving the upload.
+    public OutputStream receiveUpload(String filename, String MIMEType) {
+        FileOutputStream fos = null; // Output stream to write to
+        file = new File("/tmp/uploads/" + filename);
+        try {
+            // Open the file for writing.
+            fos = new FileOutputStream(file);
+        } catch (final java.io.FileNotFoundException e) {
+            // Error while opening the file. Not reported here.
+            e.printStackTrace();
+            return null;
         }
 
-        // propagate the information of one tab to another.
-        public void setDefaults() {
+        return fos; // Return the output stream to write to
+    }
+
+    // This is called if the upload is finished.
+    public void uploadSucceeded(Upload.SucceededEvent event) {
+        // Log the upload on screen.
+        /* panel.addComponent(new Label("File " + event.getFilename()
+           + " of type '" + event.getMIMEType()
+           + "' uploaded."));*/
+        if(event.getComponent()== uploadXMLFile){
+            xmlFile = file;
+            //xmlText.setVisible(false);
+            uploadXMLFile.setCaption("xml file:"+ xmlFile.getName()+" upload succeeded.");
+        }
+        else if(event.getComponent()== uploadXSLTFile){
+            xsltFile = file;
+            //xsltText.setVisible(false);
+            uploadXSLTFile.setCaption("xslt file:"+ xsltFile.getName() + " upload succeeded.");
+        }
+        else if(event.getComponent() == uploadCatalogFile){
+            catalogFile = file;
+            uploadCatalogFile.setCaption("catalog file:"+catalogFile.getName() +" upload succeeded");
+        }
+        /*		else if(event.getComponent() == uploadDTDFile){
+              dtdFile = file;
+              uploadDTDFile.setCaption("DTD file:"+dtdFile.getName() +" upload succeeded");
+              }
+         */
+
+    }
+
+    // This is called if the upload fails.
+    public void uploadFailed(Upload.FailedEvent event) {
+        // Log the failure on screen.
+        panel.addComponent(new Label("Uploading "
+                    + event.getFilename() + " of type '"
+                    + event.getMIMEType() + "' failed."));
+    }
+    public void buttonClick(ClickEvent event) {
+        try {
+        if(event.getComponent()==transformButton){
+            this.transform();
+        }
+        else if(event.getComponent()==downloadButton){
+            download();
+        }
+        else if(event.getComponent()==uploadButton){
+            uploadToVirtuoso();
+        }
+        } catch (LOD2Exception e) {
+          showExceptionMessage(e);
         };
+    }
+    private void transform() throws LOD2Exception {
+        errorMsg.setVisible(false);
+        InputStream xmlStream, xsltStream;
+        oStream = new ByteArrayOutputStream();
+        StreamResult sResult = new StreamResult(oStream);
 
-        // Callback method to begin receiving the upload.
-        public OutputStream receiveUpload(String filename,
-                        String MIMEType) {
-                FileOutputStream fos = null; // Output stream to write to
-                file = new File("/tmp/uploads/" + filename);
-                try {
-                        // Open the file for writing.
-                        fos = new FileOutputStream(file);
-                } catch (final java.io.FileNotFoundException e) {
-                        // Error while opening the file. Not reported here.
-                        e.printStackTrace();
-                        return null;
-                }
+        System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+        //System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+        System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
 
-                return fos; // Return the output stream to write to
-        }
-
-        // This is called if the upload is finished.
-        public void uploadSucceeded(Upload.SucceededEvent event) {
-                // Log the upload on screen.
-                /* panel.addComponent(new Label("File " + event.getFilename()
-                   + " of type '" + event.getMIMEType()
-                   + "' uploaded."));*/
-                if(event.getComponent()== uploadXMLFile){
-                        xmlFile = file;
-                        //xmlText.setVisible(false);
-                        uploadXMLFile.setCaption("xml file:"+ xmlFile.getName()+" upload succeeded.");
-                }
-                else if(event.getComponent()== uploadXSLTFile){
-                        xsltFile = file;
-                        //xsltText.setVisible(false);
-                        uploadXSLTFile.setCaption("xslt file:"+ xsltFile.getName() + " upload succeeded.");
-                }
-                else if(event.getComponent() == uploadCatalogFile){
-                        catalogFile = file;
-                        uploadCatalogFile.setCaption("catalog file:"+catalogFile.getName() +" upload succeeded");
-                }
-                /*		else if(event.getComponent() == uploadDTDFile){
-                        dtdFile = file;
-                        uploadDTDFile.setCaption("DTD file:"+dtdFile.getName() +" upload succeeded");
-                        }
-                 */
-
-        }
-
-        // This is called if the upload fails.
-        public void uploadFailed(Upload.FailedEvent event) {
-                // Log the failure on screen.
-                panel.addComponent(new Label("Uploading "
-                                        + event.getFilename() + " of type '"
-                                        + event.getMIMEType() + "' failed."));
-        }
-        public void buttonClick(ClickEvent event) {
-                if(event.getComponent()==transformButton){
-                        transform();
-                }
-                else if(event.getComponent()==downloadButton){
-                        download();
-                }
-                else if(event.getComponent()==uploadButton){
-                        uploadToVirtuoso();
-                }
-        }
-        private void transform(){
-                errorMsg.setVisible(false);
-                InputStream xmlStream, xsltStream;
-                oStream = new ByteArrayOutputStream();
-                StreamResult sResult = new StreamResult(oStream);
-
-		        System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-		        //System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
-                System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-                System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
-
-                if(xmlFile == null){
-                        errorMsg.setVisible(true);
-                        errorMsg.setValue("Upload a xml file.");
-                        return;
-                }
-                else if(xsltFile == null){
-                        errorMsg.setVisible(true);
-                        errorMsg.setValue("Upload a xslt file.");
-                        return;
-                }
-                else if(catalogFile == null){
-                        errorMsg.setVisible(true);
-                        errorMsg.setValue("Upload a catalog file.");
-                        return;
-                }
-                /*else if(dtdFile == null){
-                        errorMsg.setVisible(true);
-                        errorMsg.setValue("Upload a dtd file");
-                        return;
-                }*/
-                try{
-                    if (catalogFile == null ) {
-                        xmlStream = new FileInputStream(xmlFile);
-                        xsltStream = new FileInputStream(xsltFile);
-                        WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream)); 
-                        wkdTransformer.transform(xmlStream, sResult);
-                    } else {
-                        xmlStream = new FileInputStream(xmlFile);
-                        xsltStream = new FileInputStream(xsltFile);
-                        WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream), catalogFile); 
-                        wkdTransformer.transform(xmlStream, sResult);
-                    }
-                } catch (Exception e){
-                        e.printStackTrace();
-                }
-                if(oStream.toString().isEmpty()){
-                        textToAnnotateField.setValue("Transformation failed, please check if you entered a valid xml and xslt code.");
-                        return;
-                }
+        if(xmlFile == null) {
+            errorMsg.setVisible(true);
+            errorMsg.setValue("Upload a xml file.");
+            return;
+        } else if(xsltFile == null) {
+            errorMsg.setVisible(true);
+            errorMsg.setValue("Upload a xslt file.");
+            return;
+        } else if(catalogFile == null) {
+            errorMsg.setVisible(true);
+            errorMsg.setValue("Upload a catalog file.");
+            return;
+        };
+        /*else if(dtdFile == null){
+          errorMsg.setVisible(true);
+          errorMsg.setValue("Upload a dtd file");
+          return;
+          }*/
+        try {
+            xmlStream = new FileInputStream(xmlFile);
+            xsltStream = new FileInputStream(xsltFile);
+            WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream)); 
+            wkdTransformer.transform(xmlStream, sResult);
+            if(oStream.toString().isEmpty()){
+                textToAnnotateField.setValue("Transformation resulted in no triples; please check if you entered a valid xml and xslt code.");
+            } else {
                 textToAnnotateField.setValue(oStream.toString());
                 t2f.setVisible(true);
                 downloadForm.setVisible(true);
-        }
+            };
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new LOD2Exception("Transformation failed:" , e);
+        };
+    };
 
-        private void download(){
-                String path = dlPath.getValue().toString();
-                if(path.charAt(path.length() -1) != '/'){
-                        path += "/";
-                }
-                try{
-                        File dlFile = new File(path + dlFileName.getValue().toString() + ".rdf");
-                        FileOutputStream fos = new FileOutputStream(dlFile);
-                        oStream.writeTo(fos);
-                } catch (Exception e){
-                        e.printStackTrace();
-                        panel.addComponent(new Label("Download failed"));
-                        return;
-                }
-                panel.addComponent(new Label("Download succeeded!"));
+    private void download(){
+        String path = dlPath.getValue().toString();
+        if(path.charAt(path.length() -1) != '/'){
+            path += "/";
         }
-        private void uploadToVirtuoso(){
-                if(exportGraph.getExportGraph() == null){
-                        panel.addComponent(new Label("No graph selected"));
-                        return;
-                }
-                else if(oStream == null || oStream.toString().isEmpty()){
-                        transform();
-                        if(oStream.toString().isEmpty()){return;}
-                }
-                try{
-                        rdfFile = new File ("/tmp/uploads/file.rdf");
-                        FileOutputStream fos = new FileOutputStream(rdfFile);
-                        oStream.writeTo(fos);
-                        String baseURI = "http://poolparty.biz/defaultns#";
+        try{
+            File dlFile = new File(path + dlFileName.getValue().toString() + ".rdf");
+            FileOutputStream fos = new FileOutputStream(dlFile);
+            oStream.writeTo(fos);
+        } catch (Exception e){
+            e.printStackTrace();
+            panel.addComponent(new Label("Download failed"));
+            return;
+        }
+        panel.addComponent(new Label("Download succeeded!"));
+    }
 
-                        RepositoryConnection con = state.getRdfStore().getConnection();
-                        Resource contextURI = con.getValueFactory().createURI(exportGraph.getExportGraph());
-                        Resource[] contexts = new Resource[] {contextURI};
-                        con.add(rdfFile, baseURI, RDFFormat.RDFXML, contexts);
-                } catch (Exception e){
-                        e.printStackTrace();
-                        panel.addComponent(new Label("Upload failed"));
-                        return;
-                }
-                panel.addComponent(new Label("Upload succeeded!"));
+    private void uploadToVirtuoso() throws LOD2Exception {
+        if(exportGraph.getExportGraph() == null) {
+            panel.addComponent(new Label("No graph selected"));
+            return;
+        } else if(oStream == null || oStream.toString().isEmpty()){
+            this.transform();
+            if(oStream.toString().isEmpty()){return;}
         }
+        try{
+            rdfFile = new File ("/tmp/uploads/file.rdf");
+            FileOutputStream fos = new FileOutputStream(rdfFile);
+            oStream.writeTo(fos);
+            String baseURI = state.getCurrentGraph() + "#";
+
+            RepositoryConnection con = state.getRdfStore().getConnection();
+            Resource contextURI = con.getValueFactory().createURI(exportGraph.getExportGraph());
+            Resource[] contexts = new Resource[] {contextURI};
+            con.add(rdfFile, baseURI, RDFFormat.RDFXML, contexts);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new LOD2Exception("Upload failed:", e);
+        }
+        panel.addComponent(new Label("Upload succeeded!"));
+    }
+
+    private void showExceptionMessage(Exception e) {
+
+            this.getWindow().showNotification(
+                    "The operation failed due some errors. See for detailed information to the catalina log. ",
+                    e.getMessage(),
+                    Notification.TYPE_ERROR_MESSAGE);
+    };
 };
 

@@ -14,37 +14,29 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Johan.De-Smedt
- * Date: Aug 15, 2011
- * Time: 6:34:36 PM
-  */
+import eu.lod2.slimvaliant.SlimValiantException;
 
 public class WkdTransformer {
+
     private TransformerFactory transformerFactory = null;
     private Transformer transformer = null;
-    //private String xsltUrl;
     private InputStream toTransformStream = null;
     private String[] catalogUrl = new String[]{"dummy"};
     private XMLCatalogResolver resolver = null;
     private XMLReader xmlReader = null;
 
+/*
     public WkdTransformer(StreamSource xslt) throws Exception {
-	//xslt.setSystemId("/home/jand/lod2-stack/wp7/xslt/");
         if (this.transformerFactory == null)
             this.transformerFactory = TransformerFactory.newInstance();
-        //this.xsltUrl = xsltUrl;
-        //File xslt = new File(xsltUrl);
-        // boolean readable = xslt.canRead();
-        // System.out.println("file is readable: " + readable);
         try {
             this.transformer = this.transformerFactory.newTransformer(xslt);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("Failed to compile the stylesheet");
+            throw new SlimValiantException("Failed to compile the stylesheet");
         }
         // this.catalogUrl;
         this.resolver = new XMLCatalogResolver(catalogUrl);
@@ -54,47 +46,55 @@ public class WkdTransformer {
         }
         catch (org.xml.sax.SAXException e) {
             e.printStackTrace();
-            throw new Exception("Failed to create the XmlReader");
+            throw new SlimValiantException("Failed to create the XmlReader");
         }
     }
-    public WkdTransformer(StreamSource xslt, File catalogFile){
-//	catalogUrl[0] = catalogFile.getPath();
-//    this.resolver = new XMLCatalogResolver(catalogUrl);
-	if (this.transformerFactory == null)
+*/
+
+    // The catalog file is handled via the CatalogManager 
+    // it is assumed that the file is on a fixed location 
+    // and called catalog.xml
+    public WkdTransformer(StreamSource xslt) throws SlimValiantException {
+        if (this.transformerFactory == null) {
             this.transformerFactory = TransformerFactory.newInstance();
-           CatalogManager manager = new CatalogManager("CatalogManager.properties");
-           CatalogResolver uriResolver1  = new CatalogResolver(manager);
-           transformerFactory.setURIResolver(uriResolver1);
+        };
+        CatalogManager manager = new CatalogManager("CatalogManager.properties");
+        CatalogResolver uriResolver1  = new CatalogResolver(manager);
+        transformerFactory.setURIResolver(uriResolver1);
 
         try {
             this.transformer = this.transformerFactory.newTransformer(xslt);
         } catch (Exception e) {
             e.printStackTrace();
-        //    throw new Exception("Failed to compile the stylesheet");
+            throw new SlimValiantException("Failed to compile the stylesheet:", e);
         }
         try {
             this.xmlReader = XMLReaderFactory.createXMLReader();
             this.xmlReader.setEntityResolver(uriResolver1);
-
         }
         catch (org.xml.sax.SAXException e) {
             e.printStackTrace();
-        //    throw new Exception("Failed to create the XmlReader");
+            throw new SlimValiantException("Failed to create the XmlReader: ", e);
         }
 
     }
 
-    public void transform(InputStream input, StreamResult output) throws Exception {
-        if (this.transformer == null) throw new Exception("Xslt transformer is not initialized.");
+    public void transform(InputStream input, StreamResult output) throws SlimValiantException {
+        if (this.transformer == null) throw new SlimValiantException("Xslt transformer is not initialized.");
         SAXSource inputSource = null;
-        inputSource = new SAXSource(this.xmlReader, new InputSource(input));
+            inputSource = new SAXSource(this.xmlReader, new InputSource(input));
         try {
             this.transformer.transform(inputSource, output);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("Transform Failed");
+            throw new SlimValiantException("Transform Failed:", e);
         } finally {
+            try {
             input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new SlimValiantException("Closing Input Stream error: ", e);
+            };
         }
     }
 }
