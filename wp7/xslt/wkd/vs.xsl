@@ -114,7 +114,7 @@
 		<xsl:for-each select="current-group()">
 			<xsl:choose>
 				<xsl:when test="./ancestor::zitat-vs">
-					<xsl:message terminate="no">found vs structure element in a zitat-vs - skipped this structure</xsl:message>
+					<!--xsl:message terminate="no">found vs structure element in a zitat-vs - skipped this structure</xsl:message-->
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)" as="xs:string"/>
