@@ -88,7 +88,6 @@
 			<xsl:when test="$doc-type='pressemitteilung'">
 				<xsl:value-of select="$doc/@vtext-id"/>
 			</xsl:when>
-			<!-- Todo-->
 			<xsl:when test="$doc-type=('beitrag','beitrag-rn')">
 			    <!-- take the first link giving a product -->
 				<xsl:if test="count($doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0])=0">
@@ -118,6 +117,49 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:value-of select="concat($doc/@typ, fun:bez-wert-id(if ($doc/@bez) then $doc/@bez else '',if ($doc/@wert) then $doc/@wert else ''),$identifier,fun:idOfZuordnungProduktRubrik($doc/zuordnung-produkt))"/>
+			</xsl:when>
+			<!-- Todo-->
+			<xsl:when test="$doc-type=('kommentierung','kommentierung-rn')">
+			    <!-- take the first link giving a product -->
+				<xsl:if test="string-length($doc/zuordnung-produkt/verweis-komhbe[verweis-vs][1]/@produkt) = 0">
+					<xsl:message terminate="yes">No product identifier (zuordnung-produkt/verweis-komhbe/@produkt) found for this document.</xsl:message>
+				</xsl:if>
+				<xsl:variable name="product" select="$doc/zuordnung-produkt/$doc/zuordnung-produkt/verweis-komhbe/verweis-vs[1]" as="element()"/>
+				<xsl:variable name="identifier-core" as="xs:string">
+					<xsl:value-of select="concat('/', $product/parent::verweis-komhbe/@produkt,
+						$product/@vsk,
+						if ($product/@par) then 
+							concat('/par_',fun:percentEncode($product/@par),
+								if ($product/@par-bis) then 
+									concat('-',fun:percentEncode($product/@par-bis)) 
+								else ''
+								) 
+						else if ($product/@art) then 
+							concat('/art_',fun:percentEncode($product/@art), 
+								if ($product/@art-bis) then 
+									concat('-',fun:percentEncode($product/@art-bis)) 
+								else ''
+								)
+						else ''
+						)"/>
+				</xsl:variable>
+				<xsl:variable name="identifier-suffix" as="xs:string">
+					<xsl:choose>
+						<xsl:when test="$doc/@bez='kommentierung'">
+							<xsl:value-of select="''"/>
+						</xsl:when>
+						<xsl:when test="$doc/@bez=('vorbemerkung','praeamble')">
+							<xsl:value-of select="concat('/',fun:bez-wert-id($doc/@bez,''))"/>
+						</xsl:when>
+						<xsl:when test="$doc/@bez=('anhang','anlage')">
+							<xsl:value-of select="concat('/',fun:bez-wert-id($doc/@bez,if ($doc/@wert) then $doc/@wert else ''))"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:message terminate="yes">Unknown kommentierung(-rn)/@bez = '<xsl:value-of select="$doc/@bez"/>'.</xsl:message>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:value-of select="concat($doc/@typ, $identifier-core, $identifier-suffix)"/>
 			</xsl:when>
 			<!-- next type -->
 			<xsl:otherwise>
@@ -159,6 +201,9 @@
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type=('beitrag','beitrag-rn')">
+			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
+		</xsl:when>
+		<xsl:when test="$doc-type=('kommentierung','kommentierung-rn')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -616,7 +661,12 @@ produkt + vsk + art + abs
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
-	<scenarios/>
+	<scenarios>
+		<scenario default="yes" name="kom" userelativepaths="yes" externalpreview="no" url="..\..\Data\kommentierung\Adam_TarifR_oeD_tvue_vka_kommentierung.xml" htmlbaseurl="" outputurl="" processortype="custom" useresolver="no" profilemode="0"
+		          profiledepth="" profilelength="" urlprofilexml="" commandline=" net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
+		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
+		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator=""/>
+	</scenarios>
 	<MapperMetaTag>
 		<MapperInfo srcSchemaPathIsRelative="yes" srcSchemaInterpretAsXML="no" destSchemaPath="" destSchemaRoot="" destSchemaPathIsRelative="yes" destSchemaInterpretAsXML="no"/>
 		<MapperBlockPosition></MapperBlockPosition>
