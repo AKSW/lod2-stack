@@ -1,11 +1,16 @@
-#!/bin/bash
+#!/bin/bash 
 #
+# if a parameter is given then this is considered a file.
 
 echo "Starting valiant tool..."
 
-inputFile="input.xml"
-configFile="`pwd`/valiant.properties"
-logFile="log/valiant.log"
+CONFIG="/etc/valiant/valiant.properties"
+LOG="/var/log/valiant.log"
 
-$JAVA_HOME/bin/java -Xms512M -Xmx1024M -Dvaliant.config="file://$configFile" -Dvaliant.log=$logFile -jar valiant-1.0-SNAPSHOT.jar $inputFile
+if [ $# > 0 ] ;  then 
+java -Xms512M -Xmx1024M -cp $VALIANT:$VALIANT_XML_LIB -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG -jar valiant-1.0-SNAPSHOT.jar $1 ;
+else
+java -Xms512M -Xmx2048M -cp $VALIANT:$VALIANT_XML_LIB -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG -jar valiant-1.0-SNAPSHOT.jar  ;
+fi
+
 

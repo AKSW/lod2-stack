@@ -1,0 +1,6 @@
+valiant for Debian
+------------------
+
+This tool extracts from XML files RDF statements via an xslt transformation.
+
+ -- Bert Van Nuffelen <bert.van.nuffelen@tenforce.com>  Thu, 05 Jan 2012 06:43:25 -0800

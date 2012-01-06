@@ -5,6 +5,7 @@
     <format>zip</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
+<!--
   <fileSets>
     <fileSet>
 	<directory>tools</directory>
@@ -25,6 +26,7 @@
   	</excludes>
     </fileSet>
   </fileSets>
+-->
   <dependencySets>
     <dependencySet>
       <excludes>

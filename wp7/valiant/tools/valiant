@@ -1,0 +1,21 @@
+#!/bin/bash 
+#
+# if a parameter is given then this is considered a file.
+
+echo "Starting valiant tool..."
+
+if [ -z $VALIANT_CONFIG ]; then
+  CONFIG="/etc/valiant/valiant.properties";
+else 
+  CONFIG=$VALIANT_CONFIG
+fi
+
+LOG="valiant.log"
+CLASSPATH="/usr/lib/valiant:/usr/lib/valiant/lib:/etc/valiant:$VALIANT:$VALIANT_XML_LIB"
+
+if [[ $# > 0 ]] ;  then 
+java -Xms512M -Xmx1024M -classpath=$CLASSPATH -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG -jar /usr/lib/valiant/valiant-1.0.jar  $1 ;
+else
+java -Xms512M -Xmx2048M -classpath "$CLASSPATH" -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG -jar /usr/lib/valiant/valiant-1.0.jar  ;
+fi
+
