@@ -61,8 +61,18 @@ public class Valiant {
     @Autowired(required = true)
         private Namespace namespace;
 
+    public void execute(String[] args) throws Exception {
+        String fileToTransForm = "";
+        if (null != args && args.length > 0) {
+            System.err.println("Use the commandline file as input");
+            fileToTransForm = args[0];
+        } else if (! inputfile.equals(""))  {
+            System.err.println("Use the inputfile configuration parameter as input");
+            fileToTransForm = inputfile;
+        } else {
+            System.err.println("Use webdav as input");
+        };
 
-    public void execute() throws Exception {
         if(implementationMode.equals("saxon")){System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");}
         else if(implementationMode.equals("xalan")){System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");}
         if (mode==null) {
@@ -70,19 +80,19 @@ public class Valiant {
             throw new RuntimeException("No transformation engine selected");
         };
         if(mode.equals("f")){
-            transformToFile(inputfile);
+            transformToFile(fileToTransForm);
         }
         else if(mode.equals("v")){
-            transformToVirtuoso(inputfile);
+            transformToVirtuoso(fileToTransForm);
         }
         else if(mode.equals("w")){
-            transformToWebDav(inputfile);
+            transformToWebDav(fileToTransForm);
         }
         else if(mode.equals("fv")){
-            transformToFileAndVirtuoso(inputfile);
+            transformToFileAndVirtuoso(fileToTransForm);
         }
         else if(mode.equals("wv")){
-            transformToWebDavAndVirtuoso(inputfile);
+            transformToWebDavAndVirtuoso(fileToTransForm);
         }
     }
     // String outputName = inputName.replaceAll("(?i).xml", ".rdf"); //(?i) will ignore the case

@@ -22,6 +22,9 @@ case "$1" in
     configure)
        export VALIANT="/usr/lib/valiant:/usr/lib/valiant/lib:/etc/valiant"
        unzip -o -q /usr/lib/valiant/valiant-1.0.orig.zip -d /usr/lib/valiant
+       cd /usr/lib/valiant
+       jar -xf valiant-1.0.jar
+       cd 
        mkdir -p /var/log/valiant/
        touch /var/log/valiant/valiant.log
        chmod 666 /var/log/valiant/valiant.log

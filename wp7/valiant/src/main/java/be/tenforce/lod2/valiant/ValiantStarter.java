@@ -9,7 +9,7 @@ public class ValiantStarter {
     ClassPathXmlApplicationContext classPathXmlApplicationContext = setup();
     Valiant valiant = (Valiant) classPathXmlApplicationContext.getBean("valiant");
     try {
-        valiant.execute();
+        valiant.execute(args);
     } catch (Exception e) {
         // properly exit the application
         System.err.println("ERROR: " + e.getMessage());
