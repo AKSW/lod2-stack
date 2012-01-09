@@ -11,7 +11,7 @@ else
 fi
 
 LOG="valiant.log"
-VCLASSPATH=".:/etc/valiant:/usr/lib/valiant/be/tenforce/lod2/valiant:/usr/lib/valiant:/usr/lib/valiant/lib/*"
+VCLASSPATH=".:/etc/valiant:/usr/lib/valiant/be/tenforce/lod2/valiant:/usr/lib/valiant/be/tenforce/lod2/valiant/virtuoso:/usr/lib/valiant/be/tenforce/lod2/valiant/webdav:/usr/lib/valiant:/usr/lib/valiant/lib/*"
 if [VALIANT_XSLT_LIB]; then 
 VCLASSPATH=$VCLASSPATH:$VALIANT_XSLT_LIB;
 fi

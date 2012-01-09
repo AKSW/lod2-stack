@@ -312,7 +312,10 @@ public class Valiant {
         for(int i = 0; i<files.length;i++){
             if(files[i].getName().endsWith(".xml")){		
                 String f = files[i].getPath();
-                toVirtuosoFromTransform(f, transformToFileFromFile2(f, outputPath));
+                String fileName = f.substring(f.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+                if(!(new File(rdfFolder + outputPath + fileName).exists())){
+                    toVirtuosoFromTransform(f, transformToFileFromFile2(f, outputPath));
+                }
             }
             else if(files[i].isDirectory()){
                 (new File(rdfFolder + outputPath + files[i].getName())).mkdir();
@@ -402,11 +405,11 @@ public class Valiant {
     // if the file already exists then the transformation has already happened.
     private void toVirtuosoFromTransform(String file, ByteArrayOutputStream fileTransformed) throws Exception {
         String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
-        if(!(new File(rdfFolder + fileName).exists())){
+//        if(!(new File(rdfFolder + fileName).exists())){
             log.info(fileName + ": Writing to virtuoso");
             writeToVirtuoso(fileTransformed,fileName);
             log.info(fileName + ": Writing in virtuoso finished");
-        }
+//        }
 
     }
 
