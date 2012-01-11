@@ -67,6 +67,13 @@
 				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
 				<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
 			</xsl:when>
+			<xsl:when test="$doc-type='rezension'">
+				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
+				</xsl:if>
+				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
+				<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
+			</xsl:when>
 			<xsl:when test="$doc-type='aufsatz-es'">
 				<xsl:choose>
 					<xsl:when test="$doc/zuordnung-produkt/verweis-zs">
@@ -112,7 +119,7 @@
 								)"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:message terminate="yes">Unknown identifier (zuordnung-produkt/<xsl:value-of select="name($product)"/>.</xsl:message>
+							<xsl:message terminate="yes">Unknown identifier (zuordnung-produkt/<xsl:value-of select="name($product)"/>).</xsl:message>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

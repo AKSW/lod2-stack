@@ -94,6 +94,7 @@
 	<data:entry><data:de>pressemitteilung</data:de><data:en>press_release</data:en></data:entry>
 	<data:entry><data:de>pressemitteilung/typ</data:de><data:en>press_release/type</data:en></data:entry>
 	<data:entry><data:de>aufsatz</data:de><data:en>journal_article</data:en></data:entry>
+	<data:entry><data:de>rezension</data:de><data:en>journal_article</data:en></data:entry>
 	<data:entry><data:de>beitrag</data:de><data:en>contribution</data:en></data:entry>
 	<data:entry><data:de>beitrag-rn</data:de><data:en>contribution</data:en></data:entry>
 	<data:entry><data:de>kommentierung</data:de><data:en>comment</data:en></data:entry>
@@ -124,6 +125,7 @@
 <xsl:variable name="deuDT2biboDT">
 	<data:entry><data:de>vorschrift</data:de><data:bibo>Legislation</data:bibo></data:entry>
 	<data:entry><data:de>entscheidung</data:de><data:bibo>LegalDecision</data:bibo></data:entry>
+	<data:entry><data:de>rezension</data:de><data:bibo>Report</data:bibo></data:entry>
 	<data:entry><data:de>aufsatz</data:de><data:bibo>Thesis</data:bibo></data:entry>
 	<data:entry><data:de>aufsatz-es</data:de><data:bibo>Thesis</data:bibo></data:entry>
 	<data:entry><data:de>pressemitteilung</data:de><data:bibo>LegalCaseDocument</data:bibo></data:entry>
