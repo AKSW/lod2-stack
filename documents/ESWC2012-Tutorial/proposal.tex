@@ -2,7 +2,7 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{comment}
-\usepackage{printlen} % Print lengths using specified units. 
+\usepackage{printlen} % Print lengths using specified units.
 %\usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage[utf8]{inputenc} % Umlaute ?????? auch normal benutzen und nicht maskieren
@@ -38,7 +38,7 @@
 \newcommand{\todo}[1]{}
 
 
-\newcommand{\NAME}{Creating Knowledge out of Interlinked Data: The Integrated LOD2 Tool Stack}
+\newcommand{\NAME}{Creating Knowledge out of Interlinked Data: The LOD2 Tool Stack}
 
 \pdfinfo {%
 	/Title (\NAME)
@@ -59,7 +59,7 @@
 
 \titlerunning{\NAME}
 
-\author{Bert Van Nuffelen \and Sebastian Tramp \and S\"oren Auer}
+\author{Sebastian Tramp \and Bert Van Nuffelen \and S\"oren Auer}
 
 \authorrunning{Sebastian Tramp et al.}
 
@@ -74,7 +74,7 @@ Postfach 100920, D-04009 Leipzig, Germany,\\
 
 \begin{abstract}
 This joint tutorial of the consortium of the FP7 project \emph{LOD2 -- Creating Knowledge out of Interlinked Data} will give an overview on the area of creating, managing and using Linked Data sources.
-As a prerequisite to the main tutorial part, we give an overview of the life cycle of Linked Data usage and its challenges as well as the LOD2 software stack, which is an integrated distribution of aligned tools supporting the life-cycle of Linked Data from extraction, authoring/creation over enrichment, interlinking, fusing to visualization and maintenance. 
+As a prerequisite to the main tutorial part, we give an overview of the life cycle of Linked Data usage and its challenges as well as the LOD2 software stack, which is an integrated distribution of aligned tools supporting the life-cycle of Linked Data from extraction, authoring/creation over enrichment, interlinking, fusing to visualization and maintenance.
 Based on this more foundational explanations, we present a detailed insight into the usage of LOD2 stack both with practical and non-practical parts.
 More specifically, we present tools and usage scenarios for the following Linked Data life cycle tasks: \emph{extraction} (Triplify / D2R), \emph{storage and querying} (Openlink Virtuoso), \emph{authoring} (OntoWiki), \emph{interlinking} (Silk / LIMES) as well as \emph{enrichment and repair} (ORE).
 In addition to that, we present the LOD2 stack demonstrator which integrates these and other LOD2 tools for a better user experience.
@@ -104,7 +104,7 @@ Also, the LOD2 Stack (being based on the Debian packaging system) is planned as 
 %the body of the text of the proposal and should contain the following
 %information: Abstract (200 words maximum, for inclusion on the ESWC 2012
 %website).
-    
+
 %Tutorial description: More specifically, it should
 
 The tutorial will give an overview to the complete LOD2 stack and a detailed insight to the integrated tools in Sec.\ref{sec:stack}.
@@ -126,7 +126,7 @@ This is a full day tutorial and it was never given before on other venues.
 %Tutorial length. The tutorial can be full or half day (if the tutorial
 %can be either length, please be sure to identify which material is
 %included for each length).
-    
+
 %Other venues to which the tutorial or part thereof has or will be
 %presented, and explain how the current tutorial differs from the other
 %editions. Links to the slides of those tutorial editions should be
@@ -138,19 +138,29 @@ This is a full day tutorial and it was never given before on other venues.
 %training and speaking experience (such as teaching and tutorial
 %presentation).
 
-\emph{Dr. S\"oren Auer} leads AKSW research group at Universit\"at Leipzig.
+\paragraph{Dr. S\"oren Auer} leads AKSW research group at Universit\"at Leipzig.
 His research interests are centered around semantic data web technologies.
 S\"oren is author of over 70 peer-reviewed scientific publications.
 S\"oren coordinates the EU-FP7-ICT research project LOD2 and is (co-)founder of several high-impact research and community projects such as DBpedia, OntoWiki and LinkedGeoData.
 He is co-organiser of workshops, programme chair international conferences, area editor of the Semantic Web Journal, serves as an expert for industry, EC, W3C and advisory board member of the Open Knowledge Foundation.
 
-\emph{Dr. Bert Van Nuffelen} 
+\paragraph{Dr. Bert Van Nuffelen} has a PHD in Computer Science, Knowledge Representation from the KULeuven, Belgium (2004).
+In his research he worked on improving the efficiency of the inference engine for Abductive Constraint Logic Programs \cite{bertvn}.
+This resulted in a system, called the Asystem, which applied Constraint Programming techniques to the
+inference engine.
+In 2005, he joined Mission Critical a Belgian software company, where he developed applications for insurance and financial institutes.
+These applications were based on Mission Critical's ODASE platform.
+The core of the ODASE based software design process are the business models expressed as OWL ontologies
+By interpreting and the reasoning capabilities of the platform applications where build in an agile way.
+In 2011 he joined TenForce where is currently active as semantic technologies software architect and he is the TenForce responsible for the European LOD2 project.
+There he applies his expertise and experience in developing reasoning engines, RDF stores design, ontology modeling and overall application design for publishing Linked Data.
 
-\emph{Sebastian Tramp} studied information science and is a research associate at AKSW / University of Leipzig since 2006.
-He is author of over 30 peer-reviewed publications and presented his research projects on conferences as the ESWC and the ISWC as well as multiple workshops
+\paragraph{Sebastian Tramp} studied information science and is a research associate at AKSW / University of Leipzig since 2006.
+He is author of over 30 peer-reviewed publications and presented his research projects on conferences as the ESWC and the ISWC as well as multiple workshops.
+His main research interest are Distributed Semantic Social Networks.
 He is a lecturer at the University of Leipzig and the Leipzig School of Media.
 
-    
+
 \section{The LOD2 Stack}
 \label{sec:stack}
 
