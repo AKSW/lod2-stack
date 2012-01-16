@@ -20,7 +20,7 @@ public class DavReader {
   @Value("#{properties.max}")
   int max;
 
-  @Autowired(required = false)
+  @Autowired(required = true)
   private DavConnector davConnector;
 
   private Pattern pattern;

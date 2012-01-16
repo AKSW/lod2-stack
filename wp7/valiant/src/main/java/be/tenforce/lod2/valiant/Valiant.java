@@ -364,6 +364,7 @@ public class Valiant {
             String graphName = namespace.getBaseURI() + fileName;
             log.info(fileName +": Writing to file started");
             writeToFile(transform(file),outputStream);
+            outputStream.close();
             log.info(fileName + ": Writing of file finished");
             File graphFile = new File(rdfFolder + outputPath + fileName + ".graph");
             FileWriter fw = new FileWriter(graphFile,true);
@@ -382,6 +383,7 @@ public class Valiant {
             ByteArrayOutputStream s = transform(file);
             writeToFile(s,outputStream);
             log.info(fileName + ": Writing of file finished");
+            outputStream.close();
             File graphFile = new File(rdfFolder + outputPath + fileName + ".graph");
             FileWriter fw = new FileWriter(graphFile,true);
             fw.write(graphName);
