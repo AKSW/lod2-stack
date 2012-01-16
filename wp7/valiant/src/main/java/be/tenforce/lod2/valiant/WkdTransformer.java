@@ -68,6 +68,7 @@ public class WkdTransformer {
         FileWriter fw;
         SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
         try {
+            transformer.setParameter("{}file-uri", fileName);
             fw = new FileWriter(new File(logFolder + "valiant.log"),true);
             ((MessageEmitter)((Controller)transformer).getMessageEmitter()).setWriter(fw);	
             transformer.transform(inputSource, output);
