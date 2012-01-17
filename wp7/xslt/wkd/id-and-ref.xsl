@@ -221,7 +221,7 @@
 		<xsl:when test="$doc-type='entscheidung'">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@es-typ)"/>
 		</xsl:when>
-		<xsl:when test="$doc-type=('aufsatz','aufsatz-es')">
+		<xsl:when test="$doc-type=('aufsatz','aufsatz-es','rezension')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type='pressemitteilung'">
