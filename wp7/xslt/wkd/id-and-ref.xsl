@@ -133,8 +133,8 @@
 					<xsl:message terminate="yes">No product identifier (zuordnung-produkt/verweis-komhbe/@produkt) found for this document.</xsl:message>
 				</xsl:if>
 				<xsl:variable name="v-vs" as="element()*" select="
-					if ($doc/zuordnung-produkt/verweis-komhbe/verweis-vs)
-					   then $doc/zuordnung-produkt/verweis-komhbe/verweis-vs
+					if ($doc/zuordnung-produkt/verweis-komhbe/verweis-vs[@vsk][not(normalize-space(@vsk)=('','unbekannt'))])
+					   then $doc/zuordnung-produkt/verweis-komhbe/verweis-vs[@vsk][not(normalize-space(@vsk)=('','unbekannt'))]
 					else if ($doc/kommentierung-bezug/verweis-vs[@vsk][not(normalize-space(@vsk)=('','unbekannt'))])
 					   then $doc/kommentierung-bezug/verweis-vs[@vsk][not(normalize-space(@vsk)=('','unbekannt'))]
 					else $doc/zitat-vs[not(normalize-space(@vsk)=('','unbekannt'))]"/>
@@ -143,17 +143,17 @@
 				</xsl:if>
 				<xsl:variable name="identifier-core" as="xs:string">
 					<xsl:value-of select="concat($doc/zuordnung-produkt/verweis-komhbe[string-length(@produkt) &gt; 0]/@produkt,'/',
-						$v-vs/@vsk,
-						if ($v-vs/@par) then 
-							concat('/par_',fun:percentEncode($v-vs/@par),
-								if ($v-vs/@par-bis) then 
-									concat('-',fun:percentEncode($v-vs/@par-bis)) 
+						$v-vs[1]/@vsk,
+						if ($v-vs[1]/@par) then 
+							concat('/par_',fun:percentEncode($v-vs[1]/@par),
+								if ($v-vs[1]/@par-bis) then 
+									concat('-',fun:percentEncode($v-vs[1]/@par-bis)) 
 								else ''
 								) 
-						else if ($v-vs/@art) then 
-							concat('/art_',fun:percentEncode($v-vs/@art), 
-								if ($v-vs/@art-bis) then 
-									concat('-',fun:percentEncode($v-vs/@art-bis)) 
+						else if ($v-vs[1]/@art) then 
+							concat('/art_',fun:percentEncode($v-vs[1]/@art), 
+								if ($v-vs[1]/@art-bis) then 
+									concat('-',fun:percentEncode($v-vs[1]/@art-bis)) 
 								else ''
 								)
 						else ''
