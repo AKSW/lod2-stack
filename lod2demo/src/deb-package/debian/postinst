@@ -68,9 +68,17 @@ case "$1" in
 
 	# restart the server
 	sudo service ${VIRTUOSOVERSION} start
+	
+        wait
 
+	while [ ! running ]; do
+		sudo service ${VIRTUOSOVERSION} start ;
+		wait ;
+	done;
+		
 	if running; then
 		sudo isql-vt 1111 dba dba /var/lib/lod2demo/load.sql;
+		wait ;
         else 
 		exit 1;
 	fi
