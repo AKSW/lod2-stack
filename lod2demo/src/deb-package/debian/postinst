@@ -71,6 +71,7 @@ case "$1" in
 	
         wait
 
+	# if it is not running try again infinitely
 	while [ ! running ]; do
 		sudo service ${VIRTUOSOVERSION} start ;
 		wait ;
