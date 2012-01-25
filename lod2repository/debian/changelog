@@ -1,3 +1,9 @@
+lod2repository (1.16) lod2; urgency=low
+
+  * re-add Norman Heinos key to the database file
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Wed, 25 Jan 2012 15:09:57 +0100
+
 lod2repository (1.14) lod2; urgency=low
 
   * Add new key for maintainer: Norman Heino (AKSW)
