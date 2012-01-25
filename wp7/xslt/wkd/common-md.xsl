@@ -40,7 +40,7 @@
 <xsl:import href="aliases.xsl"/>
 <xsl:import href="content.xsl"/>
 
-<xsl:variable name="v-base-uri" select="'http://vocab.wolterskluwer.de/'" as="xs:string"/>
+<xsl:variable name="v-base-uri" select="'http://vocabulary.wolterskluwer.de/'" as="xs:string"/>
 
 <!-- language -->
 <xsl:template name="setLanguage">
