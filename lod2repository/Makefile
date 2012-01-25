@@ -17,20 +17,20 @@ upload-keys:
 	ssh root@stack.lod2.eu "cat /home/packaging/.ssh/PublicKeys/*.pub >/home/packaging/.ssh/authorized_keys"
 
 sign-release:
-	bin/sign-remote packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/lod2/Release
+	bin/sign-remote root@stack.lod2.eu:/var/mini-dinstall/lod2/Release
 
 release-log-less:
-	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/mini-dinstall.log mini-dinstall.log
+	scp packaging@stack.lod2.eu:/var/mini-dinstall/mini-dinstall/mini-dinstall.log mini-dinstall.log
 	less mini-dinstall.log
 	rm mini-dinstall.log
 
 release-ls-rejected:
-	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/REJECT.ls rejected.ls
+	scp packaging@stack.lod2.eu:/var/mini-dinstall/mini-dinstall/REJECT.ls rejected.ls
 	less rejected.ls
 	rm rejected.ls
 
 release-ls-incoming:
-	scp packaging@stack.lod2.eu:/var/www/stack.lod2.eu/deb/mini-dinstall/incoming.ls incoming.ls
+	scp packaging@stack.lod2.eu:/var/mini-dinstall/mini-dinstall/incoming.ls incoming.ls
 	less incoming.ls
 	rm incoming.ls
 
