@@ -524,15 +524,14 @@
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
 	<rdf:Description rdf:about="{$r-uri}">
-		<dcterms:subject>
-			<wkd:GlossaryEntry rdf:about="{$object}">
-				<skos:inScheme rdf:resource="{$r-uri}/Glossary"/>
-				<rdf:type rdf:resource="{$skos}Concept"/>
-				<skos:prefLabel xml:lang="{fun:language(term/@sprache)}"><xsl:value-of select="normalize-space(string(term))"/></skos:prefLabel>
-				<skos:definition rdf:parseType="Literal">
-					<xsl:apply-templates select="definition" mode="xml-literal"/>
-				</skos:definition>
-			</wkd:GlossaryEntry>
+		<dcterms:subject rdf:parseType="Resource">
+			<rdf:type rdf:resource="{$wkd}GlossaryEntry"/>
+			<skos:inScheme rdf:resource="{$r-uri}/Glossary"/>
+			<rdf:type rdf:resource="{$skos}Concept"/>
+			<skos:prefLabel xml:lang="{fun:language(term/@sprache)}"><xsl:value-of select="normalize-space(string(term))"/></skos:prefLabel>
+			<skos:definition rdf:parseType="Literal">
+				<xsl:apply-templates select="definition" mode="xml-literal"/>
+			</skos:definition>
 		</dcterms:subject>
 	</rdf:Description>
 </xsl:template>
