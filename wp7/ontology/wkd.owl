@@ -14,7 +14,6 @@
      xmlns:dcterms="http://purl.org/dc/terms/"
      xmlns:history="http://dublincore.org/usage/terms/history/#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:wkd="http://schema.wolterskluwer.de/"
      xmlns:bibo="http://purl.org/ontology/bibo/"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -1212,6 +1211,15 @@
     
 
 
+    <!-- http://schema.wolterskluwer.de/glossaryUsedIn -->
+
+    <owl:ObjectProperty rdf:about="http://schema.wolterskluwer.de/glossaryUsedIn">
+        <rdfs:label>glossaryUsedIn</rdfs:label>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/relation"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://schema.wolterskluwer.de/hasCaseReview -->
 
     <owl:ObjectProperty rdf:about="http://schema.wolterskluwer.de/hasCaseReview">
@@ -1379,6 +1387,16 @@
         <rdfs:label>subheading</rdfs:label>
         <rdfs:label xml:lang="de">zwischen-titel/titel-zusatz</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://schema.wolterskluwer.de/usesGlossary -->
+
+    <owl:ObjectProperty rdf:about="http://schema.wolterskluwer.de/usesGlossary">
+        <rdfs:label>usesGlossary</rdfs:label>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/terms/relation"/>
+        <owl:inverseOf rdf:resource="http://schema.wolterskluwer.de/glossaryUsedIn"/>
     </owl:ObjectProperty>
     
 
