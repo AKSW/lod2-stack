@@ -111,14 +111,6 @@ handle
 	</xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="anlage"/>
-
-<xsl:template match="anlage" mode="top-level"/>
-
-<xsl:template match="anlage-ebene"/>
-
-<xsl:template match="anlage-ebene" mode="top-level"/>
-
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
 <metaInformation>

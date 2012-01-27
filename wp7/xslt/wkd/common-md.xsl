@@ -498,6 +498,45 @@
 	</xsl:if>
 </xsl:template>
 
+<xsl:template match="anlage"/>
+
+<xsl:template match="anlage" mode="top-level">
+	<xsl:apply-templates select="anlage-ebene | glossar" mode="top-level"/>
+</xsl:template>
+
+<xsl:template match="anlage-ebene"/>
+
+<xsl:template match="anlage-ebene" mode="top-level">
+	<xsl:apply-templates select="anlage-ebene | glossar" mode="top-level"/>
+</xsl:template>
+
+<xsl:template match="glossar" mode="top-level">
+	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
+	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
+	<skos:ConceptScheme rdf:about="{$r-uri}/Glossary">
+		<xsl:apply-templates select="titel-kopf"/>
+		<wkd:glossaryUsedIn rdf:resource="{$r-uri}"/>
+	</skos:ConceptScheme>
+	<xsl:apply-templates select="glossar-eintrag" mode="top-level"/>
+</xsl:template>
+
+<xsl:template match="glossar-eintrag">
+	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
+	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
+	<rdf:Description rdf:about="{$r-uri}">
+		<dcterms:subject>
+			<wkd:GlossaryEntry rdf:about="{$object}">
+				<skos:inScheme rdf:resource="{$r-uri}/Glossary"/>
+				<rdf:type rdf:resource="{$skos}Concept"/>
+				<skos:prefLabel xml:lang="{fun:language(term/@sprache)}"><xsl:value-of select="normalize-space(string(term))"/></skos:prefLabel>
+				<skos:definition rdf:parseType="Literal">
+					<xsl:apply-templates select="definition" mode="xml-literal"/>
+				</skos:definition>
+			</wkd:GlossaryEntry>
+		</dcterms:subject>
+	</rdf:Description>
+</xsl:template>
+
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
 <metaInformation>

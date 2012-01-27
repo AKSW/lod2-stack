@@ -134,6 +134,12 @@
 	<xsl:value-of select="string(.)"/>
 </xsl:template>
 
+<xsl:template match="definition" mode="xml-literal">
+	<xhtml:div xml:lang="{fun:language(@sprache)}">
+		<xsl:apply-templates mode="xml-literal"/>
+	</xhtml:div>
+</xsl:template>
+
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
