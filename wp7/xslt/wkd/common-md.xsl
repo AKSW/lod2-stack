@@ -520,9 +520,10 @@
 	<xsl:apply-templates select="glossar-eintrag" mode="top-level"/>
 </xsl:template>
 
-<xsl:template match="glossar-eintrag">
+<xsl:template match="glossar-eintrag" mode="top-level">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<xsl:param name="p-uri" as="xs:string" tunnel="yes"/>
+	<xsl:message terminate="no">FOUND glossar-eintrag.</xsl:message>
 	<rdf:Description rdf:about="{$r-uri}">
 		<dcterms:subject rdf:parseType="Resource">
 			<rdf:type rdf:resource="{$wkd}GlossaryEntry"/>
