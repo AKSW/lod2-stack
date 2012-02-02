@@ -1,3 +1,9 @@
+lod2repository (1.17) lod2; urgency=low
+
+  * Add new key for maintainer: Claus Stadler (AKSW)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Thu, 02 Feb 2012 14:41:02 +0100
+
 lod2repository (1.16) lod2; urgency=low
 
   * re-add Norman Heinos key to the database file
