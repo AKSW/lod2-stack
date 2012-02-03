@@ -1,0 +1,3 @@
+valiant usr/bin
+*.zip usr/lib/valiant
+configuration/* etc/valiant
