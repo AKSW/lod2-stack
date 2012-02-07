@@ -55,12 +55,33 @@ nested kommentierung, ebene
 
 <xsl:template name="doc-parts-k">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<!--xsl:for-each-group select="/wkdsc/(beitrag | beitrag-rn)//(beitrag-ebene | beitrag-rn-ebene)" group-by="name()">
+	<xsl:for-each-group select="/wkdsc/(kommentierung | kommentierung-rn)//(kommentierung-ebene | kommentierung-rn-ebene | anlage | anlage-ebene)" group-by="name()">
 		<xsl:for-each select="current-group()">
 			<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)" as="xs:string"/>
 			<metalex:fragment rdf:resource="{$uri}"/>
 		</xsl:for-each>
-	</xsl:for-each-group-->
+	</xsl:for-each-group>
+</xsl:template>
+
+<xsl:template match="kommentierung-ebene | kommentierung-rn-ebene">
+	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
+	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
+	<dcterms:hasPart>
+		<metalex:BlockFragment rdf:about="{$uri}">
+			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
+			<xsl:apply-templates select="*">
+				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
+			</xsl:apply-templates>
+		</metalex:BlockFragment>
+	</dcterms:hasPart>
+</xsl:template>
+
+<xsl:template match="kommentierung-ebene | kommentierung-rn-ebene" mode="top-level">
+	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
+	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
+	<xsl:apply-templates select="*" mode="top-level">
+		<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
@@ -73,16 +94,16 @@ nested kommentierung, ebene
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

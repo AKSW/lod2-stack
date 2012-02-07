@@ -4,7 +4,9 @@
  xmlns:data="http://local-data/"
  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
  xmlns:ppuri="java:at.punkt.commons.uricreator.URIFactory"
- exclude-result-prefixes="xsl xs fun data"
+ exclude-result-prefixes="xsl xs fun data ppuri"
+ xmlns:skos="http://www.w3.org/2004/02/skos/core#" 
+ xmlns:dcterms="http://purl.org/dc/terms/" 
 >
 
  <!--
@@ -80,7 +82,6 @@
 	<xsl:value-of>
 		<xsl:for-each select="$language-code">
 			<xsl:variable name="iso" select="key('iso-639-1-2',$wk)" as="element()*"/>
-
 			<xsl:value-of select="if (count($iso)=0) then $wk else $iso[1]/data:iso"/>
 		</xsl:for-each>
 	</xsl:value-of>
@@ -168,6 +169,19 @@
 		</xsl:for-each>
 	</xsl:value-of>
 </xsl:function>
+
+<xsl:template name="court-concept">
+	<xsl:param name="name" as="xs:string"/>
+	<skos:Concept>
+		<skos:prefLabel><xsl:value-of select="$name"/></skos:prefLabel>
+		<xsl:for-each select="$courts">
+			<xsl:variable name="id" select="key('court',$name)" as="element()*"/>
+			<xsl:for-each select="$id">
+				<dcterms:identifier><xsl:value-of select="./@technical"/></dcterms:identifier>
+			</xsl:for-each>
+		</xsl:for-each>
+	</skos:Concept>
+</xsl:template>
 
 <!-- GENERAL UTILITY FUNCTIONS -->
 <xsl:function name="fun:dateDe2Iso" as="xs:string">

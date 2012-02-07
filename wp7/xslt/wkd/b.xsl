@@ -76,7 +76,7 @@ handle
  -->
 <xsl:template name="doc-parts-b">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<xsl:for-each-group select="/wkdsc/(beitrag | beitrag-rn)//(beitrag-ebene | beitrag-rn-ebene)" group-by="name()">
+	<xsl:for-each-group select="/wkdsc/(beitrag | beitrag-rn)//(beitrag-ebene | beitrag-rn-ebene | anlage | anlage-ebene)" group-by="name()">
 		<xsl:for-each select="current-group()">
 			<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)" as="xs:string"/>
 			<metalex:fragment rdf:resource="{$uri}"/>

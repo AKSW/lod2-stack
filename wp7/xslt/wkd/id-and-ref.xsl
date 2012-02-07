@@ -221,20 +221,20 @@
 		<xsl:when test="$doc-type='entscheidung'">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@es-typ)"/>
 		</xsl:when>
-		<xsl:when test="$doc-type=('aufsatz','aufsatz-es','rezension')">
-			<xsl:value-of select="concat($s-base-uri,$doc-type)"/>
+		<xsl:when test="$doc-type=('aufsatz','aufsatz-es')">
+			<xsl:value-of select="concat($s-base-uri,$doc-type,if (string-length($doc/type)=0) then '' else concat('/',$doc/type))"/>
 		</xsl:when>
-		<xsl:when test="$doc-type='pressemitteilung'">
+		<xsl:when test="$doc-type=('pressemitteilung','rezension')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type=('beitrag','beitrag-rn')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type=('kommentierung','kommentierung-rn')">
-			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
+			<xsl:value-of select="concat($s-base-uri,$doc-type)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type='lexikon'">
-			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@typ)"/>
+			<xsl:value-of select="concat($s-base-uri,$doc-type)"/>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="yes">ERROR: invalid document type - "<xsl:value-of select="$doc-type"/>" is not supported yet.</xsl:message>
@@ -286,9 +286,24 @@
 			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
 			<xsl:value-of select="concat($b-uri,'/beitrag-ebene',$id)"/>
 		</xsl:when>
+		<xsl:when test="name($element)=('kommentierung-ebene','kommentierung-rn-ebene')">
+			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/kommentierung-ebene',$id)"/>
+		</xsl:when>
+		<xsl:when test="name($element)='anlage'">
+			<xsl:variable name="id" select="fun:percentEncode(normalize-space($element/@anlage-nr))" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/anlage_',$id)"/>
+		</xsl:when>
+		<xsl:when test="name($element)='anlage-ebene'">
+			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
+			<xsl:variable name="n" select="fun:percentEncode(normalize-space($element/ancestor::analage[1]/@anlage-nr))" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/anlage-ebene',
+			                if (string-length($n) = 0) then '' else concat('_',$n),
+			                if (string-length($id) = 0) then '' else $id)"/>
+		</xsl:when>
 		<xsl:otherwise>
 			<!--
-			todo: rn, lex, kom, ...
+			todo: lex, ...
 			 -->
 			<xsl:message terminate="yes">ERROR - unknown identifier type for element: <xsl:value-of select="name($element)"/>.</xsl:message>
 		</xsl:otherwise>

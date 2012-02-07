@@ -266,20 +266,22 @@
 <xsl:template match="organisation">
 	<xsl:param name="namespace" select="$dcterms" as="xs:string"/>
 	<xsl:param name="property" select="'subject'" as="xs:string"/>
-	<xsl:element namespace="{$namespace}" name="{$property}">
-		<skos:Concept>
-			<rdf:type rdf:resource="{$foaf}Organization"/>
-			<foaf:name><xsl:value-of select="string(org-bezeichnung)"/></foaf:name>
-			<skos:prefLabel xml:lang="de"><xsl:value-of select="string(org-bezeichnung)"/></skos:prefLabel>
-			<xsl:if test="org-kuerzel">
-				<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
-				<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
-			</xsl:if>
-			<xsl:if test="@ref-id">
-				<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
-			</xsl:if>
-		</skos:Concept>
-	</xsl:element>
+	<xsl:if test="string-length(normalize-space(string(org-bezeichnung))) &gt; 0">
+		<xsl:element namespace="{$namespace}" name="{$property}">
+			<skos:Concept>
+				<rdf:type rdf:resource="{$foaf}Organization"/>
+				<foaf:name><xsl:value-of select="string(org-bezeichnung)"/></foaf:name>
+				<skos:prefLabel xml:lang="de"><xsl:value-of select="string(org-bezeichnung)"/></skos:prefLabel>
+				<xsl:if test="org-kuerzel">
+					<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
+					<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
+				</xsl:if>
+				<xsl:if test="@ref-id">
+					<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
+				</xsl:if>
+			</skos:Concept>
+		</xsl:element>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="zu-organisation">
@@ -296,35 +298,38 @@
 <xsl:template match="person">
 	<xsl:param name="namespace" select="$dcterms" as="xs:string"/>
 	<xsl:param name="property" select="'creator'" as="xs:string"/>
-	<xsl:element namespace="{$namespace}" name="{$property}">
-		<skos:Concept>
-			<rdf:type rdf:resource="{$foaf}Person"/>
-			<xsl:for-each select="name/titel-zu-name">
-				<foaf:title><xsl:value-of select="string(.)"/></foaf:title>
-			</xsl:for-each>
-			<xsl:if test="name/vorname">
-				<foaf:firstName><xsl:value-of select="string(name/vorname)"/></foaf:firstName>
-			</xsl:if>
-			<xsl:if test="name/nachname">
-				<foaf:lastName><xsl:value-of select="string(name/nachname)"/></foaf:lastName>
-			</xsl:if>
-			<skos:prefLabel xml:lang="de"><xsl:value-of select="concat(name/vorname,if (name/nachname and name/vorname) then ' ' else '',name/nachname)"/></skos:prefLabel>
-			<xsl:if test="org-kuerzel">
-				<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
-				<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
-			</xsl:if>
-			<xsl:if test="@ref-id">
-				<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
-			</xsl:if>
-			<xsl:for-each select="person-rolle">
-				<xsl:apply-templates select="verweis-url">
-					<xsl:with-param name="referenceType" as="xs:string" select="if (@typ) then @typ else 'http'" tunnel="yes"/>
-				</xsl:apply-templates>
-				<xsl:apply-templates select="zu-organisation"/>
-			</xsl:for-each>
-			<xsl:apply-templates select="anmerkung"/>
-		</skos:Concept>
-	</xsl:element>
+	<xsl:variable name="full-name" select="normalize-space(concat(name/vorname,if (name/nachname and name/vorname) then ' ' else '',name/nachname))" as="xs:string"/>
+	<xsl:if test="string-length($full-name) &gt; 0">
+		<xsl:element namespace="{$namespace}" name="{$property}">
+			<skos:Concept>
+				<rdf:type rdf:resource="{$foaf}Person"/>
+				<xsl:for-each select="name/titel-zu-name">
+					<foaf:title><xsl:value-of select="string(.)"/></foaf:title>
+				</xsl:for-each>
+				<xsl:if test="name/vorname">
+					<foaf:firstName><xsl:value-of select="string(name/vorname)"/></foaf:firstName>
+				</xsl:if>
+				<xsl:if test="name/nachname">
+					<foaf:lastName><xsl:value-of select="string(name/nachname)"/></foaf:lastName>
+				</xsl:if>
+				<skos:prefLabel xml:lang="de"><xsl:value-of select="$full-name"/></skos:prefLabel>
+				<xsl:if test="org-kuerzel">
+					<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
+					<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
+				</xsl:if>
+				<xsl:if test="@ref-id">
+					<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
+				</xsl:if>
+				<xsl:for-each select="person-rolle">
+					<xsl:apply-templates select="verweis-url">
+						<xsl:with-param name="referenceType" as="xs:string" select="if (@typ) then @typ else 'http'" tunnel="yes"/>
+					</xsl:apply-templates>
+					<xsl:apply-templates select="zu-organisation"/>
+				</xsl:for-each>
+				<xsl:apply-templates select="anmerkung"/>
+			</skos:Concept>
+		</xsl:element>
+	</xsl:if>
 </xsl:template>
 
 <xsl:template match="anmerkung">
@@ -498,16 +503,25 @@
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="anlage"/>
-
-<xsl:template match="anlage" mode="top-level">
-	<xsl:apply-templates select="anlage-ebene | glossar" mode="top-level"/>
+<xsl:template match="anlage | anlage-ebene">
+	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
+	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
+	<dcterms:hasPart>
+		<metalex:BlockFragment rdf:about="{$uri}">
+			<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{name()}"/>
+			<xsl:apply-templates select="*">
+				<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
+			</xsl:apply-templates>
+		</metalex:BlockFragment>
+	</dcterms:hasPart>
 </xsl:template>
 
-<xsl:template match="anlage-ebene"/>
-
-<xsl:template match="anlage-ebene" mode="top-level">
-	<xsl:apply-templates select="anlage-ebene | glossar" mode="top-level"/>
+<xsl:template match="anlage | anlage-ebene" mode="top-level">
+	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
+	<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)"/>
+	<xsl:apply-templates select="anlage-ebene | glossar" mode="top-level">
+		<xsl:with-param name="p-uri" select="$uri" as="xs:string" tunnel="yes"/>
+	</xsl:apply-templates>
 </xsl:template>
 
 <xsl:template match="glossar" mode="top-level">

@@ -83,7 +83,10 @@
 <xsl:template match="es-metadaten">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<bibo:court>
-		<skos:Concept rdf:about="{$v-base-uri}Court/{fun:courtId(gericht)}"/>
+		<!--skos:Concept rdf:about="{$v-base-uri}Court/{fun:courtId(gericht)}"/-->
+		<xsl:call-template name="court-concept">
+			<xsl:with-param name="name" select="gericht" as="xs:string"/>
+		</xsl:call-template>
 	</bibo:court>
 	<wkd:decisionDate rdf:datatype="{$xsd}date"><xsl:value-of select="fun:dateDe2Iso(datum)"/></wkd:decisionDate>
 	<xsl:if test="urteilsart/@typ">
