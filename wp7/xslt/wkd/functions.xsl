@@ -92,6 +92,7 @@
 	<data:entry><data:de>vorschrift/typ</data:de><data:en>legislation/type</data:en></data:entry>
 	<data:entry><data:de>entscheidung</data:de><data:en>jurisprudence</data:en></data:entry>
 	<data:entry><data:de>entscheidung/typ</data:de><data:en>jurisprudence/type</data:en></data:entry>
+	<data:entry><data:de>entscheidungssammlung eintrag</data:de><data:en>jurisprudence_collection_entry</data:en></data:entry>
 	<data:entry><data:de>pressemitteilung</data:de><data:en>press_release</data:en></data:entry>
 	<data:entry><data:de>pressemitteilung/typ</data:de><data:en>press_release/type</data:en></data:entry>
 	<data:entry><data:de>aufsatz</data:de><data:en>journal_article</data:en></data:entry>

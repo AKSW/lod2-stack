@@ -27,14 +27,22 @@
  Work Package - 7
  Author Johan De Smedt
  Description: extract metadata, classification and links from WKD XML 
- Module: entscheidung module
+ Module: entscheidung and esa-eintrag module
  -->
 
-<xsl:template match="entscheidung">
+<xsl:template match="entscheidung | esa-eintrag">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<wkd:jurisprudenceType>
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('entscheidung/typ')}/{@es-typ}"/>
 	</wkd:jurisprudenceType>
+	<xsl:if test="string-length(@rechteinhaber) &gt; 0">
+		<bibo:owner>
+			<dcterms:Agent>
+				<rdf:type rdf:resource="{$skos}Concept"/>
+				<skos:notation><xsl:value-of select="@rechteinhaber"/></skos:notation>
+			</dcterms:Agent>
+		</bibo:owner>
+	</xsl:if>
 	<xsl:apply-templates select="*"/>
 </xsl:template>
 
@@ -52,7 +60,7 @@
 </xsl:template>
 
 
-<xsl:template match="entscheidung" mode="top-level">
+<xsl:template match="entscheidung | esa-eintrag" mode="top-level">
 	<xsl:apply-templates select="*" mode="top-level"/>
 </xsl:template>
 
@@ -108,23 +116,23 @@
 </xsl:template>
 
 <!-- Set base reference -->
-<xsl:template match="entscheidung/normenkette">
+<xsl:template match="entscheidung/normenkette | esa-eintrag/normenkette">
 	<xsl:variable name="refType" as="xs:string" select="name()"/>
 	<xsl:apply-templates select="verweis-vs">
 		<xsl:with-param name="referenceType" tunnel="yes" select="$refType" as="xs:string"/>
 	</xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="entscheidung/normenkette" mode="top-level"/>
+<xsl:template match="entscheidung/normenkette | esa-eintrag/normenkette" mode="top-level"/>
 
-<xsl:template match="entscheidung/fundstellen">
+<xsl:template match="entscheidung/fundstellen | esa-eintrag/fundstellen">
 	<xsl:variable name="refType" as="xs:string" select="name()"/>
 	<xsl:apply-templates select="*">
 		<xsl:with-param name="referenceType" tunnel="yes" select="$refType" as="xs:string"/>
 	</xsl:apply-templates>
 </xsl:template>
 
-<xsl:template match="entscheidung/fundstellen" mode="top-level"/>
+<xsl:template match="entscheidung/fundstellen | esa-eintrag/fundstellen" mode="top-level"/>
 
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
@@ -136,16 +144,16 @@
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 		<scenario default="no" name="fg_st_2010-11-03_3-k-1350-03_vt" userelativepaths="yes" externalpreview="no" url="..\..\Data\Jurisprudence\fg_st_2010-11-03_3-k-1350-03_vt.xml" htmlbaseurl=""
@@ -154,16 +162,16 @@
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 		<scenario default="no" name="bgh_-_2008-11-05_i-zr-39-06" userelativepaths="yes" externalpreview="no" url="..\..\Data\Jurisprudence\bgh_-_2008-11-05_i-zr-39-06.xml" htmlbaseurl="" outputurl="..\..\result\jur\bgh_-_2008-11-05_i-zr-39-06.rdf"
@@ -171,16 +179,16 @@
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 		<scenario default="no" name="bgh_-_2009-10-23_v-zr-141-08" userelativepaths="yes" externalpreview="no" url="..\..\Data\Jurisprudence\bgh_-_2009-10-23_v-zr-141-08.xml" htmlbaseurl="" outputurl="..\..\result\jur\bgh_-_2009-10-23_v-zr-141-08.rdf"
@@ -188,16 +196,16 @@
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 		<scenario default="yes" name="eugh_-_2009-11-12_c-518-07" userelativepaths="yes" externalpreview="no" url="..\..\Data\Jurisprudence\eugh_-_2009-11-12_c-518-07.xml" htmlbaseurl="" outputurl="..\..\result\jur\eugh_-_2009-11-12_c-518-07.rdf"
@@ -205,16 +213,16 @@
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

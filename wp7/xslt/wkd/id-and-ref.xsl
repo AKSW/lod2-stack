@@ -60,6 +60,13 @@
 				<xsl:variable name="date" select="fun:dateDe2Iso(normalize-space($doc/es-metadaten/datum))" as="xs:string"/>
 				<xsl:value-of select="concat($court,'_',$file,'_',$date)"/>
 			</xsl:when>
+			<xsl:when test="$doc-type='esa-eintrag'">
+				<xsl:if test="not($doc/zuordnung-produkt/verweis-esa)">
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-esa) found for this document.</xsl:message>
+				</xsl:if>
+				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-esa[1]" as="element()"/>
+				<xsl:value-of select="fun:verweis-esa($identifier)"/>
+			</xsl:when>
 			<xsl:when test="$doc-type='aufsatz'">
 				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
 					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
@@ -218,7 +225,7 @@
 		<xsl:when test="$doc-type='vorschrift'">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@vs-typ)"/>
 		</xsl:when>
-		<xsl:when test="$doc-type='entscheidung'">
+		<xsl:when test="$doc-type=('entscheidung','esa-eintrag')">
 			<xsl:value-of select="concat($s-base-uri,$doc-type,'/',$doc/@es-typ)"/>
 		</xsl:when>
 		<xsl:when test="$doc-type=('aufsatz','aufsatz-es')">
@@ -402,8 +409,65 @@
 
 <xsl:function name="fun:verweis-esa" as="xs:string">
 	<xsl:param name="e" as="element()"/>
-	<xsl:value-of select="''"/>
-	<!-- to do -->
+	<!-- 
+Here we have different patterns again, like in journal.  The most commons are:
+produkt + vsk + par + nr (nr should be abs I think)
+produkt + vsk + fach (not relevant I think, fach should be art + abs)
+produkt + gericht + az + datum (does not occur)
+produkt + band + nr + start-seite + end-seite
+produkt + band + nr + start-seite + end-seite + pos-auf-seite
+produkt + band + nr + start-seite + pos-auf-seite
+produkt + band + nr + start-seite
+produkt + band + heft + nr + start-seite + end-seite + pos-auf-seite
+produkt + band + heft + nr + start-seite + end-seite
+produkt + band + heft + nr + start-seite + pos-auf-seite
+produkt + band + heft + nr + start-seite
+produkt + band + heft + nr + start-seite + end-seite
+produkt + fach + al + start-seite
+produkt + fach + al + start-seite + end-seite
+
+Sometimes there is also "jahrgang" or "al" or others tagged, but this is not necessary for the uri.
+If two patterns like band and seite on the one hand and vsk etc. on the other hand are available,
+then the uri should be based on the vsk logic only.
+-->
+	<xsl:variable name="linked-doc-base-uri" as="xs:string" select="concat($r-base-uri,fun:deu2eng('entscheidungssammlung eintrag'),'/')"/>
+	<xsl:variable name="uri">
+		<xsl:value-of select="fun:percentEncode($e/@produkt)"/>
+		<xsl:choose>
+			<xsl:when test="$e/@vsk">
+				<xsl:value-of select="concat('/vs.',$e/@vsk)"/>
+				<xsl:value-of select="if (string-length($e/@art) &gt; 0) then concat('/art/',fun:percentEncode($e/@art)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@par) &gt; 0) then concat('/par/',fun:percentEncode($e/@par)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@abs) &gt; 0) then concat('/section/',fun:percentEncode($e/@abs)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@nr) &gt; 0) then concat('/nbr.',fun:percentEncode($e/@nr)) else ''"/>
+			</xsl:when>
+			<xsl:when test="$e/@gericht">
+				<xsl:variable name="es" select="$e" as="element()"/>
+				<xsl:value-of select="concat('/es.',fun:verweis-es-id($es))"/>
+			</xsl:when>
+			<xsl:when test="$e/@band or $e/@jahrgang">
+				<xsl:value-of select="if (string-length($e/@jahrgang) &gt; 0) then concat('/volume.',fun:percentEncode($e/@jahrgang)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@band) &gt; 0) then concat('/volume.',fun:percentEncode($e/@band)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@auflage) &gt; 0) then concat('/edition.',fun:percentEncode($e/@auflage)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@heft) &gt; 0) then concat('/issue.',fun:percentEncode($e/@heft)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@nr) &gt; 0) then concat('/nbr.',fun:percentEncode($e/@nr)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start.',fun:percentEncode($e/@start-seite)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end.',fun:percentEncode($e/@end-seite)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@pos-auf-seite) &gt; 0) then concat('/position.',fun:percentEncode($e/@pos-auf-seite)) else ''"/>
+			</xsl:when>
+			<xsl:when test="$e/@fach">
+				<xsl:value-of select="if (string-length($e/@fach) &gt; 0) then concat('/sequence.',fun:percentEncode($e/@fach)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@al) &gt; 0) then concat('/update.',fun:percentEncode($e/@al)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start.',fun:percentEncode($e/@start-seite)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end.',fun:percentEncode($e/@end-seite)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@pos-auf-seite) &gt; 0) then concat('/position.',fun:percentEncode($e/@pos-auf-seite)) else ''"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">esa-eintrag without a well defined identifer</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:value-of select="concat($linked-doc-base-uri,normalize-space($uri))"/>
 </xsl:function>
 
 <xsl:function name="fun:verweis-komhbe" as="xs:string">
@@ -416,7 +480,7 @@ produkt + bez + wert
 produkt + bez + wert + rn
 produkt + vsk + rn
 produkt + vsk + par + rn
-produkt + vsk  + art
+produkt + vsk + art
 produkt + vsk + art + rn
 produkt + vsk + par + abs
 produkt + vsk + art + abs
@@ -527,7 +591,9 @@ produkt + vsk + art + abs
 </xsl:template>
 
 <xsl:template match="verweis-esa">
-	<!-- to do -->
+	<xsl:call-template name="write-reference">
+		<xsl:with-param name="target" select="fun:verweis-esa(.)"/>
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template match="verweis-komhbe">
