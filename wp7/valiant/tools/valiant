@@ -12,10 +12,10 @@ fi
 
 LOG="valiant.log"
 VCLASSPATH=".:/etc/valiant:/usr/lib/valiant/be/tenforce/lod2/valiant:/usr/lib/valiant/be/tenforce/lod2/valiant/virtuoso:/usr/lib/valiant/be/tenforce/lod2/valiant/webdav:/usr/lib/valiant:/usr/lib/valiant/lib/*"
-if [VALIANT_XSLT_LIB]; then 
+if [ -n "$VALIANT_XSLT_LIB" ]; then 
 VCLASSPATH=$VCLASSPATH:$VALIANT_XSLT_LIB;
 fi
-if [VALIANT_XML_LIB]; then 
+if [ -n "$VALIANT_XML_LIB" ]; then 
 VCLASSPATH=$VCLASSPATH:$VALIANT_XML_LIB;
 fi
 

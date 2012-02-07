@@ -212,6 +212,7 @@ public class Valiant {
                 transformToFileFromFile(files[i].getPath(),outputPath);
             }
             else if(files[i].isDirectory()){
+		System.out.println("create dir: " + rdfFolder + outputPath + files[i].getName());
                 (new File(rdfFolder + outputPath + files[i].getName())).mkdir();
                 loadDir(files[i].listFiles(), outputPath + files[i].getName() + "/");
             }
