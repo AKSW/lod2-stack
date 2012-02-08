@@ -40,6 +40,12 @@
 	</xhtml:div>
 </xsl:template>
 
+<xsl:template match="titel" mode="xml-literal">
+	<xhtml:p class="title">
+		<xsl:apply-templates mode="xml-literal"/>
+	</xhtml:p>
+</xsl:template>
+
 <xsl:template match="absatz" mode="xml-literal">
 	<xhtml:p>
 		<xsl:apply-templates mode="xml-literal"/>

@@ -551,6 +551,27 @@
 	</rdf:Description>
 </xsl:template>
 
+<xsl:template match="gruende | kostenentscheidung | rubrum | streitwertbeschluss | tatbestand | tenor ">
+	<xsl:variable name="n" select="name()" as="xs:string"/>
+	<xsl:variable name="e" select="if ($n='gruende') then 'reason'
+	                          else if ($n='kostenentscheidung') then 'cost'
+	                          else if ($n='rubrum') then 'pleading'
+	                          else if ($n='streitwertbeschluss') then 'claimedValue'
+	                          else if ($n='tatbestand') then 'facts'
+	                          else 'tenor'"/>
+	<xsl:element namespace="{$wkd}" name="{$e}">
+		<xsl:call-template name="case-description"/>
+	</xsl:element>
+</xsl:template>
+
+<xsl:template name="case-description">
+	<wkd:CaseDescription>
+		<rdf:value rdf:parseType="Literal">
+			<xsl:apply-templates mode="xml-literal"/>
+		</rdf:value>
+	</wkd:CaseDescription>
+</xsl:template>
+
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
