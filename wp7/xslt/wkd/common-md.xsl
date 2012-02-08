@@ -303,21 +303,21 @@
 		<xsl:element namespace="{$namespace}" name="{$property}">
 			<skos:Concept>
 				<rdf:type rdf:resource="{$foaf}Person"/>
-				<xsl:for-each select="name/titel-zu-name">
+				<xsl:for-each select="name/titel-zu-name[string-length(normalize-space(.)) &gt; 0]">
 					<foaf:title><xsl:value-of select="string(.)"/></foaf:title>
 				</xsl:for-each>
-				<xsl:if test="name/vorname">
+				<xsl:if test="string-length(normalize-space(name/vorname)) &gt; 0">
 					<foaf:firstName><xsl:value-of select="string(name/vorname)"/></foaf:firstName>
 				</xsl:if>
-				<xsl:if test="name/nachname">
+				<xsl:if test="string-length(normalize-space(name/nachname)) &gt; 0">
 					<foaf:lastName><xsl:value-of select="string(name/nachname)"/></foaf:lastName>
 				</xsl:if>
 				<skos:prefLabel xml:lang="de"><xsl:value-of select="$full-name"/></skos:prefLabel>
-				<xsl:if test="org-kuerzel">
+				<xsl:if test="string-length(normalize-space(org-kuerzel)) &gt; 0">
 					<foaf:nick><xsl:value-of select="org-kuerzel"/></foaf:nick>
 					<skos:altLabel xml:lang="de"><xsl:value-of select="org-kuerzel"/></skos:altLabel>
 				</xsl:if>
-				<xsl:if test="@ref-id">
+				<xsl:if test="string-length(normalize-space(@ref-id)) &gt; 0">
 					<dcterms:identifier><xsl:value-of select="@ref-id"/></dcterms:identifier>
 				</xsl:if>
 				<xsl:for-each select="person-rolle">
