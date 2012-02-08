@@ -62,21 +62,21 @@
 			</xsl:when>
 			<xsl:when test="$doc-type='esa-eintrag'">
 				<xsl:if test="not($doc/zuordnung-produkt/verweis-esa)">
-					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-esa) found for this document.</xsl:message>
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-esa) found for this document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 				</xsl:if>
 				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-esa[1]" as="element()"/>
-				<xsl:value-of select="fun:verweis-esa($identifier)"/>
+				<xsl:value-of select="fun:verweis-esa($identifier,true())"/>
 			</xsl:when>
 			<xsl:when test="$doc-type='aufsatz'">
 				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
-					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 				</xsl:if>
 				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
 				<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
 			</xsl:when>
 			<xsl:when test="$doc-type='rezension'">
 				<xsl:if test="not($doc/zuordnung-produkt/verweis-zs)">
-					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document.</xsl:message>
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/verweis-zs) found for this document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 				</xsl:if>
 				<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
 				<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
@@ -95,7 +95,7 @@
 						<xsl:value-of select="fun:percentEncode(normalize-space($doc/metadaten/metadaten-text[@bezeichnung='link-id']))"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:message terminate="yes">No identifier for aufsatz-es found for this document.</xsl:message>
+						<xsl:message terminate="yes">No identifier for aufsatz-es found for this document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
@@ -105,13 +105,13 @@
 			<xsl:when test="$doc-type=('beitrag','beitrag-rn','lexikon')">
 			    <!-- take the first link giving a product -->
 				<xsl:if test="count($doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0])=0">
-					<xsl:message terminate="yes">No identifier (zuordnung-produkt/*[@produkt]) found for this document.</xsl:message>
+					<xsl:message terminate="yes">No identifier (zuordnung-produkt/*[@produkt]) found for this document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 				</xsl:if>
 				<xsl:variable name="product" select="$doc/zuordnung-produkt/*[string-length(@produkt) &gt; 0][1]" as="element()"/>
 				<xsl:variable name="identifier">
 					<xsl:choose>
 						<xsl:when test="name($product)='verweis-esa'">
-							<xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-esa.</xsl:message>
+							<xsl:message terminate="yes">No identifier logic yet for (zuordnung-produkt/verweis-esa for document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 						</xsl:when>
 						<xsl:when test="name($product)='verweis-zs'">
 							<xsl:value-of select="fun:verweis-zs-id($product)"/>
@@ -126,7 +126,7 @@
 								)"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:message terminate="yes">Unknown identifier (zuordnung-produkt/<xsl:value-of select="name($product)"/>).</xsl:message>
+							<xsl:message terminate="yes">Unknown identifier (zuordnung-produkt/<xsl:value-of select="name($product)"/>) for document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -137,7 +137,7 @@
 			<xsl:when test="$doc-type=('kommentierung','kommentierung-rn')">
 			    <!-- take the first link giving a product -->
 				<xsl:if test="string-length($doc/zuordnung-produkt/verweis-komhbe/@produkt) = 0">
-					<xsl:message terminate="yes">No product identifier (zuordnung-produkt/verweis-komhbe/@produkt) found for this document.</xsl:message>
+					<xsl:message terminate="yes">No product identifier (zuordnung-produkt/verweis-komhbe/@produkt) found for this document of type[<xsl:value-of select="$doc-type"/>].</xsl:message>
 				</xsl:if>
 				<xsl:variable name="v-vs" as="element()*" select="
 					if ($doc/zuordnung-produkt/verweis-komhbe/verweis-vs[@vsk][not(normalize-space(@vsk)=('','unbekannt'))])
@@ -409,6 +409,7 @@
 
 <xsl:function name="fun:verweis-esa" as="xs:string">
 	<xsl:param name="e" as="element()"/>
+	<xsl:param name="isRef" as="xs:boolean"/>
 	<!-- 
 Here we have different patterns again, like in journal.  The most commons are:
 produkt + vsk + par + nr 
@@ -454,7 +455,11 @@ then the uri should be based on the vsk logic only.
 				<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end.',fun:percentEncode($e/@end-seite)) else ''"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:message terminate="yes">esa-eintrag without a well defined identifer</xsl:message>
+				<xsl:if test="$isRef">
+					<xsl:message terminate="yes">identifying esa-eintrag is not well defined identifer</xsl:message>
+				</xsl:if>
+				<xsl:message terminate="no">refering verweis-esa is not well defined identifer</xsl:message>
+				<xsl:value-of select="'/invalid-reference'"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -583,7 +588,7 @@ produkt + vsk + art + abs
 
 <xsl:template match="verweis-esa">
 	<xsl:call-template name="write-reference">
-		<xsl:with-param name="target" select="fun:verweis-esa(.)"/>
+		<xsl:with-param name="target" select="fun:verweis-esa(.,false())"/>
 	</xsl:call-template>
 </xsl:template>
 
@@ -748,7 +753,7 @@ produkt + vsk + art + abs
 	<xsl:choose>
 		<xsl:when test="$en = 'verweis-vs'"><xsl:value-of select="fun:verweis-vs($e)"/></xsl:when>
 		<xsl:when test="$en = 'verweis-es'"><xsl:value-of select="fun:verweis-es($e)"/></xsl:when>
-		<xsl:when test="$en = 'verweis-esa'"><xsl:value-of select="fun:verweis-esa($e)"/></xsl:when>
+		<xsl:when test="$en = 'verweis-esa'"><xsl:value-of select="fun:verweis-esa($e,false())"/></xsl:when>
 		<xsl:when test="$en = 'verweis-komhbe'"><xsl:value-of select="fun:verweis-komhbe($e)"/></xsl:when>
 		<xsl:when test="$en = 'verweis-zs'"><xsl:value-of select="fun:verweis-zs($e)"/></xsl:when>
 		<xsl:when test="$en = 'verweis-url'"><xsl:value-of select="fun:verweis-url($e)"/></xsl:when>

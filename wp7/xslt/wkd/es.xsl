@@ -162,7 +162,7 @@
 
 <xsl:template match="esa-haupteintrag">
 	<xsl:variable name="refType" as="xs:string" select="name()"/>
-	<wkd:mainEntry rdf:resource="{fun:verweis-esa(.)}"/>
+	<wkd:mainEntry rdf:resource="{fun:verweis-esa(.,false())}"/>
 	<xsl:apply-templates/>
 </xsl:template>
 
