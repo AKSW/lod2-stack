@@ -411,9 +411,8 @@
 	<xsl:param name="e" as="element()"/>
 	<!-- 
 Here we have different patterns again, like in journal.  The most commons are:
-produkt + vsk + par + nr (nr should be abs I think)
-produkt + vsk + fach (not relevant I think, fach should be art + abs)
-produkt + gericht + az + datum (does not occur)
+produkt + vsk + par + nr 
+produkt + vsk + fach 
 produkt + band + nr + start-seite + end-seite
 produkt + band + nr + start-seite + end-seite + pos-auf-seite
 produkt + band + nr + start-seite + pos-auf-seite
@@ -436,19 +435,12 @@ then the uri should be based on the vsk logic only.
 		<xsl:choose>
 			<xsl:when test="$e/@vsk">
 				<xsl:value-of select="concat('/vs.',$e/@vsk)"/>
-				<xsl:value-of select="if (string-length($e/@art) &gt; 0) then concat('/art/',fun:percentEncode($e/@art)) else ''"/>
-				<xsl:value-of select="if (string-length($e/@par) &gt; 0) then concat('/par/',fun:percentEncode($e/@par)) else ''"/>
-				<xsl:value-of select="if (string-length($e/@abs) &gt; 0) then concat('/section/',fun:percentEncode($e/@abs)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@fach) &gt; 0) then concat('/sequence.',fun:percentEncode($e/@art)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@par) &gt; 0) then concat('/par.',fun:percentEncode($e/@par)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@nr) &gt; 0) then concat('/nbr.',fun:percentEncode($e/@nr)) else ''"/>
 			</xsl:when>
-			<xsl:when test="$e/@gericht">
-				<xsl:variable name="es" select="$e" as="element()"/>
-				<xsl:value-of select="concat('/es.',fun:verweis-es-id($es))"/>
-			</xsl:when>
-			<xsl:when test="$e/@band or $e/@jahrgang">
-				<xsl:value-of select="if (string-length($e/@jahrgang) &gt; 0) then concat('/volume.',fun:percentEncode($e/@jahrgang)) else ''"/>
+			<xsl:when test="$e/@band">
 				<xsl:value-of select="if (string-length($e/@band) &gt; 0) then concat('/volume.',fun:percentEncode($e/@band)) else ''"/>
-				<xsl:value-of select="if (string-length($e/@auflage) &gt; 0) then concat('/edition.',fun:percentEncode($e/@auflage)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@heft) &gt; 0) then concat('/issue.',fun:percentEncode($e/@heft)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@nr) &gt; 0) then concat('/nbr.',fun:percentEncode($e/@nr)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start.',fun:percentEncode($e/@start-seite)) else ''"/>
@@ -460,7 +452,6 @@ then the uri should be based on the vsk logic only.
 				<xsl:value-of select="if (string-length($e/@al) &gt; 0) then concat('/update.',fun:percentEncode($e/@al)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start.',fun:percentEncode($e/@start-seite)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end.',fun:percentEncode($e/@end-seite)) else ''"/>
-				<xsl:value-of select="if (string-length($e/@pos-auf-seite) &gt; 0) then concat('/position.',fun:percentEncode($e/@pos-auf-seite)) else ''"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">esa-eintrag without a well defined identifer</xsl:message>
