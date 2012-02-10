@@ -928,17 +928,17 @@ Tunnel parameters used
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
-			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="xsltVersion" value="2.0"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

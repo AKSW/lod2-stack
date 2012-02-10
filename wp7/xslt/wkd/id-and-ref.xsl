@@ -462,9 +462,9 @@ then the uri should be based on the vsk logic only.
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:if test="$isRef">
-					<xsl:message terminate="yes">identifying esa-eintrag is not well defined identifer</xsl:message>
+					<xsl:message terminate="yes">the esa-eintrag identifier is not well defined identifer: <xsl:value-of select="fun:print-element($e)"/>.</xsl:message>
 				</xsl:if>
-				<xsl:message terminate="no">refering verweis-esa is not well defined identifer</xsl:message>
+				<xsl:message terminate="no">refering an identifier that is not well defined: <xsl:value-of select="fun:print-element($e)"/>.</xsl:message>
 				<xsl:value-of select="'/invalid-reference'"/>
 			</xsl:otherwise>
 		</xsl:choose>
