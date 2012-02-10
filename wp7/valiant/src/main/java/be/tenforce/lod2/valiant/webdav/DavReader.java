@@ -22,18 +22,25 @@ public class DavReader {
 
   @Autowired(required = true)
   private DavConnector davConnector;
+  public Boolean isInitialized = false;
+  
 
   private Pattern pattern;
   private int next = 0;
 
   @PostConstruct
   private void initialize() {
+    isInitialized = davConnector.isInitialized;
+
     if (null != regex && regex.length() > 0) {
       pattern = Pattern.compile(regex);
       log.info("regex: " + regex);
     }
+
     if (max < 0) max = Integer.MAX_VALUE;
     log.info("# found resources: " + size());
+
+    
   }
 
   public DavResource getNext() {

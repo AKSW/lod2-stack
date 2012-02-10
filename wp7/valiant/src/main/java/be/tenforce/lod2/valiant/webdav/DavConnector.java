@@ -34,10 +34,16 @@ public class DavConnector {
   private Sardine sardine;
   private List<DavResource> resources;
 
+  public Boolean isInitialized = false;
+
+
   @PostConstruct
   private void initialize() {
-    validate();
-    setup();
+    Boolean canInit = validate();
+    if (canInit) { 
+	setup();
+	isInitialized = true;
+	};
   }
 
   public InputStream getInputStream(DavResource resource) {
@@ -67,10 +73,18 @@ public class DavConnector {
     return resources;
   }
 
-  private void validate() {
-    if (null == host || host.length() == 0) throw new RuntimeException("Host url is not set.");
-    if (null == url || url.length() == 0) throw new RuntimeException("Webdav url is not set.");
+  // validate if the setup can happen;
+  private Boolean validate() {
+//    if (null == host || host.length() == 0) throw new RuntimeException("Host url is not set.");
+//    if (null == url || url.length() == 0) throw new RuntimeException("Webdav url is not set.");
     logFields();
+    Boolean canInit = true;
+    if (null == host || host.length() == 0) {
+	canInit = false; };
+    if (null == url  || url.length() == 0) {canInit = false;};
+    if (null == password || password.length() == 0) {canInit = false;};
+    if (null == user || user.length() == 0) {canInit = false;};
+    return canInit;
   }
 
   private void setup() {

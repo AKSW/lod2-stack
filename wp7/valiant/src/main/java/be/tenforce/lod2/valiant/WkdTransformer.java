@@ -29,6 +29,8 @@ import java.io.InputStream;
 import net.sf.saxon.Controller;
 import net.sf.saxon.event.MessageEmitter;
 
+import be.tenforce.lod2.valiant.ValiantXMLErrorHandler;
+
 @Service
 public class WkdTransformer {
     private static final Logger log = Logger.getLogger(WkdTransformer.class);
@@ -69,6 +71,7 @@ public class WkdTransformer {
         SAXSource inputSource = new SAXSource(xmlReader, new InputSource(input));
         try {
             transformer.setParameter("{}file-uri", fileName);
+            log.error(fileName);
             fw = new FileWriter(new File(logFolder + "valiant.log"),true);
             ((MessageEmitter)((Controller)transformer).getMessageEmitter()).setWriter(fw);	
             transformer.transform(inputSource, output);
@@ -77,7 +80,7 @@ public class WkdTransformer {
         catch (TransformerException e) {
             //log.error(fileName.substring(fileName.lastIndexOf('/') + 1));  
             log.error(fileName);
-            log.info("Transform failed: " + e.getMessage(), e);
+            log.error("Transform failed: " + e.getMessage(), e);
         }
         catch (IOException e){
             log.error("Logfile not found.");
@@ -106,6 +109,8 @@ public class WkdTransformer {
         try {
             xmlReader = XMLReaderFactory.createXMLReader();
             xmlReader.setEntityResolver(resolver);
+	    ValiantXMLErrorHandler handler = new ValiantXMLErrorHandler();
+	    xmlReader.setErrorHandler(handler);
         }
         catch (SAXException e) {
             log.error("Failed to create the xmlReader: " + e.getMessage(), e);

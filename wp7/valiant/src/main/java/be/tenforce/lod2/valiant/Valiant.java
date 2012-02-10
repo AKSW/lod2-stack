@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.stream.StreamResult;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,6 +22,9 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 @Component("valiant")
 public class Valiant {
@@ -140,6 +144,33 @@ public class Valiant {
         }
     }
 
+    // argument1 = input
+    // argument2 = outputwriter
+    private void transformWriter(String filename, Writer w) {
+        if (filename.length() > 0) {
+        File inputFile = new File(filename);
+
+        log.info(new StringBuilder().append("processing: ").append(inputFile.getName()).toString());
+
+        try {
+            InputStream inputStream = new FileInputStream(inputFile);
+            StreamResult outputStream = new StreamResult(w);
+            log.info(filename + ": Transformation started");
+            wkdTransformer.transform(inputStream, outputStream, filename);
+            inputStream.close();
+            log.info(filename + ": Transformation finished");
+        }
+        catch (FileNotFoundException e) {
+            log.error(e.getMessage(), e);
+            if (haltOnFileError) { throw new RuntimeException(e.getMessage(), e); } ;
+        }
+        catch (IOException ioe){
+            log.error(ioe.getMessage(),ioe);
+            if (haltOnFileError) { throw new RuntimeException(ioe.getMessage(),ioe); };
+        }
+	}
+    }
+
     private void writeToWebdav(OutputStream outputStream, String outputName) {
         InputStream rdf = new ByteArrayInputStream(((ByteArrayOutputStream)outputStream).toByteArray());
         davWriter.putStream(outputName, rdf);
@@ -174,8 +205,25 @@ public class Valiant {
 
     }
 
+    private Writer createTargetFileWriter(String folder, String filename) throws Exception {
+        try{
+	    Writer s = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(folder + filename)), "UTF8"));
+            return s;
+        } catch (FileNotFoundException e){
+            log.error(e.getMessage());
+            if (haltOnFileError) {
+                throw new RuntimeException("error while opening file " + folder + filename, e);
+            };
+            return null;
+        }
+
+    }
+
+
+
     private void transformToFile(String file) throws Exception {
         if(file.length() == 0){
+	    if (!davReader.isInitialized) {throw new RuntimeException("Reading from WebDav impossible due to incomplete configuration"); };
             while (davReader.hasNext()) {
                 DavResource resource = davReader.getNextMatch();
                 if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
@@ -196,7 +244,7 @@ public class Valiant {
         }
         else{	
             if(file.endsWith(".xml")){
-                transformToFileFromFile(file, "");
+                transformToFileFromFileWriter(file, "");
             }
             else {
                 // if the file does not end with .xml consider it a directory
@@ -209,7 +257,7 @@ public class Valiant {
     private void loadDir(File [] files, String outputPath) throws Exception {
         for(int i = 0; i<files.length;i++){
             if(files[i].getName().endsWith(".xml")){		
-                transformToFileFromFile(files[i].getPath(),outputPath);
+                transformToFileFromFileWriter(files[i].getPath(),outputPath);
             }
             else if(files[i].isDirectory()){
 		System.out.println("create dir: " + rdfFolder + outputPath + files[i].getName());
@@ -220,6 +268,7 @@ public class Valiant {
     }
     private void transformToVirtuoso(String file) throws Exception {
         if(file.length() == 0){
+	    if (!davReader.isInitialized) {throw new RuntimeException("Reading from WebDav impossible due to incomplete configuration"); };
             while (davReader.hasNext()) {
                 DavResource resource = davReader.getNextMatch();
                 if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
@@ -247,6 +296,7 @@ public class Valiant {
     }
     private void transformToWebDav(String file) throws Exception {
         if(file.length() == 0){
+	    if (!davReader.isInitialized) {throw new RuntimeException("Reading from WebDav impossible due to incomplete configuration"); };
             while (davReader.hasNext()) {
                 DavResource resource = davReader.getNextMatch();
                 if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
@@ -274,6 +324,7 @@ public class Valiant {
     }
     private void transformToFileAndVirtuoso(String file) throws Exception {
         if(file.length() == 0){
+	    if (!davReader.isInitialized) {throw new RuntimeException("Reading from WebDav impossible due to incomplete configuration"); };
             while (davReader.hasNext()) {
                 DavResource resource = davReader.getNextMatch();
                 if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
@@ -327,6 +378,7 @@ public class Valiant {
 
     private void transformToWebDavAndVirtuoso(String file) throws Exception {
         if(file.length() == 0){
+	    if (!davReader.isInitialized) {throw new RuntimeException("Reading from WebDav impossible due to incomplete configuration"); };
             while (davReader.hasNext()) {
                 DavResource resource = davReader.getNextMatch();
                 if (resource != null && !(new File(rdfFolder + resource.getName().replaceAll("(?i).xml",".rdf"))).exists()) {
@@ -366,6 +418,22 @@ public class Valiant {
             log.info(fileName +": Writing to file started");
             writeToFile(transform(file),outputStream);
             outputStream.close();
+            log.info(fileName + ": Writing of file finished");
+            File graphFile = new File(rdfFolder + outputPath + fileName + ".graph");
+            FileWriter fw = new FileWriter(graphFile,true);
+            fw.write(graphName);
+            fw.close();
+        }
+    }
+
+    private void transformToFileFromFileWriter(String file, String outputPath) throws Exception {
+        String fileName = file.substring(file.lastIndexOf('/') + 1).replaceAll("(?i).xml",".rdf");
+        if(!(new File(rdfFolder + outputPath + fileName).exists())){
+            Writer w = createTargetFileWriter(rdfFolder + outputPath, fileName);
+            String graphName = namespace.getBaseURI() + fileName;
+            log.info(fileName +": Writing to file started");
+            transformWriter(file, w);
+            w.close();
             log.info(fileName + ": Writing of file finished");
             File graphFile = new File(rdfFolder + outputPath + fileName + ".graph");
             FileWriter fw = new FileWriter(graphFile,true);
