@@ -436,7 +436,7 @@ then the uri should be based on the vsk logic only.
 		<xsl:choose>
 			<xsl:when test="$e/@vsk">
 				<xsl:value-of select="concat('/vs.',$e/@vsk)"/>
-				<xsl:value-of select="if (string-length($e/@fach) &gt; 0) then concat('/sequence.',fun:percentEncode($e/@art)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@fach) &gt; 0) then concat('/sequence.',fun:percentEncode($e/@fach)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@par) &gt; 0) then concat('/par.',fun:percentEncode($e/@par)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@nr) &gt; 0) then concat('/nbr.',fun:percentEncode($e/@nr)) else ''"/>
 			</xsl:when>
@@ -451,6 +451,12 @@ then the uri should be based on the vsk logic only.
 			<xsl:when test="$e/@fach">
 				<xsl:value-of select="if (string-length($e/@fach) &gt; 0) then concat('/sequence.',fun:percentEncode($e/@fach)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@al) &gt; 0) then concat('/update.',fun:percentEncode($e/@al)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start.',fun:percentEncode($e/@start-seite)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end.',fun:percentEncode($e/@end-seite)) else ''"/>
+			</xsl:when>
+			<xsl:when test="$e/@al">
+				<xsl:value-of select="if (string-length($e/@al) &gt; 0) then concat('/update.',fun:percentEncode($e/@al)) else ''"/>
+				<xsl:value-of select="if (string-length($e/@nr) &gt; 0) then concat('/nbr.',fun:percentEncode($e/@nr)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@start-seite) &gt; 0) then concat('/start.',fun:percentEncode($e/@start-seite)) else ''"/>
 				<xsl:value-of select="if (string-length($e/@end-seite) &gt; 0) then concat('/end.',fun:percentEncode($e/@end-seite)) else ''"/>
 			</xsl:when>
@@ -765,14 +771,28 @@ produkt + vsk + art + abs
 	</xsl:choose>
 </xsl:function>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
 		<scenario default="yes" name="kom" userelativepaths="yes" externalpreview="no" url="..\..\Data\kommentierung\Adam_TarifR_oeD_tvue_vka_kommentierung.xml" htmlbaseurl="" outputurl="" processortype="custom" useresolver="no" profilemode="0"
 		          profiledepth="" profilelength="" urlprofilexml="" commandline=" net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
-		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator=""/>
+		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
+			<advancedProp name="sInitialMode" value=""/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="true"/>
+			<advancedProp name="bXml11" value="false"/>
+			<advancedProp name="iValidation" value="0"/>
+			<advancedProp name="bExtensions" value="true"/>
+			<advancedProp name="iWhitespace" value="0"/>
+			<advancedProp name="sInitialTemplate" value=""/>
+			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="iErrorHandling" value="fatal"/>
+		</scenario>
 	</scenarios>
 	<MapperMetaTag>
 		<MapperInfo srcSchemaPathIsRelative="yes" srcSchemaInterpretAsXML="no" destSchemaPath="" destSchemaRoot="" destSchemaPathIsRelative="yes" destSchemaInterpretAsXML="no"/>
