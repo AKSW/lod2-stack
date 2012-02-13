@@ -1,0 +1,10 @@
+Document: valiant
+Title: Debian valiant Manual
+Author: Bert Van Nuffelen
+Abstract: This manual describes what valiant is
+ and how it can be used to
+ manage online manuals on Debian systems.
+Section: unknown
+
+Format: HTML
+Files: /usr/share/doc/valiant/valiant.html
