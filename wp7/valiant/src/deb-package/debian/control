@@ -1,15 +1,16 @@
 Source: valiant
-Section: unknown
+Section: devel
 Priority: extra
 Maintainer: Bert Van Nuffelen <bert.van.nuffelen@tenforce.com>
 Build-Depends: debhelper (>= 7.0.50~)
 Standards-Version: 3.8.4
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://code.google.com/p/lod2-stack/
 #Vcs-Git: git://git.debian.org/collab-maint/valiant.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/valiant.git;a=summary
 
 Package: valiant
 Architecture: all
 Depends: ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: A XSLT transformation engine to transform XML to RDF.
+ Valiant is a tool to transform XML content into RDF. It has been build in the 
+ context of The European project LOD2, http://lod2.eu.

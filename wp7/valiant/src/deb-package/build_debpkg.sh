@@ -23,6 +23,7 @@ cp -r ../../src/configuration/* ../../target/deb-pkg/configuration
 # Add the Debian control files
 cp -r debian ../../target/deb-pkg
 cp Makefile ../../target/deb-pkg
+cp -r ../doc ../../target/deb-pkg/doc
 
 # Build the package
 cd ../../target/deb-pkg
