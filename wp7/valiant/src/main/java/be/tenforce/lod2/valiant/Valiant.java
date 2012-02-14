@@ -87,15 +87,20 @@ public class Valiant {
             transformToFile(fileToTransForm);
         }
         else if(mode.equals("v")){
+	    if (!virtuosoFactory.isInitialized) {throw new RuntimeException("Writing to virtuoso impossible due to incomplete configuration"); };
             transformToVirtuoso(fileToTransForm);
         }
         else if(mode.equals("w")){
+	    if (!davWriter.isInitialized) {throw new RuntimeException("Writing to WebDav impossible due to incomplete configuration"); };
             transformToWebDav(fileToTransForm);
         }
         else if(mode.equals("fv")){
+	    if (!virtuosoFactory.isInitialized) {throw new RuntimeException("Writing to virtuoso impossible due to incomplete configuration"); };
             transformToFileAndVirtuoso(fileToTransForm);
         }
         else if(mode.equals("wv")){
+	    if (!virtuosoFactory.isInitialized) {throw new RuntimeException("Writing to virtuoso impossible due to incomplete configuration"); };
+	    if (!davWriter.isInitialized) {throw new RuntimeException("Writing to WebDav impossible due to incomplete configuration"); };
             transformToWebDavAndVirtuoso(fileToTransForm);
         }
     }

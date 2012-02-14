@@ -12,6 +12,8 @@ import java.io.File;
  */
 public interface VirtuosoFactory {
 
+  public Boolean isInitialized = false;
+
   public void add(ByteArrayOutputStream baos, String fileName);
 
   public void addToGraph(ByteArrayOutputStream baos, String fileName, String graphName);

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 
 @Service
@@ -12,8 +13,14 @@ public class DavWriter {
 
   @Autowired(required = true)
   DavConnector davConnector;
+  public Boolean isInitialized = false;
 
   private static final String MIMETYPE = "application/rdf+xml";
+
+  @PostConstruct
+  private void initialize() {
+    isInitialized = davConnector.isInitialized;
+  };
 
   public void putStream(String name, InputStream input) {
     davConnector.putStream(input, name, MIMETYPE);

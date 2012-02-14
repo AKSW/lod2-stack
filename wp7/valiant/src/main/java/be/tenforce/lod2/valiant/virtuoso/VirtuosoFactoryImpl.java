@@ -45,12 +45,16 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
 
   private VirtuosoDataSource virtuosoDataSource;
   private String jdbcUrl;
-  //private FileWriter fw;
+  public Boolean isInitialized = false;
 
   @PostConstruct
   private void initialize() {
-    validate();
-    setup();
+    Boolean canInit = validate();
+    if (canInit) { 
+    	jdbcUrl = new StringBuilder("jdbc:virtuoso://").append(host).append(":").append(port).toString();
+	setup();
+	isInitialized = true;
+	};
   }
 
   @PreDestroy
@@ -84,6 +88,7 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     }
   }
 
+	// maybe one should issue create silent graph here
    public void addToGraph(ByteArrayOutputStream outputStream, String fileName, String graphName) {
     VirtGraph graph = new VirtGraph(graphName, virtuosoDataSource);
     Model model = new VirtModel(graph);
@@ -113,13 +118,14 @@ public class VirtuosoFactoryImpl implements VirtuosoFactory {
     virtuosoDataSource.setCharset("UTF-8");
   }
 
-  private void validate() {
-    if (null == host || host.length() == 0) throw new RuntimeException("Virtuoso host is not set");
-    if (null == port || port.length() == 0) throw new RuntimeException("Virtuoso port is not set");
-    if (null == username || username.length() == 0) throw new RuntimeException("Virtuoso username is not set");
-    if (null == password || password.length() == 0) throw new RuntimeException("Virtuoso password is not set");
-    jdbcUrl = new StringBuilder("jdbc:virtuoso://").append(host).append(":").append(port).toString();
+  private Boolean validate() {
     logFields();
+    Boolean canInit = true;
+    if (null == host || host.length() == 0) { canInit = false; };
+    if (null == port || port.length() == 0) { canInit = false; };
+    if (null == username || username.length() == 0) { canInit = false; };
+    if (null == password || password.length() == 0) { canInit = false; };
+    return canInit;
   }
 
   private void logFields() {

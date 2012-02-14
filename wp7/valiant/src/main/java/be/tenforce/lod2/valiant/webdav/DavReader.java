@@ -38,7 +38,7 @@ public class DavReader {
     }
 
     if (max < 0) max = Integer.MAX_VALUE;
-    log.info("# found resources: " + size());
+    if (isInitialized) { log.info("# found resources: " + size()); };
 
     
   }

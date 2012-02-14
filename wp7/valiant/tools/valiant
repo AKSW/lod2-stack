@@ -22,8 +22,8 @@ fi
 echo $VCLASSPATH
 
 if [[ $# > 0 ]] ;  then 
-java -Xms512M -Xmx1024M -classpath "$VCLASSPATH" -Dfile.encoding="UTF-8" -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG be.tenforce.lod2.valiant.ValiantStarter $1 ;
+java -Xms300M -Xmx1024M -classpath "$VCLASSPATH" -Dfile.encoding="UTF-8" -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG be.tenforce.lod2.valiant.ValiantStarter $1 ;
 else
-java -Xms512M -Xmx2048M -classpath "$VCLASSPATH" -Dfile.encoding="UTF-8" -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG be.tenforce.lod2.valiant.ValiantStarter  ;
+java -Xms300M -Xmx1024M -classpath "$VCLASSPATH" -Dfile.encoding="UTF-8" -Dvaliant.config="file://$CONFIG" -Dvaliant.log=$LOG be.tenforce.lod2.valiant.ValiantStarter  ;
 fi
 
