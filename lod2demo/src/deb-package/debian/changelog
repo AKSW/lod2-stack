@@ -1,3 +1,29 @@
+lod2demo (1.1.26) lod2, lod2stable; urgency=low
+
+  * test the upload in 2 stages
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 06 Feb 2012 08:06:00 -0800
+
+lod2demo (1.1.25) lod2; urgency=low
+
+  * improve postinst script 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 23 Jan 2012 01:14:35 -0800
+
+lod2demo (1.1.24) lod2; urgency=low
+
+  * improve valiant integration
+  * better About page
+  * a number of bugfixes
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 13 Dec 2011 08:01:51 -0800
+
+lod2demo (1.1.23) lod2; urgency=low
+
+  * bug fix in debian configuration
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 22 Nov 2011 08:16:13 -0800
+
 lod2demo (1.1.22) lod2; urgency=low
 
   * new about page
