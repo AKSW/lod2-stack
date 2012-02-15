@@ -7,7 +7,7 @@
   <name>valiant</name>
   <groupId>valiant</groupId>
   <artifactId>valiant</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
 
   <properties>
     <spring.version>3.0.4.RELEASE</spring.version>
@@ -150,7 +150,7 @@
     <dependency>
       <groupId>at.punkt.commons</groupId>
       <artifactId>URICreator</artifactId>
-      <version>1.0.0</version>
+      <version>1.1</version>
 <scope>runtime</scope>
     </dependency>
     -->
@@ -172,7 +172,7 @@
      <dependency>
         <groupId>xml-resolver</groupId>
         <artifactId>xml-resolver</artifactId>
-        <version>1.2</version>
+        <version>1.1</version>
      </dependency>
 
 

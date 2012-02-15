@@ -1,3 +1,9 @@
+valiant (1.1) lod2; urgency=low
+
+  * add correct distribution
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 14 Feb 2012 06:54:51 -0800
+
 valiant (1.0-1) unstable; urgency=low
 
   * Initial release 
