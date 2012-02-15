@@ -95,9 +95,9 @@
 		<xsl:variable name="l" select="normalize-space(.)"/>
 		<xsl:if	test="string-length($l)">
 			<dcterms:subject>
-				<skos:Concept>
+				<skos:Concept rdf:about="{concat($v-base-uri,'kwd/',fun:stwSegmentId(string($l)))}">
 					<rdf:type rdf:resource="{$wkd}Keyword"/>
-					<skos:prefLabel xml:lang="de"><xsl:value-of select="$l"/></skos:prefLabel>
+					<rdfs:label xml:lang="de"><xsl:value-of select="$l"/></rdfs:label>
 				</skos:Concept>
 			</dcterms:subject>
 		</xsl:if>
@@ -572,7 +572,7 @@
 	</wkd:CaseDescription>
 </xsl:template>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios/>
