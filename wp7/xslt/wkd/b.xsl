@@ -68,11 +68,6 @@
 add structure 
 - container-block - no (spec)
 - container-auspraegung - no (spec)
-- anlage - no (spec)
-- anlage-ebene - no (spec)
-- lexikon-eintrag
-handle
-- beitrag-rn
  -->
 <xsl:template name="doc-parts-b">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
@@ -111,7 +106,9 @@ handle
 	</xsl:apply-templates>
 </xsl:template>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+<xsl:template match="beitrag/lexikon-eintrag | beitrag-ebene/lexikon-eintrag" mode="#default top-level"/>
+
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
@@ -128,6 +125,7 @@ handle
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
@@ -137,16 +135,17 @@ handle
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

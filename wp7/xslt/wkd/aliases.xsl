@@ -23,8 +23,11 @@ aliases can be used in attribute values (e.g. rdf:resource="{$wkd}xyz"
 <xsl:variable name="bibo" select="'http://purl.org/ontology/bibo/'" as="xs:string"/>
 <xsl:variable name="foaf" select="'http://xmlns.com/foaf/0.1/'" as="xs:string"/>
 <xsl:variable name="xml" select="'http://www.w3.org/XML/1998/namespace'" as="xs:string"/>
+<xsl:variable name="xhtml" select="'http://www.w3.org/1999/xhtml'" as="xs:string"/>
+<xsl:variable name="metalex" select="'http://www.metalex.eu/metalex/2008-05-02#'" as="xs:string"/>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios/>

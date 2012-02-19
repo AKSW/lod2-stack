@@ -30,10 +30,6 @@
  Module: lexikon module
  -->
 
-<!-- todo
-all
- -->
-
 <xsl:template match="lexikon">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<rdf:type rdf:resource="{$wkd}TopicMap"/>
@@ -57,17 +53,19 @@ all
 
 <xsl:template match="lexikon/lexikon-ebene">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<dcterms:hasPart rdf:parseType="Resource">
-		<rdf:type rdf:resource="{$skos}Collection"/>
-		<xsl:apply-templates select="*"/>
+	<dcterms:hasPart>
+		<skos:Collection rdf:about="{$r-uri}{fun:bez-wert-id(if (./@bez) then ./@bez else '' ,if (./@wert) then ./@wert else '')}">
+			<xsl:apply-templates select="*"/>
+		</skos:Collection>
 	</dcterms:hasPart>
 </xsl:template>
 
 <xsl:template match="lexikon-ebene/lexikon-ebene">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<skos:member rdf:parseType="Resource">
-		<rdf:type rdf:resource="{$skos}Collection"/>
-		<xsl:apply-templates select="*"/>
+	<skos:member>
+		<skos:Collection rdf:about="{$r-uri}{fun:bez-wert-id(if (./@bez) then ./@bez else '' ,if (./@wert) then ./@wert else '')}">
+			<xsl:apply-templates select="*"/>
+		</skos:Collection>
 	</skos:member>
 </xsl:template>
 
@@ -137,12 +135,12 @@ all
 
 <xsl:template name="doc-parts-lex">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
-	<!--xsl:for-each-group select="/wkdsc/(beitrag | beitrag-rn)//(beitrag-ebene | beitrag-rn-ebene)" group-by="name()">
+	<xsl:for-each-group select="/wkdsc/lexikon//(anlage | anlage-ebene)" group-by="name()">
 		<xsl:for-each select="current-group()">
 			<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)" as="xs:string"/>
 			<metalex:fragment rdf:resource="{$uri}"/>
 		</xsl:for-each>
-	</xsl:for-each-group-->
+	</xsl:for-each-group>
 </xsl:template>
 
 <xsl:function name="fun:lex-eintrag-id" as="xs:string">
@@ -150,7 +148,7 @@ all
 	<xsl:value-of select="fun:percentEncode(if ($e/@begriff-normiert) then string($e/@begriff-normiert) else string($e/lexikon-begriff))"/>
 </xsl:function>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
@@ -160,16 +158,17 @@ all
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<advancedProp name="sInitialMode" value=""/>
-			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="false"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
-			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
 			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 	</scenarios>

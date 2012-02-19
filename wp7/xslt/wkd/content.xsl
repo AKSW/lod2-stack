@@ -40,6 +40,18 @@
 	</xhtml:div>
 </xsl:template>
 
+<xsl:template match="zitat-es/entscheidung/* | zitat-es/pressemitteilung/*" mode="xml-literal">
+	<xhtml:div>
+		<xsl:apply-templates mode="xml-literal"/>
+	</xhtml:div>
+</xsl:template>
+
+<xsl:template match="zitat-vs/vorschrift/*" mode="xml-literal">
+	<xhtml:div>
+		<xsl:apply-templates mode="xml-literal"/>
+	</xhtml:div>
+</xsl:template>
+
 <xsl:template match="titel" mode="xml-literal">
 	<xhtml:p class="title">
 		<xsl:apply-templates mode="xml-literal"/>
@@ -63,7 +75,7 @@
 	</xhtml:p>
 </xsl:template>
 
-<xsl:template match="abbildung-block | objekt-block | zitat-block | container-auspraegung | tabelle" mode="xml-literal">
+<xsl:template match="abbildung-block | objekt-block | zitat-block | container-auspraegung | tabelle | vs-titel-kopf | es-titel-kopf | es-metadaten | vs-ebene | paragraph | artikel | vs-anlage | vs-objekt | vs-absatz" mode="xml-literal">
 	<xhtml:div>
 		<xsl:apply-templates mode="xml-literal"/>
 	</xhtml:div>
@@ -114,7 +126,7 @@
 
 <xsl:template match="liste | liste-auto" mode="xml-literal">
 	<xhtml:ul>
-		<xsl:apply-templates select="li" mode="xml-literal"/>
+		<xsl:apply-templates select="li | li-auto" mode="xml-literal"/>
 	</xhtml:ul>
 </xsl:template>
 
@@ -136,6 +148,12 @@
 	<xhtml:span xml:lang="{fun:language(@sprache)}"><xsl:apply-templates mode="xml-literal"/></xhtml:span>
 </xsl:template>
 
+<xsl:template match="es-metadaten/*" mode="xml-literal">
+	<xsl:if test="string-length(.) &gt; 0">
+		<xhtml:span><xsl:value-of select="string(.)"/></xhtml:span>
+	</xsl:if>
+</xsl:template>
+
 <xsl:template match="* | text()" mode="xml-literal">
 	<xsl:value-of select="string(.)"/>
 </xsl:template>
@@ -146,7 +164,7 @@
 	</xhtml:div>
 </xsl:template>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios/>

@@ -235,7 +235,11 @@ Tunnel parameters used
 			<metalex:Fragment>
 				<wkd:fragmentType rdf:resource="{$v-base-uri}FragmentType/{$cite-type-name}"/>
 				<rdf:type rdf:resource="{$bibo}Excerpt"/>
+				<rdf:type rdf:resource="{$metalex}BibliographicCitation"/>
 				<bibo:cites rdf:resource="{$cited-target}"/>
+				<rdf:value rdf:parseType="Literal">
+					<xsl:apply-templates mode="xml-literal"/>
+				</rdf:value>
 			</metalex:Fragment>
 		</dcterms:hasPart>
 	</xsl:if>
@@ -262,7 +266,7 @@ Tunnel parameters used
 
 <metaInformation>
 	<scenarios>
-		<scenario default="yes" name="vs bd_baugb" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\Schlichter_Berliner_K_BauGB-BauGB_2004.xml" htmlbaseurl="" outputurl="..\result\Schlichter_Berliner_K_BauGB-BauGB_2004_tn3.rdf"
+		<scenario default="no" name="vs bd_baugb" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\Schlichter_Berliner_K_BauGB-BauGB_2004.xml" htmlbaseurl="" outputurl="..\result\Schlichter_Berliner_K_BauGB-BauGB_2004_tn3.rdf"
 		          processortype="saxon8" useresolver="no" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -757,7 +761,7 @@ Tunnel parameters used
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
@@ -834,7 +838,7 @@ Tunnel parameters used
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
@@ -924,6 +928,45 @@ Tunnel parameters used
 		</scenario>
 		<scenario default="no" name="esa" userelativepaths="yes" externalpreview="no" url="..\Data\esa\Scherr_ArbeitszeitR_AtG_001_R_01.xml" htmlbaseurl="" outputurl="..\Data\wsa\result.rdf" processortype="saxon8" useresolver="yes" profilemode="0"
 		          profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
+		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
+		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
+			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
+			<advancedProp name="sInitialMode" value=""/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="true"/>
+			<advancedProp name="bXml11" value="false"/>
+			<advancedProp name="iValidation" value="0"/>
+			<advancedProp name="bExtensions" value="true"/>
+			<advancedProp name="iWhitespace" value="0"/>
+			<advancedProp name="sInitialTemplate" value=""/>
+			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="iErrorHandling" value="0"/>
+		</scenario>
+		<scenario default="no" name="zitat-vs" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\Hambuechen_EStG_Verwaltungsvorschrift_DA_FamEStG.xml" htmlbaseurl=""
+		          outputurl="..\result\Hambuechen_EStG_Verwaltungsvorschrift_DA_FamEStG.xml.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2"
+		          additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
+		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
+		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
+			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
+			<advancedProp name="sInitialMode" value=""/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="true"/>
+			<advancedProp name="bXml11" value="false"/>
+			<advancedProp name="iValidation" value="0"/>
+			<advancedProp name="bExtensions" value="true"/>
+			<advancedProp name="iWhitespace" value="0"/>
+			<advancedProp name="sInitialTemplate" value=""/>
+			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="iErrorHandling" value="0"/>
+		</scenario>
+		<scenario default="yes" name="zitat-es" userelativepaths="yes" externalpreview="no" url="..\Data\id-issues\kommentierung\Anhang\490_Teil_I_Anhang_E_07_Anhang.xml" htmlbaseurl="" outputurl="..\result\490_Teil_I_Anhang_E_07_Anhang.rdf"
+		          processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>

@@ -254,7 +254,9 @@
 	<xsl:param name="element" as="element()"/>
 	<xsl:param name="b-uri" as="xs:string"/>
 	<xsl:choose>
-		<xsl:when test="name($element)='vorschrift'"/>
+		<xsl:when test="name($element)='vorschrift'">
+			<xsl:value-of select="$b-uri"/>
+		</xsl:when>
 		<xsl:when test="name($element)='vs-vorspann'">
 			<xsl:value-of select="concat($b-uri,'/description')"/>
 		</xsl:when>

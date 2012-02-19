@@ -31,7 +31,7 @@
  -->
 
 <!-- todo
-nested kommentierung, ebene
+nested kommentierung
  -->
 
 <xsl:template match="kommentierung | kommentierung-rn">
@@ -84,7 +84,10 @@ nested kommentierung, ebene
 	</xsl:apply-templates>
 </xsl:template>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+<xsl:template match="kommentierung/lexikon-eintrag | kommentierung-ebene/lexikon-eintrag" mode="#default top-level"/>
+
+
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
@@ -102,6 +105,7 @@ nested kommentierung, ebene
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
