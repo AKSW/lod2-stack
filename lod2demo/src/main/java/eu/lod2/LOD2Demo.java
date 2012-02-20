@@ -25,6 +25,7 @@ import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.ClassResource;
 import com.vaadin.terminal.FileResource;
 import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
@@ -56,8 +57,11 @@ public class LOD2Demo extends Application
     private LOD2DemoState state;
 
 
-    private Label     currentgraphlabel;
+    private Window mainWindow;
+    private VerticalLayout mainContainer;
     private VerticalLayout workspace;
+
+    private Label     currentgraphlabel;
 
     //    private static final Logger logger = Logger.getLogger(LOD2Demo.class.getName());
 
@@ -67,9 +71,12 @@ public class LOD2Demo extends Application
             state = new LOD2DemoState();
 
 
-            final Window mainWindow = new Window("LOD2 Prototype");
+            mainWindow = new Window("LOD2 Prototype");
             setTheme("lod2");
-
+            mainContainer =  new VerticalLayout();
+	    mainWindow.addComponent(mainContainer);
+	    mainContainer.setSizeFull();
+	
 
             final AbsoluteLayout welcomeSlagzin = new AbsoluteLayout();
             welcomeSlagzin.setWidth("370px");
@@ -104,7 +111,7 @@ public class LOD2Demo extends Application
             final VerticalLayout welcome = new VerticalLayout();
             welcome.addComponent(welcomeContainer);
 
-            mainWindow.addComponent(welcome);
+            mainContainer.addComponent(welcome);
 
 
             //************************************************************************
@@ -332,6 +339,26 @@ public class LOD2Demo extends Application
                 }  
             };
 
+            MenuBar.Command mq5c = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+	    	    resetSize(workspace);
+		    workspace.setSizeUndefined();
+                    GeoSpatial content = new GeoSpatial(state);
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+	    	    //printSize((AbstractComponentContainer) mainWindow.getContent());
+	    	    resetSizeFull(workspace);
+		    workspace.setSizeFull();
+		    workspace.setHeight("500px");
+		    workspace.setExpandRatio(content,1.0f);
+		    mainContainer.setSizeFull();
+                    welcome.setHeight("110px");
+	    	    //printSize((AbstractComponentContainer) mainWindow.getContent());
+                }  
+            };
+
+
             MenuBar.Command mo1c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -480,6 +507,7 @@ public class LOD2Demo extends Application
 
             MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
             MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
+            MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
             MenuBar.MenuItem mqs1 = mq1.addItem("Direct via Sesame API", null, mq1c);
             MenuBar.MenuItem mqs2 = mq1.addItem("OntoWiki SPARQL endpoint", null, mq2c);
             MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);
@@ -522,7 +550,7 @@ public class LOD2Demo extends Application
             // add workspace
             workspace = new VerticalLayout();
 
-            mainWindow.addComponent(workspace);
+            mainContainer.addComponent(workspace);
             workspace.setHeight("80%");
 
             HorizontalLayout introH = new HorizontalLayout();
@@ -556,20 +584,16 @@ public class LOD2Demo extends Application
 
 
 
-            mainWindow.setSizeFull();
-            //	    mainWindow.getContent().setSizeFull();
-            //	    Iterator<Component> iterator = mainWindow.getContent().getComponentIterator();
-            //	    Component second = iterator.next();
-            //	    second.setSizeFull();
-
             // Create a tracker for the demo.lod2.eu domain.
-            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
-            mainWindow.addComponent(tracker);
-            tracker.trackPageview("/lod2demo");
+            //GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
+            //mainWindow.addComponent(tracker);
+            //tracker.trackPageview("/lod2demo");
 
 
 
             setMainWindow(mainWindow);
+	    
+//	    mainWindow.setExpandRatio(workspace, 1.0f);
 
             if (!state.InitStatus) {
                 mainWindow.showNotification(
@@ -577,6 +601,8 @@ public class LOD2Demo extends Application
                         state.ErrorMessage,
                         Notification.TYPE_ERROR_MESSAGE);
             };
+
+
 
         }
 
@@ -615,6 +641,70 @@ public class LOD2Demo extends Application
         "project at <a href=\"http://lod2.eu\">http://lod2.eu</a>." + 
         "<p>";
 
+   
+    private void resetSize(AbstractComponentContainer comp) {
+	
+	    System.err.println("reset sizing");
+
+	    Iterator<Component> it = comp.getComponentIterator();
+	    while (it.hasNext()) {
+			Component c = it.next();
+			if (c instanceof AbstractComponent) { 
+				AbstractComponent ac = (AbstractComponent) c;
+				ac.setSizeUndefined();
+				System.err.println("Size:"+ac.getHeight());
+				};
+			if (c instanceof AbstractComponentContainer) { 
+				AbstractComponentContainer acc = (AbstractComponentContainer) c;
+				resetSize(acc) ; 
+				};
+		};
+ 
+    };
+
+    private void resetSizeFull(AbstractComponentContainer comp) {
+
+	    System.err.println("Fullsizing");
+		
+	    Iterator<Component> it = comp.getComponentIterator();
+	    while (it.hasNext()) {
+			Component c = it.next();
+			if (c instanceof AbstractComponent) { 
+				AbstractComponent ac = (AbstractComponent) c;
+				ac.setSizeFull();
+				System.err.println("Size:"+ac.getHeight());
+				if (ac.getHeight() < 0) { 
+					ac.setHeight("100%");
+				};
+				};
+			if (c instanceof AbstractComponentContainer) { 
+				AbstractComponentContainer acc = (AbstractComponentContainer) c;
+				resetSizeFull(acc) ; 
+				};
+		};
+ 
+    };
+
+    private void printSize(AbstractComponentContainer comp) {
+
+	    System.err.println("PrintSizing");
+	    System.err.println("Container Start");
+		
+	    Iterator<Component> it = comp.getComponentIterator();
+	    while (it.hasNext()) {
+			Component c = it.next();
+			if (c instanceof AbstractComponent) { 
+				AbstractComponent ac = (AbstractComponent) c;
+				System.err.println("Size: Height: "+ac.getHeight() + " Width: " + ac.getWidth());
+				};
+			if (c instanceof AbstractComponentContainer) { 
+				AbstractComponentContainer acc = (AbstractComponentContainer) c;
+				printSize(acc) ; 
+				};
+		};
+	     System.err.println("Container end");
+ 
+    };
 }
 
 

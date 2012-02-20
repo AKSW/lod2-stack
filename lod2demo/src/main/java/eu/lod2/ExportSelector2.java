@@ -86,6 +86,12 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
 
     public ExportSelector2(LOD2DemoState st, Boolean update) {
 
+	   this(st, update, "Select Export graph: ");
+
+    }
+
+    public ExportSelector2(LOD2DemoState st, Boolean update, String cap) {
+
         // The internal state 
         state = st;
         updateCurrentGraph = update;
@@ -97,7 +103,7 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
         // the graph selector
         // it displays all acceptable graphs in Virtuoso 
         // XXX TODO show only those which are editable in OntoWiki
-        graphSelector = new ComboBox("Select Export graph: ");
+        graphSelector = new ComboBox(cap);
         graphSelector.setNewItemsAllowed(true);
         graphSelector.setImmediate(true);
         graphSelector.setNewItemHandler(this);

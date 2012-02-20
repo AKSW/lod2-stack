@@ -8,9 +8,9 @@
 
     <inherits name="com.vaadin.ui.addon.usemapimage.UsemapimageWidgetset" />
 
-    <inherits name="eu.lod2.Lod2canvasWidgetSet" />
-
     <inherits name="org.vaadin.googleanalytics.tracking.GoogleAnalyticsWidgetset" />
+
+    <inherits name="eu.lod2.Lod2canvasWidgetSet" />
 
     <inherits name="org.vaadin.codelabel.CodelabelWidgetset" />
 </module>

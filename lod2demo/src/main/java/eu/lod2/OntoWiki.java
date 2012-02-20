@@ -18,6 +18,7 @@ package eu.lod2;
 
 import java.net.*;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.io.*;
 
 import com.vaadin.event.FieldEvents.TextChangeEvent;
