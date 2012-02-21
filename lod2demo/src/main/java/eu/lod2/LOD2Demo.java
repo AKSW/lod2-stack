@@ -236,9 +236,19 @@ public class LOD2Demo extends Application
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
                     lsilk.setSizeFull();
-                    //			workspace.setSizeFull();
-                    //			mainWindow.getContent().setSizeFull();
                     workspace.setHeight("500px");
+                }  
+            };
+
+            MenuBar.Command limes = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    Limes limes = new Limes(state);
+                    workspace.addComponent(limes);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    limes.setSizeFull();
+                    workspace.setHeight("1000px");
                 }  
             };
 
@@ -516,7 +526,8 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
             MenuBar.MenuItem linking1 = linking.addItem("Silk", null, silk);
-            MenuBar.MenuItem linking2 = linking.addItem("SameAs Linking", null, sameaslinking);
+            MenuBar.MenuItem linking2 = linking.addItem("Limes", null, limes);
+            MenuBar.MenuItem linking3 = linking.addItem("SameAs Linking", null, sameaslinking);
 
             MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
 
