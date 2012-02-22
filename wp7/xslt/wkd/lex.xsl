@@ -34,14 +34,7 @@
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<rdf:type rdf:resource="{$wkd}TopicMap"/>
 	<rdf:type rdf:resource="{$skos}ConceptScheme"/>
-	<xsl:if test="string-length(@rechteinhaber) &gt; 0">
-		<bibo:owner>
-			<dcterms:Agent>
-				<rdf:type rdf:resource="{$skos}Concept"/>
-				<skos:notation><xsl:value-of select="@rechteinhaber"/></skos:notation>
-			</dcterms:Agent>
-		</bibo:owner>
-	</xsl:if>
+	<xsl:call-template name="rechteinhaber"/>
 	<xsl:call-template name="doc-parts-lex"/>
 	<xsl:apply-templates select="*"/>
 </xsl:template>

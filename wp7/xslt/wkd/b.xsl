@@ -47,14 +47,7 @@
 	<xsl:if test="@beilage">
 		<wkd:supplement><xsl:value-of select="@beilage"/></wkd:supplement>
 	</xsl:if>
-	<xsl:if test="string-length(@rechteinhaber) &gt; 0">
-		<bibo:owner>
-			<dcterms:Agent>
-				<rdf:type rdf:resource="{$skos}Concept"/>
-				<skos:notation><xsl:value-of select="@rechteinhaber"/></skos:notation>
-			</dcterms:Agent>
-		</bibo:owner>
-	</xsl:if>
+	<xsl:call-template name="rechteinhaber"/>
 	<xsl:call-template name="doc-parts-b"/>
 	<xsl:apply-templates select="*"/>
 </xsl:template>

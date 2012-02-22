@@ -17,7 +17,7 @@
  xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
  exclude-result-prefixes="xsl xs fun data"
->
+ >
 
  <!--
  Project LOD2 - Project number 27943
@@ -75,7 +75,7 @@
 	</xhtml:p>
 </xsl:template>
 
-<xsl:template match="abbildung-block | objekt-block | zitat-block | container-auspraegung | tabelle | vs-titel-kopf | es-titel-kopf | es-metadaten | vs-ebene | paragraph | artikel | vs-anlage | vs-objekt | vs-absatz" mode="xml-literal">
+<xsl:template match="abbildung-block | objekt-block | zitat-block | container-auspraegung | tabelle | vs-titel-kopf | es-titel-kopf | es-metadaten | vs-ebene | paragraph | artikel | vs-anlage | vs-objekt | vs-absatz | lexikon-eintrag-text" mode="xml-literal">
 	<xhtml:div>
 		<xsl:apply-templates mode="xml-literal"/>
 	</xhtml:div>

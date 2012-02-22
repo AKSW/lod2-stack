@@ -41,14 +41,7 @@
 	<xsl:if test="@pm-nr">
 		<bibo:number><xsl:value-of select="@pm-nr"/></bibo:number>
 	</xsl:if>
-	<xsl:if test="string-length(@rechteinhaber) &gt; 0">
-		<bibo:owner>
-			<dcterms:Agent>
-				<rdf:type rdf:resource="{$skos}Concept"/>
-				<skos:notation><xsl:value-of select="@rechteinhaber"/></skos:notation>
-			</dcterms:Agent>
-		</bibo:owner>
-	</xsl:if>
+	<xsl:call-template name="rechteinhaber"/>
 	<xsl:if test="string-length(@bezugsquelle) &gt; 0">
 		<dcterms:source>
 			<bibo:ReferenceSource>
@@ -94,7 +87,7 @@
 
 <xsl:template match="pressemitteilung/normenkette" mode="top-level"/>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2007. Progress Software Corporation. All rights reserved.
+</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
@@ -111,6 +104,7 @@
 			<advancedProp name="iWhitespace" value="0"/>
 			<advancedProp name="sInitialTemplate" value=""/>
 			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
 			<advancedProp name="bWarnings" value="true"/>
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>

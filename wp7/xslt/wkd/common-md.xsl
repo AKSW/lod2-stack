@@ -572,6 +572,18 @@
 	</wkd:CaseDescription>
 </xsl:template>
 
+<xsl:template name="rechteinhaber">
+	<!-- @rechteinhaber is in the current element -->
+	<xsl:if test="string-length(@rechteinhaber) &gt; 0">
+		<bibo:owner>
+			<dcterms:Agent>
+				<rdf:type rdf:resource="{$skos}Concept"/>
+				<skos:notation><xsl:value-of select="@rechteinhaber"/></skos:notation>
+			</dcterms:Agent>
+		</bibo:owner>
+	</xsl:if>
+</xsl:template>
+
 </xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
