@@ -1,3 +1,9 @@
+lod2demo (1.1.28) lod2; urgency=low
+
+  * add more waits in the postinst
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 28 Feb 2012 01:46:08 -0800
+
 lod2demo (1.1.27) lod2; urgency=low
 
   * add pages for limes and spatial semantic browser 

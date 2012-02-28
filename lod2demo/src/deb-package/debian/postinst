@@ -53,6 +53,13 @@ running() {
 case "$1" in
     configure)
 
+	   # restart apache
+	sudo service apache2 stop
+	wait
+	sudo service apache2 start
+	wait
+
+
 	### VIRTUOSO CONFIG
 	virtetc="/etc/${VIRTUOSOVERSION}/"
 	virtvar="/var/lib/${VIRTUOSOVERSION}/"
@@ -60,6 +67,9 @@ case "$1" in
 
 	# stop the server
 	sudo service ${VIRTUOSOVERSION} stop
+
+	wait
+
 
 	# add ontowiki directory to DirsAllowed
 	# try to remove the addition first in order to avoid double entries
