@@ -42,7 +42,7 @@
 		<bibo:pageEnd><xsl:value-of select="@end-seite"/></bibo:pageEnd>
 	</xsl:if>
 	<xsl:if test="@datum">
-		<dcterms:created><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:created>
+		<dcterms:created rdf:datatype="{$xsd}date"><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:created>
 	</xsl:if>
 	<xsl:if test="@beilage">
 		<wkd:supplement><xsl:value-of select="@beilage"/></wkd:supplement>

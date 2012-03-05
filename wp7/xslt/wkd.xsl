@@ -303,7 +303,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="no" name="vs abbergv" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\abbergv.xml" htmlbaseurl="" outputurl="..\result\abbergv.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
+		<scenario default="yes" name="vs abbergv" userelativepaths="yes" externalpreview="no" url="..\Data\Legislation\abbergv.xml" htmlbaseurl="" outputurl="..\result\abbergv.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth=""
 		          profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
@@ -471,7 +471,7 @@ Tunnel parameters used
 			<advancedProp name="bUseDTD" value="false"/>
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
-		<scenario default="yes" name="jur fg_st_2010-11-03_3-k-1350-03_vt" userelativepaths="yes" externalpreview="no" url="..\Data\Jurisprudence\fg_st_2010-11-03_3-k-1350-03_vt.xml" htmlbaseurl=""
+		<scenario default="no" name="jur fg_st_2010-11-03_3-k-1350-03_vt" userelativepaths="yes" externalpreview="no" url="..\Data\Jurisprudence\fg_st_2010-11-03_3-k-1350-03_vt.xml" htmlbaseurl=""
 		          outputurl="..\result\jur\fg_st_2010-11-03_3-k-1350-03_vt.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2"
 		          additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
@@ -704,7 +704,7 @@ Tunnel parameters used
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
@@ -819,7 +819,7 @@ Tunnel parameters used
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>
@@ -857,7 +857,7 @@ Tunnel parameters used
 			<parameterValue name="file-uri" value="'file:///c:/Project/LOD2/WP07-WKDE/Data/Legislation/abbergv.xml'"/>
 			<advancedProp name="sInitialMode" value=""/>
 			<advancedProp name="bXsltOneIsOkay" value="true"/>
-			<advancedProp name="bSchemaAware" value="false"/>
+			<advancedProp name="bSchemaAware" value="true"/>
 			<advancedProp name="bXml11" value="false"/>
 			<advancedProp name="iValidation" value="0"/>
 			<advancedProp name="bExtensions" value="true"/>

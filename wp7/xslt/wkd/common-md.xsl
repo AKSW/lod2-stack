@@ -83,10 +83,10 @@
 <!-- metadata -->
 <xsl:template match="metadaten-gruppe[@bezeichnung='createmodifiedat']">
 	<xsl:if test="metadaten-text[@bezeichnung='createdat'][string-length(.)]">
-		<dcterms:created><xsl:value-of select="fun:dateDe2Iso(string(metadaten-text[@bezeichnung='createdat']))"/></dcterms:created>
+		<dcterms:created rdf:datatype="{$xsd}date"><xsl:value-of select="fun:dateDe2Iso(string(metadaten-text[@bezeichnung='createdat']))"/></dcterms:created>
 	</xsl:if>
 	<xsl:if test="metadaten-text[@bezeichnung='modifiedat'][string-length(.)]">
-		<dcterms:modified><xsl:value-of select="fun:dateDe2Iso(string(metadaten-text[@bezeichnung='modifiedat']))"/></dcterms:modified>
+		<dcterms:modified rdf:datatype="{$xsd}date"><xsl:value-of select="fun:dateDe2Iso(string(metadaten-text[@bezeichnung='modifiedat']))"/></dcterms:modified>
 	</xsl:if>
 </xsl:template>
 
@@ -111,9 +111,9 @@
 			<xsl:variable name="l" select="normalize-space(.)"/>
 			<xsl:if	test="string-length($l)">
 				<dcterms:subject>
-					<skos:Concept>
+					<skos:Concept rdf:about="{concat($v-base-uri,'cat/',fun:stwSegmentId(string($l)))}">
 						<rdf:type rdf:resource="{$wkd}Category{if ($c) then concat('/',$c) else ''}"/>
-						<skos:prefLabel xml:lang="de"><xsl:value-of select="$l"/></skos:prefLabel>
+						<rdfs:label xml:lang="de"><xsl:value-of select="$l"/></rdfs:label>
 					</skos:Concept>
 				</dcterms:subject>
 			</xsl:if>
@@ -122,6 +122,7 @@
 </xsl:template>
 
 <xsl:template match="metadaten-gruppe[@bezeichnung='handler[[vwdata]]']">
+	<!-- skip on short term
 	<xsl:for-each select="descendant-or-self::metadaten-gruppe[starts-with(@bezeichnung,'item[[')]">
 		<xsl:variable name="p" select="normalize-space(substring-before(substring-after(@bezeichnung,'item[['),'###]]'))"/>
 		<xsl:for-each select="descendant-or-self::metadaten-text">
@@ -134,9 +135,11 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:for-each>
+	-->
 </xsl:template>
 
 <xsl:template match="metadaten-text">
+	<!-- skip on short term
 	<wkd:mdProperty rdf:parseType="Resource">
    		<rdfs:label xml:lang="{fun:language(@sprache)}"><xsl:value-of select="@bezeichnung"/></rdfs:label>
 		<xsl:variable name="t" as="xs:string">
@@ -156,15 +159,18 @@
 			<xsl:value-of select="if (@typ='datum') then fun:dateDe2Iso(string(.)) else ."/>
 		</rdf:value>
    	</wkd:mdProperty>
+	-->
 </xsl:template>
 
 <xsl:template match="metadaten-gruppe[not(@bezeichnung=('createmodifiedat','handler[[keywords]]','handler[[categories]]','handler[[vwdata]]','rechtsgebiete-red'))]">
+	<!-- skip on short term
 	<wkd:mdProperty rdf:parseType="Resource">
 		<rdfs:label><xsl:value-of select="@bezeichnung"/></rdfs:label>
 		<rdf:value rdf:parseType="Resource">
 			<xsl:apply-templates select="*"/>
 		</rdf:value>
 	</wkd:mdProperty>
+	-->
 </xsl:template>
 
 <xsl:template match="metadaten-gruppe[@bezeichnung='rechtsgebiete-red']">

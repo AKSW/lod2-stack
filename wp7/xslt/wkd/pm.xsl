@@ -36,7 +36,7 @@
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('pressemitteilung/typ')}/{@typ}"/>
 	</wkd:pressReleaseType>
 	<xsl:if test="string-length(@datum) &gt; 0">
-		<dcterms:issued><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:issued>
+		<dcterms:issued rdf:datatype="{$xsd}date"><xsl:value-of select="fun:dateDe2Iso(string(@datum))"/></dcterms:issued>
 	</xsl:if>
 	<xsl:if test="@pm-nr">
 		<bibo:number><xsl:value-of select="@pm-nr"/></bibo:number>
