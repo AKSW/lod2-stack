@@ -111,7 +111,7 @@
 			<xsl:variable name="l" select="normalize-space(.)"/>
 			<xsl:if	test="string-length($l)">
 				<dcterms:subject>
-					<skos:Concept rdf:about="{concat($v-base-uri,'cat/',fun:stwSegmentId(string($l)))}">
+					<skos:Concept>
 						<rdf:type rdf:resource="{$wkd}Category{if ($c) then concat('/',$c) else ''}"/>
 						<rdfs:label xml:lang="de"><xsl:value-of select="$l"/></rdfs:label>
 					</skos:Concept>
