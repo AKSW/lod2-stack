@@ -292,8 +292,14 @@
 			<xsl:value-of select="concat($b-uri,'/aufsatz-ebene',$id)"/>
 		</xsl:when>
 		<xsl:when test="name($element)=('beitrag-ebene','beitrag-rn-ebene')">
-			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
-			<xsl:value-of select="concat($b-uri,'/beitrag-ebene',$id)"/>
+			<xsl:variable name="a-id" select="$element/ancestor-or-self::*[name()=name($element)]" as="element()*"/>
+			<xsl:variable name="id-s" as="xs:string*">
+				<xsl:for-each select="$a-id">
+					<xsl:value-of select="fun:bez-wert-id(if (./@bez) then ./@bez else '' ,if (./@wert) then ./@wert else '')"/>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="ids" select="string-join($id-s,'')" as="xs:string"/>
+			<xsl:value-of select="concat($b-uri,'/beitrag-ebene',$ids)"/>
 		</xsl:when>
 		<xsl:when test="name($element)=('kommentierung-ebene','kommentierung-rn-ebene')">
 			<xsl:variable name="id" select="fun:bez-wert-id(if ($element/@bez) then $element/@bez else '' ,if ($element/@wert) then $element/@wert else '')" as="xs:string"/>
