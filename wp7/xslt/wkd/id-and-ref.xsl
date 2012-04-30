@@ -316,6 +316,9 @@
 			                if (string-length($n) = 0) then '' else concat('_',$n),
 			                if (string-length($id) = 0) then '' else $id)"/>
 		</xsl:when>
+		<xsl:when test="name($element)='vs-absatz'">
+			<xsl:value-of select="concat($b-uri,'/par/',fun:percentEncode($element/../@par),'/section/',fun:percentEncode(string($element/@nr)))"/>
+		</xsl:when>
 		<xsl:otherwise>
 			<!--
 			todo: lex, ...

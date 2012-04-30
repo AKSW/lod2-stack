@@ -111,7 +111,7 @@
 <xsl:template name="doc-parts-vs">
 	<xsl:param name="r-uri" as="xs:string" tunnel="yes"/>
 	<!--xsl:for-each-group select="/wkdsc/vorschrift//(paragraph | artikel | artikel-ebene | vs-ebene | vs-anlage | vs-anlage-ebene | vs-objekt | vs-absatz)" group-by="name()"-->
-	<xsl:for-each-group select="/wkdsc/vorschrift//(paragraph | artikel | vs-ebene | vs-anlage | vs-anlage-ebene | vs-objekt)" group-by="name()">
+	<xsl:for-each-group select="/wkdsc/vorschrift//(paragraph | artikel | vs-ebene | vs-anlage | vs-anlage-ebene | vs-objekt | vs-absatz )" group-by="name()">
 		<xsl:for-each select="current-group()">
 			<xsl:choose>
 				<xsl:when test="./ancestor::zitat-vs">
