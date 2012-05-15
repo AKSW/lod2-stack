@@ -61,86 +61,137 @@ import eu.lod2.LOD2DemoState;
 public class GeoSpatial extends CustomComponent
 {
 
-    // reference to the global internal state
-    private LOD2DemoState state;
+	// reference to the global internal state
+	private LOD2DemoState state;
 
-    // fields
-    private ExportSelector2 exportGraph;
-    private Embedded geobrowser;
+	// fields
+	private String service  = "http://localhost/ssb";
+	private String username = "" ;
+	private String password = "";
+	private ExportSelector2 exportGraph;
+	private Embedded geobrowser;
 
-    public GeoSpatial(LOD2DemoState st) {
+	public GeoSpatial(LOD2DemoState st) {
 
-        // The internal state and 
-        state = st;
+		// The internal state and 
+		state = st;
 
-        HorizontalLayout geospatiallayout = new HorizontalLayout();
+	    initLogin();
 
-
-        // Configuration form start
-        // Set all properties at once for the moment.
-        Form t2f = new Form();
-        t2f.setCaption("Configuration");
-
-
-        exportGraph = new ExportSelector2(state, true, "Select graph with geo data:");
-        t2f.getLayout().addComponent(exportGraph);
-
-        // initialize the footer area of the form
-        HorizontalLayout t2ffooterlayout = new HorizontalLayout();
-        t2f.setFooter(t2ffooterlayout);
-
-        Button commitButton = new Button("Set configuration", new ClickListener() {
-                public void buttonClick(ClickEvent event) {
-                	storeConfiguration(event);
-                }
-                });
-
-        commitButton.setDescription("Commit the new configuration settings.");
-        t2f.getFooter().addComponent(commitButton);
-
-        geospatiallayout.addComponent(t2f);
+		HorizontalLayout geospatiallayout = new HorizontalLayout();
 
 
-        // Configuration form end
-	geobrowser = new Embedded();
-	try { 
-		
-	  	URL url = new URL(state.getHostName() + "/ssb");
-		geobrowser = new Embedded("", new ExternalResource(url));
-		geobrowser.setType(Embedded.TYPE_BROWSER);
-		geospatiallayout.addComponent(geobrowser);
-		geobrowser.setHeight(-1, Sizeable.UNITS_PERCENTAGE);
-	} catch (MalformedURLException e) {
-                e.printStackTrace();
-	};
+		// Configuration form start
+		// Set all properties at once for the moment.
+		Form t2f = new Form();
+		t2f.setCaption("Configuration");
 
 
-        // The composition root MUST be set
-        setCompositionRoot(geospatiallayout);
-    }
+		exportGraph = new ExportSelector2(state, true, "Select graph with geo data:");
+		t2f.getLayout().addComponent(exportGraph);
 
-    private void storeConfiguration(ClickEvent event) {
-        if (exportGraph.getExportGraph() == null || exportGraph.getExportGraph().equals("")) {
-	} else {
-		try {
-			String encodedGraph = URLEncoder.encode(exportGraph.getExportGraph(), "UTF-8");
-	  		URL url = new URL(state.getHostName() + "/ssb?default-graph-uri=" + encodedGraph);
-			ExternalResource res = new ExternalResource(url);
-			geobrowser.setSource(res);
-//			geobrowser.setParameter("default-graph-uri", encodedGraph);
-		} catch (UnsupportedEncodingException e) { 
-			e.printStackTrace();
-		} catch (MalformedURLException e) { 
+		// initialize the footer area of the form
+		HorizontalLayout t2ffooterlayout = new HorizontalLayout();
+		t2f.setFooter(t2ffooterlayout);
+
+		Button commitButton = new Button("Set configuration", new ClickListener() {
+				public void buttonClick(ClickEvent event) {
+				storeConfiguration(event);
+				}
+				});
+
+		commitButton.setDescription("Commit the new configuration settings.");
+		t2f.getFooter().addComponent(commitButton);
+
+		geospatiallayout.addComponent(t2f);
+
+
+		// Configuration form end
+		geobrowser = new Embedded();
+		try { 
+
+			URL url = new URL(service);
+			geobrowser = new Embedded("", new ExternalResource(url));
+			geobrowser.setType(Embedded.TYPE_BROWSER);
+			geospatiallayout.addComponent(geobrowser);
+			geobrowser.setHeight(-1, Sizeable.UNITS_PERCENTAGE);
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		};
-	}
-	
-	
-    };
 
-    // propagate the information of one tab to another.
-    public void setDefaults() {
-    };
+
+		// The composition root MUST be set
+		setCompositionRoot(geospatiallayout);
+	}
+
+	private void storeConfiguration(ClickEvent event) {
+		if (exportGraph.getExportGraph() == null || exportGraph.getExportGraph().equals("")) {
+		} else {
+			try {
+				String encodedGraph = URLEncoder.encode(exportGraph.getExportGraph(), "UTF-8");
+				URL url = new URL(service + "?default-graph-uri=" + encodedGraph);
+				ExternalResource res = new ExternalResource(url);
+				geobrowser.setSource(res);
+				//			geobrowser.setParameter("default-graph-uri", encodedGraph);
+			} catch (UnsupportedEncodingException e) { 
+				e.printStackTrace();
+			} catch (MalformedURLException e) { 
+				e.printStackTrace();
+			};
+		}
+
+
+	};
+
+	// propagate the information of one tab to another.
+	public void setDefaults() {
+	};
+
+	private void initLogin() {
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+
+			// initialize the hostname and portnumber
+			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/ssb>. <http://localhost/ssb> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/ssb> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/ssb> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+			TupleQueryResult result = tupleQuery.evaluate();
+			while (result.hasNext()) {
+				BindingSet bindingSet = result.next();
+				Value valueOfH = bindingSet.getValue("u");
+				if (valueOfH instanceof LiteralImpl) {
+					LiteralImpl literalH = (LiteralImpl) valueOfH;
+					username = literalH.getLabel();
+				};	
+				Value valueOfP = bindingSet.getValue("p");
+				if (valueOfP instanceof LiteralImpl) {
+					LiteralImpl literalP = (LiteralImpl) valueOfP;
+					password = literalP.getLabel();
+				};	
+				Value valueOfS = bindingSet.getValue("s");
+				if (valueOfS instanceof LiteralImpl) {
+					LiteralImpl literalS = (LiteralImpl) valueOfS;
+					String service0 = literalS.getLabel();
+					if (service0 == null | service0.equals("")) {
+						service = "http://localhost/ssb";
+					} else {
+						service = service0;
+					};
+				};	
+			}
+
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	};
+
 
 };
 
