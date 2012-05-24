@@ -73,9 +73,6 @@ implements	Upload.SucceededListener,
             Button.ClickListener
 {
 
-    // reference to the global internal state
-    private ExtractionTab extractionTab;
-
     private VerticalLayout panel;
     File  file;
     File  xmlFile;         // The original file
