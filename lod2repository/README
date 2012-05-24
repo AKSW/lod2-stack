@@ -12,3 +12,16 @@ in this directory.
 after that, create a new package with
   make lod2repository
 
+Workplan for key changes:
+
+1. checkout / update this directory
+2. add or replace a key under ./keys
+   - *.asc are gpg keys (signing)
+   - *.pub are ssh keys (dput)
+3a. in case of ssh key changes:
+   - run "make upload-keys"
+3b. in case of gpg key changes:
+   - add the key.asc to the database (e.g. gpg --homedir ./ --import keys/X.asc)
+   - create a new package (make lod2repository)
+   - upload it with dput
+4. svn commit the changes
