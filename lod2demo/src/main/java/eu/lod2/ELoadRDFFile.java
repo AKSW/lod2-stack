@@ -54,7 +54,6 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
-import eu.lod2.ExtractionTab;
 
 /**
  * The ELoadRDFFile allows to upload a file into virtuoso via the conductor
