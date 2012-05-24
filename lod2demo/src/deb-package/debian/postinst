@@ -47,8 +47,17 @@ running() {
     return 0
 }
 
-# end virtuoso 
 
+# ensure we can connect properly to virtuoso
+connect() {
+    c=`isql-vt 1111 dba dba /var/lib/lod2demo/test.sql`;
+    if [ -z "$c" ] ; then
+	return 1;
+    else 
+	return 0;
+    fi;
+}
+# end virtuoso 
 
 case "$1" in
     configure)
@@ -76,16 +85,26 @@ case "$1" in
 	sed 's/^\(DirsAllowed.*\)\(, \/var\/lib\/lod2demo\)\(.*\)/\1\3/' -i $virtuosoini
 	sed 's/^\(DirsAllowed.*\)/\1, \/var\/lib\/lod2demo/' -i $virtuosoini
 
+	wait 
+
 	# restart the server
 	sudo service ${VIRTUOSOVERSION} start
 	
-        wait
+	wait
+	sleep 1;
 
 	# if it is not running try again infinitely
-	while [ ! running ]; do
+	until running ; do
+		sudo service ${VIRTUOSOVERSION} start ;
+		sleep 2;
+	done;
+
+	# wait with proceeding until isql-vt can properly connect and answer a query.
+	until connect ; do
 		sudo service ${VIRTUOSOVERSION} start ;
 		wait ;
-	done;
+		sleep 1;
+        done;
 		
 	if running; then
 		sudo isql-vt 1111 dba dba /var/lib/lod2demo/load.sql;

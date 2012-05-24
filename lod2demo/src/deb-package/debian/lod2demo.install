@@ -7,3 +7,4 @@ configuration/unload.sql var/lib/lod2demo
 configuration/configuration.nt var/lib/lod2demo
 configuration/tools.owl var/lib/lod2demo
 lod2demo.war /usr/share/lod2demo
+test.sql /var/lib/lod2demo

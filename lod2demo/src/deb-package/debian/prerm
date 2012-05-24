@@ -52,6 +52,11 @@ running() {
 case "$1" in
     remove|upgrade|deconfigure)
 
+
+	date=`date +"%d%m%Y-%H%m"`
+	mkdir -p /var/lib/lod2demo/dump_$date
+	sed -i "s/DUMP/dump_$date/" /var/lib/lod2demo/unload.sql;
+
 	if running; then
 		sudo isql-vt 1111 dba dba /var/lib/lod2demo/unload.sql;
         else 

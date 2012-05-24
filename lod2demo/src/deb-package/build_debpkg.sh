@@ -24,7 +24,8 @@ cp -r ../../src/main/configuration/* ../../target/deb-pkg/configuration
 cp -r ../../src/main/configuration/lod2demo.conf ../../target/deb-pkg/
 # Add the Debian control files
 cp -r debian ../../target/deb-pkg
-cp Makefile ../../target/deb-pkg
+cp    Makefile ../../target/deb-pkg
+cp    test.sql ../../target/deb-pkg
 
 # Build the package
 cd ../../target/deb-pkg
