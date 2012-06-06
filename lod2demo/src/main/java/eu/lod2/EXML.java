@@ -16,43 +16,21 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
 import java.io.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
-import com.vaadin.ui.Layout.*;
-import com.vaadin.terminal.FileResource;
 
-import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
 
-import virtuoso.sesame2.driver.VirtuosoRepository;
-
-import eu.lod2.LOD2DemoState;
 import eu.lod2.slimvaliant.*;
-import eu.lod2.LOD2Exception;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -197,8 +175,8 @@ implements 	Button.ClickListener
             xmlStream = new ByteArrayInputStream(xmlText.getValue().toString().getBytes("UTF-8"));
             xsltStream = new ByteArrayInputStream(xsltText.getValue().toString().getBytes("UTF-8"));	
 
-            WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream)); 
-            wkdTransformer.transform(xmlStream, sResult);
+            XsltTransformer xsltTransformer = new XsltTransformer(new StreamSource(xsltStream));
+            xsltTransformer.transform(xmlStream, sResult);
         } catch (Exception e){
             e.printStackTrace();
             throw new LOD2Exception("Transformation failed", e);

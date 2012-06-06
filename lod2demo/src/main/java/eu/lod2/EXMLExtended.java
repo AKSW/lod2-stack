@@ -16,45 +16,24 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
 import java.io.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.ErrorMessage;
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Alignment.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
-import com.vaadin.terminal.FileResource;
 import com.vaadin.ui.Window.Notification;
 
-import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
 import org.openrdf.model.*;
-
-import org.restlet.resource.ClientResource;
-import org.restlet.data.MediaType;
-
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
 
 import eu.lod2.slimvaliant.*;
 
@@ -67,19 +46,15 @@ import javax.xml.transform.stream.StreamSource;
  * extract RDF data from an XML file using an XSLT transformation
  */
 public class EXMLExtended extends CustomComponent
-implements	Upload.SucceededListener,
-            Upload.FailedListener,
-            Upload.Receiver,
-            Button.ClickListener
+implements Button.ClickListener
 {
 
     private VerticalLayout panel;
-    File  file;
-    File  xmlFile;         // The original file
-    File  rdfFile;         // The RDF file containing the triples derived via the XSLT
+
+    File  xmlFile;     // The original file
+    File  rdfFile;     // The RDF file containing the triples derived via the XSLT
     File  xsltFile;	   // The XSLT transformation file
-    File  catalogFile;
-    File  dtdFile;
+    File  catalogFile; // The XML Catalog file that connects multiple xslt & xml files
 
     //
     //private Button annotateButton;
@@ -87,9 +62,6 @@ implements	Upload.SucceededListener,
     private Label errorMsg;
 
     private LOD2DemoState state;
-
-    private String textToAnnotate;
-    private String annotatedText;
 
     private TextArea textToAnnotateField;
     private TextField dlPath;
@@ -106,12 +78,9 @@ implements	Upload.SucceededListener,
     private ByteArrayOutputStream oStream;
 
 
-    final Upload uploadXMLFile =
-        new Upload("Upload the XML file here", this);
-
-    final Upload uploadXSLTFile =
-        new Upload("Upload the XLST file here", this);
-    final Upload uploadCatalogFile = new Upload("Upload the catalog file here", this);
+    FileUpload uploadXMLFile = null;
+    FileUpload uploadXSLTFile = null;
+    FileUpload uploadCatalogFile = null;
     //    final Upload uploadDTDFile = new Upload("Upload the DTD file here", this);
 
     public EXMLExtended(){
@@ -134,30 +103,13 @@ implements	Upload.SucceededListener,
                 Label.CONTENT_XHTML
                 );
 
+        uploadXMLFile = new FileUpload("Upload the XML file here", "The XML file ", xmlFile);
+        uploadXSLTFile = new FileUpload("Upload the XLST file here", "The XSLT file ", xsltFile);
+        uploadCatalogFile = new FileUpload("Upload the XML Catalog file here", "The XML Catalog file ", catalogFile);
+        uploadCatalogFile.setDescription("This file must be named catalog.xml. " +
+                "The references can be to files on the local system or web reachable resources.");
 
 
-        // Create the Upload component for the XML file.
-        uploadXMLFile.setButtonCaption("Upload Now");
-        uploadXMLFile.addListener((Upload.SucceededListener) this);
-        uploadXMLFile.addListener((Upload.FailedListener) this);
-
-
-        // Create the Upload component for the XSLT file.
-        uploadXSLTFile.setButtonCaption("Upload Now");
-        uploadXSLTFile.addListener((Upload.SucceededListener) this);
-        uploadXSLTFile.addListener((Upload.FailedListener) this);
-
-        // Create the Upload component for the Catalog file.
-        uploadCatalogFile.setButtonCaption("Upload Now");
-        uploadCatalogFile.addListener((Upload.SucceededListener) this);
-        uploadCatalogFile.addListener((Upload.FailedListener) this);
-
-        //Create the Upload component for the DTD file.
-        /*
-           uploadDTDFile.setButtonCaption("Upload Now");
-           uploadDTDFile.addListener((Upload.SucceededListener) this);
-           uploadDTDFile.addListener((Upload.FailedListener) this);
-         */
         errorMsg = new Label("");
 
         exportGraph = new ExportSelector(state, true);
@@ -170,7 +122,6 @@ implements	Upload.SucceededListener,
         panel.addComponent(uploadXMLFile);
         panel.addComponent(uploadXSLTFile);
         panel.addComponent(uploadCatalogFile);
-        //	panel.addComponent(uploadDTDFile);
         panel.addComponent(exportGraph);
         panel.addComponent(uploadButton);
         panel.addComponent(transformButton);
@@ -187,7 +138,6 @@ implements	Upload.SucceededListener,
 
         textToAnnotateField = new TextArea();
         textToAnnotateField.setImmediate(false);
-        //textToAnnotateField.addListener(this);
         textToAnnotateField.setColumns(100);
         textToAnnotateField.setRows(25);
         t2f.getLayout().addComponent(textToAnnotateField);
@@ -222,57 +172,6 @@ implements	Upload.SucceededListener,
     public void setDefaults() {
     };
 
-    // Callback method to begin receiving the upload.
-    public OutputStream receiveUpload(String filename, String MIMEType) {
-        FileOutputStream fos = null; // Output stream to write to
-        file = new File("/tmp/uploads/" + filename);
-        try {
-            // Open the file for writing.
-            fos = new FileOutputStream(file);
-        } catch (final java.io.FileNotFoundException e) {
-            // Error while opening the file. Not reported here.
-            e.printStackTrace();
-            return null;
-        }
-
-        return fos; // Return the output stream to write to
-    }
-
-    // This is called if the upload is finished.
-    public void uploadSucceeded(Upload.SucceededEvent event) {
-        // Log the upload on screen.
-        /* panel.addComponent(new Label("File " + event.getFilename()
-           + " of type '" + event.getMIMEType()
-           + "' uploaded."));*/
-        if(event.getComponent()== uploadXMLFile){
-            xmlFile = file;
-            //xmlText.setVisible(false);
-            uploadXMLFile.setCaption("xml file:"+ xmlFile.getName()+" upload succeeded.");
-        }
-        else if(event.getComponent()== uploadXSLTFile){
-            xsltFile = file;
-            //xsltText.setVisible(false);
-            uploadXSLTFile.setCaption("xslt file:"+ xsltFile.getName() + " upload succeeded.");
-        }
-        else if(event.getComponent() == uploadCatalogFile){
-            catalogFile = file;
-            uploadCatalogFile.setCaption("catalog file:"+catalogFile.getName() +" upload succeeded");
-        }
-        /*		else if(event.getComponent() == uploadDTDFile){
-              dtdFile = file;
-              uploadDTDFile.setCaption("DTD file:"+dtdFile.getName() +" upload succeeded");
-              }
-         */
-
-    }
-
-    // This is called if the upload fails.
-    public void uploadFailed(Upload.FailedEvent event) {
-        // Log the failure on screen.
-        panel.addComponent(new Label("Uploading "
-                    + event.getFilename() + " of type '"
-                    + event.getMIMEType() + "' failed."));
-    }
     public void buttonClick(ClickEvent event) {
         try {
         if(event.getComponent()==transformButton){
@@ -285,10 +184,32 @@ implements	Upload.SucceededListener,
             uploadToVirtuoso();
         }
         } catch (LOD2Exception e) {
-          showExceptionMessage(e);
+             showExceptionMessage(e);
         };
     }
+
+    // check the inputs if everything is available
+    private boolean validTransformInput() {
+        boolean valid = true;
+        if(xmlFile == null) {
+            uploadXMLFile.setComponentError(new UserError("Upload a xml file."));
+            valid = false;
+        }
+        if(xsltFile == null) {
+            uploadXSLTFile.setComponentError(new UserError("Upload a xlst file."));
+            valid = false;
+        }
+        if (catalogFile == null) {
+            uploadCatalogFile.setComponentError(new UserError("Upload a catalog file."));
+            valid = false;
+        };
+
+        return valid;
+
+    }
+
     private void transform() throws LOD2Exception {
+
         errorMsg.setVisible(false);
         InputStream xmlStream, xsltStream;
         oStream = new ByteArrayOutputStream();
@@ -299,29 +220,20 @@ implements	Upload.SucceededListener,
         System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
         System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
 
-        if(xmlFile == null) {
-            errorMsg.setVisible(true);
-            errorMsg.setValue("Upload a xml file.");
+        xmlFile = uploadXMLFile.file;
+        xsltFile = uploadXSLTFile.file;
+        catalogFile = uploadCatalogFile.file;
+
+        if (!validTransformInput()) {
+            // break here
             return;
-        } else if(xsltFile == null) {
-            errorMsg.setVisible(true);
-            errorMsg.setValue("Upload a xslt file.");
-            return;
-        } else if(catalogFile == null) {
-            errorMsg.setVisible(true);
-            errorMsg.setValue("Upload a catalog file.");
-            return;
-        };
-        /*else if(dtdFile == null){
-          errorMsg.setVisible(true);
-          errorMsg.setValue("Upload a dtd file");
-          return;
-          }*/
+        }
+
         try {
             xmlStream = new FileInputStream(xmlFile);
             xsltStream = new FileInputStream(xsltFile);
-            WkdTransformer wkdTransformer = new WkdTransformer(new StreamSource(xsltStream)); 
-            wkdTransformer.transform(xmlStream, sResult);
+            XsltTransformer xsltTransformer = new XsltTransformer(new StreamSource(xsltStream));
+            xsltTransformer.transform(xmlStream, sResult);
             if(oStream.toString().isEmpty()){
                 textToAnnotateField.setValue("Transformation resulted in no triples; please check if you entered a valid xml and xslt code.");
             } else {
@@ -329,10 +241,13 @@ implements	Upload.SucceededListener,
                 t2f.setVisible(true);
                 downloadForm.setVisible(true);
             };
+            xmlStream.close();
+            xmlStream.close();
+            xsltTransformer.close();
         } catch (Exception e){
             e.printStackTrace();
             throw new LOD2Exception("Transformation failed:" , e);
-        };
+        }
     };
 
     private void download(){
@@ -354,14 +269,22 @@ implements	Upload.SucceededListener,
 
     private void uploadToVirtuoso() throws LOD2Exception {
         if(exportGraph.getExportGraph() == null) {
-            panel.addComponent(new Label("No graph selected"));
+            uploadButton.setComponentError(new UserError("No graph selected"));
             return;
         } else if(oStream == null || oStream.toString().isEmpty()){
+            uploadButton.setComponentError(null);
             this.transform();
-            if(oStream.toString().isEmpty()){return;}
+            if(oStream.toString().isEmpty()){
+
+                this.getWindow().showNotification(
+                        "The transformation results in an empty dataset. This can be correct, or indicate an issue.",
+                        "",
+                        Notification.TYPE_WARNING_MESSAGE);
+                return;
+            }
         }
         try{
-            rdfFile = new File ("/tmp/uploads/file.rdf");
+            rdfFile = new File (state.getUploadDir() + "file.rdf");
             FileOutputStream fos = new FileOutputStream(rdfFile);
             oStream.writeTo(fos);
             String baseURI = state.getCurrentGraph() + "#";
@@ -374,7 +297,10 @@ implements	Upload.SucceededListener,
             e.printStackTrace();
             throw new LOD2Exception("Upload failed:", e);
         }
-        panel.addComponent(new Label("Upload succeeded!"));
+        this.getWindow().showNotification(
+                "The processing has succeeded.",
+                "",
+                Notification.TYPE_HUMANIZED_MESSAGE);
     }
 
     private void showExceptionMessage(Exception e) {
@@ -384,5 +310,83 @@ implements	Upload.SucceededListener,
                     e.getMessage(),
                     Notification.TYPE_ERROR_MESSAGE);
     };
+
+
+
+
+    /**
+     * Silently closes the given {@link Closeable} implementation, ignoring any errors that come out of the {@link Closeable#close()} method.
+     *
+     * @param closable the closeable to close, can be <code>null</code>.
+     */
+    private void silentlyClose(Closeable closable) {
+        if (closable != null) {
+            try {
+                closable.close();
+            }
+            catch (IOException e) {
+                // Best effort; nothing we can (or want) do about this...
+            }
+        }
+    }
+
+    public class FileUpload extends Upload
+            implements	Upload.SucceededListener,
+                        Upload.FailedListener,
+                        Upload.Receiver
+    {
+
+        // associate the reference for this upload
+        public File file;
+
+        // the caption for the error & success messages;
+        private String capt;
+
+        public FileUpload(String initCapt, String c, File f) {
+            super();
+            file = f;
+            capt = c;
+            this.setCaption(initCapt);
+            this.setReceiver(this);
+            this.addListener((Upload.SucceededListener) this);
+            this.addListener((Upload.FailedListener) this);
+
+        }
+
+        public OutputStream receiveUpload(String filename, String MIMEType) {
+            FileOutputStream fos = null; // Output stream to write to
+            file = new File(state.getUploadDir() + filename);
+            try {
+                // Open the file for writing.
+                fos = new FileOutputStream(file);
+            } catch (java.io.FileNotFoundException e) {
+                System.err.println(e.getMessage());
+
+                this.getWindow().showNotification(
+                        "Access to the file failed.",
+                        e.getMessage(),
+                        Notification.TYPE_ERROR_MESSAGE);
+            }
+
+            return fos; // Return the output stream to write to
+        }
+
+        // This is called if the upload fails.
+        public void uploadFailed(Upload.FailedEvent event) {
+
+            this.getWindow().showNotification(
+                    "The upload failed due some errors. See for detailed information to the catalina log. ",
+                    "Uploading " + event.getFilename() + " failed.",
+                    Notification.TYPE_ERROR_MESSAGE);
+        }
+
+        // This is called if the upload is finished.
+        public void uploadSucceeded(Upload.SucceededEvent event) {
+            this.setCaption(capt + file.getName() + " upload succeeded.");
+            this.setComponentError(null);
+        }
+
+
+    }
 };
 

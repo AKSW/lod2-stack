@@ -21,11 +21,8 @@ import java.util.Iterator;
 import com.vaadin.Application;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.ClassResource;
-import com.vaadin.terminal.FileResource;
-import com.vaadin.terminal.ThemeResource;
-import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.*;
+import com.vaadin.terminal.gwt.server.UploadException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Alignment.*;
@@ -46,6 +43,7 @@ import org.vaadin.googleanalytics.tracking.*;
 import eu.lod2.LOD2DemoState;
 import eu.lod2.LOD2Exception;
 import java.lang.RuntimeException;
+import java.util.logging.Level;
 
 /**
  * The Application's "main" class
@@ -124,20 +122,16 @@ public class LOD2Demo extends Application
             MenuBar.Command me1c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-                    //			mainWindow.getContent().setSizeFull();
-                    ELoadRDFFile me1c_content = new ELoadRDFFile(state);
-                    workspace.addComponent(me1c_content);
+                    ELoadRDFFile content = new ELoadRDFFile(state);
+                    workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    float wh = mainWindow.getHeight() -90;
-                    //			workspace.addComponent(new Label(Float.toString(wh)));
-                    //			me1c_content.getContent().setHeight("100%");
-                    me1c_content.setWidth("100%");
-                    //			me1c_content.setHeight("100%");
-                    me1c_content.setHeight(wh, mainWindow.getHeightUnits());
-                    workspace.setWidth("100%");
-                    workspace.setHeight("100%");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command me3c = new MenuBar.Command() {
@@ -153,11 +147,11 @@ public class LOD2Demo extends Application
             MenuBar.Command me3cbis = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-                    EXMLExtended me3c_content = new EXMLExtended(state);
-                    workspace.addComponent(me3c_content);
+                    EXMLExtended content = new EXMLExtended(state);
+                    workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    me3c_content.setSizeFull();
+                    content.setSizeFull();
                 }  
             };
 
@@ -165,12 +159,16 @@ public class LOD2Demo extends Application
             MenuBar.Command me4c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-                    ESpotlight me4c_content = new ESpotlight(state);
-                    workspace.addComponent(me4c_content);
+                    ESpotlight content = new ESpotlight(state);
+                    workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    me4c_content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command me5c = new MenuBar.Command() {
@@ -191,8 +189,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command me7c = new MenuBar.Command() {
@@ -236,8 +238,11 @@ public class LOD2Demo extends Application
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
                     lsilk.setSizeFull();
-                    workspace.setHeight("500px");
-                }  
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(lsilk, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command limes = new MenuBar.Command() {
@@ -248,8 +253,11 @@ public class LOD2Demo extends Application
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
                     limes.setSizeFull();
-                    workspace.setHeight("1000px");
-                }  
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(limes, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command sameaslinking = new MenuBar.Command() {
@@ -270,8 +278,11 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     welcome.setHeight("110px");
                     content.setSizeFull();
-                    workspace.setHeight("500px");
-                }  
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mconfiguration = new MenuBar.Command() {
@@ -302,8 +313,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mq1c = new MenuBar.Command() {
@@ -313,7 +328,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mq2c = new MenuBar.Command() {
@@ -323,8 +343,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mq3c = new MenuBar.Command() {
@@ -334,8 +358,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mq4c = new MenuBar.Command() {
@@ -345,24 +373,28 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mq5c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-	    	    resetSize(workspace);
-		    workspace.setSizeUndefined();
+	    	        resetSize(workspace);
+		            workspace.setSizeUndefined();
                     GeoSpatial content = new GeoSpatial(state);
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
-	    	    //printSize((AbstractComponentContainer) mainWindow.getContent());
-	    	    resetSizeFull(workspace);
-		    workspace.setSizeFull();
-		    workspace.setHeight("500px");
-		    workspace.setExpandRatio(content,1.0f);
-		    mainContainer.setSizeFull();
+	    	        //printSize((AbstractComponentContainer) mainWindow.getContent());
+	    	        resetSizeFull(workspace);
+		            workspace.setSizeFull();
+		            workspace.setHeight("500px");
+		            workspace.setExpandRatio(content,1.0f);
+		            mainContainer.setSizeFull();
                     welcome.setHeight("110px");
 	    	    //printSize((AbstractComponentContainer) mainWindow.getContent());
                 }  
@@ -387,8 +419,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo3c = new MenuBar.Command() {
@@ -398,8 +434,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo4c = new MenuBar.Command() {
@@ -409,8 +449,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo5c = new MenuBar.Command() {
@@ -420,8 +464,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
 
@@ -432,8 +480,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo7c = new MenuBar.Command() {
@@ -443,8 +495,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo8c = new MenuBar.Command() {
@@ -454,8 +510,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo9c = new MenuBar.Command() {
@@ -465,8 +525,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo10c = new MenuBar.Command() {
@@ -476,8 +540,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             MenuBar.Command mo11c = new MenuBar.Command() {
@@ -487,8 +555,12 @@ public class LOD2Demo extends Application
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("500px");
-                }  
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
             };
 
             // Secondly define menu layout
@@ -716,6 +788,27 @@ public class LOD2Demo extends Application
 	     System.err.println("Container end");
  
     };
+
+    @Override
+    public void terminalError(Terminal.ErrorEvent event) {
+        Window errorWindow = mainWindow;
+
+        try {
+            UploadException uploadException = (UploadException) event.getThrowable();
+            System.err.println(event.getThrowable().getMessage());
+        } catch (Exception e) {
+           // not an UploadException
+           // Shows an error notification
+            if (errorWindow != null) {
+                errorWindow.showNotification(
+                        "An internal error has occurred, please " +
+                                "contact the administrator!",
+                        Notification.TYPE_ERROR_MESSAGE);
+                System.err.println(event.getThrowable().getMessage());
+            }
+        }
+
+    }
 }
 
 

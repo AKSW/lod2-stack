@@ -6,10 +6,17 @@
   <artifactId>lod2demo</artifactId>
   <packaging>war</packaging>
   <version>1.1.28</version>
-  <name>Vaadin Web Application</name>
+  <name>LOD2 demonstrator</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <apache-commons-io.version>2.1</apache-commons-io.version>
+    <apache-commons-lang.version>3.1</apache-commons-lang.version>
+    <httpclient.version>4.1.3</httpclient.version>
+    <httpcore.version>4.1.3</httpcore.version>
+    <jackson.version>1.9.2</jackson.version>
+    <virtuoso-sesame-driver.version>2.0</virtuoso-sesame-driver.version>
+    <virtuoso-jdbc-driver.version>3.60</virtuoso-jdbc-driver.version>
   </properties>
 
   <profiles>
@@ -199,6 +206,20 @@
       <url>http://archiva.tenforce.com/</url>
     </repository>
     <repository>
+      <id>tenforce_archiva_external_free</id>
+      <url>http://archiva.tenforce.com/archiva/repository/external_free</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>tenforce_archiva_fallback</id>
+      <url>http://archiva.tenforce.com/archiva/repository/fallback</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
       <id>vaadin-snapshots</id>
       <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
       <releases>
@@ -253,6 +274,11 @@
       <id>Public Maven repo for Saxon 9</id>
       <url>http://www2.ph.ed.ac.uk/maven2/</url>
     </repository>
+	  <repository>
+	   <id>codehaus-snapshots</id>
+	   <url>http://snapshots.repository.codehaus.org</url>
+	  </repository>
+
 
   </repositories>
 
@@ -431,18 +457,35 @@
       <artifactId>sesame-rio-rdfxml</artifactId>
       <version>2.3.3</version>
     </dependency>
+<!--
     <dependency>
       <groupId>virtuoso.sesame2</groupId>
       <artifactId>driver</artifactId>
       <version>2.0</version>
       <scope>compile</scope>
     </dependency>
+-->
+    <dependency>
+      <groupId>virtuoso</groupId>
+      <artifactId>sesame-driver</artifactId>
+      <version>${virtuoso-sesame-driver.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>virtuoso</groupId>
+      <artifactId>jdbc-driver</artifactId>
+      <version>${virtuoso-jdbc-driver.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
     <dependency>
       <groupId>virtuoso</groupId>
       <artifactId>jdbc3</artifactId>
       <version>3.0</version>
       <scope>runtime</scope>
     </dependency>
+-->
     <!--
     <dependency>
       <groupId>org.vaadin.addons</groupId>
@@ -521,6 +564,34 @@
 	   <version>1.1.1</version>
 	</dependency>
 
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>${httpcore.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
+    </dependency>
+
+  <dependency>
+   <groupId>org.codehaus.jackson</groupId>
+   <artifactId>jackson-mapper-asl</artifactId>
+   <version>${jackson.version}</version>
+  </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${apache-commons-io.version}</version>
+    </dependency>
+    <dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>${apache-commons-lang.version}</version>
+    </dependency>
+
+	
   </dependencies>
 
 

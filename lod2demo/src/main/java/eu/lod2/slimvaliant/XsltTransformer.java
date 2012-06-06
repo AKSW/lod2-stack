@@ -19,17 +19,14 @@ import java.io.InputStream;
 
 import eu.lod2.slimvaliant.SlimValiantException;
 
-public class WkdTransformer {
+public class XsltTransformer {
 
     private TransformerFactory transformerFactory = null;
     private Transformer transformer = null;
-    private InputStream toTransformStream = null;
-    private String[] catalogUrl = new String[]{"dummy"};
-    private XMLCatalogResolver resolver = null;
     private XMLReader xmlReader = null;
 
 /*
-    public WkdTransformer(StreamSource xslt) throws Exception {
+    public XsltTransformer(StreamSource xslt) throws Exception {
         if (this.transformerFactory == null)
             this.transformerFactory = TransformerFactory.newInstance();
         try {
@@ -54,7 +51,7 @@ public class WkdTransformer {
     // The catalog file is handled via the CatalogManager 
     // it is assumed that the file is on a fixed location 
     // and called catalog.xml
-    public WkdTransformer(StreamSource xslt) throws SlimValiantException {
+    public XsltTransformer(StreamSource xslt) throws SlimValiantException {
         if (this.transformerFactory == null) {
             this.transformerFactory = TransformerFactory.newInstance();
         };
@@ -64,6 +61,7 @@ public class WkdTransformer {
 
         try {
             this.transformer = this.transformerFactory.newTransformer(xslt);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new SlimValiantException("Failed to compile the stylesheet:", e);
@@ -79,10 +77,16 @@ public class WkdTransformer {
 
     }
 
+    public void close() {
+        transformer = null;
+        xmlReader = null;
+    }
+
     public void transform(InputStream input, StreamResult output) throws SlimValiantException {
         if (this.transformer == null) throw new SlimValiantException("Xslt transformer is not initialized.");
+
         SAXSource inputSource = null;
-            inputSource = new SAXSource(this.xmlReader, new InputSource(input));
+        inputSource = new SAXSource(this.xmlReader, new InputSource(input));
         try {
             this.transformer.transform(inputSource, output);
         } catch (Exception e) {

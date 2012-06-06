@@ -54,6 +54,9 @@ public class LOD2DemoState
     private String jDBCuser = "dba";
     private String jDBCpassword = "pwd";
 
+    // the upload Directory for the application
+    private String uploadDir = "/tmp/uploads";
+
     public Repository rdfStore;
 
     public Boolean InitStatus = false;
@@ -130,6 +133,16 @@ public class LOD2DemoState
         return rdfStore;
     };
 
+    public String getUploadDir(){
+        return uploadDir;
+    }
+
+    public void setUploadDir(String ud) {
+        uploadDir = ud;
+    }
+
+
+
     public String getConfigurationRDFgraph() {
         return configurationRDFgraph;
     };
@@ -153,6 +166,7 @@ public class LOD2DemoState
             jDBCconnectionstring = properties.getProperty("JDBCconnection");
             jDBCuser             = properties.getProperty("JDBCuser");
             jDBCpassword         = properties.getProperty("JDBCpassword");
+            uploadDir            = properties.getProperty("uploadDirectory");
 
             //		System.print("$"+jDBCuser+"$");
             //		System.print("$"+jDBCpassword+"$");
