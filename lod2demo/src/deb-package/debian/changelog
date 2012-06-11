@@ -1,3 +1,15 @@
+lod2demo (1.1.30) lod2; urgency=low
+
+  * fix virtuoso page configuration
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 24 May 2012 01:42:27 +0200
+
+lod2demo (1.1.29) lod2; urgency=low
+
+  * update package installation procedure
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 24 May 2012 01:17:09 +0200
+
 lod2demo (1.1.28) lod2; urgency=low
 
   * add more waits in the postinst

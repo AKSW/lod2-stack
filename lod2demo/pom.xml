@@ -5,7 +5,7 @@
   <groupId>eu.lod2</groupId>
   <artifactId>lod2demo</artifactId>
   <packaging>war</packaging>
-  <version>1.1.28</version>
+  <version>1.1.30</version>
   <name>LOD2 demonstrator</name>
 
   <properties>
@@ -206,16 +206,9 @@
       <url>http://archiva.tenforce.com/</url>
     </repository>
     <repository>
-      <id>tenforce_archiva_external_free</id>
-      <url>http://archiva.tenforce.com/archiva/repository/external_free</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
       <id>tenforce_archiva_fallback</id>
       <url>http://archiva.tenforce.com/archiva/repository/fallback</url>
-      <releases>
+       <releases>
         <enabled>true</enabled>
       </releases>
     </repository>
@@ -459,8 +452,8 @@
     </dependency>
 <!--
     <dependency>
-      <groupId>virtuoso.sesame2</groupId>
-      <artifactId>driver</artifactId>
+      <groupId>virtuoso</groupId>
+      <artifactId>sesame-driver</artifactId>
       <version>2.0</version>
       <scope>compile</scope>
     </dependency>
