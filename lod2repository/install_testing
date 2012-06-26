@@ -1,0 +1,4 @@
+lod2-keyring.gpg     etc/apt/trusted.gpg.d
+lod2testing.list     etc/apt/sources.list.d
+lod2precise.list     etc/apt/sources.list.d
+lod2precise.pref     etc/apt/preferences.d

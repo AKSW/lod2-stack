@@ -1,3 +1,9 @@
+lod2repository (1.18) lod2; urgency=low
+
+  * add new maintainer keys for Szymon Danielczyk (DERI)
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 25 Apr 2012 05:21:13 -0700
+
 lod2repository (1.17) lod2; urgency=low
 
   * Add new key for maintainer: Claus Stadler (AKSW)
