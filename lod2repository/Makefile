@@ -60,6 +60,7 @@ lod2repository-build:
 	cp pubring.gpg      lod2testing-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
 	cp lod2precise*     lod2testing-repository-$(LOD2REP_VERSION)
 	cp install_testing  lod2testing-repository-$(LOD2REP_VERSION)/debian/install
+	cp prerm_testing  lod2testing-repository-$(LOD2REP_VERSION)/debian/prerm
 	sed -i -e "s/lod2repository/lod2testing-repository/g" lod2testing-repository-$(LOD2REP_VERSION)/debian/changelog
 	sed -i -e "s/lod2repository/lod2testing-repository/g" lod2testing-repository-$(LOD2REP_VERSION)/debian/control
 	cd lod2testing-repository-$(LOD2REP_VERSION) && debuild
@@ -71,6 +72,7 @@ lod2repository-build:
 	cp pubring.gpg      lod2stable-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
 	cp lod2precise*     lod2stable-repository-$(LOD2REP_VERSION)
 	cp install_stable  lod2stable-repository-$(LOD2REP_VERSION)/debian/install
+	cp prerm_stable  lod2stable-repository-$(LOD2REP_VERSION)/debian/prerm
 	sed -i -e "s/lod2repository/lod2stable-repository/g" lod2stable-repository-$(LOD2REP_VERSION)/debian/changelog
 	sed -i -e "s/lod2repository/lod2stable-repository/g" lod2stable-repository-$(LOD2REP_VERSION)/debian/control
 	cd lod2stable-repository-$(LOD2REP_VERSION) && debuild
