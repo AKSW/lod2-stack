@@ -25,3 +25,12 @@ Workplan for key changes:
    - create a new package (make lod2repository)
    - upload it with dput
 4. svn commit the changes
+
+
+-------------------------
+For the lod2 repositories:
+
+There are 3 versions
+* the original mini-dinstall version: lod2repository
+* the testing version (reprepro based): lod2testing-repository
+* the stable version (reprepro based): lod2stable-repository

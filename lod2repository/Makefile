@@ -6,6 +6,8 @@ clean:
 	@echo "--> clean directory"
 	rm -f trustdb.gpg secring.gpg *~
 	rm -rf lod2repository*
+	rm -rf lod2stable-repository*
+	rm -rf lod2testing-repository*
 	rm -f *.log
 
 list:
@@ -50,7 +52,31 @@ lod2repository-build:
 	cp pubring.gpg lod2repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
 	#tar cvjf lod2repository_$(LOD2REP_VERSION).orig.tar.bz2 lod2repository-$(LOD2REP_VERSION)
 	cp -R debian lod2repository-$(LOD2REP_VERSION)
-	cd lod2repository-$(LOD2REP_VERSION) && debuild
+	cd lod2repository-$(LOD2REP_VERSION) && debuild && cd ..
+	# testing
+	mkdir -p lod2testing-repository-$(LOD2REP_VERSION)
+	cp -R debian        lod2testing-repository-$(LOD2REP_VERSION)
+	cp lod2testing.list lod2testing-repository-$(LOD2REP_VERSION)
+	cp pubring.gpg      lod2testing-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
+	cp lod2precise*     lod2testing-repository-$(LOD2REP_VERSION)
+	cp install_testing  lod2testing-repository-$(LOD2REP_VERSION)/debian/install
+	sed -i -e "s/lod2repository/lod2testing-repository/g" lod2testing-repository-$(LOD2REP_VERSION)/debian/changelog
+	sed -i -e "s/lod2repository/lod2testing-repository/g" lod2testing-repository-$(LOD2REP_VERSION)/debian/control
+	cd lod2testing-repository-$(LOD2REP_VERSION) && debuild
+	# end testing
+	# stable
+	mkdir -p lod2stable-repository-$(LOD2REP_VERSION)
+	cp -R debian        lod2stable-repository-$(LOD2REP_VERSION)
+	cp lod2stable.list lod2stable-repository-$(LOD2REP_VERSION)
+	cp pubring.gpg      lod2stable-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
+	cp lod2precise*     lod2stable-repository-$(LOD2REP_VERSION)
+	cp install_stable  lod2stable-repository-$(LOD2REP_VERSION)/debian/install
+	sed -i -e "s/lod2repository/lod2stable-repository/g" lod2stable-repository-$(LOD2REP_VERSION)/debian/changelog
+	sed -i -e "s/lod2repository/lod2stable-repository/g" lod2stable-repository-$(LOD2REP_VERSION)/debian/control
+	cd lod2stable-repository-$(LOD2REP_VERSION) && debuild
+	# end stable
 	@echo ""
 	@echo "now test the package, then run \"dput lod2 lod2repository_xxx.changes\""
+	@echo "now test the package, then run \"dput lod2 lod2testing-repository_xxx.changes\""
+	@echo "now test the package, then run \"dput lod2 lod2stable-repository_xxx.changes\""
 
