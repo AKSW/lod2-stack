@@ -66,7 +66,7 @@ CREATE PROCEDURE dump_one_graph
   }
 ;
 
-dump_one_graph('http://localhost/lod2democonfiguration', '/var/lib/lod2demo/configuration.preUnload.nt');
+dump_one_graph('http://localhost/lod2democonfiguration', '/var/lib/lod2demo/DUMP/configuration.preUnload.nt');
 
 SPARQL drop silent graph <http://localhost/lod2democonfiguration>;
 SPARQL drop silent graph <http://lod2.eu/tools.owl>;

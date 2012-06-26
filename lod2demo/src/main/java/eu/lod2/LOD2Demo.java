@@ -36,6 +36,7 @@ import com.vaadin.ui.AbstractOrderedLayout.*;
 import com.vaadin.data.Property.*;
 import com.vaadin.ui.MenuBar.*;
 import com.vaadin.ui.Window.Notification;
+import com.vaadin.ui.themes.BaseTheme;
 import org.vaadin.googleanalytics.tracking.*;
 
 
@@ -93,7 +94,16 @@ public class LOD2Demo extends Application
             currentgraphlabel = new Label("no current graph selected");
             currentgraphlabel.addStyleName("currentgraphlabel");
 */
-            
+
+            Button homeb = new Button("home");
+            homeb.addListener(new ClickListener() {
+                public void buttonClick(ClickEvent event) {
+                    home();
+                }
+            });
+            homeb.setStyleName(BaseTheme.BUTTON_LINK);
+            homeb.addStyleName("currentgraphlabel");
+
             currentgraphlabel = state.cGraph;
             currentgraphlabel.addStyleName("currentgraphlabel");
             // Create an horizontal container
@@ -102,6 +112,8 @@ public class LOD2Demo extends Application
             //menubarContainer.addComponent(lod2logo);
             welcomeContainer.addComponent(welcomeSlagzin);
             welcomeContainer.setComponentAlignment(welcomeSlagzin, Alignment.TOP_LEFT);
+            welcomeContainer.addComponent(homeb);
+            welcomeContainer.setComponentAlignment(homeb, Alignment.TOP_RIGHT);
             welcomeContainer.addComponent(currentgraphlabel);
             welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
             welcomeContainer.setWidth("100%");
@@ -625,15 +637,14 @@ public class LOD2Demo extends Application
             menubarContainer.setWidth("100%");
             welcome.addComponent(menubarContainer);
             welcome.setHeight("110px");
-            //	    mainWindow.getContent().setSizeFull();
 
 
-            //mainWindow.addComponent(currentgraph);
             //************************************************************************
             // add workspace
             workspace = new VerticalLayout();
 
             mainContainer.addComponent(workspace);
+        /*
             workspace.setHeight("80%");
 
             HorizontalLayout introH = new HorizontalLayout();
@@ -664,6 +675,8 @@ public class LOD2Demo extends Application
             introVH.addComponent(fp7);
 
             workspace.addComponent(introH);
+            */
+            home();
 
 
 
@@ -689,6 +702,40 @@ public class LOD2Demo extends Application
 
         }
 
+    public void home() {
+        workspace.removeAllComponents();
+        workspace.setHeight("80%");
+
+        HorizontalLayout introH = new HorizontalLayout();
+        Embedded lod2cycle = new Embedded("", new ThemeResource("app_images/lod-lifecycle-small.png"));
+        lod2cycle.setMimeType("image/png");
+        introH.addComponent(lod2cycle);
+        introH.setComponentAlignment(lod2cycle, Alignment.MIDDLE_LEFT);
+
+        VerticalLayout introV =  new VerticalLayout();
+        introH.addComponent(introV);
+
+        Label introtextl =  new Label(introtext, Label.CONTENT_XHTML);
+        introV.addComponent(introtextl);
+        introtextl.setWidth("400px");
+
+        HorizontalLayout introVH =  new HorizontalLayout();
+        introV.addComponent(introVH);
+
+        Embedded euflag = new Embedded("", new ThemeResource("app_images/eu-flag.gif"));
+        euflag.setMimeType("image/gif");
+        introVH.addComponent(euflag);
+        euflag.addStyleName("eugif");
+        euflag.setHeight("50px");
+        Embedded fp7 = new Embedded("", new ThemeResource("app_images/fp7-gen-rgb_small.gif"));
+        fp7.setMimeType("image/gif");
+        fp7.addStyleName("eugif");
+        fp7.setHeight("50px");
+        introVH.addComponent(fp7);
+
+        workspace.addComponent(introH);
+
+    }
 
     public void currentGraphChange(TextChangeEvent event) {
 
@@ -805,6 +852,7 @@ public class LOD2Demo extends Application
                                 "contact the administrator!",
                         Notification.TYPE_ERROR_MESSAGE);
                 System.err.println(event.getThrowable().getMessage());
+                System.err.println(event.toString());
             }
         }
 

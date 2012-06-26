@@ -20,6 +20,21 @@ import java.net.URI;
 import java.io.*;
 import java.lang.*;
 
+import org.apache.http.*;
+import org.apache.http.client.*;
+import org.apache.http.impl.client.*;
+import org.apache.http.protocol.*;
+import org.apache.http.client.methods.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import org.codehaus.jackson.*;
+import org.codehaus.jackson.map.*;
+import org.codehaus.jackson.type.TypeReference;
+
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
@@ -59,108 +74,190 @@ import eu.lod2.LOD2DemoState;
 public class ConfigurationTab extends CustomComponent
 {
 
-    // reference to the global internal state
-    private LOD2DemoState state;
-    private Label currentgraph;
+		// reference to the global internal state
+		private LOD2DemoState state;
+		private Label currentgraph;
 
-    // fields
-    private ComboBox graphSelector;
+		// fields
+		private ComboBox graphSelector;
 
-    public ConfigurationTab(LOD2DemoState st, Label cg) {
+		public ConfigurationTab(LOD2DemoState st, Label cg) {
 
-        // The internal state and 
-        state = st;
-        currentgraph = cg;
+				// The internal state and 
+				state = st;
+				currentgraph = cg;
 
-        VerticalLayout configurationTab = new VerticalLayout();
+				VerticalLayout configurationTab = new VerticalLayout();
 
-        // Configuration form start
-        // Set all properties at once for the moment.
-        Form t2f = new Form();
-        t2f.setCaption("Configuration");
-
-
-        // the graph selector
-        // it displays all acceptable graphs in Virtuoso 
-        // XXX TODO show only those which are editable in OntoWiki
-        graphSelector = new ComboBox("Select default graph: ");
-        addCandidateGraphs(graphSelector);
-        if (cg.getValue() != null 
-                && cg.getValue() != "no current  graph selected"
-                && cg.getValue() != "null"
-           ) {
-            graphSelector.setValue(cg.getValue());
-            graphSelector.setColumns(cg.toString().length());
-        };
-        graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
-        t2f.getLayout().addComponent(graphSelector);
-
-        // initialize the footer area of the form
-        HorizontalLayout t2ffooterlayout = new HorizontalLayout();
-        t2f.setFooter(t2ffooterlayout);
-
-        Button commitButton = new Button("Set configuration", new ClickListener() {
-                public void buttonClick(ClickEvent event) {
-                storeConfiguration(event);
-                }
-                });
-        commitButton.setDescription("Commit the new configuration settings.");
-        t2f.getFooter().addComponent(commitButton);
-
-        configurationTab.addComponent(t2f);
-
-        // Configuration form end
+				// Configuration form start
+				// Set all properties at once for the moment.
+				Form t2f = new Form();
+				t2f.setCaption("Configuration");
 
 
-        // The composition root MUST be set
-        setCompositionRoot(configurationTab);
-    }
+				// the graph selector
+				// it displays all acceptable graphs in Virtuoso 
+				// XXX TODO show only those which are editable in OntoWiki
+				graphSelector = new ComboBox("Select default graph: ");
+				addCandidateGraphs(graphSelector);
+				if (cg.getValue() != null 
+								&& cg.getValue() != "no current  graph selected"
+								&& cg.getValue() != "null"
+				   ) {
+						graphSelector.setValue(cg.getValue());
+						graphSelector.setColumns(cg.toString().length());
+				};
+				graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
+				t2f.getLayout().addComponent(graphSelector);
 
-    private void storeConfiguration(ClickEvent event) {
-        state.setCurrentGraph((String) graphSelector.getValue());
-        currentgraph.setValue((String) graphSelector.getValue());
+				// initialize the footer area of the form
+				HorizontalLayout t2ffooterlayout = new HorizontalLayout();
+				t2f.setFooter(t2ffooterlayout);
 
-    };
+				Button commitButton = new Button("Set configuration", new ClickListener() {
+								public void buttonClick(ClickEvent event) {
+								storeConfiguration(event);
+								}
+								});
+				commitButton.setDescription("Commit the new configuration settings.");
+				t2f.getFooter().addComponent(commitButton);
 
-    // propagate the information of one tab to another.
-    public void setDefaults() {
-        graphSelector.setValue(state.getCurrentGraph());
-    };
+				configurationTab.addComponent(t2f);
 
-    public void addCandidateGraphs(AbstractSelect selection) {
-        // SELECT ID_TO_IRI(REC_GRAPH_IID) AS GRAPH FROM DB.DBA.RDF_EXPLICITLY_CREATED_GRAPH
-
-        try {
-            RepositoryConnection con = state.getRdfStore().getConnection();
-
-            String query = "SELECT  DISTINCT ?g { GRAPH ?g { ?s  ?p  ?o }. OPTIONAL {?g <http://lod2.eu/lod2demo/SystemGraphFor> ?sys.}. FILTER (!bound(?sys))} limit 100";
-            TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-            TupleQueryResult result = tupleQuery.evaluate();
+				// Configuration form end
 
 
-            while (result.hasNext()) {
-                BindingSet bindingSet = result.next();
-                Value valueOfG = bindingSet.getValue("g");
-                // exclude some value to be candidates
-                if (valueOfG.stringValue() != "null") {
-                    selection.addItem(valueOfG.stringValue());
-                    // shortcut
-                    String cgquery = "create silent GRAPH <" + valueOfG.stringValue() + ">";
-                    TupleQuery cgtupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, cgquery);
-                    TupleQueryResult cgresult = tupleQuery.evaluate();
-                };
-            };
+				// The composition root MUST be set
+				setCompositionRoot(configurationTab);
+		}
 
-        } catch (RepositoryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MalformedQueryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (QueryEvaluationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    };
+		private void storeConfiguration(ClickEvent event) {
+				state.setCurrentGraph((String) graphSelector.getValue());
+				currentgraph.setValue((String) graphSelector.getValue());
+
+		};
+
+		// propagate the information of one tab to another.
+		public void setDefaults() {
+				graphSelector.setValue(state.getCurrentGraph());
+		};
+
+		// obsolete implementation
+		// this one is a pure SPARQL implementation
+		// It has the following drawbacks: no detection of empty graphs, calculation in the size of the DB (performance decrease when more data is added.)
+		public void addCandidateGraphs_old(AbstractSelect selection) {
+				// SELECT ID_TO_IRI(REC_GRAPH_IID) AS GRAPH FROM DB.DBA.RDF_EXPLICITLY_CREATED_GRAPH
+
+				try {
+						RepositoryConnection con = state.getRdfStore().getConnection();
+
+						String query = "SELECT  DISTINCT ?g { GRAPH ?g { ?s  ?p  ?o }. OPTIONAL {?g <http://lod2.eu/lod2demo/SystemGraphFor> ?sys.}. FILTER (!bound(?sys))} limit 100";
+						TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+						TupleQueryResult result = tupleQuery.evaluate();
+
+
+						while (result.hasNext()) {
+								BindingSet bindingSet = result.next();
+								Value valueOfG = bindingSet.getValue("g");
+								// exclude some value to be candidates
+								if (valueOfG.stringValue() != "null") {
+										selection.addItem(valueOfG.stringValue());
+										// shortcut
+										String cgquery = "create silent GRAPH <" + valueOfG.stringValue() + ">";
+										TupleQuery cgtupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, cgquery);
+										TupleQueryResult cgresult = tupleQuery.evaluate();
+								};
+						};
+
+				} catch (RepositoryException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				} catch (MalformedQueryException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				} catch (QueryEvaluationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				}
+		};
+
+	  
+    /*
+     * implementation of the candidate graphs using the LOD2 web api
+     */
+		public void addCandidateGraphs(AbstractSelect selection) {
+
+				List<String> graphs = null;
+				try {
+						graphs = request_graphs();
+				} catch (Exception e) {
+						System.err.println(e.getMessage());
+				};
+				Iterator<String> giterator = graphs.iterator();
+				while (giterator.hasNext()) {
+						selection.addItem(giterator.next());
+				};
+
+		};
+
+		// get the uri's for a list of abbreviations
+		public static List<String> request_graphs() throws Exception {
+
+				List<String> result = null;
+
+				HttpClient httpclient = new DefaultHttpClient();
+				try {
+
+						String prefixurl = "http://localhost:8080/lod2webapi/graphs";
+
+						HttpGet httpget = new HttpGet(prefixurl);
+						httpget.addHeader("accept", "application/json");
+
+
+						ResponseHandler<String> responseHandler = new BasicResponseHandler();
+						String responseBody = httpclient.execute(httpget, responseHandler);
+
+						result = parse_graph_api_result(responseBody);
+
+
+				} finally {
+						// When HttpClient instance is no longer needed,
+						// shut down the connection manager to ensure
+						// immediate deallocation of all system resources
+						httpclient.getConnectionManager().shutdown();
+				}
+
+				return result;
+		} 
+
+		private static List<String> parse_graph_api_result(String result) throws Exception {
+
+				ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+				TypeReference<HashMap<String,Object>> typeRef
+						= new TypeReference<
+						HashMap<String,Object>
+						>() {}; 
+				HashMap<String,Object> userData = mapper.readValue(result, typeRef);
+
+				List<String> graphs = null;
+				if (userData.containsKey("graphs")) {
+						Object ographs = userData.get("graphs");
+						try {
+								HashMap<String, Object> oographs = (HashMap<String, Object>) ographs;
+								if (oographs.containsKey("resultList")) {
+										Object graphsList = oographs.get("resultList");
+										graphs = (List<String>) graphsList;
+								};
+						} catch (Exception e) {
+								System.err.println(e.getMessage());
+						};
+				};
+
+				return graphs;
+
+		};
+
+
+
 };
 

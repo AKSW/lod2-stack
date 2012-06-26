@@ -8,7 +8,8 @@ Homepage: http://lod2.eu
 
 Package: lod2demo
 Architecture: all
-Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki-virtuoso, virtuoso-opensource, virtuoso-vad-isparql, d2r-cordis, silk, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut
+#Depends: tomcat6, openjdk-6-jre | sun-java6-jre, ontowiki-virtuoso, virtuoso-opensource, virtuoso-vad-isparql, d2r-cordis, silk, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut
+Depends: tomcat6
 Description: The LOD2 demonstrator application
  This package is a web application which allows to explore 
  the different components in the LOD2 stack. It also serves as

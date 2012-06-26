@@ -65,9 +65,9 @@ public class ELoadRDFFile extends CustomComponent
     // reference to the global internal state
     private LOD2DemoState state;
 
-    private String virtuoso_username;
-    private String virtuoso_password; 
-    private String virtuoso_service; 
+    private String virtuoso_username = "";
+    private String virtuoso_password = "";
+    private String virtuoso_service  = "";
 
     public ELoadRDFFile(LOD2DemoState st) {
 

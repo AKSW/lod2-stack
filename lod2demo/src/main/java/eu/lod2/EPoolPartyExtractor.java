@@ -44,7 +44,7 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
-import eu.lod2.ExportSelector2;
+import eu.lod2.ExportSelector3;
 
 /**
  * The extract from a natural language text (english) the relevant
@@ -65,7 +65,7 @@ implements TextChangeListener
     private String textToAnnotate;
     private String annotatedText;
 
-    private ExportSelector2 exportGraph;
+    private ExportSelector3 exportGraph;
     private TextField ppProjectId;
     private ComboBox textLanguage;
 
@@ -88,7 +88,7 @@ implements TextChangeListener
 
         Form t2f = new Form();
 
-        exportGraph = new ExportSelector2(state, true);
+        exportGraph = new ExportSelector3(state, true);
         t2f.getLayout().addComponent(exportGraph);
 
         ppProjectId = new TextField("PoolParty project Id:");

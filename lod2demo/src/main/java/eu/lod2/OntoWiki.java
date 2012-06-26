@@ -138,7 +138,7 @@ public class OntoWiki extends CustomComponent
 
     private void activateCurrentGraph() {
 
-	if ( ! state.getCurrentGraph().equals("") ) {
+	if ( ! state.getCurrentGraph().equals("")) {
 
 	try {
 		RepositoryConnection con = state.getRdfStore().getConnection();
