@@ -37,6 +37,8 @@ import com.vaadin.data.*;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.*;
 
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.openrdf.model.*;
 import org.openrdf.model.Value;
 import org.openrdf.query.BindingSet;
@@ -66,10 +68,7 @@ import org.apache.http.impl.client.*;
 import org.apache.http.protocol.*;
 import org.apache.http.client.methods.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 
 import org.codehaus.jackson.*;
@@ -82,6 +81,7 @@ import org.codehaus.jackson.type.TypeReference;
  * Export Selector.
  * A common way to select and set the output graph
  * The second version has as additional feature to show the amount of triples (at time of selection)
+ * The Third version is based on the lod2webapi
  * 
  */
 //@SuppressWarnings("serial")
@@ -182,7 +182,7 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
             String prefixurl = "http://localhost:8080/lod2webapi/graphs";
 
             HttpGet httpget = new HttpGet(prefixurl);
-	    httpget.addHeader("accept", "application/json");
+	        httpget.addHeader("accept", "application/json");
  
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -279,23 +279,37 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
 
     private void activateGraph(String newGraph) {
 
+        List<String> result = null;
+        HttpClient httpclient = new DefaultHttpClient();
         try {
-            RepositoryConnection con = state.getRdfStore().getConnection();
 
-            // initialize the hostname and portnumber
-            String query = "create silent graph <" + newGraph + ">"; 
-            TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-            TupleQueryResult result = tupleQuery.evaluate();
+            String prefixurl = "http://localhost:8080/lod2webapi/register_graph";
 
-        } catch (RepositoryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MalformedQueryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (QueryEvaluationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            HttpPost httppost = new HttpPost(prefixurl);
+            httppost.addHeader("accept", "application/json");
+
+            List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+            formparams.add(new BasicNameValuePair("graph", newGraph));
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
+            httppost.setEntity(entity);
+
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            String responseBody = httpclient.execute(httppost, responseHandler);
+
+            result = parse_graph_api_result(responseBody);
+
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            httpclient.getConnectionManager().shutdown();
         }
 
     };
@@ -318,33 +332,19 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
     };
 
     // count the triples in the graph
-    private int countGraph(String newGraph) {
+    private long countGraph(String newGraph) {
 
-        int count = 0;
+        long count = 0;
         if (!newGraph.equals("")) {
             try {
                 RepositoryConnection con = state.getRdfStore().getConnection();
 
-                // initialize the hostname and portnumber
-                String query = "select count(*) as ?c from <" + newGraph + "> where {?s ?p ?o}"; 
-                TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-                TupleQueryResult result = tupleQuery.evaluate();
-
-                while (result.hasNext()) {
-                    BindingSet bindingSet = result.next();
-                    Value valueOfC = bindingSet.getValue("c");
-                    LiteralImpl valueOfCLit = (LiteralImpl) valueOfC;
-                    count = valueOfCLit.intValue();
-                };
+                ValueFactory f = state.getRdfStore().getValueFactory();
+                org.openrdf.model.URI graphcontext = f.createURI(newGraph);
+                count = con.size(graphcontext);
 
 
             } catch (RepositoryException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (MalformedQueryException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (QueryEvaluationException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -357,12 +357,12 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
     public void valueChange(Property.ValueChangeEvent event) {
         // The event.getProperty() returns the Item ID (IID) 
         // of the currently selected item in the component.
-        int count = countGraph(this.getExportGraph());
+        long count = countGraph(this.getExportGraph());
         status.setValue(" contains " + count + " triples");
         if (state.getCurrentGraph() != null && state.getCurrentGraph().equals("")) {
-               state.setCurrentGraph(event.getProperty().toString());
+               state.setCurrentGraph(this.getExportGraph());
         } else if (updateCurrentGraph) {
-               state.setCurrentGraph(event.getProperty().toString());
+               state.setCurrentGraph(this.getExportGraph());
         };
     };
 
