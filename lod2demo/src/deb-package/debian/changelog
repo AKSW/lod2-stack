@@ -1,3 +1,11 @@
+lod2demo (1.1.31) lod2; urgency=low
+
+  * improved debian installation
+  * improved visualisation
+  * using the lod2webapi
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 23 Jun 2012 02:06:38 +0200
+
 lod2demo (1.1.30) lod2; urgency=low
 
   * fix virtuoso page configuration
