@@ -4,17 +4,16 @@ This work was packaged for Debian by:
 
 It was downloaded from:
 
-    <url://example.com>
+    http:http://code.google.com/p/lod2-stack/
 
 Upstream Author(s):
 
-    <put author's name and email here>
-    <likewise for another author>
+    Bert Van Nuffelen, Bert.Van.Nuffelen@tenforce.com
 
 Copyright:
 
-    <Copyright (C) YYYY Firstname Lastname>
-    <likewise for another author>
+    Bert Van Nuffelen, Bert.Van.Nuffelen@tenforce.com
+
 
 License:
 
@@ -30,21 +29,16 @@ License:
    See the License for the specific language governing permissions and
    limitations under the License.
 
-On Debian systems, the complete text of the Apache version 2.0 license
-can be found in "/usr/share/common-licenses/Apache-2.0".
+   On Debian systems, the complete text of the Apache version 2.0 license
+   can be found in "/usr/share/common-licenses/Apache-2.0".
 
 The Debian packaging is:
 
     Copyright (C) 2011 Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
 
-# Please chose a license for your packaging work. If the program you package
-# uses a mainstream license, using the same license is the safest choice.
-# Please avoid to pick license terms that are more restrictive than the
-# packaged work, as it may make Debian's contributions unacceptable upstream.
-# If you just want it to be GPL version 3, leave the following lines in.
+   The package is licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-and is licensed under the GPL version 3,
-see "/usr/share/common-licenses/GPL-3".
+       http://www.apache.org/licenses/LICENSE-2.0
 
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
