@@ -97,7 +97,6 @@ public class ConfigurationTab extends CustomComponent
 
 				// the graph selector
 				// it displays all acceptable graphs in Virtuoso 
-				// XXX TODO show only those which are editable in OntoWiki
 				graphSelector = new ComboBox("Select default graph: ");
 				addCandidateGraphs(graphSelector);
 				if (cg.getValue() != null 
@@ -145,6 +144,7 @@ public class ConfigurationTab extends CustomComponent
 		// obsolete implementation
 		// this one is a pure SPARQL implementation
 		// It has the following drawbacks: no detection of empty graphs, calculation in the size of the DB (performance decrease when more data is added.)
+    /*
 		public void addCandidateGraphs_old(AbstractSelect selection) {
 				// SELECT ID_TO_IRI(REC_GRAPH_IID) AS GRAPH FROM DB.DBA.RDF_EXPLICITLY_CREATED_GRAPH
 
@@ -181,6 +181,7 @@ public class ConfigurationTab extends CustomComponent
 				}
 		};
 
+    */
 	  
     /*
      * implementation of the candidate graphs using the LOD2 web api

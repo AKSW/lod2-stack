@@ -586,7 +586,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem configuration = menubar.addItem("Configuration", null, null);
 
             // sub menu's 
-            MenuBar.MenuItem me1  = extraction.addItem("Upload RDF file", null, me1c);
+            MenuBar.MenuItem me1  = extraction.addItem("Upload RDF file or RDF from URL", null, me1c);
             //	    MenuBar.MenuItem me1b = extraction.addItem("Import RDF data from URL", null, me8c);
             MenuBar.MenuItem me2  = extraction.addItem("Load RDF data from CKAN", null, me7c);
             MenuBar.MenuItem me3  = extraction.addItem("Extract RDF from XML", null, null);
@@ -749,7 +749,7 @@ public class LOD2Demo extends Application
     };
 
     private String introtext = 
-        "<p>This is Version 1.0 of the LOD2 Stack, which comprises a number of tools " + 
+        "<p>This is Version 1.1 of the LOD2 Stack, which comprises a number of tools " +
         "for managing the life-cycle of Linked Data. The life-cycle comprises in " + 
         "particular the stages" + 
         "</p><p>" + 

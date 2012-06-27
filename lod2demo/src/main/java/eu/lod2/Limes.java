@@ -66,8 +66,8 @@ public class Limes extends CustomComponent
     private LOD2DemoState state;
 
     // fields
-    private ExportSelector2 sourceGraph;
-    private ExportSelector2 targetGraph;
+    private ExportSelector3 sourceGraph;
+    private ExportSelector3 targetGraph;
     private Link colanutLink;
     private Embedded colanutbrowser;
 
@@ -85,10 +85,10 @@ public class Limes extends CustomComponent
         t2f.setCaption("Configuration");
 
 
-        sourceGraph = new ExportSelector2(state, false, "Select graph with Source Limes data:");
+        sourceGraph = new ExportSelector3(state, false, "Select graph with Source Limes data:");
         t2f.getLayout().addComponent(sourceGraph);
 
-        targetGraph = new ExportSelector2(state, false, "Select graph with Target Limes data:");
+        targetGraph = new ExportSelector3(state, false, "Select graph with Target Limes data:");
         t2f.getLayout().addComponent(targetGraph);
         // initialize the footer area of the form
         HorizontalLayout t2ffooterlayout = new HorizontalLayout();

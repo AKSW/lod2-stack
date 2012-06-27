@@ -68,7 +68,7 @@ public class GeoSpatial extends CustomComponent
 	private String service  = "http://localhost/ssb";
 	private String username = "" ;
 	private String password = "";
-	private ExportSelector2 exportGraph;
+	private ExportSelector3 exportGraph;
 	private Embedded geobrowser;
 
 	public GeoSpatial(LOD2DemoState st) {
@@ -87,7 +87,7 @@ public class GeoSpatial extends CustomComponent
 		t2f.setCaption("Configuration");
 
 
-		exportGraph = new ExportSelector2(state, true, "Select graph with geo data:");
+		exportGraph = new ExportSelector3(state, true, "Select graph with geo data:");
 		t2f.getLayout().addComponent(exportGraph);
 
 		// initialize the footer area of the form
