@@ -57,6 +57,10 @@ public class LOD2DemoState
     // the upload Directory for the application
     private String uploadDir = "/tmp/uploads";
 
+    // for googleAnalytics
+    public String googleAnalyticsID = "";
+    public String googleAnalyticsDomain = "";
+
     public Repository rdfStore;
 
     public Boolean InitStatus = false;
@@ -167,6 +171,9 @@ public class LOD2DemoState
             jDBCuser             = properties.getProperty("JDBCuser");
             jDBCpassword         = properties.getProperty("JDBCpassword");
             uploadDir            = properties.getProperty("uploadDirectory");
+            googleAnalyticsID    = properties.getProperty("googleAnalyticsID", "");
+            googleAnalyticsDomain = properties.getProperty("googleAnalyticsDomain", "");
+
 
             //		System.print("$"+jDBCuser+"$");
             //		System.print("$"+jDBCpassword+"$");

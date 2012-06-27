@@ -396,20 +396,15 @@ public class LOD2Demo extends Application
             MenuBar.Command mq5c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-	    	        resetSize(workspace);
-		            workspace.setSizeUndefined();
                     GeoSpatial content = new GeoSpatial(state);
                     workspace.addComponent(content);
-                    // stretch the content to the full workspace area
-	    	        //printSize((AbstractComponentContainer) mainWindow.getContent());
 	    	        resetSizeFull(workspace);
+                    welcome.setHeight("110px");
 		            workspace.setSizeFull();
 		            workspace.setHeight("500px");
 		            workspace.setExpandRatio(content,1.0f);
-		            mainContainer.setSizeFull();
-                    welcome.setHeight("110px");
-	    	    //printSize((AbstractComponentContainer) mainWindow.getContent());
-                }  
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                }
             };
 
 
@@ -681,9 +676,12 @@ public class LOD2Demo extends Application
 
 
             // Create a tracker for the demo.lod2.eu domain.
-            //GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
-            //mainWindow.addComponent(tracker);
-            //tracker.trackPageview("/lod2demo");
+            if (!state.googleAnalyticsID.equals("")) {
+//            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
+            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker(state.googleAnalyticsID, state.googleAnalyticsDomain);
+            mainWindow.addComponent(tracker);
+            tracker.trackPageview("/lod2demo");
+            };
 
 
 
@@ -794,16 +792,13 @@ public class LOD2Demo extends Application
 
     private void resetSizeFull(AbstractComponentContainer comp) {
 
-	    System.err.println("Fullsizing");
-		
 	    Iterator<Component> it = comp.getComponentIterator();
 	    while (it.hasNext()) {
 			Component c = it.next();
 			if (c instanceof AbstractComponent) { 
 				AbstractComponent ac = (AbstractComponent) c;
 				ac.setSizeFull();
-				System.err.println("Size:"+ac.getHeight());
-				if (ac.getHeight() < 0) { 
+				if (ac.getHeight() < 0) {
 					ac.setHeight("100%");
 				};
 				};
