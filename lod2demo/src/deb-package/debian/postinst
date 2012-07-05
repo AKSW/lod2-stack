@@ -94,17 +94,22 @@ case "$1" in
 	sleep 1;
 
 	# if it is not running try again infinitely
-	until running ; do
+	attempts=0;
+	until running || [ "$attempts" -gt 5 ] ; do
 		sudo service ${VIRTUOSOVERSION} start ;
 		sleep 2;
+		attempts=$(($attempts+1));
 	done;
 
 	# wait with proceeding until isql-vt can properly connect and answer a query.
-	until connect ; do
+	attempts=0;
+	until connect || [ "$attempts" -gt 5 ] ; do
 		sudo service ${VIRTUOSOVERSION} start ;
 		wait ;
 		sleep 1;
+		attempts=$(($attempts+1));
         done;
+
 		
 	if running; then
 		sudo isql-vt 1111 dba dba /var/lib/lod2demo/load.sql;

@@ -1,3 +1,9 @@
+lod2demo (1.1.32) lod2; urgency=low
+
+  * protect from infinite loops if virtuso is not installed.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 03 Jul 2012 04:04:59 +0200
+
 lod2demo (1.1.31) lod2; urgency=low
 
   * improved debian installation
