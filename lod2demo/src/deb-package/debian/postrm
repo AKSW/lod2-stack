@@ -21,6 +21,8 @@ set -e
 case "$1" in
     purge|remove|abort-install|disappear)
 
+	rm -rf /var/lib/lod2demo
+
     ;;	
 
     upgrade|failed-upgrade|abort-upgrade)

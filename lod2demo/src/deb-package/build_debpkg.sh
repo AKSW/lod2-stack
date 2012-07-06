@@ -26,6 +26,8 @@ cp -r ../../src/main/configuration/lod2demo.conf ../../target/deb-pkg/
 cp -r debian ../../target/deb-pkg
 cp    Makefile ../../target/deb-pkg
 cp    test.sql ../../target/deb-pkg
+cp    create_user.sql ../../target/deb-pkg
+cp    remove_user.sql ../../target/deb-pkg
 
 # Build the package
 cd ../../target/deb-pkg

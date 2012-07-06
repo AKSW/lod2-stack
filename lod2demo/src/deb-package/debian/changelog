@@ -1,3 +1,9 @@
+lod2demo (1.1.33) lod2; urgency=low
+
+  * make the lod2demo exploit the connection potential of 6.1.5
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 03 Jul 2012 13:07:00 +0200
+
 lod2demo (1.1.32) lod2; urgency=low
 
   * protect from infinite loops if virtuso is not installed.

@@ -50,7 +50,16 @@ running() {
 
 
 case "$1" in
-    remove|upgrade|deconfigure)
+    remove)
+	if running; then
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/remove_user.sql;
+        else 
+		exit 1;
+	fi
+
+    ;;
+
+    upgrade|deconfigure)
 
 
 	date=`date +"%d%m%Y-%H%m"`
@@ -58,7 +67,7 @@ case "$1" in
 	sed -i "s/DUMP/dump_$date/" /var/lib/lod2demo/unload.sql;
 
 	if running; then
-		sudo isql-vt 1111 dba dba /var/lib/lod2demo/unload.sql;
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/unload.sql;
         else 
 		exit 1;
 	fi

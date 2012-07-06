@@ -50,7 +50,7 @@ running() {
 
 # ensure we can connect properly to virtuoso
 connect() {
-    c=`isql-vt 1111 dba dba /var/lib/lod2demo/test.sql`;
+    c=`env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/test.sql`;
     if [ -z "$c" ] ; then
 	return 1;
     else 
@@ -63,9 +63,9 @@ case "$1" in
     configure)
 
 	   # restart apache
-	sudo service apache2 stop
+	service apache2 stop
 	wait
-	sudo service apache2 start
+	service apache2 start
 	wait
 
 
@@ -75,7 +75,7 @@ case "$1" in
 	virtuosoini="$virtetc/virtuoso.ini"
 
 	# stop the server
-	sudo service ${VIRTUOSOVERSION} stop
+	service ${VIRTUOSOVERSION} stop
 
 	wait
 
@@ -85,10 +85,11 @@ case "$1" in
 	sed 's/^\(DirsAllowed.*\)\(, \/var\/lib\/lod2demo\)\(.*\)/\1\3/' -i $virtuosoini
 	sed 's/^\(DirsAllowed.*\)/\1, \/var\/lib\/lod2demo/' -i $virtuosoini
 
+
 	wait 
 
 	# restart the server
-	sudo service ${VIRTUOSOVERSION} start
+	service ${VIRTUOSOVERSION} start
 	
 	wait
 	sleep 1;
@@ -96,7 +97,7 @@ case "$1" in
 	# if it is not running try again infinitely
 	attempts=0;
 	until running || [ "$attempts" -gt 5 ] ; do
-		sudo service ${VIRTUOSOVERSION} start ;
+		service ${VIRTUOSOVERSION} start ;
 		sleep 2;
 		attempts=$(($attempts+1));
 	done;
@@ -104,23 +105,32 @@ case "$1" in
 	# wait with proceeding until isql-vt can properly connect and answer a query.
 	attempts=0;
 	until connect || [ "$attempts" -gt 5 ] ; do
-		sudo service ${VIRTUOSOVERSION} start ;
+		service ${VIRTUOSOVERSION} start ;
 		wait ;
 		sleep 1;
 		attempts=$(($attempts+1));
         done;
 
+	mypwd=`date  +"%H.L.%M.O.%S.D2"`
+	subst="s/PWDLOD2/$mypwd/"
+	sed -e $subst -i /var/lib/lod2demo/create_user.sql
+	
 		
 	if running; then
-		sudo isql-vt 1111 dba dba /var/lib/lod2demo/load.sql;
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user.sql;
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/load.sql;
+		sed -e $subst -i /etc/lod2demo/lod2demo.conf
+		chown tomcat6:tomcat6 /etc/lod2demo/lod2demo.conf
+		chmod 640 /etc/lod2demo/lod2demo.conf
 		wait ;
         else 
 		exit 1;
 	fi
 
 	# create a upload directory
-	test -d /tmp/uploads || sudo mkdir /tmp/uploads
-	sudo chmod 777 /tmp/uploads 
+	test -d /tmp/uploads || mkdir /tmp/uploads
+	chown tomcat6:tomcat6 /tmp/uploads 
+	chmod 741 /tmp/uploads 
 
     ;;
     
