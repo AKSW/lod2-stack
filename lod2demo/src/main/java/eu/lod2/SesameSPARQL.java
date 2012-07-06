@@ -76,7 +76,7 @@ public class SesameSPARQL extends CustomComponent
 		VerticalLayout queryingTab = new VerticalLayout();
 
 		query = new TextArea("SPARQL Query");
-
+        query.setDebugId(this.getClass().getSimpleName()+"_query");
 		// configure & add to layout
 		query.setValue("Select * from <" + state.getCurrentGraph() + "> where {?s ?p ?o} limit 100");
 		query.setImmediate(false);
@@ -93,6 +93,7 @@ public class SesameSPARQL extends CustomComponent
 				extractionQuery(event);
 			}
 		});
+        okbutton.setDebugId(this.getClass().getSimpleName()+"_okbutton");
 		okbutton.setDescription("View the result from the SPARQL query");
 		//								okbutton.addListener(this); // react to tclicks
 		
@@ -153,6 +154,7 @@ public class SesameSPARQL extends CustomComponent
 					// do something interesting with the values here...
 				}
 				TextArea resultArea = new TextArea("", statements);
+                resultArea.setDebugId(this.getClass().getSimpleName()+"_resultArea");
 				resultArea.setReadOnly(true);
 				resultArea.setColumns(0);
 				resultArea.setRows(30);

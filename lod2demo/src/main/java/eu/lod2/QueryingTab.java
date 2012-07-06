@@ -81,9 +81,11 @@ public class QueryingTab extends CustomComponent
 		VerticalLayout queryingTab = new VerticalLayout();
 
 		Form t2f = new Form();
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
 		t2f.setCaption("Information Source Querying");
 
 		graphname = new TextField("repository graph name:");
+        graphname.setDebugId(this.getClass().getSimpleName()+"_graphname");
 /*		if (state == null | state.getCurrentGraph() == null | state.getCurrentGraph().equals("")) {
 			graphname.setValue("");
 		} else {
@@ -108,6 +110,7 @@ public class QueryingTab extends CustomComponent
 				extractionQuery(event);
 			}
 		});
+        okbutton.setDebugId(this.getClass().getSimpleName()+"_okbutton");
 		okbutton.setDescription("View the result from the SPARQL query: 'select * from <graphname> where {?s ?p ?o.} LIMIT 100'");
 		//								okbutton.addListener(this); // react to tclicks
 		
@@ -195,6 +198,7 @@ public class QueryingTab extends CustomComponent
 					// do something interesting with the values here...
 				}
 				TextArea resultArea = new TextArea("", statements);
+                resultArea.setDebugId(this.getClass().getSimpleName()+"_resultArea");
 				resultArea.setReadOnly(true);
 				resultArea.setColumns(0);
 				resultArea.setRows(30);

@@ -85,9 +85,11 @@ public class SameAsLinking extends CustomComponent
                 panel.addComponent(description);
 
                 exportGraph = new ExportSelector(state);
+                exportGraph.setDebugId(this.getClass().getSimpleName()+"_exportGraph");
                 panel.addComponent(exportGraph);
 
-	        uriSelector = new ComboBox("Select URI to link: ");
+	            uriSelector = new ComboBox("Select URI to link: ");
+                uriSelector.setDebugId(this.getClass().getSimpleName()+"_uriSelector");
                 uriSelector.setDescription("The selector contains uri's only if a current graph has a value.");
                 panel.addComponent(uriSelector);
 
@@ -96,6 +98,7 @@ public class SameAsLinking extends CustomComponent
                         doSameAsLinking();
                     };
                 });
+                sameAsLinking.setDebugId(this.getClass().getSimpleName()+"_sameAsLinking");
                 sameAsLinking.setEnabled(false);
                 sameAsLinking.setDescription("The operation is active only if a current graph has a value.");
                 panel.addComponent(sameAsLinking);

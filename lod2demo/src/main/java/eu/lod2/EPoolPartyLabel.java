@@ -74,21 +74,25 @@ implements TextChangeListener
 
 
         Form t2f = new Form();
-
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
         exportGraph = new ExportSelector3(state);
+        exportGraph.setDebugId(this.getClass().getSimpleName()+"_exportGraph");
         t2f.getLayout().addComponent(exportGraph);
 
         ppProjectId = new TextField("PoolParty project Id:");
+        ppProjectId.setDebugId(this.getClass().getSimpleName()+"_ppProjectId");
         ppProjectId.setDescription("The unique identifier of the PoolParty project to use for the extraction (usually a UUID like d06bd0f8-03e4-45e0-8683-fed428fca242) ");
         t2f.getLayout().addComponent(ppProjectId);
 
         textLanguage = new ComboBox("Language of the text:");
+        textLanguage.setDebugId(this.getClass().getSimpleName()+"_textLanguage");
         textLanguage.setDescription("This is the language of the text. Language can be en (english) or de (german).");
         textLanguage.addItem("en");
         textLanguage.addItem("de");
         t2f.getLayout().addComponent(textLanguage);
 
         TextArea textToAnnotateField = new TextArea("text:");
+        textToAnnotateField.setDebugId(this.getClass().getSimpleName()+"_textToAnnotateField");
         textToAnnotateField.setImmediate(false);
         textToAnnotateField.addListener(this);
         textToAnnotateField.setWidth("100%");
@@ -104,6 +108,7 @@ implements TextChangeListener
                 annotateText(event);
                 }
                 });
+        annotateButton.setDebugId(this.getClass().getSimpleName()+"_annotateButton");
         annotateButton.setDescription("Extract the relevant concepts w.r.t. the controlled vocabulary in PoolParty");
         annotateButton.setEnabled(false);
 

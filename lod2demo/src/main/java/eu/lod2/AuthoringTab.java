@@ -81,6 +81,7 @@ public class AuthoringTab extends CustomComponent
 	// Activate a graph in Virtuoso be editable in OntoWiki.
 	// Remark: the accessrightsnull in Virtuoso have be set correct [check this]
         Form activateform = new Form();
+        activateform.setDebugId(this.getClass().getSimpleName()+"_activateform");
         activateform.setCaption("Activate graph in OntoWiki");
 
 	// the localhost ip-address
@@ -93,8 +94,10 @@ public class AuthoringTab extends CustomComponent
                 activateGraph(event);
             }
         });
+        activateButton.setDebugId(this.getClass().getSimpleName()+"_activateButton");
         activateButton.setDescription("Activate the graph in Virtuoso to become editable in OntoWiki.");
         activateform.getFooter().addComponent(activateButton);
+        
 
 
         authoringTab.addComponent(activateform);
@@ -106,6 +109,7 @@ public class AuthoringTab extends CustomComponent
         t2f.setCaption("Edit resource content");
 
         TextField resToEdit = new TextField("Resource:");
+        resToEdit.setDebugId(this.getClass().getSimpleName()+"_resToEdit");
         resToEdit.setImmediate(false);
         resToEdit.addListener(this);
         resToEdit.setColumns(50);

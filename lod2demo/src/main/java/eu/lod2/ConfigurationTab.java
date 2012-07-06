@@ -92,12 +92,14 @@ public class ConfigurationTab extends CustomComponent
 				// Configuration form start
 				// Set all properties at once for the moment.
 				Form t2f = new Form();
+                t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
 				t2f.setCaption("Configuration");
 
 
 				// the graph selector
 				// it displays all acceptable graphs in Virtuoso 
 				graphSelector = new ComboBox("Select default graph: ");
+                graphSelector.setDebugId(this.getClass().getSimpleName()+"_graphSelector");
 				addCandidateGraphs(graphSelector);
 				if (cg.getValue() != null 
 								&& cg.getValue() != "no current  graph selected"
@@ -118,6 +120,7 @@ public class ConfigurationTab extends CustomComponent
 								storeConfiguration(event);
 								}
 								});
+                commitButton.setDebugId(this.getClass().getSimpleName()+"_commitButton");
 				commitButton.setDescription("Commit the new configuration settings.");
 				t2f.getFooter().addComponent(commitButton);
 

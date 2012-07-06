@@ -52,9 +52,11 @@ public class EURL extends CustomComponent {
         panel.addComponent(description);
 
         exportGraph = new ExportSelector(state);
+        exportGraph.setDebugId(this.getClass().getSimpleName()+"_exportGraph");
         panel.addComponent(exportGraph);
 
         uriSelector = new TextField("Enter URL to extract from: ");
+        uriSelector.setDebugId(this.getClass().getSimpleName()+"_uriSelector");
         uriSelector.setDescription("From this URL the RDF will be extracted and imported in the above selected graph.");
         panel.addComponent(uriSelector);
 
@@ -65,6 +67,7 @@ public class EURL extends CustomComponent {
 
             ;
         });
+        importURL.setDebugId(this.getClass().getSimpleName()+"_importURL");
         importURL.setEnabled(true);
         importURL.setDescription("The operation is active only if the exported graph has been selected.");
         panel.addComponent(importURL);

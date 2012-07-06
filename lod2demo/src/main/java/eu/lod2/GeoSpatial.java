@@ -84,10 +84,12 @@ public class GeoSpatial extends CustomComponent
 		// Configuration form start
 		// Set all properties at once for the moment.
 		Form t2f = new Form();
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
 		t2f.setCaption("Configuration");
 
 
 		exportGraph = new ExportSelector3(state, true, "Select graph with geo data:");
+        exportGraph.setDebugId(this.getClass().getSimpleName()+"_exportGraph");
 		t2f.getLayout().addComponent(exportGraph);
 
 		// initialize the footer area of the form
@@ -99,7 +101,7 @@ public class GeoSpatial extends CustomComponent
 				storeConfiguration(event);
 				}
 				});
-
+        commitButton.setDebugId(this.getClass().getSimpleName()+"_commitButton");
 		commitButton.setDescription("Commit the new configuration settings.");
 		t2f.getFooter().addComponent(commitButton);
 

@@ -96,6 +96,7 @@ public class LOD2Demo extends Application
 */
 
             Button homeb = new Button("home");
+            homeb.setDebugId(this.getClass().getSimpleName()+"_homeb");
             homeb.addListener(new ClickListener() {
                 public void buttonClick(ClickEvent event) {
                     home();
@@ -128,6 +129,7 @@ public class LOD2Demo extends Application
             //  menu bar style
             //
             MenuBar menubar = new MenuBar();
+            menubar.setDebugId(this.getClass().getSimpleName()+"_menubar");
 
             // First define all menu commands
 

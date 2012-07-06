@@ -82,13 +82,16 @@ public class Limes extends CustomComponent
         // Configuration form start
         // Set all properties at once for the moment.
         Form t2f = new Form();
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
         t2f.setCaption("Configuration");
 
 
         sourceGraph = new ExportSelector3(state, false, "Select graph with Source Limes data:");
+        sourceGraph.setDebugId(this.getClass().getSimpleName()+"_sourceGraph");
         t2f.getLayout().addComponent(sourceGraph);
 
         targetGraph = new ExportSelector3(state, false, "Select graph with Target Limes data:");
+        targetGraph.setDebugId(this.getClass().getSimpleName()+"_targetGraph");
         t2f.getLayout().addComponent(targetGraph);
         // initialize the footer area of the form
         HorizontalLayout t2ffooterlayout = new HorizontalLayout();
@@ -99,7 +102,7 @@ public class Limes extends CustomComponent
                 storeConfiguration(event);
                 }
                 });
-
+        commitButton.setDebugId(this.getClass().getSimpleName()+"_commitButton");
         commitButton.setDescription("Commit the new configuration settings.");
         t2f.getFooter().addComponent(commitButton);
 

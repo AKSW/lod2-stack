@@ -75,9 +75,11 @@ public class ESpotlight extends CustomComponent
         // annotate a plain text 
         // TODO: and add the result as RDF to the default graph
         Form t2f = new Form();
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
         t2f.setCaption("Annotate plain text");
 
         TextArea textToAnnotateField = new TextArea("text:");
+        textToAnnotateField.setDebugId(this.getClass().getSimpleName()+"_textToAnnotateField");
         textToAnnotateField.setImmediate(false);
         textToAnnotateField.addListener(this);
         textToAnnotateField.setColumns(50);
@@ -96,6 +98,7 @@ public class ESpotlight extends CustomComponent
                 annotateText(event);
             }
         });
+        annotateButton.setDebugId(this.getClass().getSimpleName()+"_annotateButton");
         annotateButton.setDescription("Annotate the text with Spotlight");
         annotateButton.setEnabled(false);
 

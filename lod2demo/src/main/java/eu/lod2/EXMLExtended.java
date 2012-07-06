@@ -104,20 +104,26 @@ implements Button.ClickListener
                 );
 
         uploadXMLFile = new FileUpload("Upload the XML file here", "The XML file ", xmlFile);
+        uploadXMLFile.setDebugId(this.getClass().getSimpleName()+"_uploadXMLFile");
         uploadXSLTFile = new FileUpload("Upload the XLST file here", "The XSLT file ", xsltFile);
+        uploadXSLTFile.setDebugId(this.getClass().getSimpleName()+"_uploadXSLTFile");
         uploadCatalogFile = new FileUpload("Upload the XML Catalog file here", "The XML Catalog file ", catalogFile);
-        uploadCatalogFile.setDescription("This file must be named catalog.xml. " +
+        uploadCatalogFile.setDebugId(this.getClass().getSimpleName()+"_uploadCatalogFile");
+        uploadXSLTFile.setDescription("This file must be named catalog.xml. " +
                 "The references can be to files on the local system or web reachable resources.");
 
 
         errorMsg = new Label("");
 
         exportGraph = new ExportSelector(state, true);
+        exportGraph.setDebugId(this.getClass().getSimpleName()+"_exportGraph");
         uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
+        uploadButton.setDebugId(this.getClass().getSimpleName()+"_uploadButton");
 
 
         transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
-
+        transformButton.setDebugId(this.getClass().getSimpleName()+"_transformButton");
+        
         panel.addComponent(desc);
         panel.addComponent(uploadXMLFile);
         panel.addComponent(uploadXSLTFile);
@@ -131,33 +137,40 @@ implements Button.ClickListener
 
 
         t2f = new Form();
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
         t2f.setCaption("");
 
         annotatedTextField = new Label("Extracted RDF", Label.CONTENT_XHTML);
         t2f.getLayout().addComponent(annotatedTextField);
 
         textToAnnotateField = new TextArea();
+        textToAnnotateField.setDebugId(this.getClass().getSimpleName()+"_textToAnnotateField");
         textToAnnotateField.setImmediate(false);
         textToAnnotateField.setColumns(100);
         textToAnnotateField.setRows(25);
+        
         t2f.getLayout().addComponent(textToAnnotateField);
 
         panel.addComponent(t2f);
         t2f.setVisible(false);
 
         downloadForm = new Form();
+        downloadForm.setDebugId(this.getClass().getSimpleName()+"_downloadForm");
         downloadForm.setCaption("Download file.");
         dlFileName = new TextField();
+        dlFileName.setDebugId(this.getClass().getSimpleName()+"_dlFileName");
         dlFileName.setRequired(true);
         //dlFileName.setCaption("Give a filename. (Required)");
         downloadForm.getLayout().addComponent(new Label("Give a filename."));
         downloadForm.getLayout().addComponent(dlFileName);
         dlPath = new TextField();
+        dlPath.setDebugId(this.getClass().getSimpleName()+"_dlPath");
         dlPath.setRequired(true);
         //dlPath.setCaption("Specify a path. (Required for downloading)");
         downloadForm.getLayout().addComponent(new Label("Specify a path."));
         downloadForm.getLayout().addComponent(dlPath);
         downloadButton = new Button("Download file", (Button.ClickListener) this);
+        downloadButton.setDebugId(this.getClass().getSimpleName()+"_downloadButton");
         downloadForm.getLayout().addComponent(downloadButton);
 
         panel.addComponent(downloadForm);

@@ -86,21 +86,25 @@ implements 	Button.ClickListener
                 , Label.CONTENT_XHTML);
 
         xmlText = new TextArea("Enter your xml code:");
+        xmlText.setDebugId(this.getClass().getSimpleName()+"_xmlText");
         xmlText.setImmediate(false);
         xmlText.setColumns(100);
         xmlText.setRows(25);
         xmlText.setRequired(true);
         xsltText = new TextArea("Enter your xslt code:");
+        xsltText.setDebugId(this.getClass().getSimpleName()+"_xsltText");
         xsltText.setImmediate(false);
         xsltText.setColumns(100);
         xsltText.setRows(25);
         xsltText.setRequired(true);
-
         exportGraph = new ExportSelector(st);
+        exportGraph.setDebugId(this.getClass().getSimpleName()+"_exportGraph");
 
         uploadButton = new Button("Upload result to RDF Store", (Button.ClickListener) this);
-
+        uploadButton.setDebugId(this.getClass().getSimpleName()+"_uploadButton");
+        
         transformButton = new Button("transform XML to RDF", (Button.ClickListener) this);
+        transformButton.setDebugId(this.getClass().getSimpleName()+"_transformButton");
         errorMsg = new Label("");
 
         panel.addComponent(desc);
@@ -114,12 +118,14 @@ implements 	Button.ClickListener
         errorMsg.setVisible(false);
 
         t2f = new Form();
+        t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
         t2f.setCaption("");
 
         annotatedTextField = new Label("Extracted RDF", Label.CONTENT_XHTML);
         t2f.getLayout().addComponent(annotatedTextField);
 
         rdfResultField = new TextArea();
+        rdfResultField.setDebugId(this.getClass().getSimpleName()+"_rdfResultField");
         rdfResultField.setImmediate(false);
         rdfResultField.setColumns(100);
         rdfResultField.setRows(25);

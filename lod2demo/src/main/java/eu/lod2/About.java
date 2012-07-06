@@ -90,6 +90,7 @@ public class About extends CustomComponent
         BeanContainer<String, AboutTable> abouts = createAboutTable();
 
         Table table = new Table("", abouts);
+        table.setDebugId(this.getClass().getSimpleName()+"_table");
         table.setWidth("100%");
         table.setSelectable(false);
         table.setMultiSelect(false);

@@ -91,6 +91,7 @@ implements AbstractSelect.NewItemHandler,
         // it displays all acceptable graphs in Virtuoso 
         // XXX TODO show only those which are editable in OntoWiki
         graphSelector = new ComboBox("Select Export graph: ");
+        graphSelector.setDebugId(this.getClass().getSimpleName()+"_graphSelector");
         graphSelector.setNewItemsAllowed(true);
         graphSelector.setImmediate(true);
         graphSelector.addListener(this);
@@ -167,12 +168,14 @@ implements AbstractSelect.NewItemHandler,
                 (subwindow.getParent()).removeWindow(subwindow);
                 }
                 });
+        ok.setDebugId(this.getClass().getSimpleName()+"_ok");
         Button cancel = new Button("Cancel", new ClickListener() {
                 public void buttonClick(ClickEvent event) {
                 (subwindow.getParent()).removeWindow(subwindow);
                 }
                 });
-
+        cancel.setDebugId(this.getClass().getSimpleName()+"_cancel");
+        
         swlayout.addComponent(desc);
         swlayout.addComponent(buttons);
         buttons.addComponent(ok);

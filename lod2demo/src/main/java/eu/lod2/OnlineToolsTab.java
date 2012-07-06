@@ -69,6 +69,7 @@ public class OnlineToolsTab extends CustomComponent
 
 
 		TextField sid = new TextField("search sameAs id's for:");
+        sid.setDebugId(this.getClass().getSimpleName()+"_sid");
 		final Label sidenc = new Label("");
 		// configure & add to layout
 		sid.setImmediate(true);
