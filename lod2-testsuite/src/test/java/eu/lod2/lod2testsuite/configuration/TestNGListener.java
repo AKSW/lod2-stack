@@ -1,7 +1,5 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import eu.lod2.lod2testsuite.testcases.ParameterizedTestCase;
-import eu.lod2.lod2testsuite.testcases.TestCase;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;

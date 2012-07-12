@@ -39,7 +39,8 @@ public class ExtractionAndLoading extends TestCase {
         ArrayList<String> xmlText = bf.readFile(xmlFile, false);
         ArrayList<String> xsltText = bf.readFile(xsltFile, false);
         
-        WebElement xmlField = bf.getExistingAndVisibleElement(
+        // Wait for first element
+        WebElement xmlField = bf.waitUntilElementIsVisible(
                 By.id("EXML_xmlText"));
         WebElement xsltField = bf.getExistingAndVisibleElement(
                 By.id("EXML_xsltText"));
@@ -73,6 +74,7 @@ public class ExtractionAndLoading extends TestCase {
         
         String identifier = "//span[contains(.,'Extraction & Loading')]"
                     + "[not(contains(@class,'caption'))]";
+        
         WebElement link = null;
         try  {
             link = TestCase.driver.findElement(

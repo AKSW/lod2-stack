@@ -87,7 +87,7 @@ public class BasicFunctions {
      *          If the element was found before patience has ran out it is 
      *          returned.
      */
-    public WebElement waitUntilElementIsPresent(By locator)  {
+    public WebElement waitUntilElementIsVisible(By locator)  {
         WebDriverWait pageWait = new WebDriverWait(TestCase.driver, MAX_PATIENCE_SECONDS);
         
         WebElement element = null;
