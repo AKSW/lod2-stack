@@ -1,0 +1,60 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="LOD2TestSuite" preserve-order="true"> <!---->
+    
+    <parameter name="selenium.url" value="http://localhost:8080/lod2demo" />
+    <!--<parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />-->
+    <parameter 
+        name="firefox.profile" 
+        value="C:\Users\revo\AppData\Roaming\Mozilla\Firefox\Profiles\selenium.default" 
+    />
+    
+    <listeners>
+        <listener class-name="org.lod2.lod2testsuite.configuration.TestNGListener" />
+    </listeners>
+
+    <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
+    <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
+    <parameter name="exportGraph" value="" />  
+    
+    <test name="ExtractionAndLoadingBasicExtraction" group-by-instances="true" >
+        <classes>
+            <class name="org.lod2.lod2testsuite.testcases.ExtractionAndLoading">
+                <methods>
+                    <include name="basicExtraction" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+<!--   
+    <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
+    <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
+    <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\configuration.xml" />    
+    <parameter name="exportGraph" value="" />  
+    
+    <test name="ExtractionAndLoadingExtendedExtraction" group-by-instances="true" >
+        <classes>
+            <class name="org.lod2.lod2testsuite.testcases.ExtractionAndLoading">
+                <methods>
+                    <include name="extendedExtraction" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+-->   
+
+<!--
+    <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
+    
+    <test name="ExtractionAndLoadingAnnotatePlainText" group-by-instances="true" >
+        <classes>
+            <class name="org.lod2.lod2testsuite.testcases.ExtractionAndLoading">
+                <methods>
+                    <include name="annotatePlainText" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+-->    
+</suite>

@@ -1,0 +1,1 @@
+In computing, linked data describes a method of publishing structured data so that it can be interlinked and become more useful.
