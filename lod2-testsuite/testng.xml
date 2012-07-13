@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
   
-<suite name="LOD2TestSuite" preserve-order="true"> <!---->
+<suite name="LOD2TestSuite">
     
-    <parameter name="selenium.url" value="http://localhost:8080/lod2demo" />
-    <!--<parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />-->
+    <!--<parameter name="selenium.url" value="http://localhost:8080/lod2demo" />-->
+    <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />
     
     <parameter name="firefox.profile" 
         value="C:\Users\revo\AppData\Roaming\Mozilla\Firefox\Profiles\selenium.default" 
@@ -11,49 +11,53 @@
     
     <listeners>
         <listener class-name="eu.lod2.lod2testsuite.configuration.TestNGListener" />
+        <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
-<!--
-    <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
-    <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
-    <parameter name="exportGraph" value="" />  
-    
-    <test name="ExtractionAndLoadingBasicExtraction" group-by-instances="true" >
-        <classes>
-            <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
-                <methods>
-                    <include name="basicExtraction" />
-                </methods>
-            </class>
-        </classes>
-    </test>
--->
-   
-    <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
-    <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
-    <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\configuration.xml" />    
-    <parameter name="exportGraph" value="" />  
-    
-    <test name="ExtractionAndLoadingExtendedExtraction" group-by-instances="true" >
-        <classes>
-            <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
-                <methods>
-                    <include name="extendedExtraction" />
-                </methods>
-            </class>
-        </classes>
-    </test>   
 
-<!--
-    <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
-    
-    <test name="ExtractionAndLoadingAnnotatePlainText" group-by-instances="true" >
+
+    <test name="ExtractionAndLoading" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                    <include name="annotatePlainText" />
+                    <!-- TC 001 
+                    <include name="openVirtuoso" /> -->
+                    <!-- TC 002 
+                    <include name="loadRDFdataFromCKAN" /> -->
+                    <!-- TC 003-2 
+                    <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
+                    <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
+                    <parameter name="exportGraph" value="" />  
+                    <include name="basicExtraction" />  -->
+                    <!-- TC 004 -->
+                    <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
+                    <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
+                    <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\configuration.xml" />    
+                    <parameter name="exportGraph" value="http://localhost:8890/DAV" />  
+                    
+                    <include name="extendedExtraction" />
+                    
+                    <!-- TC 006 
+                    <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
+                    <include name="annotatePlainText" /> -->
+                    <!-- TC 007 
+                    <parameter name="exportGraph" value="" />  
+                    <parameter name="poolPartyProjectId" value="" />    
+                    <parameter name="language" value="" />    
+                    <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
+                    <include name="poolPartyExtractor" /> -->
                 </methods>
             </class>
         </classes>
     </test>
--->    
+    
+    <test name="QueryingAndExploration" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
+                <methods>
+                    <!-- TC 001 -->
+                    <!-- TC 002 -->
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.testng.ITestContext;
+import org.testng.Reporter;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -41,6 +42,7 @@ public abstract class TestCase {
     public static BasicFunctions bf;
     public static WebDriverEventListener eventListener;
     
+    public static final Logger logger = Logger.getLogger(TestCase.class.getName());
     
     /**
      * Initiallizes the browser and opens the website.
@@ -50,8 +52,11 @@ public abstract class TestCase {
      */
     @BeforeSuite(alwaysRun=true)
     public void setUp(ITestContext context)  {
-        System.out.println("STARTING");
-
+        logger.setLevel(Level.INFO);
+        
+        logger.info("STARTING");
+        //Reporter.log("asd");
+        
         // Get parameters from testng.xml
         url = context.getCurrentXmlTest().getParameter("selenium.url");
         ffProfile = context.getCurrentXmlTest().getParameter("firefox.profile");        
@@ -59,20 +64,24 @@ public abstract class TestCase {
         eventListener = new MyWebDriverEventListener();
         
         FirefoxProfile firefoxProfile = new FirefoxProfile(new File(ffProfile));
+        
+        /*
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         
         LoggingPreferences logs = new LoggingPreferences();
-        logs.enable(LogType.DRIVER, Level.ALL);
+        logs.enable(LogType.DRIVER, Level.OFF);
         capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
+        */
         
-        //TODO  add firefox prfile to capabilities.
+        // @TODO  add firefox prfile to capabilities.
         //capabilities.setCapability(CapabilityType.firefoxProfile);
         //driver = new FirefoxDriver(firefoxProfile);
         
         // Choose the right driver
-        driver = new FirefoxDriver(capabilities);
+        //driver = new FirefoxDriver(capabilities);
+        driver = new FirefoxDriver();
         //driver = new EventFiringWebDriver(
-        //         new FirefoxDriver(capabilities)).register(eventListener);
+        //         new FirefoxDriver()).register(eventListener);
         
         selenium = new WebDriverBackedSelenium(driver, url);
         driverActions = new Actions(driver);
@@ -91,7 +100,7 @@ public abstract class TestCase {
      */
     @AfterSuite(alwaysRun=true)
     public void tearDown()  {
-        System.out.println("STOPPING"); 
+        logger.info("STARTING");
         //Insteat of driver.quit();
         //driver.quit();
         selenium.stop();

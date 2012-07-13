@@ -1,7 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
+import java.io.File;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.ArrayList;
 import junit.framework.Assert;
@@ -21,6 +20,48 @@ import static org.testng.AssertJUnit.*;
  * @email s.schurischuster@semantic-web.at
  */
 public class ExtractionAndLoading extends TestCase {
+    
+    /**
+     * TC 001
+     * @TODO check if logged in?
+     */
+    @Test
+    public void openVirtuoso()  {
+        bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
+        // Navigate to page
+        navigator.navigateTo(new String[] {
+            "Extraction & Loading", 
+            "Upload RDF file or RDF from URL"});
+
+        // Check if Iframe is visible and shows Virtuoso.
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'conductor')]"), 
+                By.id("MTB"));
+    }
+    
+    /**
+     * TC 002
+     */
+    @Test
+    public void loadRDFdataFromCKAN()  {
+        bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
+        // Navigate to page
+        navigator.navigateTo(new String[] {
+            "Extraction & Loading", 
+            "Load RDF data from CKAN"});
+        
+        WebElement link = bf.waitUntilElementIsVisible(
+                By.xpath("//a[starts-with(@href, 'apt:')]"));
+        
+        // Check for link count.
+        try  {
+            assertTrue("Not all CKAN links are displayed.",
+                    9 == driver.findElements(
+                    By.xpath("//a[starts-with(@href, 'apt:')]")).size());
+        } catch(NoSuchElementException e)  {
+            Assert.fail(e.getMessage());
+        }
+    }
     
     /**
      * TC 003-2 
@@ -56,101 +97,34 @@ public class ExtractionAndLoading extends TestCase {
         }
         
         transformButton.click();
-        
         // TODO verification.
     }
     
     /**
-     * 
-     * @param xmlFile
-     * @param xsltFile
-     * @param catalogFile
-     * @param exportGraph 
+     * TC 004
+     * @TODO click buttons and whatch for result.
      */
     @Test
     @Parameters({ "xmlFile", "xsltFile","cataologFile", "exportGraph" })
     public void extendedExtraction(String xmlFile, String xsltFile, String catalogFile, String exportGraph) {
+        
         bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
         
-        String identifier = "//span[contains(.,'Extraction & Loading')]"
-                    + "[not(contains(@class,'caption'))]";
-        
-        WebElement link = null;
-        try  {
-            link = TestCase.driver.findElement(
-                            By.xpath(identifier));
-        } catch(NoSuchElementException e)  {
-            Assert.fail("Element not found: "+e.getMessage());
-        }
-        
-        TestCase.driverActions.moveToElement(link);
-        link.click();
-        TestCase.bf.bePatient(2000);
-        
-        identifier = "//div[@class = 'v-menubar-popup'][last()]"
-                + "//span[contains(.,'Extract RDF from XML')]"
-                + "[not(contains(@class,'caption'))]";
-        
-        
-        try  {
-            link = TestCase.driver.findElement(
-                            By.xpath(identifier));
-        } catch(NoSuchElementException e)  {
-            Assert.fail("Element not found: "+e.getMessage());
-        }
-        
-        TestCase.driverActions.moveToElement(link);
-        link.click();
-        TestCase.bf.bePatient(1000);
-        
-        identifier = "//div[@class = 'v-menubar-popup'][last()]"
-                + "//span[contains(.,'Extended extraction')]"
-                + "[not(contains(@class,'caption'))]";
-        
-        try  {
-            link = TestCase.driver.findElement(
-                            By.xpath(identifier));
-        } catch(NoSuchElementException e)  {
-            Assert.fail("Element not found: "+e.getMessage());
-        }
-        System.out.println(link.getText());
-        System.out.println(link.getLocation());
-        
-        selenium.click(identifier);
-        //link.click();
-        
-        TestCase.bf.bePatient(1000);
-        
-         /*   
         navigator.navigateTo(new String[] {
-            "Extraction & Loading", "Extract RDF from XML", "Extended extraction"});
+            "Extraction & Loading", 
+            "Extract RDF from XML", 
+            "Extended extraction"});
         
-        
-        navigator.navigateTo(new String[] {
-            "Querying & Exploration", 
-            "SPARQL querying", 
-            "OntoWiki SPARQL endpoint"});
-        
-        navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
-            "Online SPARQL endpoints", 
-            "DBpedia"});
-       
-        
-        
-        // Type into first input field
-        WebElement xmlField = bf.waitUntilElementIsPresent(By.id("EXMLExtended_uploadXMLFile"));
-        WebElement xsltField = bf.getExistingAndVisibleElement(By.id("EXMLExtended_uploadXSLTFile"));
-        WebElement catalogField = bf.getExistingAndVisibleElement(By.id("EXMLExtended_uploadXSLTFile"));
-        
-        xmlField.sendKeys(xmlFile);
-        bf.bePatient(5000);
-        */
+        // Handle uploads
+        bf.handleFileUpload(By.id("EXMLExtended_uploadXMLFile"), xmlFile);
+        bf.handleFileUpload(By.id("EXMLExtended_uploadXSLTFile"), xsltFile);
+        bf.handleFileUpload(By.id("EXMLExtended_uploadCatalogFile"), catalogFile);
+         
+        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
     }
     
     /**
      * TC 006
-     * @param textFile 
      */
     @Test
     @Parameters({ "textFile" })
@@ -181,6 +155,20 @@ public class ExtractionAndLoading extends TestCase {
                 "Result field does not contain any links to dbpedia.",
                 By.xpath("//div[@class='v-label']//a"));
     }
+    
+    /**
+     * TC 007
+     */
+    @Test
+    @Parameters({ "exportGraph","poolPartyProjectId","language","textFile" })
+    public void poolPartyExtractor(String exportGraph, String poolPartyProjectId, String language, String textFile)  {
+        
+        bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
+        
+        navigator.navigateTo(new String[] {
+            "Extraction & Loading", 
+            "Extract RDF from text w.r.t. a controlled vocabulary"});
+    }
 }
         /*
         WebElement xmlField = null;
@@ -206,3 +194,66 @@ public class ExtractionAndLoading extends TestCase {
         }
          * 
          */
+
+
+        /*
+        String identifier = "//span[contains(.,'Extraction & Loading')]"
+                    + "[not(contains(@class,'caption'))]";
+        
+        WebElement link = bf.getExistingAndVisibleElement(By.xpath(identifier));
+        TestCase.driverActions.moveToElement(link).build().perform();
+        TestCase.bf.bePatient(2000);
+        link.click();
+        TestCase.bf.bePatient(2000);
+        
+        identifier = "//div[@class = 'v-menubar-popup'][last()]"
+                + "//span[contains(.,'Extract RDF from XML')]"
+                + "[not(contains(@class,'caption'))]";
+        
+        
+        
+        link = bf.getExistingAndVisibleElement(By.xpath(identifier));
+        TestCase.driverActions.moveToElement(link).build().perform();
+        TestCase.bf.bePatient(2000);
+        link.click();
+        TestCase.bf.bePatient(2000);
+        
+        identifier = "//div[@class = 'v-menubar-popup'][last()]"
+                + "//span[contains(.,'Extended extraction')]"
+                + "[not(contains(@class,'caption'))]";
+        
+        String identifier2 = "//div[@class = 'v-menubar-popup'][last()]"
+                + "//span[contains(.,'Basic extraction')]"
+                + "[not(contains(@class,'caption'))]";
+        
+        link = bf.getExistingAndVisibleElement(By.xpath(identifier));
+        //WebElement link2 = bf.getExistingAndVisibleElement(By.xpath(identifier2));
+        
+        System.out.println(link.getText());
+        System.out.println(link.getLocation());
+        //driverActions.moveToElement(link2).build().perform();
+                driverActions.moveToElement(
+                        TestCase.driver.findElement(
+                        By.xpath("//div[@class = 'v-menubar-popup'][last()]"
+                        + "//span[contains(@class,'v-menubar-menuitem')][1]"
+                        + "[not(contains(@class,'caption'))]"))).build().perform();
+        bf.bePatient(1000);
+        driverActions.moveToElement(link).build().perform();
+        System.out.println("mouse over");
+        bf.bePatient(3000);
+        link.click();
+        System.out.println("clicked");
+        bf.bePatient(20000);
+        
+        try  {
+            Robot robot = new Robot();
+            robot.mouseMove(link.getLocation().x, link.getLocation().y);
+            bf.bePatient(5000);
+            //robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            //robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            bf.bePatient();
+        } catch(Exception e)  {
+            Assert.fail(e.getMessage());
+        }
+        
+        */
