@@ -1,5 +1,7 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -10,34 +12,30 @@ import org.testng.TestListenerAdapter;
  * @author Stefan Schurischuster
  */
 public class TestNGListener extends TestListenerAdapter {
-    
-    @Override
-    public void onStart(ITestContext testContext) {
-        super.onStart(testContext);
-        Reporter.log("STARTING TESTSESSION: " +testContext.getName(), true);
-    }
+ 
+    private static final Logger logger = Logger.getLogger(TestNGListener.class);    
     
     @Override
     public void onTestSuccess(ITestResult tr) {
         super.onTestSuccess(tr);
-        Reporter.log("SUCCEDED TEST: "+ tr.getName() ,true);
+        logger.info("SUCCEDED TEST: "+ tr.getName());
     }    
     
     @Override
     public void onTestFailure(ITestResult tr) {    
         super.onTestFailure(tr);
-        Reporter.log("FAILED TEST: "+ tr.getName(), true);
+        logger.info("FAILED TEST: "+ tr.getName());
     }
 
     @Override
     public void onTestSkipped(ITestResult tr) {
         super.onTestSkipped(tr);
-        Reporter.log("SKIP TEST: "+ tr.getTestName(), true);
+        logger.info("SKIP TEST: "+ tr.getName());
     }
 
     @Override
-    public void onTestStart(ITestResult result) {
-        super.onTestStart(result);      
-        Reporter.log("BEGIN TEST: "+ result.getTestName(), true);
+    public void onTestStart(ITestResult tr) {
+        super.onTestStart(tr);      
+        logger.info("BEGIN TEST: "+ tr.getName());
     }
 }

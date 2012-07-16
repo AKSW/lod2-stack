@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.List;
 import junit.framework.Assert;
@@ -9,11 +10,13 @@ import org.openqa.selenium.WebElement;
 import static org.testng.AssertJUnit.*;
 
 /**
+ * This class handles navigation through the main link menu of the lod2-stack.
  * 
  * @author Stefan Schurischuster
  */
 public class Navigator {
-    
+    private static final Logger logger = Logger.getLogger(TestCase.class);
+
     /**
      * This methods navigates through the main link menu of lod2-stack.
      * 
@@ -21,9 +24,20 @@ public class Navigator {
      *          The path of the links that are to be clicked.
      */
     public void navigateTo(String[] path)  {
-        int index = 0;
+        int index = 0, x = 0;
         WebElement link = null;
-       
+        String pp = "";
+        
+        for(String p : path)  {
+            if(x==0)  
+                pp = p;
+            else  
+                pp += " -> " +p;
+            x++;
+        }
+        
+        logger.info("Navigating to: " + pp);
+        
         while (index < path.length)  {
             String identifier = "//span[contains(.,'" +path[index]+ "')]"
                     + "[not(contains(@class,'caption'))]";
@@ -59,6 +73,7 @@ public class Navigator {
             index ++;
             TestCase.bf.bePatient();  
         } 
+        logger.info("Finished navigating to: " + pp);
     }
     
     /**

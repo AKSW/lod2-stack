@@ -1,6 +1,5 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import java.io.File;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.ArrayList;
 import junit.framework.Assert;
@@ -52,6 +51,8 @@ public class ExtractionAndLoading extends TestCase {
         
         WebElement link = bf.waitUntilElementIsVisible(
                 By.xpath("//a[starts-with(@href, 'apt:')]"));
+        
+        link.click();
         
         // Check for link count.
         try  {
@@ -170,90 +171,3 @@ public class ExtractionAndLoading extends TestCase {
             "Extract RDF from text w.r.t. a controlled vocabulary"});
     }
 }
-        /*
-        WebElement xmlField = null;
-        WebElement xsltField = null;
-        WebElement transformButton = null;
-        
-        try  {
-            xmlField = driver.findElement(By.id("EXML_xmlText"));
-            xsltField = driver.findElement(By.id("EXML_xsltText"));
-            transformButton = driver.findElement(By.id("EXML_transformButton"));
-        } catch(NoSuchElementException e)  {
-            Assert.fail("Element not found: " +e.getMessage());
-        }
-        
-        assertTrue(xmlField + " is not displayed.",xmlField.isDisplayed());
-        for(String x : xmlText)  {
-            xmlField.sendKeys(x);
-        }
-          
-        assertTrue(xsltField+ " is not displayed.",xsltField.isDisplayed());
-        for(String x : xsltText)  {
-            xsltField.sendKeys(x);
-        }
-         * 
-         */
-
-
-        /*
-        String identifier = "//span[contains(.,'Extraction & Loading')]"
-                    + "[not(contains(@class,'caption'))]";
-        
-        WebElement link = bf.getExistingAndVisibleElement(By.xpath(identifier));
-        TestCase.driverActions.moveToElement(link).build().perform();
-        TestCase.bf.bePatient(2000);
-        link.click();
-        TestCase.bf.bePatient(2000);
-        
-        identifier = "//div[@class = 'v-menubar-popup'][last()]"
-                + "//span[contains(.,'Extract RDF from XML')]"
-                + "[not(contains(@class,'caption'))]";
-        
-        
-        
-        link = bf.getExistingAndVisibleElement(By.xpath(identifier));
-        TestCase.driverActions.moveToElement(link).build().perform();
-        TestCase.bf.bePatient(2000);
-        link.click();
-        TestCase.bf.bePatient(2000);
-        
-        identifier = "//div[@class = 'v-menubar-popup'][last()]"
-                + "//span[contains(.,'Extended extraction')]"
-                + "[not(contains(@class,'caption'))]";
-        
-        String identifier2 = "//div[@class = 'v-menubar-popup'][last()]"
-                + "//span[contains(.,'Basic extraction')]"
-                + "[not(contains(@class,'caption'))]";
-        
-        link = bf.getExistingAndVisibleElement(By.xpath(identifier));
-        //WebElement link2 = bf.getExistingAndVisibleElement(By.xpath(identifier2));
-        
-        System.out.println(link.getText());
-        System.out.println(link.getLocation());
-        //driverActions.moveToElement(link2).build().perform();
-                driverActions.moveToElement(
-                        TestCase.driver.findElement(
-                        By.xpath("//div[@class = 'v-menubar-popup'][last()]"
-                        + "//span[contains(@class,'v-menubar-menuitem')][1]"
-                        + "[not(contains(@class,'caption'))]"))).build().perform();
-        bf.bePatient(1000);
-        driverActions.moveToElement(link).build().perform();
-        System.out.println("mouse over");
-        bf.bePatient(3000);
-        link.click();
-        System.out.println("clicked");
-        bf.bePatient(20000);
-        
-        try  {
-            Robot robot = new Robot();
-            robot.mouseMove(link.getLocation().x, link.getLocation().y);
-            bf.bePatient(5000);
-            //robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-            //robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-            bf.bePatient();
-        } catch(Exception e)  {
-            Assert.fail(e.getMessage());
-        }
-        
-        */
