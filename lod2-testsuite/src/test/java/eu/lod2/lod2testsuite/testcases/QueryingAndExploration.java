@@ -29,6 +29,18 @@ public class QueryingAndExploration extends TestCase{
             "Querying & Exploration", 
             "SPARQL querying", 
             "Direct via Sesame API"});
+
+        WebElement textfield = bf.waitUntilElementIsVisible(By.id("SesameSPARQL_query"));
+        
+        // Check for predefined value?
+        textfield.sendKeys(query);
+        
+        // Click "evaluate"
+        bf.getExistingAndVisibleElement(By.id("SesameSPARQL_okbutton")).click();
+        
+        bf.waitUntilElementIsVisible(By.xpath("//div[@id='SesameSPARQL_sparqlResult']"
+                + "/div[@class='v-panel-content'][not(text()='')]"));
+        //"//div[@id='SesameSPARQL_sparqlResult']//textarea"
         
     }
     
@@ -64,12 +76,18 @@ public class QueryingAndExploration extends TestCase{
             "Virtuoso interactive SPARQL endpoint"});     
     }
     
+    /**
+     * TC 005
+     */
     @Test
     public void sigmaEe()  {
-        
         navigator.navigateTo(new String[] {
             "Querying & Exploration", 
             "Sig.ma EE"});  
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'sigmaee')]"), 
+                By.id("header"));
     }
     
     @Test

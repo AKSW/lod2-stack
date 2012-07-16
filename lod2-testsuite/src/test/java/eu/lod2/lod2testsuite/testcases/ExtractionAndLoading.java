@@ -22,7 +22,7 @@ public class ExtractionAndLoading extends TestCase {
     
     /**
      * TC 001
-     * @TODO check if logged in?
+     * @TODO test: check if logged in
      */
     @Test
     public void openVirtuoso()  {
@@ -36,6 +36,13 @@ public class ExtractionAndLoading extends TestCase {
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'conductor')]"), 
                 By.id("MTB"));
+        
+        /*
+        // Check if logged in
+        bf.getExistingAndVisibleElement(By.xpath(
+                "//div[@class='login_info'][contains.,'logged in as']"
+                + "[cotnains(.,'Log out')]"));
+        */
     }
     
     /**
@@ -102,8 +109,9 @@ public class ExtractionAndLoading extends TestCase {
     }
     
     /**
-     * TC 004
+     * TC 004-1-4
      * @TODO click buttons and whatch for result.
+     * @TODO add a 
      */
     @Test
     @Parameters({ "xmlFile", "xsltFile","cataologFile", "exportGraph" })
@@ -116,12 +124,25 @@ public class ExtractionAndLoading extends TestCase {
             "Extract RDF from XML", 
             "Extended extraction"});
         
+        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
+        
+        WebElement uploadButton = bf.getExistingAndVisibleElement(
+                By.xpath(""));
+        WebElement transformButton = bf.getExistingAndVisibleElement(
+                By.xpath(""));
+        
         // Handle uploads
         bf.handleFileUpload(By.id("EXMLExtended_uploadXMLFile"), xmlFile);
+        
+        /*
+        uploadButton.click();
+        WebElement notice = bf.waitUntilElementIsVisible(
+                "No error message appeared after clicking upload with a field missing.", 
+                By.xpath(catalogFile));
+        */         
+        
         bf.handleFileUpload(By.id("EXMLExtended_uploadXSLTFile"), xsltFile);
         bf.handleFileUpload(By.id("EXMLExtended_uploadCatalogFile"), catalogFile);
-         
-        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
     }
     
     /**

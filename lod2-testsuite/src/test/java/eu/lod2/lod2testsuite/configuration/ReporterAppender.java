@@ -9,7 +9,7 @@ import org.testng.Reporter;
  * 
  * @author Stefan Schurischuster
  */
-public class ReporterAppender extends AppenderSkeleton{
+public class ReporterAppender extends AppenderSkeleton {
 
     @Override
     protected void append(LoggingEvent event) {
