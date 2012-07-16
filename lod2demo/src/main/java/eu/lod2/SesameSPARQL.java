@@ -69,7 +69,7 @@ public class SesameSPARQL extends CustomComponent
 	private TextArea query;
 
 	public SesameSPARQL(LOD2DemoState st) {
-
+        sparqlResult.setDebugId(this.getClass().getSimpleName()+"_sparqlResult");
 		// The internal state and 
 		state = st;
 
