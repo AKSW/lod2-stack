@@ -84,7 +84,6 @@ public abstract class TestCase {
         bf = new BasicFunctions();
 
         // Open Website
-        //driver.get(url);
         selenium.open(url);
         
         WebElement elem = bf.waitUntilElementIsVisible(

@@ -1,9 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import java.util.List;
-import org.openqa.selenium.NoSuchElementException;
-import java.util.ArrayList;
-import junit.framework.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Parameters;
@@ -13,7 +10,7 @@ import static org.testng.AssertJUnit.*;
 /**
  * This class contains functional tests concerning querying and exploration of
  * the lod2 - stack.
- * All TestCases are documented here:
+ * All test cases are documented here:
  * https://grips.semantic-web.at/pages/viewpage.action?pageId=37193602
  * 
  * @author Stefan Schurischuster
@@ -88,8 +85,6 @@ public class QueryingAndExploration extends TestCase{
          
          // Check if there are more then two results.
          assertTrue("Query does not return any data. (Not more then 2).", results.size() > 2);
-         
-         //driver.switchTo().defaultContent();
     }
     
     

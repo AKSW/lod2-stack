@@ -120,7 +120,7 @@ public class BasicFunctions {
      *              Path of the file to upload.
      */
     public void handleFileUpload(By locator, String pathToFile)  {
-        WebElement field = TestCase.bf.waitUntilElementIsVisible(locator);
+        WebElement field = waitUntilElementIsVisible(locator);
         
         WebElement input = null;
         WebElement button = null;
@@ -136,7 +136,7 @@ public class BasicFunctions {
         
         button.click();
         
-        WebElement uploaded = TestCase.bf.waitUntilElementIsVisible(
+        WebElement uploaded = waitUntilElementIsVisible(
                 "File was not successfully uploaded.", By.xpath(
                 "//div[@class='v-captiontext'][contains(.,'" +file.getName()+ "')]"));
     }
@@ -153,7 +153,7 @@ public class BasicFunctions {
      *          true types value. false chooses value from popup.
      */
     public void handleSelector(By locator, String value, boolean typeValue)  {
-         WebElement selector = TestCase.bf.waitUntilElementIsVisible(locator);
+         WebElement selector = waitUntilElementIsVisible(locator);
          WebElement input = null;
          WebElement button = null;
          
