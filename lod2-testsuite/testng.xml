@@ -34,7 +34,7 @@
                     <!-- TC 004 
                     <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
                     <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
-                    <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\configuration.xml" />    
+                    <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\catalog.xml" />    
                     <parameter name="exportGraph" value="http://localhost:8890/DAV" />  
                     <include name="extendedExtraction" />
                     -->
@@ -61,8 +61,11 @@
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
                     <!-- TC 001 -->
-                    <!-- TC 002 -->
-                    <include name="ontoWikiSparql" />
+                    <!-- TC 002 
+                    <include name="ontoWikiSparql" />-->
+                    
+                    <include name="virtuosoSparql" />
+                    <include name="virtuosoInteractiveSparql" />
                 </methods>
             </class>
         </classes>

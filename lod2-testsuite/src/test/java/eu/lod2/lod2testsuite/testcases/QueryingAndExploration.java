@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
+import java.util.List;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.ArrayList;
 import junit.framework.Assert;
@@ -58,6 +59,9 @@ public class QueryingAndExploration extends TestCase{
             "OntoWiki SPARQL endpoint"});
     }
     
+    /**
+     * TC 003
+     */
     @Test
     public void virtuosoSparql()  {
      
@@ -65,8 +69,33 @@ public class QueryingAndExploration extends TestCase{
             "Querying & Exploration", 
             "SPARQL querying", 
             "Virtuoso SPARQL endpoint"});
+        
+        // Check if isparql page is visible
+         bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'sparql')]"), 
+                By.id("query"));
+         
+         // Hit play button with predefined query
+         WebElement runButton = bf.getExistingAndVisibleElement(
+                 By.xpath("//div[@id='main']//input[@type='submit']"));
+         
+         runButton.click();
+         
+         // Get results of query request
+         List<WebElement> results = bf.waitUntilElementsAreVisible(
+                 "Can not find results for query.",
+                 By.xpath("//table[@class='sparql']//tr/td"));
+         
+         // Check if there are more then two results.
+         assertTrue("Query does not return any data. (Not more then 2).", results.size() > 2);
+         
+         //driver.switchTo().defaultContent();
     }
     
+    
+    /**
+     * TC 004
+     */
     @Test
     public void virtuosoInteractiveSparql() {
  
@@ -74,6 +103,29 @@ public class QueryingAndExploration extends TestCase{
             "Querying & Exploration", 
             "SPARQL querying", 
             "Virtuoso interactive SPARQL endpoint"});     
+         
+         // Check if isparql page is visible
+         bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'isparql')]"), 
+                By.id("page_query"));
+         
+         // Hit play button with predefined query
+         WebElement playButton = bf.getExistingAndVisibleElement(
+                 By.xpath("//div[@id='toolbar']//img[contains(@src,'player_play')]"));
+         
+         playButton.click();
+         
+         // Get results of query request
+         List<WebElement> results = driver.findElements(
+                 By.xpath("//div[@id='res_tab_ctr']//tr/td"));
+         /*
+         for(WebElement w : results)  {
+             System.out.println(w.getText());
+         }*/
+         
+         // Check if there are more then two results.
+         assertTrue("Query does not return any data. (Not more then 2).", results.size() > 2);
+         
     }
     
     /**
@@ -90,6 +142,11 @@ public class QueryingAndExploration extends TestCase{
                 By.id("header"));
     }
     
+    
+    /**
+     * TC 006
+     * @TODO
+     */
     @Test
     @Parameters({ "geoGraph" })
     public void geoSpatialExploration(String geoGraph)  {

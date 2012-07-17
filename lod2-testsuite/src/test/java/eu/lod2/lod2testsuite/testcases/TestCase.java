@@ -22,6 +22,10 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 
 
 /**
@@ -85,6 +89,17 @@ public abstract class TestCase {
         
         WebElement elem = bf.waitUntilElementIsVisible(
                 By.xpath("//img[contains(@src,'lifecycle')]"));
+    }
+    
+    
+    /**
+     * This method is run after every testmethod and returns the focus
+     * back to the main window. This is necessery when switching iframes.
+     */
+    @BeforeMethod
+    public void prepareTestCase()  {
+        driver.switchTo().defaultContent();
+        logger.debug("Switching to default frame.");
     }
     
     /**

@@ -123,26 +123,37 @@ public class ExtractionAndLoading extends TestCase {
             "Extraction & Loading", 
             "Extract RDF from XML", 
             "Extended extraction"});
-        
-        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
-        
+                
         WebElement uploadButton = bf.getExistingAndVisibleElement(
                 By.xpath(""));
         WebElement transformButton = bf.getExistingAndVisibleElement(
                 By.xpath(""));
         
+        // Select export graph
+        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
+        
         // Handle uploads
         bf.handleFileUpload(By.id("EXMLExtended_uploadXMLFile"), xmlFile);
         
-        /*
+        // Check if upload is performed although neccessery fields have not been filled out.
         uploadButton.click();
         WebElement notice = bf.waitUntilElementIsVisible(
                 "No error message appeared after clicking upload with a field missing.", 
-                By.xpath(catalogFile));
-        */         
+                By.xpath("//div[@class='gwt-HTML']"));
         
         bf.handleFileUpload(By.id("EXMLExtended_uploadXSLTFile"), xsltFile);
+        
+        // Check if upload is performed although neccessery fields have not been filled out.
+        uploadButton.click();
+        notice = bf.waitUntilElementIsVisible(
+                "No error message appeared after clicking upload with a field missing.", 
+                By.xpath("//div[@class='gwt-HTML']"));
+        
         bf.handleFileUpload(By.id("EXMLExtended_uploadCatalogFile"), catalogFile);
+        
+        
+        uploadButton.click();
+        //Upload should have succeeded.
     }
     
     /**

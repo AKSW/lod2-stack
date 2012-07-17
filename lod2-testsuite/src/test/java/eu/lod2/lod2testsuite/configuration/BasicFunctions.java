@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import java.util.List;
 import java.util.logging.Logger;
 import java.io.File;
 import java.io.BufferedReader;
@@ -250,6 +251,42 @@ public class BasicFunctions {
         }
         return element;
     }
+    
+     /**
+     * Sets the current browser session to sleep until an element is present.
+     * This element must be identified over its xpath.
+     * 
+     * @param failureMessage 
+     *          The failure message to be displayed when an error appears.
+     * @param locator
+     *          The identifying By object.
+     * @return 
+     *          All elements of the locator
+     */
+    public List<WebElement> waitUntilElementsAreVisible(String failureMessage, By locator)  {
+        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, MAX_PATIENCE_SECONDS);
+        if(!failureMessage.isEmpty())
+            pageWait.withMessage("Time expired: " +failureMessage);
+        List<WebElement> elements = null;
+        
+        WebElement firstElement = null;
+        try  {
+            firstElement = pageWait.until(
+                ExpectedConditions.visibilityOfElementLocated(locator));
+            
+            // Get multiple WebElements
+            elements = TestCase.driver.findElements(locator);
+
+        } catch(NoSuchElementException e)  {
+            if(!failureMessage.isEmpty())
+                Assert.fail("Element not found: " +failureMessage 
+                    + " Stack trace: " +e.getMessage());
+            else
+                Assert.fail(e.getMessage());
+        }
+        return elements;
+    }  
+    
     
     /**
      * @param failureMessage
