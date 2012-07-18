@@ -14,60 +14,59 @@
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
 
-    <!--
     <test name="ExtractionAndLoading" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                     TC 001 
-                    <include name="openVirtuoso" /> -->
-                    
+                    <!-- TC 001 
+                    <include name="openVirtuoso" /> 
+                    -->
                     <!-- TC 002 
-                    <include name="loadRDFdataFromCKAN" /> -->
+                    <include name="loadRDFdataFromCKAN" /> 
+                    -->
+                    <!-- TC 003-2 -->
+                    <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\ealXml.txt" />  
+                    <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\ealXslt.txt" />    
+                    <parameter name="exportGraph" value="&nbsp;" />  
+                    <include name="basicExtraction" />  
                     
-                    <!-- TC 003-2 
-                    <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
-                    <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
-                    <parameter name="exportGraph" value="" />  
-                    <include name="basicExtraction" />  -->
                     
                     <!-- TC 004 
                     <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
                     <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
                     <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\catalog.xml" />    
                     <parameter name="exportGraph" value="http://localhost:8890/DAV" />  
-                    <include name="extendedExtraction" />
-                    -->
+                    <include name="extendedExtraction" />--> 
                     
                     <!-- TC 006 
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
-                    <include name="annotatePlainText" /> -->
-                    
+                    <include name="annotatePlainText" /> 
+                    -->
                     <!-- TC 007 
                     <parameter name="exportGraph" value="" />  
                     <parameter name="poolPartyProjectId" value="" />    
                     <parameter name="language" value="" />    
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
-                    <include name="poolPartyExtractor" /> 
+                    <include name="poolPartyExtractor" /> -->
                 </methods>
             </class>
         </classes>
     </test>
-    -->
     
     
+    <!--
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
-                    <!-- TC 001 -->
+                     TC 001 -->
                     <!-- TC 002 
-                    <include name="ontoWikiSparql" />-->
+                    <include name="ontoWikiSparql" />
                     
                     <include name="virtuosoSparql" />
                     <include name="virtuosoInteractiveSparql" />
                 </methods>
             </class>
         </classes>
-    </test>
+    </test>-->
 </suite>

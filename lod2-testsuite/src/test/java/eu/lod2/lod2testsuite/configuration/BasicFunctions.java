@@ -22,7 +22,7 @@ import static org.testng.AssertJUnit.*;
  */
 public class BasicFunctions {
     public static int PATIENCE_MILLI_SECONDS = 900;
-    public static int MAX_PATIENCE_SECONDS = 30;
+    public static int MAX_PATIENCE_SECONDS = 15;
     private static final Logger logger = Logger.getLogger(BasicFunctions.class.getName());
     
     /**
@@ -70,6 +70,47 @@ public class BasicFunctions {
                 "Iframe content was not correctly displayed.",
                 contentIdentifier);
     }
+  
+    /**
+     * Tries to create a WebElement using the passed locator.
+     * 
+     * @param locator 
+     *          The locator of the element.
+     * @return 
+     *      If an exception is thrown it returns false, true otherwise.
+     */
+    public boolean isElementPresent(By locator)  {
+        try  {
+            WebElement element = TestCase.driver.findElement(locator);
+        } catch(NoSuchElementException e)  {
+            return false;
+        } catch(Exception e)  {
+            Assert.fail(e.getMessage());
+        }
+        return true;
+    }
+    
+    /**
+     * Tries to create a WebElement using the passed locator and checks 
+     * wheather it is visible and displayed on the webpage.
+     * 
+     * @param locator 
+     *          The locator of the element.
+     * @return 
+     *      If an exception is thrown or element is hidden it returns false,
+     *      true otherwise.
+     */
+    public boolean isElementVisible(By locator)  {
+        WebElement element = null;
+        try  {
+           element = TestCase.driver.findElement(locator);
+        } catch(NoSuchElementException e)  {
+            return false;
+        } catch(Exception e)  {
+            Assert.fail(e.getMessage());
+        }
+        return element.isDisplayed();
+    }
     
     /**
      * Returns an existing and visible WebElement from the webpage.
@@ -80,7 +121,27 @@ public class BasicFunctions {
      * @return
      *          The existing and visible WebElement.
      */      
-    public WebElement getExistingAndVisibleElement(By locator)  {
+    public WebElement getVisibleElement(By locator)  {
+        WebElement element = null;
+        try  {
+            element = TestCase.driver.findElement(locator);
+        } catch(NoSuchElementException e)  {
+            Assert.fail(e.getMessage());
+        }
+        assertTrue("Element is not visible: " +element, element.isDisplayed());
+        return element;
+    }
+    
+    /**
+     * Returns an existing and visible WebElement from the webpage.
+     * Throws an assert.fail if the element is not present or not visible.
+     * 
+     * @param locator
+     *          A By object locator.
+     * @return
+     *          The existing and visible WebElement.
+     */      
+    public WebElement getVisibleElement(String failureMessage, By locator)  {
         WebElement element = null;
         try  {
             element = TestCase.driver.findElement(locator);
@@ -126,8 +187,8 @@ public class BasicFunctions {
         WebElement button = null;
         
         try { // This should search relativly to selector.
-            field.findElement(By.className("gwt-FileUpload"));
-            field.findElement(By.className("v-button"));
+            input = field.findElement(By.className("gwt-FileUpload"));
+            button = field.findElement(By.className("v-button"));
         } catch (NoSuchElementException e) {
             Assert.fail(e.getMessage());
         }
@@ -169,7 +230,7 @@ public class BasicFunctions {
          } else  {
              button.click();
              WebElement popUpElement = waitUntilElementIsVisible(
-                     "Selector popup menu did not open", 
+                     "Slector Element not found.", 
                      By.xpath("//div[contains(@class,'popupContent')]//"
                      + "td[contains(@class,'gwt-MenuItem')]"
                      + "/span[text() = '" +value+ "']"));
@@ -235,7 +296,26 @@ public class BasicFunctions {
      *          returned.
      */
     public WebElement waitUntilElementIsVisible(String failureMessage, By locator)  {
-        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, MAX_PATIENCE_SECONDS);
+        return waitUntilElementIsVisible(failureMessage, locator, MAX_PATIENCE_SECONDS);
+    }
+    
+    /**
+     * Sets the current browser session to sleep until an element is present.
+     * This element must be identified over its xpath.
+     * 
+     * @param failureMessage 
+     *          The failure message to be displayed when an error appears.
+     * @param locator
+     *          The identifying By object.
+     * @param maxPatienceSeconds 
+     *          Maximum time to wait before throwing an error if the element is
+     *          not visible.
+     * @return 
+     *          If the element was found before patience has ran out it is 
+     *          returned.
+     */
+    public WebElement waitUntilElementIsVisible(String failureMessage, By locator, int maxPatienceSeconds)  {
+        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, maxPatienceSeconds);
         if(!failureMessage.isEmpty())
             pageWait.withMessage("Time expired: " +failureMessage);
         WebElement element = null;
@@ -314,13 +394,45 @@ public class BasicFunctions {
      * 
      * @param locator 
      *          The locator of the element to disappear.
+     * @param failureMessage
+     *          The message to be displayed if an error occures.
+     * @param maxPatienceSeconds   
+     *          The max time to wait before throwing an error.
      */
-    public void waitUntilElementDisappears(By locator)  {
-        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, MAX_PATIENCE_SECONDS);
+    public void waitUntilElementDisappears(String failureMessage, By locator, int maxPatienceSeconds)  {
+        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, maxPatienceSeconds);
         try  {
             pageWait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
         } catch(NoSuchElementException e)  {
             Assert.fail(e.getMessage());
+        } catch(Exception e)  {
+            Assert.fail(failureMessage);
         }
+    }
+    
+    /**
+     * Waits until a certain element disappears.
+     * Maximum patience is predifined in BasicFunctions.class.
+     * 
+     * @param locator 
+     *          The locator of the element to disappear.
+     * @param failureMessage
+     *          The message to be displayed if an error occures.
+     */
+    public void waitUntilElementDisappears(String failureMessage, By locator)  {
+        waitUntilElementDisappears(failureMessage, locator, MAX_PATIENCE_SECONDS);
+    }
+    
+    /**
+     * Waits until a certain element disappears.
+     * Maximum patience is predifined in BasicFunctions.class.
+     * No specific failure message will be displayed, only the message of the
+     * exception.
+     * 
+     * @param locator 
+     *          The locator of the element to disappear.
+     */
+    public void waitUntilElementDisappears(By locator)  {
+        waitUntilElementDisappears("", locator, MAX_PATIENCE_SECONDS);
     }
 }

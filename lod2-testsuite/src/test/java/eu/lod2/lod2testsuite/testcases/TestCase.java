@@ -5,6 +5,7 @@ import java.io.File;
 import eu.lod2.lod2testsuite.configuration.BasicFunctions;
 import eu.lod2.lod2testsuite.configuration.MyWebDriverEventListener;
 import eu.lod2.lod2testsuite.configuration.Navigator;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -77,6 +78,8 @@ public abstract class TestCase {
         
         driver = new EventFiringWebDriver(
                  new FirefoxDriver()).register(eventListener);
+        // Set implicit waitingtime when a field is not available
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         
         selenium = new WebDriverBackedSelenium(driver, url);
         driverActions = new Actions(driver);

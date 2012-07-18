@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.configuration;
 import java.util.NoSuchElementException;
+import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -33,14 +34,18 @@ public class MyWebDriverEventListener implements WebDriverEventListener {
     public void afterFindBy(By by, WebElement element, WebDriver selenium){
         logger.debug("Found: '" +lastFindBy+ "'.");
     }
- 
+    
+    public void onException(Throwable error, WebDriver selenium){}
+    /*
     public void onException(Throwable error, WebDriver selenium){
         if (error.getClass().equals(NoSuchElementException.class)){
             logger.error("WebDriver error: Element not found " +lastFindBy);
         } else {
-            logger.error("WebDriver error:", error);
+            //logger.error("WebDriver error:", error);
+            logger.error(error.getLocalizedMessage());
         }
     }
+    */
     
     public void beforeClickOn(WebElement element, WebDriver selenium){
         logger.debug("Trying to click: '" +element+ "'");

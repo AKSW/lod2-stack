@@ -18,7 +18,6 @@ import static org.testng.AssertJUnit.*;
  */
 public class QueryingAndExploration extends TestCase{
     
-    
     @Test
     @Parameters({ "query" })
     public void sparqlViaSesameApi(String query)  {
@@ -34,7 +33,7 @@ public class QueryingAndExploration extends TestCase{
         textfield.sendKeys(query);
         
         // Click "evaluate"
-        bf.getExistingAndVisibleElement(By.id("SesameSPARQL_okbutton")).click();
+        bf.getVisibleElement(By.id("SesameSPARQL_okbutton")).click();
         
         bf.waitUntilElementIsVisible(By.xpath("//div[@id='SesameSPARQL_sparqlResult']"
                 + "/div[@class='v-panel-content'][not(text()='')]"));
@@ -73,7 +72,7 @@ public class QueryingAndExploration extends TestCase{
                 By.id("query"));
          
          // Hit play button with predefined query
-         WebElement runButton = bf.getExistingAndVisibleElement(
+         WebElement runButton = bf.getVisibleElement(
                  By.xpath("//div[@id='main']//input[@type='submit']"));
          
          runButton.click();
@@ -105,7 +104,7 @@ public class QueryingAndExploration extends TestCase{
                 By.id("page_query"));
          
          // Hit play button with predefined query
-         WebElement playButton = bf.getExistingAndVisibleElement(
+         WebElement playButton = bf.getVisibleElement(
                  By.xpath("//div[@id='toolbar']//img[contains(@src,'player_play')]"));
          
          playButton.click();

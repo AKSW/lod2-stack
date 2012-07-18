@@ -35,7 +35,6 @@ public class Navigator {
                 pp += " -> " +p;
             x++;
         }
-        
         logger.info("Navigating to: " + pp);
         
         while (index < path.length)  {
@@ -62,7 +61,7 @@ public class Navigator {
                         + "//span[contains(@class,'v-menubar-menuitem')][1]"
                         + "[not(contains(@class,'caption'))]")));
                  
-                TestCase.bf.bePatient();  
+                //TestCase.bf.bePatient();  
             }
             
             // And then move to the desired link
