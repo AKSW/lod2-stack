@@ -306,8 +306,12 @@
     <owl:NamedIndividual rdf:about="&localhost;CKAN">
         <rdf:type rdf:resource="&lod2;Tool"/>
         <rdfs:label xml:lang="en">CKAN</rdfs:label>
-        <tool_description>CKAN is a registry or catalogue system for datasets or other &quot;knowledge&quot; resources. CKAN aims to make it easy to find, share and reuse open content and data, especially in ways that are machine automatable.</tool_description>
-        <contributed_by_partner rdf:resource="&Partner;okfn"/>
+	<tool_description> CKAN is a system for storing, cataloguing and visualising data or other &quot;knowledge&quot; resources. CKAN aims to make it easy to find, share and re-use open content and data, especially in ways that are machine automatable.  </tool_description>
+	<contributed_by_partner rdf:resource="&Partner;okfn"/>
+        <tool_homepage rdf:datatype="&xsd;string">http://ckan.org</tool_homepage>
+	<license rdf:resource="&lod2;GnuAffero3.0"/>
+	<responsible rdf:resource="&lod2;ckan_responsible"/>
+	
     </owl:NamedIndividual>
 
 
@@ -317,7 +321,7 @@
     <owl:NamedIndividual rdf:about="&localhost;D2R-Server">
         <rdf:type rdf:resource="&lod2;Tool"/>
         <rdfs:label xml:lang="en">D2R Server</rdfs:label>
-		<tool_homepage rdf:datatype="&xsd;string">http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/</tool_homepage>
+		<tool_homepage rdf:datatype="&xsd;string">http://d2rq.org/d2r-server</tool_homepage>
         <tool_description>D2R Server is a tool for publishing relational databases on the Semantic Web. It enables RDF and HTML browsers to navigate the content of the database, and allows applications to query the database using the SPARQL query language.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;fub"/>
 		<license rdf:resource="&lod2;Apache_2.0"/>
@@ -407,6 +411,7 @@
     <owl:NamedIndividual rdf:about="&localhost;Sindice">
         <rdf:type rdf:resource="&lod2;Tool"/>
         <rdfs:label xml:lang="en">Sindice</rdfs:label>
+		<tool_homepage rdf:datatype="&xsd;string">http://sindice.com/</tool_homepage>
         <tool_description>Sindice is a state of the art infrastructure to process, consolidate and query the Web of Data. Sindice collates these billions of pieces of metadata into an coherent umbrella of functionalities and services.</tool_description>
         <contributed_by_partner rdf:resource="&Partner;nuig"/>
     </owl:NamedIndividual>
@@ -417,9 +422,14 @@
 
     <owl:NamedIndividual rdf:about="&localhost;Virtuoso">
         <rdf:type rdf:resource="&lod2;Tool"/>
-        <rdfs:label xml:lang="en">Virtuoso</rdfs:label>
+	<rdfs:label xml:lang="en">Virtuoso</rdfs:label>
+		<tool_homepage rdf:datatype="&xsd;string">http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/</tool_homepage>
+		<responsible rdf:resource="&lod2;HughWilliams"/>
         <tool_description>
-Virtuoso is a knowledge store and virtualization platform that transparently integrates Data, Services, and Business Processes across the enterprise. Its product architecture enables it to deliver traditionally distinct server functionality within a single system offering along the following lines: Data Management &amp; Integration (SQL, XML and EII), Application Integration (Web Services &amp; SOA), Process Management &amp; Integration (BPEL), Distributed Collaborative Applications. The open-source data integration server and the highly efficient and scalable RDF triple store implementation in Virtuoso will be the basis for the knowledge store component in the LOD2 Stack.</tool_description>
+		Virtuoso is a knowledge store and virtualization platform that transparently integrates Data, Services, and Business Processes across the enterprise. Its product architecture enables it to deliver traditionally distinct server functionality within a single system offering along the following lines: Data Management &amp; Integration (SQL, XML and EII), Application Integration (Web Services &amp; SOA), Process Management &amp; Integration (BPEL), Distributed Collaborative Applications. The open-source data integration server and the highly efficient and scalable RDF triple store implementation in Virtuoso will be the basis for the knowledge store component in the LOD2 Stack. 
+
+
+	</tool_description>
         <contributed_by_partner rdf:resource="&Partner;openlink"/>
         <license rdf:resource="&lod2;both"/>
     </owl:NamedIndividual>
@@ -769,6 +779,12 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <license_url rdf:datatype="&xsd;string">http://www.apache.org/licenses/LICENSE-2.0</license_url>
     </owl:NamedIndividual>
 
+    <!-- http://lod2.eu/tools.owl#CC_BY_3.0 -->
+    <owl:NamedIndividual rdf:about="&lod2;CC_BY_3.0">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://creativecommons.org/licenses/by/3.0/</license_url>
+    </owl:NamedIndividual>
+
     <!-- http://lod2.eu/tools.owl#CommercialLicense -->
 
     <owl:NamedIndividual rdf:about="&lod2;CommercialLicense">
@@ -799,6 +815,13 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
     <owl:NamedIndividual rdf:about="&lod2;GnuAffero">
         <rdf:type rdf:resource="&lod2;OpenSource"/>
         <license_url rdf:datatype="&xsd;string">http://www.gnu.org/licenses/agpl.html</license_url>
+    </owl:NamedIndividual>
+
+    <!-- http://lod2.eu/tools.owl#GnuAffero3.0 -->
+
+    <owl:NamedIndividual rdf:about="&lod2;GnuAffero3.0">
+        <rdf:type rdf:resource="&lod2;OpenSource"/>
+        <license_url rdf:datatype="&xsd;string">http://www.fsf.org/licensing/licenses/agpl-3.0.html</license_url>
     </owl:NamedIndividual>
 
     <!-- http://lod2.eu/tools.owl#Mozilla_1.1 -->
@@ -833,7 +856,13 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_email rdf:datatype="&xsd;string">Bert.Van.Nuffelen@tenforce.com</person_email>
     </owl:NamedIndividual>
 
+    <!-- http://lod2.eu/tools.owl#ckan_responsible -->
 
+    <owl:NamedIndividual rdf:about="&lod2;ckan_responsible">
+        <rdf:type rdf:resource="&lod2;ToolResponsible"/>
+        <person_name rdf:datatype="&xsd;string">CKAN contact</person_name>
+        <person_email rdf:datatype="&xsd;string">info@ckan.org</person_email>
+    </owl:NamedIndividual>
 
     <!-- http://lod2.eu/tools.owl#RobertIsele -->
 
@@ -843,6 +872,13 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
         <person_email rdf:datatype="&xsd;string">mail@robertisele.com</person_email>
     </owl:NamedIndividual>
 
+    <!-- http://lod2.eu/tools.owl#HughWilliams-->
+
+    <owl:NamedIndividual rdf:about="&lod2;HughWilliams">
+        <rdf:type rdf:resource="&lod2;ToolResponsible"/>
+        <person_name rdf:datatype="&xsd;string">Hugh Williams</person_name>
+        <person_email rdf:datatype="&xsd;string">hwilliams@openlinksw.com</person_email>
+    </owl:NamedIndividual>
 
     <!-- http://lod2.eu/tools.owl#SebastianTramp -->
 
