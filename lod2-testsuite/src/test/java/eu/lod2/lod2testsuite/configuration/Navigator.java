@@ -1,5 +1,7 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.WebDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.List;
@@ -15,8 +17,14 @@ import static org.testng.AssertJUnit.*;
  * @author Stefan Schurischuster
  */
 public class Navigator {
-    private static final Logger logger = Logger.getLogger(TestCase.class);
-
+    private static final Logger logger = Logger.getLogger(Navigator.class);
+    private WebDriver driver;
+    private Actions driverActions;
+    
+    public Navigator(WebDriver driver)  {
+        this.driver = driver;
+    }
+    
     /**
      * This methods navigates through the main link menu of lod2-stack.
      * 
@@ -38,13 +46,18 @@ public class Navigator {
         logger.info("Navigating to: " + pp);
         
         while (index < path.length)  {
+            /*// Prepare link if it contains " ' " a quote. For example: Europe's Public Data
+            if(path[index].contains("'"))  {
+                logger.info("------------contains! "+ path[index].split("'")[0] + " " + path[index].split("'")[1]);
+            }
+            */
             String identifier = "//span[contains(.,'" +path[index]+ "')]"
                     + "[not(contains(@class,'caption'))]";
             if(index > 0)
                 identifier = "//div[@class = 'v-menubar-popup'][last()]" +identifier;
             
             try  {
-                link = TestCase.driver.findElement(
+                link = driver.findElement(
                                 By.xpath(identifier));
             } catch(NoSuchElementException e)  {
                 Assert.fail("Element not found: "+e.getMessage());
@@ -55,17 +68,16 @@ public class Navigator {
             // This should pop up dropdowns.
             if(index > 1)  {
                 // First move to the first avialiable popup item.
-                TestCase.driverActions.moveToElement(
-                        TestCase.driver.findElement(
+                driverActions.moveToElement(
+                        driver.findElement(
                         By.xpath("//div[@class = 'v-menubar-popup'][last()]"
                         + "//span[contains(@class,'v-menubar-menuitem')][1]"
                         + "[not(contains(@class,'caption'))]")));
                  
-                //TestCase.bf.bePatient();  
             }
             
             // And then move to the desired link
-            TestCase.driverActions.moveToElement(link).build().perform();
+            driverActions.moveToElement(link).build().perform();
             
             // If it does not clicking does the job.
             link.click();

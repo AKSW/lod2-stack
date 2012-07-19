@@ -13,30 +13,30 @@
         <listener class-name="eu.lod2.lod2testsuite.configuration.TestNGListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
-
+<!--
     <test name="ExtractionAndLoading" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                    <!-- TC 001 
-                    <include name="openVirtuoso" /> 
-                    -->
+                     TC 001 
+                    <include name="openVirtuoso" /> -->
+                    
                     <!-- TC 002 
-                    <include name="loadRDFdataFromCKAN" /> 
-                    -->
-                    <!-- TC 003-2 -->
+                    <include name="loadRDFdataFromCKAN" /> -->
+                    
+                    <!-- TC 003-2 
                     <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\ealXml.txt" />  
                     <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\ealXslt.txt" />    
-                    <parameter name="exportGraph" value="&nbsp;" />  
+                    <parameter name="exportGraph" value="" />  
                     <include name="basicExtraction" />  
-                    
+                    -->
                     
                     <!-- TC 004 
-                    <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
-                    <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
+                    <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\courts.xml" />  
+                    <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\content.xsl" />    
                     <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\catalog.xml" />    
                     <parameter name="exportGraph" value="http://localhost:8890/DAV" />  
-                    <include name="extendedExtraction" />--> 
+                    <include name="extendedExtraction" /> -->
                     
                     <!-- TC 006 
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
@@ -47,12 +47,12 @@
                     <parameter name="poolPartyProjectId" value="" />    
                     <parameter name="language" value="" />    
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
-                    <include name="poolPartyExtractor" /> -->
+                    <include name="poolPartyExtractor" /> 
                 </methods>
             </class>
         </classes>
     </test>
-    
+    -->
     
     <!--
     <test name="QueryingAndExploration" preserve-order="true">
@@ -69,4 +69,67 @@
             </class>
         </classes>
     </test>-->
+    
+    <!--
+     <test name="Authoring" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.Authoring">
+                <methods>
+                    <include name="ontoWiki" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+    -->
+    <!--
+    <test name="Authoring" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.Authoring">
+                <methods>
+                    <include name="ontoWiki" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+    -->
+    <!--
+    <test name="Linking" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.Linking">
+                <methods>
+                    <include name="silk" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+    -->
+    <!--
+    <test name="Enrichment" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.Enrichment">
+                <methods>
+                    <include name="ore" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+    -->
+    
+    <test name="OnlineToolsAndServices" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.OnlineToolsAndServices">
+                <methods>
+                    <include name="sameAs" />
+                    <include name="sindice" />
+                    <include name="sigma" />
+                    <include name="ckan" />
+                    <include name="poolParty" />
+                    <include name="lodCloud" />
+                    <include name="dbpedia" />
+                    <include name="poolPartySparqlEndpoint" />
+                    <include name="mondecaSparqlEndpointCollection" />
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

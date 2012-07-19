@@ -1,48 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.8//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.7.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.5//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.8//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.7//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.5//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.7//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2.7.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2.5//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>  
-  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC STANDARD ENTITIES v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/xml-entities/wkdsc-standard.ent"/>
-  <public publicId="-//WKD//DTD WKDSC PRODUKTDEFINITION ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-produkt.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC PRODUKTDEFINITION ZWEIG v2.8//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-produkt.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC PRODUKTDEFINITION ZWEIG v2.7.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-produkt.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC PRODUKTDEFINITION ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-produkt.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC PRODUKTDEFINITION ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-produkt.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.9.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.8//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.7.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.6//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.5//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC BEITRAG ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2.8//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2.7.1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2.6//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2.5//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2.3//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMMENTIERUNG ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-kommentierung.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC LEXIKON ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-lexikon.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC LEXIKON ZWEIG v2.8//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-lexikon.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC LEXIKON ZWEIG v2//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-lexikon.dtd"/>
-  <public publicId="-//WKD//DTD WKDSC KOMHBE ZWEIG v1//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-komhbe.dtd"/>  
-  <public publicId="-//WKD//DTD WKDSC REZENSION ZWEIG v2.9//DE" uri="../DTD/wkdsc_v2-9_2009-08-03/wkdsc-rez.dtd"/>  
+  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2.7.1//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC VORSCHRIFT ZWEIG v2//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-vs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.9//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2.7//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ZEITSCHRIFT ZWEIG v2//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-zs.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.9//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNG ZWEIG v2.7//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-es.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC ENTSCHEIDUNGSSAMMLUNG ZWEIG v2.9//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-esa.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC BEITARG ZWEIG v2.3//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/wkdsc-beitrag.dtd"/>
+  <public publicId="-//WKD//DTD WKDSC STANDARD ENTITIES v2//DE" uri="/home/bertv/lod2-stack/wp7/Demo/DTD/wkdsc_v2-9_2009-08-03/xml-entities/wkdsc-standard.ent"/>
+
+  <system systemId="http://xslt.wolterskluwer.de/functions.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/functions.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/aliases.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/aliases.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/content.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/content.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/common-md.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/common-md.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/id-and-ref.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/id-and-ref.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/vs.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/vs.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/es.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/es.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/pm.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/pm.xsl"/>
+  <system systemId="http://xslt.wolterskluwer.de/zs.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/zs.xsl"/>
+
+  <uri name="http://xslt.wolterskluwer.de/functions.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/functions.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/aliases.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/aliases.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/content.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/content.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/common-md.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/common-md.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/id-and-ref.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/id-and-ref.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/vs.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/vs.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/es.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/es.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/pm.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/pm.xsl"/>
+  <uri name="http://xslt.wolterskluwer.de/zs.xsl" uri="/home/bertv/lod2-stack/wp7/Demo/xslt/wkd/zs.xsl"/>
 </catalog>

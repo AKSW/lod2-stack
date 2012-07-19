@@ -1,13 +1,13 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import java.util.List;
-import java.util.logging.Logger;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import eu.lod2.lod2testsuite.testcases.TestCase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -23,7 +23,13 @@ import static org.testng.AssertJUnit.*;
 public class BasicFunctions {
     public static int PATIENCE_MILLI_SECONDS = 900;
     public static int MAX_PATIENCE_SECONDS = 15;
-    private static final Logger logger = Logger.getLogger(BasicFunctions.class.getName());
+    private static final Logger logger = Logger.getLogger(BasicFunctions.class);
+    private WebDriver driver;
+    
+    
+    public BasicFunctions(WebDriver driver) {
+        this.driver = driver;
+    }
     
     /**
      * Sets the local Thread to sleep.
@@ -34,8 +40,8 @@ public class BasicFunctions {
     public void bePatient(int sleeptime)  {
         try  {
             //driverWait.wait(sleeptime);
-            synchronized(TestCase.driver)  {
-                TestCase.driver.wait(sleeptime);
+            synchronized(driver)  {
+                driver.wait(sleeptime);
             }
         } catch(InterruptedException e)  {
             Assert.fail("Could not interrupt Thread: "+e.getMessage());
@@ -62,9 +68,7 @@ public class BasicFunctions {
      */
     public void checkIFrame(By frameIdentifier, By contentIdentifier)  {
         WebElement iframe = waitUntilElementIsVisible(frameIdentifier);
-        
-        TestCase.driver.switchTo().frame(iframe);
-        System.out.println("Switched to iframe");
+        driver.switchTo().frame(iframe);
         
         WebElement contentElement = waitUntilElementIsVisible(
                 "Iframe content was not correctly displayed.",
@@ -81,7 +85,7 @@ public class BasicFunctions {
      */
     public boolean isElementPresent(By locator)  {
         try  {
-            WebElement element = TestCase.driver.findElement(locator);
+            WebElement element = driver.findElement(locator);
         } catch(NoSuchElementException e)  {
             return false;
         } catch(Exception e)  {
@@ -103,7 +107,7 @@ public class BasicFunctions {
     public boolean isElementVisible(By locator)  {
         WebElement element = null;
         try  {
-           element = TestCase.driver.findElement(locator);
+           element = driver.findElement(locator);
         } catch(NoSuchElementException e)  {
             return false;
         } catch(Exception e)  {
@@ -124,7 +128,7 @@ public class BasicFunctions {
     public WebElement getVisibleElement(By locator)  {
         WebElement element = null;
         try  {
-            element = TestCase.driver.findElement(locator);
+            element = driver.findElement(locator);
         } catch(NoSuchElementException e)  {
             Assert.fail(e.getMessage());
         }
@@ -144,7 +148,7 @@ public class BasicFunctions {
     public WebElement getVisibleElement(String failureMessage, By locator)  {
         WebElement element = null;
         try  {
-            element = TestCase.driver.findElement(locator);
+            element = driver.findElement(locator);
         } catch(NoSuchElementException e)  {
             Assert.fail(e.getMessage());
         }
@@ -164,7 +168,7 @@ public class BasicFunctions {
     public WebElement getExistingElement(By locator)  {
         WebElement element = null;
         try  {
-            element = TestCase.driver.findElement(locator);
+            element = driver.findElement(locator);
         } catch(NoSuchElementException e)  {
             Assert.fail(e.getMessage());
         }
@@ -315,7 +319,7 @@ public class BasicFunctions {
      *          returned.
      */
     public WebElement waitUntilElementIsVisible(String failureMessage, By locator, int maxPatienceSeconds)  {
-        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, maxPatienceSeconds);
+        WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
         if(!failureMessage.isEmpty())
             pageWait.withMessage("Time expired: " +failureMessage);
         WebElement element = null;
@@ -344,7 +348,7 @@ public class BasicFunctions {
      *          All elements of the locator
      */
     public List<WebElement> waitUntilElementsAreVisible(String failureMessage, By locator)  {
-        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, MAX_PATIENCE_SECONDS);
+        WebDriverWait pageWait = new WebDriverWait(driver, MAX_PATIENCE_SECONDS);
         if(!failureMessage.isEmpty())
             pageWait.withMessage("Time expired: " +failureMessage);
         List<WebElement> elements = null;
@@ -355,7 +359,7 @@ public class BasicFunctions {
                 ExpectedConditions.visibilityOfElementLocated(locator));
             
             // Get multiple WebElements
-            elements = TestCase.driver.findElements(locator);
+            elements = driver.findElements(locator);
 
         } catch(NoSuchElementException e)  {
             if(!failureMessage.isEmpty())
@@ -375,7 +379,7 @@ public class BasicFunctions {
      * @return 
      */
     public WebElement waitUntilElementIsPresent(String failureMessage, By locator)  {
-        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, MAX_PATIENCE_SECONDS);
+        WebDriverWait pageWait = new WebDriverWait(driver, MAX_PATIENCE_SECONDS);
         pageWait.withMessage("Time expired: " +failureMessage);
         
         WebElement element = null;
@@ -400,7 +404,7 @@ public class BasicFunctions {
      *          The max time to wait before throwing an error.
      */
     public void waitUntilElementDisappears(String failureMessage, By locator, int maxPatienceSeconds)  {
-        WebDriverWait pageWait = new WebDriverWait(TestCase.driver, maxPatienceSeconds);
+        WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
         try  {
             pageWait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
         } catch(NoSuchElementException e)  {

@@ -187,11 +187,22 @@ public class ExtractionAndLoading extends TestCase {
         
         bf.handleFileUpload(By.id("EXMLExtended_uploadCatalogFile"), catalogFile);
         
-        uploadButton.click();
-        //Upload should have succeeded.
+        // Begin transformation
+        transformButton.click();
+        
+        WebElement resultField = bf.waitUntilElementIsVisible(
+                "No result is able after transformation.", 
+                By.id("EXMLExtended_textToAnnotateField"));
+                
+        // Check for dowload dialogue
+        assertTrue("Download dialogue is missing.", bf.isElementVisible(By.id("EXMLExtended_dlFileName")));
+        
+        // @TODO: Maybe add a check for the contents of the textfield.
         
         assertFalse("Error message appeared.",
                 bf.getExistingElement(By.xpath("//div[@class='gwt-HTML']")).isDisplayed());
+        
+        
     }
     
     /**
