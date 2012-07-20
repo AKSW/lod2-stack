@@ -23,6 +23,7 @@ public class Navigator {
     
     public Navigator(WebDriver driver)  {
         this.driver = driver;
+        this.driverActions = new Actions(driver);
     }
     
     /**

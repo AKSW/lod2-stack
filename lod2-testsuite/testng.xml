@@ -13,41 +13,40 @@
         <listener class-name="eu.lod2.lod2testsuite.configuration.TestNGListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
-<!--
+
     <test name="ExtractionAndLoading" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                     TC 001 
-                    <include name="openVirtuoso" /> -->
+                    <include name="openVirtuoso" />
                     
-                    <!-- TC 002 
-                    <include name="loadRDFdataFromCKAN" /> -->
+                    <parameter name="graphName" value="http://localhost/Geo" />
+                    <parameter name="graphFilePath" value="F:\SVN\lod2-testsuite\files\geo.rdf" />
+                    <include name="uploadGraphInVirtuoso" />
                     
-                    <!-- TC 003-2 
+                    <exclude  name="loadRDFdataFromCKAN" />
+                    
                     <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\ealXml.txt" />  
                     <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\ealXslt.txt" />    
                     <parameter name="exportGraph" value="" />  
-                    <include name="basicExtraction" />  
-                    -->
+                    <exclude name="basicExtraction" />  
                     
-                    <!-- TC 004 
                     <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\courts.xml" />  
                     <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\content.xsl" />    
                     <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\catalog.xml" />    
                     <parameter name="exportGraph" value="http://localhost:8890/DAV" />  
-                    <include name="extendedExtraction" /> -->
+                    <parameter name="downloadFileName" value="downloadedExtendedExtraction" />    
+                    <parameter name="downloadFilePath" value="F:\SVN\lod2-testsuite\files\" />
+                    <exclude name="extendedExtraction" /> 
                     
-                    <!-- TC 006 
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
-                    <include name="annotatePlainText" /> 
-                    -->
-                    <!-- TC 007 
+                    <exclude name="annotatePlainText" /> 
+                    
                     <parameter name="exportGraph" value="" />  
                     <parameter name="poolPartyProjectId" value="" />    
                     <parameter name="language" value="" />    
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
-                    <include name="poolPartyExtractor" /> 
+                    <exclude name="poolPartyExtractor" /> 
                 </methods>
             </class>
         </classes>
@@ -59,17 +58,16 @@
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
-                     TC 001 -->
-                    <!-- TC 002 
                     <include name="ontoWikiSparql" />
-                    
                     <include name="virtuosoSparql" />
                     <include name="virtuosoInteractiveSparql" />
+                    <include name="sigmaEe" />
+                    <exclude name="geoSpatialExploration" />
                 </methods>
             </class>
         </classes>
-    </test>-->
-    
+    </test>
+    -->
     <!--
      <test name="Authoring" preserve-order="true">
         <classes>
@@ -98,6 +96,8 @@
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
                 <methods>
                     <include name="silk" />
+                    <exclude name="limes" />
+                    <exclude name="sameAsLinking" />
                 </methods>
             </class>
         </classes>
@@ -114,7 +114,7 @@
         </classes>
     </test>
     -->
-    
+    <!--
     <test name="OnlineToolsAndServices" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.OnlineToolsAndServices">
@@ -132,4 +132,17 @@
             </class>
         </classes>
     </test>
+    -->
+    <!--
+     <test name="Configuration" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.testcases.Configuration">
+                <methods>
+                    <include name="about" />
+                    <exclude name="demonstratorConfig" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+    -->
 </suite>

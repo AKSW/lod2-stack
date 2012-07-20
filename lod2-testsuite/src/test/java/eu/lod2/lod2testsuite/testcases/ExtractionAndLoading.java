@@ -23,7 +23,6 @@ public class ExtractionAndLoading extends TestCase {
     
     /**
      * TC 001
-     * @TODO test: check if logged in
      */
     @Test
     public void openVirtuoso()  {
@@ -37,12 +36,55 @@ public class ExtractionAndLoading extends TestCase {
                 By.xpath("//iframe[contains(@src,'conductor')]"), 
                 By.id("MTB"));
         
-        /*
-        // Check if logged in
-        bf.getVisibleElement(By.xpath(
-                "//div[@class='login_info'][contains.,'logged in as']"
-                + "[cotnains(.,'Log out')]"));
-        */
+    }
+    
+    /**
+     * Uploads a graph to the lod2stack
+     */
+    @Parameters({ "graphName", "graphFilePath"})
+    @Test(dependsOnMethods={"openVirtuoso"})
+    public void uploadGraphInVirtuoso(String graphName, String graphFilePath)  {
+        // Vitruoso is already opened.
+        // But frames have been switched. so check 
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'conductor')]"),
+                By.id("MTB"));
+        // If not logged in: log into Virtuoso
+        if (bf.isElementVisible(By.id("t_login_usr"))) {
+            WebElement user = bf.getVisibleElement(
+                    "Could not find user input",
+                    By.id("t_login_usr"));
+            WebElement pw = bf.getVisibleElement(
+                    "Could not find password input",
+                    By.id("t_login_pwd"));
+
+            user.sendKeys("dba");
+            pw.sendKeys("dba");
+
+            // Click login button
+            bf.getVisibleElement(
+                    "Could not find login button",
+                    By.id("login_btn")).click();
+        }
+        // Click on Linked Data tab
+        bf.waitUntilElementIsVisible("Could not find LinkedData tab",
+                By.linkText("Linked Data")).click();
+        // Wait and click on Quad Store Upload
+        bf.waitUntilElementIsVisible("Could not find sub tab Quad Store Upload.",
+                By.linkText("Quad Store Upload")).click();
+        WebElement filePath = bf.waitUntilElementIsVisible("File upload not found",
+                By.xpath("//tr[@id='rd1']//input[@type='file']"));
+        WebElement name = bf.waitUntilElementIsVisible("File upload not found",
+                By.xpath("//tr[@id='rd2']//input[@type='text']"));
+        // Type
+        name.clear();
+        name.sendKeys(graphName);
+        filePath.sendKeys(graphFilePath);
+        // Click upload
+        bf.getVisibleElement("Could not find submit button.", By.name("bt1")).click();
+        // Wait for upload to finish
+        bf.waitUntilElementIsVisible("Upload did not finish",
+                By.xpath("//div[@class='message'][contains(.,'Upload finished')]"), 30);
     }
     
     /**
@@ -57,7 +99,6 @@ public class ExtractionAndLoading extends TestCase {
         
         WebElement link = bf.waitUntilElementIsVisible(
                 By.xpath("//a[starts-with(@href, 'apt:')]"));
-        
         // Check for link count.
         try  {
             assertTrue("Not all CKAN links are displayed.",
@@ -71,7 +112,7 @@ public class ExtractionAndLoading extends TestCase {
     /**
      * TC 003-x
      * @TODO 003-1-2-4
-     * 
+     * @TODO Need testdata for basic extraction
      * Tests transformation and uploading.
      */
     @Test
@@ -128,7 +169,7 @@ public class ExtractionAndLoading extends TestCase {
         
         // Verify result containing an rdf - tag
         resultField.getText().contains("<rdf:");
-         
+        
         uploadButton.click();
         
         // Wait for result to appear.
@@ -144,10 +185,18 @@ public class ExtractionAndLoading extends TestCase {
     /**
      * TC 004-1-4
      * @TODO click buttons and whatch for result.
+     * @TODO Need testdata for extendedExtraction
      */
     @Test
-    @Parameters({ "xmlFile", "xsltFile","cataologFile", "exportGraph" })
-    public void extendedExtraction(String xmlFile, String xsltFile, String catalogFile, String exportGraph) {
+    @Parameters({ 
+        "xmlFile", 
+        "xsltFile",
+        "cataologFile", 
+        "exportGraph", 
+        "downloadFileName", 
+        "downloadFilePath" })
+    public void extendedExtraction(String xmlFile, String xsltFile, String catalogFile, 
+                                   String exportGraph, String downloadFileName, String downloadFilePath) {
         
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
@@ -193,16 +242,21 @@ public class ExtractionAndLoading extends TestCase {
         WebElement resultField = bf.waitUntilElementIsVisible(
                 "No result is able after transformation.", 
                 By.id("EXMLExtended_textToAnnotateField"));
-                
-        // Check for dowload dialogue
+        
+        //@TODO: Maybe add a check for the contents of the textfield.
+        
+        
+        // Download file
         assertTrue("Download dialogue is missing.", bf.isElementVisible(By.id("EXMLExtended_dlFileName")));
+        WebElement filename = bf.getVisibleElement(By.id("EXMLExtended_dlFileName"));
+        WebElement filepath = bf.getVisibleElement(By.id("EXMLExtended_dlPath"));
+        filename.sendKeys(downloadFileName);
+        filepath.sendKeys(downloadFilePath);
         
-        // @TODO: Maybe add a check for the contents of the textfield.
-        
+        // Click download
+        bf.getVisibleElement(By.id("EXMLExtended_downloadButton")).click();
         assertFalse("Error message appeared.",
                 bf.getExistingElement(By.xpath("//div[@class='gwt-HTML']")).isDisplayed());
-        
-        
     }
     
     /**
@@ -240,12 +294,11 @@ public class ExtractionAndLoading extends TestCase {
     
     /**
      * TC 007
+     * @TODO create TC
      */
     @Test
     @Parameters({ "exportGraph","poolPartyProjectId","language","textFile" })
     public void poolPartyExtractor(String exportGraph, String poolPartyProjectId, String language, String textFile)  {
-        
-        bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
         
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 

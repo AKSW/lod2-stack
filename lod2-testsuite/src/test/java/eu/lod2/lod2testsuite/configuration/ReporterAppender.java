@@ -13,7 +13,20 @@ public class ReporterAppender extends AppenderSkeleton {
 
     @Override
     protected void append(LoggingEvent event) {
-        Reporter.log( event.getRenderedMessage(), false );
+        String m = event.getRenderedMessage();
+        String currName = "";
+        
+        if(m.startsWith("BEGIN TEST"))  {
+            Reporter.log("--------------------------------------------", false);
+            Reporter.log("<b>" + m + "</b>", false);
+            // Get name of test by parsing logging message. 
+            currName = event.getRenderedMessage().split(":")[1].trim();
+        } else if(m.contains("TEST: "+currName))  {
+            Reporter.log("<b>"+m+"</b>", false);
+        } else  {
+            Reporter.log(  this.getLayout().format(event), false );
+        }
+        
         //Reporter.log( this.getLayout().format(event), false );
     }
 

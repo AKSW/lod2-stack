@@ -18,6 +18,11 @@ import static org.testng.AssertJUnit.*;
  */
 public class QueryingAndExploration extends TestCase{
     
+    /**
+     * TC 001
+     * 
+     * @Note: Will change soon.
+     */
     @Test
     @Parameters({ "query" })
     public void sparqlViaSesameApi(String query)  {
@@ -43,8 +48,10 @@ public class QueryingAndExploration extends TestCase{
     
     /**
      * TC 002
-     * Note: Needs a default - graph selected. Otherwise it states a message.
+     * @Note: Needs a default - graph selected. Otherwise it states a message.
      * Test this?
+     * @TODO choose graph??
+     * 
      */
     @Test
     public void ontoWikiSparql()   {
@@ -53,6 +60,46 @@ public class QueryingAndExploration extends TestCase{
             "Querying & Exploration", 
             "SPARQL querying", 
             "OntoWiki SPARQL endpoint"});
+        
+         // Check if isparql page is visible
+         bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'ontowiki')]"),
+                By.name("sparqlquery"));
+         
+         // Choose Graph??
+         
+         // Wait for text input field.
+         bf.waitUntilElementIsVisible(
+                 "Textfield that displays query is not visible.", 
+                 By.className("innercontent"));
+         
+         // Click submit
+         WebElement submitButton = bf.getVisibleElement("Could not find the submit button.",By.xpath(
+                 "//div[@class='messagebox']/div[@class='toolbar']/a[@class='button submit']"));
+         submitButton.click();
+         
+         WebElement firstSubject = bf.waitUntilElementIsVisible("No result from query found.", 
+                 By.id("r0-c0"));
+         
+         /*
+         // If not logged in already log in --> NOT NECESSARY for submitting a query.
+         if(bf.isElementVisible(By.xpath("//div[@class='login.window']")))  {
+             WebElement user = bf.getVisibleElement(
+                     "Could not find user input", 
+                     By.xpath("//input[@class='username.text']"));
+             WebElement pw = bf.getVisibleElement(
+                     "Could not find password input", 
+                     By.xpath("//input[@class='username.text']"));
+             
+             user.sendKeys("dba");
+             pw.sendKeys("dba");
+             
+             // Click login button
+             bf.getVisibleElement(
+                     "Could not find login button",
+                     By.xpath("//a[@class='locallogin.button']")).click();
+         }
+         */
     }
     
     /**
@@ -66,7 +113,7 @@ public class QueryingAndExploration extends TestCase{
             "SPARQL querying", 
             "Virtuoso SPARQL endpoint"});
         
-        // Check if isparql page is visible
+         // Check if isparql page is visible
          bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'sparql')]"), 
                 By.id("query"));
@@ -112,10 +159,6 @@ public class QueryingAndExploration extends TestCase{
          // Get results of query request
          List<WebElement> results = driver.findElements(
                  By.xpath("//div[@id='res_tab_ctr']//tr/td"));
-         /*
-         for(WebElement w : results)  {
-             System.out.println(w.getText());
-         }*/
          
          // Check if there are more then two results.
          assertTrue("Query does not return any data. (Not more then 2).", results.size() > 2);
@@ -136,10 +179,9 @@ public class QueryingAndExploration extends TestCase{
                 By.id("header"));
     }
     
-    
     /**
      * TC 006
-     * @TODO
+     * @TODO create TC
      */
     @Test
     @Parameters({ "geoGraph" })

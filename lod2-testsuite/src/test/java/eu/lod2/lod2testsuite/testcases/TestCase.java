@@ -18,6 +18,9 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.Assert;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 
@@ -90,10 +93,32 @@ public abstract class TestCase {
      * This method is run after every testmethod and returns the focus
      * back to the main window. This is necessery when switching iframes.
      */
-    @BeforeMethod
+    @BeforeMethod(alwaysRun=true)
     public void prepareTestCase()  {
         driver.switchTo().defaultContent();
         logger.debug("Switching to default frame.");
+    }
+    
+    /**
+     * Error messages from former testcases can interfear with current testcases.
+     * Therefore if an error message is present after a testcase has run it 
+     * has to be closed.
+     */
+    @AfterMethod(alwaysRun=true)
+    public void afterTestCase()  {
+        // Error message is visible.
+        if(bf.isElementVisible(By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]")))  {
+            WebElement message =  bf.getVisibleElement(
+                    By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]"));
+            
+            logger.fatal("Error message is visible with text: " + message.getText());
+            
+            message.click();
+            bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));   
+            
+            // Can not throw an exception because that would result in skipping of all following tests.
+            //Assert.fail("Error message is visible after testcase");
+        }
     }
     
     /**

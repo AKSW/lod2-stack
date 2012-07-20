@@ -34,4 +34,33 @@ public class Linking extends TestCase{
                 By.xpath("//iframe[contains(@src,'silk')]"), 
                 By.id("project_movies_example"));
     }
+    
+    /**
+     * TC 002
+     * @TODO create TC
+     */
+    @Test
+    public void limes()  {
+        navigator.navigateTo(new String[] {
+            "Linking", 
+            "Limes"});  
+        /*
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'silk')]"), 
+                By.id("project_movies_example"));
+         * 
+         */
+    }
+    
+    /**
+     * TC 003
+     * @TODO create TC
+     * @TDOD get valid testdata for sameAsLinking
+     */
+    @Test
+    public void sameAsLinking()  {
+        navigator.navigateTo(new String[] {
+            "Linking", 
+            "SameAs Linking"});  
+    }
 }

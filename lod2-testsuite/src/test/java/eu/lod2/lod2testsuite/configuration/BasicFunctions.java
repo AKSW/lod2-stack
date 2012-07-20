@@ -64,7 +64,7 @@ public class BasicFunctions {
      * @param contentIdentifier
      *          The identifier refering to an element inside the frame.
      * 
-     * @TODO Maybe add collecton for multiple content identifiers.
+     * @Notice Maybe add collecton for multiple content identifiers.
      */
     public void checkIFrame(By frameIdentifier, By contentIdentifier)  {
         WebElement iframe = waitUntilElementIsVisible(frameIdentifier);
