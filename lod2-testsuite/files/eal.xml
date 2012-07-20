@@ -1,19 +1,20 @@
 <issue
-  id="i2001030423"
+  id="i2001042003"
   xmlns="http://xmlns.rdfinference.org/ril/issue-tracker"
 >
   <reference>
-    <spec id="ril-20010502" fragment="xpointer(sect1[4]/sect2[2])"/>
+    <spec id="ril-20010502" fragment="xpointer(sect1[2]/sect2[1])"/>
   </reference>
-  <author tag="uogbuji" userid="yes"/>
-  <main>Is the abbreviation of rdf:type predicates in queries necessary?</main>
+  <author tag="nchauvat" userid="yes"/>
+  <main>the RIL versionning is not clear (there's a mix of 0.1, 0/1, 0.2 and
+0/2)</main>
   <comment re="main">
     <author tag="Alexandre Fayolle &lt;Alexandre.Fayolle@logilab.fr>" userid="no"/>
-    <body>The abbreviation in listing 8 doesn't seem necessary to Nico Chauvat or me.</body>
+    <concur/>
   </comment>
   <action>
     <author tag="uogbuji" userid="yes"/>
     <assign to="uogbuji"/>
-    <description>Organize a vote on this topic</description>
+    <description>Correct all to use the "0/1" form in the next draft.</description>
   </action>
 </issue>

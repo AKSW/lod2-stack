@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import java.util.List;
@@ -116,6 +117,13 @@ public class BasicFunctions {
         return element.isDisplayed();
     }
     
+    /**
+     * @return 
+     *       Returns the locator of a vaadin error message.
+     */
+    public By getErrorPopupLocator()  {
+        return By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]");
+    }
     /**
      * Returns an existing and visible WebElement from the webpage.
      * Throws an assert.fail if the element is not present or not visible.
@@ -272,6 +280,19 @@ public class BasicFunctions {
         }
          return lines;   
     }     
+    
+    /**
+     * Sets the value of a field using javascript. This may not trigger the same
+     * events as sendKeys does!
+     * 
+     * @param element
+     *          The WebElement to be set.
+     * @param value 
+     *          The value that is used.
+     */
+    public void setValue(WebElement element, String value) {
+        ((JavascriptExecutor)driver).executeScript("arguments[0].value = arguments[1]", element, value);
+    }    
     
     /**
      * Sets the current browser session to sleep until an element is present.

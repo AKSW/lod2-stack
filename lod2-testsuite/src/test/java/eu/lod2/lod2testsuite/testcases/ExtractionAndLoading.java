@@ -1,6 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import java.util.List;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
 import java.util.ArrayList;
 import junit.framework.Assert;
@@ -20,7 +20,7 @@ import static org.testng.AssertJUnit.*;
  * @email s.schurischuster@semantic-web.at
  */
 public class ExtractionAndLoading extends TestCase {
-    
+    private static final Logger logger = Logger.getLogger(ExtractionAndLoading.class);
     /**
      * TC 001
      */
@@ -111,12 +111,11 @@ public class ExtractionAndLoading extends TestCase {
     
     /**
      * TC 003-x
-     * @TODO 003-1-2-4
-     * @TODO Need testdata for basic extraction
+     * 
      * Tests transformation and uploading.
      */
     @Test
-    @Parameters({ "xmlTextFile", "xsltTextFile", "exportGraph" })
+    @Parameters({ "xmlTextFile", "xsltTextFile", "exportGraphBasicExtraction" })
     public void basicExtraction(String xmlFile, String xsltFile, String exportGraph) {
         
         navigator.navigateTo(new String[] {
@@ -140,80 +139,70 @@ public class ExtractionAndLoading extends TestCase {
         WebElement uploadButton = bf.getVisibleElement(
                 By.id("EXML_uploadButton"));
         
-        // Choose export graph if one is provided.
-        if(!exportGraph.isEmpty())          
-            bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
-        
         // Type into input fields
+        String complete = "";
         for(String chars : xmlText)  {
-            xmlField.sendKeys(chars);
+            complete += chars;
+            complete += "\n";
+            //xmlField.sendKeys(chars);   
         }
+        bf.setValue(xmlField, complete);
+        xmlField.sendKeys(" ");
+        
+        transformButton.click();
         
         // No result should be displayed.
         assertFalse("Result is displayed, although required information is missing.",
                  bf.isElementVisible(By.id("EXML_rdfResultField")));
         
+        complete = "";
         for(String chars : xsltText)  {
-            xsltField.sendKeys(chars);
+            complete += chars;
+            complete += "\n";
+            //xsltField.sendKeys(chars);
         }
-        
+        bf.setValue(xsltField, complete);
+        xsltField.sendKeys(" ");
         transformButton.click();
-        
-        // Do not select any input graph and try to upload
-        //uploadButton.click();
-        
         // Wait for result to appear.
         WebElement resultField = bf.waitUntilElementIsVisible(
                 "Transformation did not succeed. Result was not displayed.", 
                 By.id("EXML_rdfResultField"));
-        
         // Verify result containing an rdf - tag
         resultField.getText().contains("<rdf:");
-        
+        // Don't select a graph and try to upload
         uploadButton.click();
-        
+        bf.waitUntilElementIsVisible(
+                "Upload was successful without any graph.", 
+                By.xpath("//div[@class='v-label'][contains(.,'No graph selected')]"));
+        // Choose graph
+        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
+        uploadButton.click();
         // Wait for result to appear.
-        List<WebElement> uploadResults = bf.waitUntilElementsAreVisible(
-                "Transformation did not succeed. Result was not displayed.", 
-                By.id("EXML_rdfResultField"));
-        
-        // Confirm that last element contains "succeeded".
-        assertTrue("Upload did not work properly.",
-                uploadResults.get(uploadResults.size()-1).getText().contains("suceeded"));
+        WebElement uploadResult = bf.waitUntilElementIsVisible(
+                "Upload was not successful because no message was visible.", 
+                By.xpath("//div[@class='v-label'][contains(.,'Upload succeeded')]"));
     }
+
     
     /**
-     * TC 004-1-4
-     * @TODO click buttons and whatch for result.
-     * @TODO Need testdata for extendedExtraction
+     * TC 004
+     * 
+     * Transforms and uploads.
      */
     @Test
-    @Parameters({ 
-        "xmlFile", 
-        "xsltFile",
-        "cataologFile", 
-        "exportGraph", 
-        "downloadFileName", 
-        "downloadFilePath" })
-    public void extendedExtraction(String xmlFile, String xsltFile, String catalogFile, 
-                                   String exportGraph, String downloadFileName, String downloadFilePath) {
-        
+    @Parameters({ "xmlFile", "xsltFile", "cataologFile", "exportGraphExtendedExtraction",})
+    public void extendedExtraction(String xmlFile, String xsltFile, String catalogFile, String exportGraph) {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Extract RDF from XML", 
             "Extended extraction"});
-                
         WebElement uploadButton = bf.getVisibleElement(
                 By.id("EXMLExtended_uploadButton"));
         WebElement transformButton = bf.getVisibleElement(
                 By.id("EXMLExtended_transformButton"));
-        
-        // Select export graph
-        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
-        
-        // Handle uploads
+
         bf.handleFileUpload(By.id("EXMLExtended_uploadXMLFile"), xmlFile);
-        
         // Check if upload is performed although neccessery fields have not been filled out.
         uploadButton.click();
         WebElement notice = bf.waitUntilElementIsVisible(
@@ -222,9 +211,7 @@ public class ExtractionAndLoading extends TestCase {
         // Click notice
         notice.click();
         bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
-        
         bf.handleFileUpload(By.id("EXMLExtended_uploadXSLTFile"), xsltFile);
-        
         // Check if upload is performed although neccessery fields have not been filled out.
         uploadButton.click();
         notice = bf.waitUntilElementIsVisible(
@@ -233,30 +220,38 @@ public class ExtractionAndLoading extends TestCase {
         // Click notice
         notice.click();
         bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
-        
         bf.handleFileUpload(By.id("EXMLExtended_uploadCatalogFile"), catalogFile);
-        
         // Begin transformation
         transformButton.click();
-        
         WebElement resultField = bf.waitUntilElementIsVisible(
                 "No result is able after transformation.", 
                 By.id("EXMLExtended_textToAnnotateField"));
-        
-        //@TODO: Maybe add a check for the contents of the textfield.
-        
-        
+        // Verify result containing an rdf - tag
+        assertTrue("Transformation result did not contain any rdf information.",
+                resultField.getText().contains("<rdf:"));
+        // Select export graph
+        bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
+        uploadButton.click();
+        // Wait for upload message.
+        WebElement success = bf.waitUntilElementIsVisible("Upload did not succeed. Message was not displayed.", 
+                By.xpath("//div[@class='gwt-HTML']"));
+        assertTrue("Upload did not succeed. Wrong message was displayed.",
+                success.getText().contains("succeeded"));
+    }
+    
+    @Test(dependsOnMethods={"extendedExtraction"})
+    @Parameters({"downloadFileName", "downloadFilePath" })
+    public void downloadExtendedExtraction(String downloadFileName, String downloadFilePath)  {
         // Download file
         assertTrue("Download dialogue is missing.", bf.isElementVisible(By.id("EXMLExtended_dlFileName")));
         WebElement filename = bf.getVisibleElement(By.id("EXMLExtended_dlFileName"));
         WebElement filepath = bf.getVisibleElement(By.id("EXMLExtended_dlPath"));
         filename.sendKeys(downloadFileName);
         filepath.sendKeys(downloadFilePath);
-        
         // Click download
         bf.getVisibleElement(By.id("EXMLExtended_downloadButton")).click();
-        assertFalse("Error message appeared.",
-                bf.getExistingElement(By.xpath("//div[@class='gwt-HTML']")).isDisplayed());
+        assertFalse("Error message appeared.",bf.isElementVisible(bf.getErrorPopupLocator()));
+        
     }
     
     /**
@@ -297,7 +292,7 @@ public class ExtractionAndLoading extends TestCase {
      * @TODO create TC
      */
     @Test
-    @Parameters({ "exportGraph","poolPartyProjectId","language","textFile" })
+    @Parameters({ "exportGraphExtractor","poolPartyProjectId","language","textFile" })
     public void poolPartyExtractor(String exportGraph, String poolPartyProjectId, String language, String textFile)  {
         
         navigator.navigateTo(new String[] {

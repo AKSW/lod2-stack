@@ -18,31 +18,33 @@
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                    <include name="openVirtuoso" />
+                    <exclude name="openVirtuoso" />
                     
                     <parameter name="graphName" value="http://localhost/Geo" />
                     <parameter name="graphFilePath" value="F:\SVN\lod2-testsuite\files\geo.rdf" />
-                    <include name="uploadGraphInVirtuoso" />
+                    <exclude name="uploadGraphInVirtuoso" />
                     
                     <exclude  name="loadRDFdataFromCKAN" />
                     
                     <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\ealXml.txt" />  
                     <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\ealXslt.txt" />    
-                    <parameter name="exportGraph" value="" />  
+                    <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
                     <exclude name="basicExtraction" />  
                     
                     <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\courts.xml" />  
                     <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\content.xsl" />    
                     <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\catalog.xml" />    
-                    <parameter name="exportGraph" value="http://localhost:8890/DAV" />  
+                    <parameter name="exportGraphExtendedExtraction" value="http://localhost/Geo" />  
+                    <include name="extendedExtraction" /> 
+                    
                     <parameter name="downloadFileName" value="downloadedExtendedExtraction" />    
                     <parameter name="downloadFilePath" value="F:\SVN\lod2-testsuite\files\" />
-                    <exclude name="extendedExtraction" /> 
+                    <exclude name="downloadExtendedExtraction" /> 
                     
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
                     <exclude name="annotatePlainText" /> 
                     
-                    <parameter name="exportGraph" value="" />  
+                    <parameter name="exportGraphExtractor" value="" />  
                     <parameter name="poolPartyProjectId" value="" />    
                     <parameter name="language" value="" />    
                     <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
@@ -51,8 +53,7 @@
             </class>
         </classes>
     </test>
-    -->
-    
+
     <!--
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>

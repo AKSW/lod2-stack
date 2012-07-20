@@ -55,27 +55,6 @@
     </rit:action>
   </xsl:template>
 
-  <xsl:template match="it:comment">
-    <rit:comment>
-      <rdf:Description>
-        <xsl:apply-templates/>
-        <it:body><xsl:value-of select="it:body"/></it:body>
-      </rdf:Description>
-    </rit:comment>
-  </xsl:template>
-
-  <xsl:template match="it:comment/concur">
-    <rit:body>I agree</rit:body>
-  </xsl:template>
-
-  <xsl:template match="it:action/it:assign">
-    <rit:assigned-to rdf:resource="{concat($it-users, @to)}"/>
-  </xsl:template>
-
-  <xsl:template match="it:action/it:description">
-    <rit:body><xsl:apply-templates/></rit:body>
-  </xsl:template>
-
   <xsl:template match="it:reference" mode="resolve-ref">
     <xsl:choose>
       <xsl:when test="it:spec">

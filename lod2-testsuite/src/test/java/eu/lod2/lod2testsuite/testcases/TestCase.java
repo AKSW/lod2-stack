@@ -18,8 +18,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.testng.Assert;
-import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -54,22 +52,6 @@ public abstract class TestCase {
         ffProfile = context.getCurrentXmlTest().getParameter("firefox.profile");        
         
         eventListener = new MyWebDriverEventListener();
-        
-        /*
-        FirefoxProfile firefoxProfile = new FirefoxProfile(new File(ffProfile));
-        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-        LoggingPreferences logs = new LoggingPrferences();
-        logs.enable(LogType.DRIVER, Level.OFF);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-        // @TODO  add firefox prfile to capabilities.
-        //capabilities.setCapability(CapabilityType.firefoxProfile);
-        //driver = new FirefoxDriver(firefoxProfile);
-         */
-        
-        
-        // Choose the right driver
-        //driver = new FirefoxDriver(capabilities);
-        //driver = new FirefoxDriver();
         
         driver = new EventFiringWebDriver(
                  new FirefoxDriver()).register(eventListener);
@@ -107,12 +89,9 @@ public abstract class TestCase {
     @AfterMethod(alwaysRun=true)
     public void afterTestCase()  {
         // Error message is visible.
-        if(bf.isElementVisible(By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]")))  {
-            WebElement message =  bf.getVisibleElement(
-                    By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]"));
-            
+        if(bf.isElementVisible(bf.getErrorPopupLocator()))  {
+            WebElement message =  bf.getVisibleElement(bf.getErrorPopupLocator());
             logger.fatal("Error message is visible with text: " + message.getText());
-            
             message.click();
             bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));   
             
