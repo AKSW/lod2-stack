@@ -124,6 +124,16 @@ public class BasicFunctions {
     public By getErrorPopupLocator()  {
         return By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]");
     }
+    
+    /**
+     * For example when an upload has completed.
+     * 
+     * @return 
+     *      Returns the locator of a vaadin info message.
+     */
+    public By getInfoPopupLocator()  {
+        return By.xpath("//div[@class='gwt-HTML']/../..[@class='v-Notification']");
+    }
     /**
      * Returns an existing and visible WebElement from the webpage.
      * Throws an assert.fail if the element is not present or not visible.
@@ -204,6 +214,9 @@ public class BasicFunctions {
         } catch (NoSuchElementException e) {
             Assert.fail(e.getMessage());
         }
+        
+        assertTrue("File not found: " +pathToFile, isLocalFileAvailable(pathToFile));
+        
         input.sendKeys(pathToFile);
         File file = new File(pathToFile);
         
@@ -251,7 +264,21 @@ public class BasicFunctions {
              bePatient();
          }
     }
-
+    
+    /**
+     * Checks whether a file is avialble under the given file path.
+     */
+    private boolean isLocalFileAvailable(String filepath) {
+        try {
+            if (new File(filepath).exists()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+    }
     /**
      * Reads a file from resources.
      * 
@@ -280,6 +307,26 @@ public class BasicFunctions {
         }
          return lines;   
     }     
+    
+    /**
+     * Scrolls to position.
+     * 
+     * @param x
+     * @param y 
+     */
+    public void scrollTo(int x, int y)  {
+        ((JavascriptExecutor) driver).executeScript("javascript:window.scrollBy(" +x+ "," +y+ ");");
+    }
+    
+    /**
+     * Scrolls into view.
+     * 
+     * @param element 
+     *          The element to be scrolled to.
+     */
+    public void scrollIntoView(WebElement element)  {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
     
     /**
      * Sets the value of a field using javascript. This may not trigger the same
