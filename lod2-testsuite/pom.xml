@@ -25,9 +25,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.0.1</version>
+            <version>6.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -64,7 +69,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                
                 <configuration>
+                    <systemProperties>
+                        <property>
+                            <name>org.uncommons.reportng.escape-output</name>
+                            <value>false</value>
+                        </property>
+                    </systemProperties>
                     <skip>true</skip>
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
@@ -90,5 +102,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>      
+    </build> 
+
 </project>

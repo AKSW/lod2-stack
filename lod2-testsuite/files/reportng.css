@@ -1,0 +1,12 @@
+.output {
+	font-family: arial; 
+	font-size:small
+}
+
+.hidden { 
+	display: none; 
+}
+
+.unhidden { 
+	display: block; 
+}

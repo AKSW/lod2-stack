@@ -16,7 +16,6 @@ import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -79,6 +78,12 @@ public abstract class TestCase {
     public void prepareTestCase()  {
         driver.switchTo().defaultContent();
         logger.debug("Switching to default frame.");
+                
+        WebElement toMove = bf.getVisibleElement(By.xpath(
+                "//img[@src='/lod2demo/VAADIN/themes/lod2/app_images/logo-lod2-small.png']"));
+        //driverActions.moveToElement(toMove).build().perform();
+        // Reposition the browser view to be at the top.
+        bf.scrollIntoView(toMove);
     }
     
     /**
@@ -94,7 +99,6 @@ public abstract class TestCase {
             logger.fatal("Error message is visible with text: " + message.getText());
             message.click();
             bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));   
-            
             // Can not throw an exception because that would result in skipping of all following tests.
             //Assert.fail("Error message is visible after testcase");
         }

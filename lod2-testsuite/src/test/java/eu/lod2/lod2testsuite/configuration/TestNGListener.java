@@ -11,7 +11,6 @@ import org.testng.TestListenerAdapter;
 public class TestNGListener extends TestListenerAdapter {
  
     private static final Logger logger = Logger.getLogger(TestNGListener.class);    
-    
     @Override
     public void onTestSuccess(ITestResult tr) {
         super.onTestSuccess(tr);

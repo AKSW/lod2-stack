@@ -41,8 +41,9 @@ public class ExtractionAndLoading extends TestCase {
     /**
      * Uploads a graph to the lod2stack
      */
+    //@Test(dependsOnMethods={"openVirtuoso"})
+    @Test
     @Parameters({ "graphName", "graphFilePath"})
-    @Test(dependsOnMethods={"openVirtuoso"})
     public void uploadGraphInVirtuoso(String graphName, String graphFilePath)  {
         // Vitruoso is already opened.
         // But frames have been switched. so check 
@@ -154,7 +155,6 @@ public class ExtractionAndLoading extends TestCase {
         // No result should be displayed.
         assertFalse("Result is displayed, although required information is missing.",
                  bf.isElementVisible(By.id("EXML_rdfResultField")));
-        
         complete = "";
         for(String chars : xsltText)  {
             complete += chars;
@@ -170,11 +170,15 @@ public class ExtractionAndLoading extends TestCase {
                 By.id("EXML_rdfResultField"));
         // Verify result containing an rdf - tag
         resultField.getText().contains("<rdf:");
+        
+        /*
         // Don't select a graph and try to upload
         uploadButton.click();
         bf.waitUntilElementIsVisible(
                 "Upload was successful without any graph.", 
                 By.xpath("//div[@class='v-label'][contains(.,'No graph selected')]"));
+        */
+        
         // Choose graph
         bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
         uploadButton.click();
@@ -204,42 +208,49 @@ public class ExtractionAndLoading extends TestCase {
 
         bf.handleFileUpload(By.id("EXMLExtended_uploadXMLFile"), xmlFile);
         // Check if upload is performed although neccessery fields have not been filled out.
-        uploadButton.click();
-        WebElement notice = bf.waitUntilElementIsVisible(
-                "No error message appeared after clicking upload with a field missing.", 
-                By.xpath("//div[@class='gwt-HTML']"));
-        // Click notice
-        notice.click();
-        bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
+        transformButton.click();
+        assertFalse("XML was transformed although necessary information was missing.",
+                bf.isElementVisible(By.id("EXMLExtended_textToAnnotateField")));
+                
         bf.handleFileUpload(By.id("EXMLExtended_uploadXSLTFile"), xsltFile);
         // Check if upload is performed although neccessery fields have not been filled out.
-        uploadButton.click();
-        notice = bf.waitUntilElementIsVisible(
-                "No error message appeared after clicking upload with a field missing.", 
-                By.xpath("//div[@class='gwt-HTML']"));
-        // Click notice
-        notice.click();
-        bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
+        transformButton.click();
+        assertFalse("XML was transformed although necessary information was missing.",
+                bf.isElementVisible(By.id("EXMLExtended_textToAnnotateField")));
+        
         bf.handleFileUpload(By.id("EXMLExtended_uploadCatalogFile"), catalogFile);
-        // Begin transformation
         transformButton.click();
         WebElement resultField = bf.waitUntilElementIsVisible(
                 "No result is able after transformation.", 
                 By.id("EXMLExtended_textToAnnotateField"));
+        
         // Verify result containing an rdf - tag
-        assertTrue("Transformation result did not contain any rdf information.",
-                resultField.getText().contains("<rdf:"));
+        //assertTrue("Transformation result did not contain any rdf information.",
+        //        resultField.getText().contains("<rdf:"));
+        
+        // Transformation completed start uploading.
         // Select export graph
         bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
         uploadButton.click();
         // Wait for upload message.
-        WebElement success = bf.waitUntilElementIsVisible("Upload did not succeed. Message was not displayed.", 
-                By.xpath("//div[@class='gwt-HTML']"));
+        WebElement success = bf.waitUntilElementIsVisible(
+                "Upload did not succeed. Message was not displayed.", 
+                bf.getInfoPopupLocator());
+
         assertTrue("Upload did not succeed. Wrong message was displayed.",
                 success.getText().contains("succeeded"));
     }
     
-    @Test(dependsOnMethods={"extendedExtraction"})
+    /**
+     * TC 005
+     * 
+     * Performs a download of rdf code after it is been transformed by 
+     * Extended Extraction.
+     * It depends on the method extendedExtraction() which means it will be 
+     * skipped if extendedExtraction() fails.
+     */
+    //@Test(dependsOnMethods={"extendedExtraction"})
+    @Test
     @Parameters({"downloadFileName", "downloadFilePath" })
     public void downloadExtendedExtraction(String downloadFileName, String downloadFilePath)  {
         // Download file
@@ -251,7 +262,6 @@ public class ExtractionAndLoading extends TestCase {
         // Click download
         bf.getVisibleElement(By.id("EXMLExtended_downloadButton")).click();
         assertFalse("Error message appeared.",bf.isElementVisible(bf.getErrorPopupLocator()));
-        
     }
     
     /**
@@ -298,5 +308,6 @@ public class ExtractionAndLoading extends TestCase {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Extract RDF from text w.r.t. a controlled vocabulary"});
+        Assert.fail();
     }
 }
