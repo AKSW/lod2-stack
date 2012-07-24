@@ -52,7 +52,7 @@ public class ScreenShotListener extends TestListenerAdapter {
         }
         try  {
             File screen =  new File(dir+filename);
-            System.out.println("Trying to move to: "+screen.getAbsolutePath() + screen.getName());
+            logger.debug("Trying to move to: "+screen.getAbsolutePath() + screen.getName());
             FileUtils.moveFile(file,screen);
         }catch(IOException e)  {
             Assert.fail("could not copy screenshot");

@@ -168,9 +168,9 @@ public class BasicFunctions {
         try  {
             element = driver.findElement(locator);
         } catch(NoSuchElementException e)  {
-            Assert.fail(e.getMessage());
+            Assert.fail(failureMessage + " : " +e.getMessage());
         }
-        assertTrue("Element is not visible: " +element, element.isDisplayed());
+        assertTrue("Element is not visible: '" +element +"' : "+failureMessage, element.isDisplayed());
         return element;
     }
     
@@ -268,7 +268,7 @@ public class BasicFunctions {
     /**
      * Checks whether a file is avialble under the given file path.
      */
-    private boolean isLocalFileAvailable(String filepath) {
+    public boolean isLocalFileAvailable(String filepath) {
         try {
             if (new File(filepath).exists()) {
                 return true;

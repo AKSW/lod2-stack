@@ -8,9 +8,9 @@ import org.testng.TestListenerAdapter;
  *
  * @author Stefan Schurischuster
  */
-public class TestNGListener extends TestListenerAdapter {
+public class TestCaseListener extends TestListenerAdapter {
  
-    private static final Logger logger = Logger.getLogger(TestNGListener.class);    
+    private static final Logger logger = Logger.getLogger(TestCaseListener.class);    
     @Override
     public void onTestSuccess(ITestResult tr) {
         super.onTestSuccess(tr);

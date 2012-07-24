@@ -10,7 +10,7 @@
     />
     
     <listeners>
-        <listener class-name="eu.lod2.lod2testsuite.configuration.TestNGListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.TestCaseListener" />
         <listener class-name="eu.lod2.lod2testsuite.configuration.ScreenShotListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
