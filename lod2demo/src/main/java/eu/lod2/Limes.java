@@ -88,10 +88,12 @@ public class Limes extends CustomComponent
 
         sourceGraph = new ExportSelector3(state, false, "Select graph with Source Limes data:");
         sourceGraph.setDebugId(this.getClass().getSimpleName()+"_sourceGraph");
+        sourceGraph.graphSelector.setDebugId(this.getClass().getSimpleName()+"_graphSelector"+"_sourceGraph");
         t2f.getLayout().addComponent(sourceGraph);
 
         targetGraph = new ExportSelector3(state, false, "Select graph with Target Limes data:");
         targetGraph.setDebugId(this.getClass().getSimpleName()+"_targetGraph");
+        targetGraph.graphSelector.setDebugId(this.getClass().getSimpleName()+"_graphSelector"+"_targetGraph");
         t2f.getLayout().addComponent(targetGraph);
         // initialize the footer area of the form
         HorizontalLayout t2ffooterlayout = new HorizontalLayout();

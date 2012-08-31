@@ -93,7 +93,7 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
     private LOD2DemoState state;
 
     // fields
-    private ComboBox graphSelector;
+    public  ComboBox graphSelector;
     private Label    status;
     private Link     exploreGraph;
     private Boolean updateCurrentGraph = false;
