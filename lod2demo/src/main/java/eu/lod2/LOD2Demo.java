@@ -408,6 +408,21 @@ public class LOD2Demo extends Application
                     mainContainer.setExpandRatio(workspace, 2.0f);
                 }
             };
+            
+            MenuBar.Command mq6c = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                	workspace.removeAllComponents();
+                    Sparqled content = new Sparqled(state);
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
 
 
             MenuBar.Command mo1c = new MenuBar.Command() {
@@ -603,6 +618,8 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mqs2 = mq1.addItem("OntoWiki SPARQL endpoint", null, mq2c);
             MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);
             MenuBar.MenuItem mqs4 = mq1.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
+            // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
+            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq6c);
 
             MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
