@@ -1,14 +1,14 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import org.apache.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import java.util.ArrayList;
 import junit.framework.Assert;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import static org.testng.AssertJUnit.*;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*;
 
 /**
  * This class contains functional tests concerning extraction and loading of
@@ -21,35 +21,40 @@ import static org.testng.AssertJUnit.*;
  */
 public class ExtractionAndLoading extends TestCase {
     private static final Logger logger = Logger.getLogger(ExtractionAndLoading.class);
+    
     /**
-     * TC 001
+     * TC 001.
      */
     @Test
     public void openVirtuoso()  {
-        
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Upload RDF file or RDF from URL"});
-
         // Check if Iframe is visible and shows Virtuoso.
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'conductor')]"), 
                 By.id("MTB"));
-        
     }
     
     /**
-     * Uploads a graph to the lod2stack
+     * Uploads a graph to the lod2stack.
      */
     //@Test(dependsOnMethods={"openVirtuoso"})
     @Test
     @Parameters({ "graphName", "graphFilePath"})
     public void uploadGraphInVirtuoso(String graphName, String graphFilePath)  {
-        // Vitruoso is already opened.
+        // Get absolute paths.
+        graphFilePath = getAbsolutePath(graphFilePath);
+        // Check if required files exist
+        assertTrue("Could not find graph file on local drive: " + graphFilePath, 
+                bf.isLocalFileAvailable(graphFilePath));
+        
+        // Virtuoso must be opened already.
         // But frames have been switched. so check 
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'conductor')]"),
                 By.id("MTB"));
+
         // If not logged in: log into Virtuoso
         if (bf.isElementVisible(By.id("t_login_usr"))) {
             WebElement user = bf.getVisibleElement(
@@ -89,11 +94,10 @@ public class ExtractionAndLoading extends TestCase {
     }
     
     /**
-     * TC 002
+     * TC 002.
      */
     @Test
     public void loadRDFdataFromCKAN()  {
-        
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Load RDF data from CKAN"});
@@ -111,13 +115,21 @@ public class ExtractionAndLoading extends TestCase {
     }
     
     /**
-     * TC 003-x
+     * TC 003-x.
      * 
      * Tests transformation and uploading.
      */
     @Test
     @Parameters({ "xmlTextFile", "xsltTextFile", "exportGraphBasicExtraction" })
     public void basicExtraction(String xmlFile, String xsltFile, String exportGraph) {
+        // Set absolute paths.
+        xmlFile = getAbsolutePath(xmlFile);
+        xsltFile = getAbsolutePath(xsltFile);
+        // Check files availability 
+        assertTrue("Could not find xmlFile on local drive: " + xmlFile, 
+                bf.isLocalFileAvailable(xmlFile));
+        assertTrue("Could not find xsltFile on local drive: " + xsltFile, 
+                bf.isLocalFileAvailable(xsltFile));
         
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
@@ -130,13 +142,10 @@ public class ExtractionAndLoading extends TestCase {
         // Wait for first element
         WebElement xmlField = bf.waitUntilElementIsVisible(
                 By.id("EXML_xmlText"));
-        
         WebElement xsltField = bf.getVisibleElement(
                 By.id("EXML_xsltText"));
-        
         WebElement transformButton = bf.getVisibleElement(
                 By.id("EXML_transformButton"));
-        
         WebElement uploadButton = bf.getVisibleElement(
                 By.id("EXML_uploadButton"));
         
@@ -145,7 +154,7 @@ public class ExtractionAndLoading extends TestCase {
         for(String chars : xmlText)  {
             complete += chars;
             complete += "\n";
-            //xmlField.sendKeys(chars);   
+            //xmlField.sendKeys(chars);   // To slow.
         }
         bf.setValue(xmlField, complete);
         xmlField.sendKeys(" ");
@@ -169,7 +178,7 @@ public class ExtractionAndLoading extends TestCase {
                 "Transformation did not succeed. Result was not displayed.", 
                 By.id("EXML_rdfResultField"));
         // Verify result containing an rdf - tag
-        resultField.getText().contains("<rdf:");
+        assertTrue("No rdf tags found.",resultField.getText().contains("<rdf:"));
         
         /*
         // Don't select a graph and try to upload
@@ -195,8 +204,20 @@ public class ExtractionAndLoading extends TestCase {
      * Transforms and uploads.
      */
     @Test
-    @Parameters({ "xmlFile", "xsltFile", "cataologFile", "exportGraphExtendedExtraction",})
+    @Parameters({ "xmlFile", "xsltFile", "catalogFile", "exportGraphExtendedExtraction",})
     public void extendedExtraction(String xmlFile, String xsltFile, String catalogFile, String exportGraph) {
+        // Set absolute paths.
+        xmlFile = getAbsolutePath(xmlFile);
+        xsltFile = getAbsolutePath(xsltFile);
+        catalogFile = getAbsolutePath(catalogFile);
+        // Check files available.
+        assertTrue("Could not find xmlFile on local drive: " + xmlFile, 
+                bf.isLocalFileAvailable(xmlFile));
+        assertTrue("Could not find xsltFile on local drive: " + xsltFile, 
+                bf.isLocalFileAvailable(xsltFile));
+        assertTrue("Could not find catalogFile on local drive: " + catalogFile, 
+                bf.isLocalFileAvailable(catalogFile));
+        
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Extract RDF from XML", 
@@ -265,11 +286,14 @@ public class ExtractionAndLoading extends TestCase {
     }
     
     /**
-     * TC 006
+     * TC 006.
      */
     @Test
     @Parameters({ "textFile" })
     public void annotatePlainText(String textFile)  {        
+        // Set absolute paths.
+        textFile = getAbsolutePath(textFile);
+
         bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
@@ -298,12 +322,14 @@ public class ExtractionAndLoading extends TestCase {
     }
     
     /**
-     * TC 007
+     * TC 007.
      * @TODO create TC
      */
     @Test
     @Parameters({ "exportGraphExtractor","poolPartyProjectId","language","textFile" })
     public void poolPartyExtractor(String exportGraph, String poolPartyProjectId, String language, String textFile)  {
+        // Set absolute paths.
+        textFile = getAbsolutePath(textFile);
         
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 

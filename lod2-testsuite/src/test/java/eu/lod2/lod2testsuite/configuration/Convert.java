@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- *
+ * Contains basic parsing methods.
+ * 
  * @author Stefan Schurischuster
  */
 public class Convert {

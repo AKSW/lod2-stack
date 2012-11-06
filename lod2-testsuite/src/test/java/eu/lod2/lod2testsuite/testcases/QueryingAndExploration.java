@@ -3,9 +3,9 @@ package eu.lod2.lod2testsuite.testcases;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import static org.testng.AssertJUnit.*;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*;
 
 /**
  * This class contains functional tests concerning querying and exploration of
@@ -19,7 +19,7 @@ import static org.testng.AssertJUnit.*;
 public class QueryingAndExploration extends TestCase{
     
     /**
-     * TC 001
+     * TC 001.
      * 
      * @Note: Will change soon.
      */
@@ -47,7 +47,7 @@ public class QueryingAndExploration extends TestCase{
     }
     
     /**
-     * TC 002
+     * TC 002.
      * @Note: Needs a default - graph selected. Otherwise it states a message.
      * Test this?
      * @TODO choose graph??
@@ -103,7 +103,7 @@ public class QueryingAndExploration extends TestCase{
     }
     
     /**
-     * TC 003
+     * TC 003.
      */
     @Test
     public void virtuosoSparql()  {
@@ -135,7 +135,7 @@ public class QueryingAndExploration extends TestCase{
     
     
     /**
-     * TC 004
+     * TC 004.
      */
     @Test
     public void virtuosoInteractiveSparql() {
@@ -166,7 +166,7 @@ public class QueryingAndExploration extends TestCase{
     }
     
     /**
-     * TC 005
+     * TC 005.
      */
     @Test
     public void sigmaEe()  {
@@ -180,7 +180,7 @@ public class QueryingAndExploration extends TestCase{
     }
     
     /**
-     * TC 006
+     * TC 006.
      * @TODO create TC
      */
     @Test

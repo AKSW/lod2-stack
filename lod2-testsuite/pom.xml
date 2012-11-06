@@ -32,7 +32,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.7</version>
+            <version>6.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -74,7 +74,7 @@
                     </systemProperties>
                     <skip>true</skip>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             

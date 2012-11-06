@@ -1,16 +1,17 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
-import java.util.List;
-import java.io.File;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,7 +19,8 @@ import org.testng.Assert;
 import static org.testng.AssertJUnit.*;
 
 /**
- *
+ * Contains methods that ease up the use of Webdriver. 
+ * 
  * @author Stefan Schurischuster
  */
 public class BasicFunctions {
@@ -27,7 +29,10 @@ public class BasicFunctions {
     private static final Logger logger = Logger.getLogger(BasicFunctions.class);
     private WebDriver driver;
     
-    
+    /**
+     * 
+     * @param driver 
+     */
     public BasicFunctions(WebDriver driver) {
         this.driver = driver;
     }
@@ -57,15 +62,15 @@ public class BasicFunctions {
     }
     
     /**
-     * Waits and performs a isVisible check on a specific iframe and checks weather 
+     * Waits and performs a isVisible check on a specific i-frame and checks whether 
      * a frame specific element is visible.
      * 
      * @param frameIdentifier
-     *          The identifier refering to the iframe element.
+     *          The identifier referring to the i-frame element.
      * @param contentIdentifier
-     *          The identifier refering to an element inside the frame.
+     *          The identifier referring to an element inside the frame.
      * 
-     * @Notice Maybe add collecton for multiple content identifiers.
+     * @Notice Maybe add collection for multiple content identifiers.
      */
     public void checkIFrame(By frameIdentifier, By contentIdentifier)  {
         WebElement iframe = waitUntilElementIsVisible(frameIdentifier);
@@ -97,7 +102,7 @@ public class BasicFunctions {
     
     /**
      * Tries to create a WebElement using the passed locator and checks 
-     * wheather it is visible and displayed on the webpage.
+     * whether it is visible and displayed on the web page.
      * 
      * @param locator 
      *          The locator of the element.
@@ -135,7 +140,7 @@ public class BasicFunctions {
         return By.xpath("//div[@class='gwt-HTML']/../..[@class='v-Notification']");
     }
     /**
-     * Returns an existing and visible WebElement from the webpage.
+     * Returns an existing and visible WebElement from the web page.
      * Throws an assert.fail if the element is not present or not visible.
      * 
      * @param locator
@@ -155,7 +160,7 @@ public class BasicFunctions {
     }
     
     /**
-     * Returns an existing and visible WebElement from the webpage.
+     * Returns an existing and visible WebElement from the web page.
      * Throws an assert.fail if the element is not present or not visible.
      * 
      * @param locator
@@ -175,7 +180,7 @@ public class BasicFunctions {
     }
     
     /**
-     * Returns an existing WebElement from the webpage.
+     * Returns an existing WebElement from the web page.
      * Throws an assert.fail if the element is not present.
      * 
      * @param locator
@@ -194,11 +199,11 @@ public class BasicFunctions {
     }
 
     /**
-     * Handles an vaadin file upload and checks wheather the describing text
+     * Handles an vaadin file upload and checks whether the describing text
      * contains the uploaded file after clicking the button.
      * 
      * @param locator
-     *              A By object referencing to the <form> tag.
+     *              A By object referencing to the "form"- tag.
      * @param pathToFile 
      *              Path of the file to upload.
      */
@@ -228,13 +233,13 @@ public class BasicFunctions {
     }
     
     /**
-     * Handles vaadin filterselects, chooses and writes values.
+     * Handles vaadin filter selects, chooses and writes values.
      * @TODO Is there a way to get the value of the selector?
      * 
      * @param locator
-     *          The locator of the div - element representing the filterselector.
+     *          The locator of the div - element representing the filter selector.
      * @param value
-     *          The value to be choosen or written into the selector.
+     *          The value to be chosen or written into the selector.
      * @param typeValue 
      *          true types value. false chooses value from popup.
      */
@@ -266,7 +271,7 @@ public class BasicFunctions {
     }
     
     /**
-     * Checks whether a file is avialble under the given file path.
+     * Checks whether a file is available under the given file path.
      */
     public boolean isLocalFileAvailable(String filepath) {
         try {
@@ -279,6 +284,7 @@ public class BasicFunctions {
             return false;
         }
     }
+
     /**
      * Reads a file from resources.
      * 
@@ -287,26 +293,37 @@ public class BasicFunctions {
      * @return 
      *          An ArrayList containing the lines of the file.
      */
-    public ArrayList<String> readFile(String filename, boolean fromResource) {
+    public ArrayList<String> readFile(String file, boolean fromResource) {
         ArrayList<String> lines = new ArrayList<String>();
-        try {
-            InputStreamReader isr = null;
-            if(fromResource)
-                isr = new InputStreamReader(getClass().getResourceAsStream(filename));
-            else
-                isr = new InputStreamReader(new FileInputStream(filename));
-            
-            BufferedReader br = new BufferedReader(isr);
-            String x = "";
-            while(( x = br.readLine()) != null)  { //get rid of first line? or later?
+        InputStreamReader isr = null;
+        BufferedReader br = null;
+        try {    
+            if (fromResource) {
+                isr = new InputStreamReader(getClass().getResourceAsStream(file));
+            } else {
+                isr = new InputStreamReader(new FileInputStream(file));
+            }
+            br = new BufferedReader(isr);
+            String x;
+            while ((x = br.readLine()) != null) {
                 lines.add(x);
             }
-        } catch (Exception ex) {
-            //Logger.getLogger(TestEditValuesFactory.class.getName()).log(Level.SEVERE, null, ex);
-            Assert.fail("An error occured trying to read the input csv-file.");
+        } catch (IOException e) {
+            Assert.fail("An error occured trying to read a file: "+e.getMessage());
+        } finally {
+            try {
+                if(isr != null)  {
+                    isr.close();
+                }
+                if(br != null)  {
+                    br.close();
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException("Could not close Readers.");
+            }
         }
-         return lines;   
-    }     
+        return lines;
+    }
     
     /**
      * Scrolls to position.
@@ -388,18 +405,21 @@ public class BasicFunctions {
      */
     public WebElement waitUntilElementIsVisible(String failureMessage, By locator, int maxPatienceSeconds)  {
         WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
-        if(!failureMessage.isEmpty())
+        if(!failureMessage.isEmpty()) {
             pageWait.withMessage("Time expired: " +failureMessage);
+        }
         WebElement element = null;
         try  {
             element = pageWait.until(
                 ExpectedConditions.visibilityOfElementLocated(locator));
         } catch(NoSuchElementException e)  {
-            if(!failureMessage.isEmpty())
+            if(!failureMessage.isEmpty()) {
                 Assert.fail("Element not found: " +failureMessage 
                     + " Stack trace: " +e.getMessage());
-            else
+            }
+            else {
                 Assert.fail(e.getMessage());
+            }
         }
         return element;
     }
@@ -417,8 +437,9 @@ public class BasicFunctions {
      */
     public List<WebElement> waitUntilElementsAreVisible(String failureMessage, By locator)  {
         WebDriverWait pageWait = new WebDriverWait(driver, MAX_PATIENCE_SECONDS);
-        if(!failureMessage.isEmpty())
+        if(!failureMessage.isEmpty()) {
             pageWait.withMessage("Time expired: " +failureMessage);
+        }
         List<WebElement> elements = null;
         
         WebElement firstElement = null;
@@ -430,11 +451,13 @@ public class BasicFunctions {
             elements = driver.findElements(locator);
 
         } catch(NoSuchElementException e)  {
-            if(!failureMessage.isEmpty())
+            if(!failureMessage.isEmpty()) {
                 Assert.fail("Element not found: " +failureMessage 
                     + " Stack trace: " +e.getMessage());
-            else
+            }
+            else {
                 Assert.fail(e.getMessage());
+            }
         }
         return elements;
     }  
@@ -467,7 +490,7 @@ public class BasicFunctions {
      * @param locator 
      *          The locator of the element to disappear.
      * @param failureMessage
-     *          The message to be displayed if an error occures.
+     *          The message to be displayed if an error occurs.
      * @param maxPatienceSeconds   
      *          The max time to wait before throwing an error.
      */
@@ -484,12 +507,12 @@ public class BasicFunctions {
     
     /**
      * Waits until a certain element disappears.
-     * Maximum patience is predifined in BasicFunctions.class.
+     * Maximum patience is predefined in BasicFunctions.class.
      * 
      * @param locator 
      *          The locator of the element to disappear.
      * @param failureMessage
-     *          The message to be displayed if an error occures.
+     *          The message to be displayed if an error occurs.
      */
     public void waitUntilElementDisappears(String failureMessage, By locator)  {
         waitUntilElementDisappears(failureMessage, locator, MAX_PATIENCE_SECONDS);
@@ -497,7 +520,7 @@ public class BasicFunctions {
     
     /**
      * Waits until a certain element disappears.
-     * Maximum patience is predifined in BasicFunctions.class.
+     * Maximum patience is predefined in BasicFunctions.class.
      * No specific failure message will be displayed, only the message of the
      * exception.
      * 

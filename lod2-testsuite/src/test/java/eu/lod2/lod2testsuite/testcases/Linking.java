@@ -1,14 +1,7 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import java.util.List;
-import org.openqa.selenium.NoSuchElementException;
-import java.util.ArrayList;
-import junit.framework.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*;
 
 /**
  * This class contains functional tests concerning linking of
@@ -22,7 +15,7 @@ import static org.testng.AssertJUnit.*;
 public class Linking extends TestCase{
     
     /**
-     * TC 001
+     * TC 001.
      */
     @Test
     public void silk()  {
@@ -36,7 +29,7 @@ public class Linking extends TestCase{
     }
     
     /**
-     * TC 002
+     * TC 002.
      * @TODO create TC
      */
     @Test
@@ -53,9 +46,9 @@ public class Linking extends TestCase{
     }
     
     /**
-     * TC 003
+     * TC 003.
      * @TODO create TC
-     * @TDOD get valid testdata for sameAsLinking
+     * @TDOD get valid test data for sameAsLinking
      */
     @Test
     public void sameAsLinking()  {

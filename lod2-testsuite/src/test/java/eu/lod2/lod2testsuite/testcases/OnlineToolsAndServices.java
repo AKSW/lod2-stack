@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
  */
 public class OnlineToolsAndServices extends TestCase  {
     /**
-     * TC 001
+     * TC 001.
      */
     @Test
     public void sameAs()  {
@@ -28,7 +28,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }
     
     /**
-     * TC 002
+     * TC 002.
      */
     @Test
     public void sindice()  {
@@ -42,7 +42,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }
     
     /**
-     * TC 003
+     * TC 003.
      */
     @Test
     public void sigma()  {
@@ -57,7 +57,7 @@ public class OnlineToolsAndServices extends TestCase  {
 
             
     /**
-     * TC 004
+     * TC 004.
      */
     @Test
     public void ckan()  {
@@ -72,7 +72,7 @@ public class OnlineToolsAndServices extends TestCase  {
     
             
     /**
-     * TC 005
+     * TC 005.
      */
     @Test
     public void europesPublicData()  {
@@ -86,7 +86,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }       
             
     /**
-     * TC 006
+     * TC 006.
      */
     @Test
     public void poolParty()  {
@@ -100,7 +100,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }            
             
     /**
-     * TC 007
+     * TC 007.
      */
     @Test
     public void lodCloud()  {
@@ -115,7 +115,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }
 
     /**
-     * TC 008
+     * TC 008.
      */
     @Test
     public void dbpedia()  {
@@ -130,7 +130,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }    
     
     /**
-     * TC 009
+     * TC 009.
      */
     @Test
     public void poolPartySparqlEndpoint()  {
@@ -145,7 +145,7 @@ public class OnlineToolsAndServices extends TestCase  {
     }     
     
     /**
-     * TC 010
+     * TC 010.
      */
     @Test
     public void mondecaSparqlEndpointCollection()  {

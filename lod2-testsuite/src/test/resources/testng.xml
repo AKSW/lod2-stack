@@ -5,48 +5,53 @@
     <!--<parameter name="selenium.url" value="http://localhost:8080/lod2demo" />-->
     <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />
     
-    <parameter name="firefox.profile" 
-        value="C:\Users\revo\AppData\Roaming\Mozilla\Firefox\Profiles\selenium.default" 
-    />
-    
     <listeners>
         <listener class-name="eu.lod2.lod2testsuite.configuration.TestCaseListener" />
         <listener class-name="eu.lod2.lod2testsuite.configuration.ScreenShotListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
+    
+    <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
+    no correct method ordering -->
 
-    <test name="ExtractionAndLoading"> <!--preserve-order="true"-->
+    <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
                     <parameter name="graphName" value="http://localhost/Geo" />
-                    <parameter name="graphFilePath" value="F:\SVN\lod2-testsuite\files\geo.rdf" />
+                    <parameter name="graphFilePath" value="files/geo.rdf" />
                     <include name="openVirtuoso" />
+
                     <include name="uploadGraphInVirtuoso" />
-                    
+                   
                     <include  name="loadRDFdataFromCKAN" />
                     
-                    <parameter name="xmlTextFile" value="F:\SVN\lod2-testsuite\files\ealXml.txt" />  
-                    <parameter name="xsltTextFile" value="F:\SVN\lod2-testsuite\files\ealXslt.txt" />    
+                    <parameter name="xmlTextFile" value="files/ealXml.txt" />  
+                    <parameter name="xsltTextFile" value="files/ealXslt.txt" />    
                     <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
-                    <include name="basicExtraction" />  
                     
-                    <parameter name="xmlFile" value="F:\SVN\lod2-testsuite\files\eal.xml" />  
-                    <parameter name="xsltFile" value="F:\SVN\lod2-testsuite\files\eal.xslt" />    
-                    <parameter name="cataologFile" value="F:\SVN\lod2-testsuite\files\catalog.xml" />    
+                    <exclude name="basicExtraction" />  
+                    
+                    <parameter name="xmlFile" value="files/eal.xml" />  
+                    <parameter name="xsltFile" value="files/eal.xslt" />    
+                    <parameter name="catalogFile" value="files/catalog.xml" />    
                     <parameter name="exportGraphExtendedExtraction" value="http://localhost/Geo" />  
-                    <parameter name="downloadFileName" value="downloadedExtendedExtraction" />    
-                    <parameter name="downloadFilePath" value="F:\SVN\lod2-testsuite\files\" />
-                    <include name="extendedExtraction" />                     
-                    <include name="downloadExtendedExtraction" /> 
                     
-                    <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
+                    <include name="extendedExtraction" />                     
+                    
+                    <parameter name="downloadFileName" value="downloadedExtendedExtraction" />
+                    <parameter name="downloadFilePath" value="files/" />
+                    
+                    <exclude name="downloadExtendedExtraction" /> 
+                    
+                    <parameter name="textFile" value="files/text.txt" />  
                     <include name="annotatePlainText" /> 
                     
                     <parameter name="exportGraphExtractor" value="" />  
                     <parameter name="poolPartyProjectId" value="" />    
                     <parameter name="language" value="" />    
-                    <parameter name="textFile" value="F:\SVN\lod2-testsuite\files\text.txt" />  
+                    <parameter name="textFile" value="files/text.txt" />  
+                    
                     <exclude name="poolPartyExtractor" /> 
                 </methods>
             </class>
@@ -66,7 +71,7 @@
             </class>
         </classes>
     </test>
-    
+
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
@@ -76,7 +81,7 @@
             </class>
         </classes>
     </test>
-    
+  
     <test name="Linking" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
@@ -127,5 +132,4 @@
             </class>
         </classes>
     </test>
-
 </suite>

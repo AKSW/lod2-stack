@@ -1,65 +1,92 @@
 package eu.lod2.lod2testsuite.configuration;
-import java.util.NoSuchElementException;
-import junit.framework.Assert;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
  
+/**
+ * This class creates basic log entries for WebDriver actions.
+ * 
+ * @author Stefan Schurischuster
+ */
 public class MyWebDriverEventListener implements WebDriverEventListener {
     private static final Logger logger = Logger.getLogger(MyWebDriverEventListener.class);   
     private By lastFindBy;
-    private String originalValue, elementAsString;
+    private WebElement lastElement;
+    private String originalValue;
  
-    public void beforeNavigateTo(String url, WebDriver selenium){
-        logger.debug("Navigating to:'"+url+"'");
+    @Override
+    public void beforeNavigateTo(String url, WebDriver driver){
+        logger.debug("Navigating to:'" +url+ "'");
+    } 
+
+    @Override
+    public void beforeChangeValueOf(WebElement element, WebDriver driver){
+        lastElement = element;
+        originalValue = element.getText();       
+        
+        // What if the element is not visible anymore?
+        if(originalValue.isEmpty())  {            
+            originalValue = element.getAttribute("value");
+        }
     }
  
-    public void beforeChangeValueOf(WebElement element, WebDriver selenium){
-        originalValue = element.getText();
-        elementAsString = element.toString();
+    @Override
+    public void afterChangeValueOf(WebElement element, WebDriver driver){
+        String changedValue = element.getText();
+        // What if the element is not visible anymore?
+        if(changedValue.isEmpty())  {            
+            changedValue = element.getAttribute("value");
+        }
+        logger.debug("Changing value in element found " +lastFindBy
+                +" from '" +originalValue+ "' to '" +changedValue+ "'");
     }
  
-    public void afterChangeValueOf(WebElement element, WebDriver selenium){
-        logger.debug("WebDriver changing value in element found " +lastFindBy
-                +" from '"+originalValue+"' to '"+element.getText()+"'");
-    }
- 
-    public void beforeFindBy(By by, WebElement element, WebDriver selenium){
+    @Override
+    public void beforeFindBy(By by, WebElement element, WebDriver driver){
         lastFindBy = by;
         logger.debug("Trying to find: '" +lastFindBy+ "'.");
     }
     
-    public void afterFindBy(By by, WebElement element, WebDriver selenium){
+    @Override
+    public void afterFindBy(By by, WebElement element, WebDriver driver){
         logger.debug("Found: '" +lastFindBy+ "'.");
     }
     
-    public void onException(Throwable error, WebDriver selenium){}
-    /*
-    public void onException(Throwable error, WebDriver selenium){
-        if (error.getClass().equals(NoSuchElementException.class)){
-            logger.error("WebDriver error: Element not found " +lastFindBy);
-        } else {
-            //logger.error("WebDriver error:", error);
-            logger.error(error.getLocalizedMessage());
-        }
-    }
-    */
+    @Override
+    public void onException(Throwable error, WebDriver driver){}
     
-    public void beforeClickOn(WebElement element, WebDriver selenium){
+    @Override
+    public void beforeClickOn(WebElement element, WebDriver driver){
         logger.debug("Trying to click: '" +element+ "'");
     }
     
-    public void afterClickOn(WebElement element, WebDriver selenium){
+    @Override
+    public void afterClickOn(WebElement element, WebDriver driver){
         logger.debug("Clicked: '" +element+ "'");
     }
  
-    public void beforeNavigateBack(WebDriver selenium){}
-    public void beforeNavigateForward(WebDriver selenium){}
-    public void beforeScript(String script, WebDriver selenium){}
-    public void afterNavigateBack(WebDriver selenium){}
-    public void afterNavigateForward(WebDriver selenium){}
-    public void afterNavigateTo(String url, WebDriver selenium){}
-    public void afterScript(String script, WebDriver selenium){}
+    @Override
+    public void beforeScript(String script, WebDriver driver){
+        //logger.debug("Try execute script: "+script);
+    }
+    
+    @Override
+    public void afterScript(String script, WebDriver driver){
+        //logger.debug("Finished executing script: "+script);
+    }
+    
+    @Override
+    public void beforeNavigateBack(WebDriver driver){}
+    @Override
+    public void beforeNavigateForward(WebDriver driver){}
+    @Override
+    public void afterNavigateBack(WebDriver driver){}
+    @Override
+    public void afterNavigateForward(WebDriver driver){}
+    @Override
+    public void afterNavigateTo(String url, WebDriver driver){}
+    
 }

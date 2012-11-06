@@ -1,18 +1,19 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.WebDriver;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
+import eu.lod2.lod2testsuite.testcases.TestCase;
 import java.util.List;
 import junit.framework.Assert;
-import eu.lod2.lod2testsuite.testcases.TestCase;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import static org.testng.AssertJUnit.*;
 
 /**
- * This class handles navigation through the main link menu of the lod2-stack.
+ * This class handles navigation through the main link menu 
+ * of the lod2-stack.
  * 
  * @author Stefan Schurischuster
  */
@@ -30,7 +31,10 @@ public class Navigator {
      * This methods navigates through the main link menu of lod2-stack.
      * 
      * @param path 
-     *          The path of the links that are to be clicked.
+     *          An array containing the names of the links that are to be clicked.
+     *          No ' (single quotes) are allowed. So in case a link has a single
+     *          quote inside just try parts of the link name. For example:
+     *          "Europe's Public Data" try it with "s Public Data". 
      */
     public void navigateTo(String[] path)  {
         int index = 0, x = 0;
@@ -38,25 +42,28 @@ public class Navigator {
         String pp = "";
         
         for(String p : path)  {
-            if(x==0)  
+            if(x==0) {  
                 pp = p;
-            else  
+            }
+            else {
                 pp += " -> " +p;
+            }
             x++;
         }
         logger.info("Navigating to: " + pp);
         
         while (index < path.length)  {
-            /*// Prepare link if it contains " ' " a quote. For example: Europe's Public Data
+            /*
+            // Prepare link if it contains " ' " a quote. For example: Europe's Public Data
             if(path[index].contains("'"))  {
                 logger.info("------------contains! "+ path[index].split("'")[0] + " " + path[index].split("'")[1]);
             }
             */
             String identifier = "//span[contains(.,'" +path[index]+ "')]"
                     + "[not(contains(@class,'caption'))]";
-            if(index > 0)
+            if(index > 0) {
                 identifier = "//div[@class = 'v-menubar-popup'][last()]" +identifier;
-            
+            }
             try  {
                 link = driver.findElement(
                                 By.xpath(identifier));
@@ -89,10 +96,15 @@ public class Navigator {
     }
     
     /**
-     * @TODO
+     * This methods navigates through the main link menu of lod2-stack.
+     * 
      * @param path 
+     *          A list containing the names of the links that are to be clicked.
+     *          No ' (single quotes) are allowed. So in case a link has a single
+     *          quote inside just try parts of the link name. For example:
+     *          "Europe's Public Data" try it with "s Public Data". 
      */
     public void navigateTo(List<String> path)  {
-        navigateTo(path.toArray(new String[0]));
+        navigateTo((String[]) path.toArray());
     }
 }

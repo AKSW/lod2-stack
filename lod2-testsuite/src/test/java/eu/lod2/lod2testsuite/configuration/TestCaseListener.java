@@ -5,7 +5,9 @@ import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 
 /**
- *
+ * A Listener that listens to test success and prints 
+ * log information.
+ * 
  * @author Stefan Schurischuster
  */
 public class TestCaseListener extends TestListenerAdapter {
@@ -20,12 +22,14 @@ public class TestCaseListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult tr) {    
         super.onTestFailure(tr);
+        logger.error("@ Throwable: "+tr.getThrowable());
         logger.error("FAILED TEST: "+ tr.getName());
     }
 
     @Override
     public void onTestSkipped(ITestResult tr) {
         super.onTestSkipped(tr);
+        logger.error("@ Throwable: " +tr.getThrowable());
         logger.error("SKIP TEST: "+ tr.getName());
     }
 

@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
  */
 public class Authoring extends TestCase {
     /**
-     * TC 001
+     * TC 001.
      */
     @Test
     public void ontoWiki()  {
