@@ -62,7 +62,7 @@ public class BasicFunctions {
     }
     
     /**
-     * Waits and performs a isVisible check on a specific i-frame and checks whether 
+     * Waits for a i-frame to appear, switches into it and checks whether 
      * a frame specific element is visible.
      * 
      * @param frameIdentifier

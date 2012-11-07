@@ -267,8 +267,7 @@ public class ExtractionAndLoading extends TestCase {
      * 
      * Performs a download of rdf code after it is been transformed by 
      * Extended Extraction.
-     * It depends on the method extendedExtraction() which means it will be 
-     * skipped if extendedExtraction() fails.
+     * 
      */
     //@Test(dependsOnMethods={"extendedExtraction"})
     @Test

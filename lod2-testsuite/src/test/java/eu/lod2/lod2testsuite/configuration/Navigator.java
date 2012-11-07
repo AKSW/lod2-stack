@@ -22,6 +22,11 @@ public class Navigator {
     private WebDriver driver;
     private Actions driverActions;
     
+    /**
+     * 
+     * @param driver 
+     *          A reference to the Webdriver object.
+     */
     public Navigator(WebDriver driver)  {
         this.driver = driver;
         this.driverActions = new Actions(driver);
