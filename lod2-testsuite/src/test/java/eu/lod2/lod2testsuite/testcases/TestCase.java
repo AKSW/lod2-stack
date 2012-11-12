@@ -81,7 +81,7 @@ public abstract class TestCase {
                 .register(eventListener);
         // Set implicit waitingtime when a field is not available
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        // Create Selenium instance (to be able to use selenium 1 libraries).
+        // Create Selenium instance (to be able to use selenium 1 api).
         selenium = new WebDriverBackedSelenium(driver, url);
         driverActions = new Actions(driver);
         navigator = new Navigator(driver);
