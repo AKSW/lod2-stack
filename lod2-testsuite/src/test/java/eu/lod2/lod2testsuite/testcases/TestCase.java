@@ -149,4 +149,12 @@ public abstract class TestCase {
         //driver.quit();
         selenium.stop();
     }   
+    
+    /**
+     * @return 
+     *      The WebDriver instance.
+     */
+    public WebDriver getDriver()  {
+        return this.driver;
+    }
 }
