@@ -299,6 +299,21 @@ public class LOD2Demo extends Application
                 }
             };
 
+
+            MenuBar.Command lodrefine = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    Lodrefine content = new Lodrefine(state);
+                    workspace.addComponent(content);
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+
             MenuBar.Command mconfiguration = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -593,8 +608,8 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem querying      = menubar.addItem("Querying & Exploration", null, null);
             MenuBar.MenuItem authoring     = menubar.addItem("Authoring", null, null);
             MenuBar.MenuItem linking       = menubar.addItem("Linking", null, null);
-            MenuBar.MenuItem enrichment    = menubar.addItem("Enrichment", null, null);
-            MenuBar.MenuItem onlinetools   = menubar.addItem("Online Tools and Services", null, null);
+            MenuBar.MenuItem enrichment    = menubar.addItem("Enrichment & Data Cleaning", null, null);
+            MenuBar.MenuItem onlinetools   = menubar.addItem("Online Tools & Services", null, null);
             MenuBar.MenuItem configuration = menubar.addItem("Configuration", null, null);
 
             // sub menu's 
@@ -628,6 +643,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem linking3 = linking.addItem("SameAs Linking", null, sameaslinking);
 
             MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
+            MenuBar.MenuItem enrichment2 = enrichment.addItem("LOD enabled Refine", null, lodrefine);
 
             MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
             MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
@@ -766,7 +782,7 @@ public class LOD2Demo extends Application
     };
 
     private String introtext = 
-        "<p>This is Version 1.1 of the LOD2 Stack, which comprises a number of tools " +
+        "<p>This is Version 2.0 of the LOD2 Stack, which comprises a number of tools " +
         "for managing the life-cycle of Linked Data. The life-cycle comprises in " + 
         "particular the stages" + 
         "</p><p>" + 
@@ -784,8 +800,8 @@ public class LOD2Demo extends Application
         "research groups and companies. The LOD2 project is co-funded by the" + 
         "European Commission within the 7th Framework Programme (GA no. 257934)." + 
         "</p><p>" + 
-        "You can find further information about the LOD2 Stack and the LOD2" + 
-        "project at <a href=\"http://lod2.eu\">http://lod2.eu</a>." + 
+        "You can find further information about the LOD2 Stack at <a href=\"http://stack.lod2.eu\">http://stack.lod2.eu</a> " +
+        "and the LOD2 project at <a href=\"http://lod2.eu\">http://lod2.eu</a>." +
         "<p>";
 
    

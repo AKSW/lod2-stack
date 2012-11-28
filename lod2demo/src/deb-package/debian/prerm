@@ -48,11 +48,14 @@ running() {
 
 # end virtuoso 
 
+ISQLIDOBC=`which isql-iodbc`
 
 case "$1" in
     remove)
 	if running; then
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/remove_user.sql;
+		if [ -n $ISQLIDOBC ] ; then 
+    	           env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/remove_user.sql;
+		fi
         else 
 		exit 1;
 	fi
@@ -67,7 +70,9 @@ case "$1" in
 	sed -i "s/DUMP/dump_$date/" /var/lib/lod2demo/unload.sql;
 
 	if running; then
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/unload.sql;
+		if [ -n $ISQLIDOBC ] ; then 
+    	        	env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/unload.sql;
+		fi
         else 
 		exit 1;
 	fi

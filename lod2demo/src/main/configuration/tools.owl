@@ -994,7 +994,7 @@ It is very easy to implement new custom data source (e.g. for your relational or
 	<tool_description>
 	SparQLed is an interactive SPARQL editor that provides context-aware recommendations, helping users in formulating complex SPARQL queries across multiple heterogeneous data sources.
 	</tool_description>
-	<contributed_by_partner rdf:resource="&Partner;Deri"/>
+	<contributed_by_partner rdf:resource="&Partner;DERI"/>
 	<license rdf:resource="&lod2;GnuAffero"/>
 	<acknowledgement xml:lang="en">
 	Based on FLINT (https://github.com/TSO-Openup/FlintSparqlEditor)
@@ -1012,15 +1012,15 @@ It is very easy to implement new custom data source (e.g. for your relational or
 
 	<owl:NamedIndividual rdf:about="&localhost;silk-latc">
 	<rdf:type rdf:resource="&lod2;Tool"/>
-	<rdfs:label xml:lang="en">Assisted SPARQL Editor</rdfs:label>
+	<rdfs:label xml:lang="en">SILK LATC version</rdfs:label>
 	<tool_homepage rdf:datatype="&xsd;string">http://linker.demo.sindice.net/</tool_homepage>
 	<tool_description>
   	This is an improved version of silk used in LATC project.
 	</tool_description>
-	<contributed_by_partner rdf:resource="&Partner;Deri"/>
+	<contributed_by_partner rdf:resource="&Partner;DERI"/>
 	<license rdf:resource="&lod2;Apache_2.0"/>
 	<acknowledgement xml:lang="en">
-	The SILK linking component by the Freie Universität Berlin.
+	The SILK linking component by the Freie Universitat Berlin.
 	</acknowledgement>
 	<responsible rdf:resource="&lod2;SzymonDanielczyk"/>
 	</owl:NamedIndividual>

@@ -28,6 +28,9 @@ import org.openrdf.query.parser.ParsedQuery;
 import org.openrdf.query.parser.sparql.SPARQLParser;
 import org.openrdf.model.*;
 import org.openrdf.model.impl.*;
+import org.openrdf.rio.*;
+import org.openrdf.rio.RDFFormat;
+import org.openrdf.rio.RDFParseException;
 import virtuoso.sesame2.driver.VirtuosoRepository;
 
 import java.util.Properties;
@@ -79,8 +82,19 @@ public class LOD2DemoState
             e.printStackTrace();
         };
 
+        String Filename = "/etc/lod2demo/configuration.rdf";
+
         try {
             RepositoryConnection con = rdfStore.getConnection();
+
+
+            File configurationFile = new File(Filename);
+            Resource contextURI = con.getValueFactory().createURI(configurationRDFgraph);
+            Resource[] contexts = new Resource[]{contextURI};
+
+                // first empty the graph as the repository(Virtuoso) appends triples to a graph with the add.
+            con.clear(contexts);
+            con.add(configurationFile, "http://lod2.eu/", RDFFormat.RDFXML, contexts);
 
             // initialize the hostname and portnumber
             String query = "select ?h from <" + configurationRDFgraph + "> where {<" + configurationRDFgraph + "> <http://lod2.eu/lod2demo/hostname> ?h} LIMIT 100";
@@ -95,6 +109,9 @@ public class LOD2DemoState
                 };	
             }
 
+        } catch (IOException e) {
+            ErrorMessage = "the configuration file is not readable or present:" + Filename;
+            e.printStackTrace();
         } catch (RepositoryException e) {
             ErrorMessage = "Query execution failed due to problems with the repository.";
             e.printStackTrace();
@@ -103,6 +120,9 @@ public class LOD2DemoState
             e.printStackTrace();
         } catch (QueryEvaluationException e) {
             ErrorMessage = "Query execution failed due to query evaluation problem.";
+            e.printStackTrace();
+        } catch (RDFParseException e) {
+            ErrorMessage = "the configuration graph url is incorrect.";
             e.printStackTrace();
         }
 

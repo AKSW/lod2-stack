@@ -24,6 +24,8 @@ VIRTUOSOVERSION=virtuoso-opensource-6.1
 SHORTNAME=virtuoso
 PIDFILE=/var/run/$VIRTUOSOVERSION.pid
 
+LOD2DEMODIR=/var/lib/lod2demo
+
 running_pid() {
 # Check if a given process pid's cmdline matches a given name
     pid=$1
@@ -61,6 +63,16 @@ connect() {
 
 case "$1" in
     configure)
+
+	if [ -e /etc/apache2/mods-available/proxy.conf ] ; then
+	    cp /etc/apache2/mods-available/proxy.conf  /etc/apache2/mods-available/proxy.conf.bak 
+            cp $LOD2DEMODIR/proxy.conf /etc/apache2/mods-available/proxy.conf
+	fi
+
+	a2enmod proxy
+	a2enmod proxy_http
+	a2enmod ssl
+
 
 	   # restart apache
 	service apache2 stop

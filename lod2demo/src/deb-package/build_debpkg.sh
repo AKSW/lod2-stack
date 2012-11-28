@@ -28,6 +28,8 @@ cp    Makefile ../../target/deb-pkg
 cp    test.sql ../../target/deb-pkg
 cp    create_user.sql ../../target/deb-pkg
 cp    remove_user.sql ../../target/deb-pkg
+cp    proxy.conf      ../../target/deb-pkg
+rapper -o rdfxml-abbrev  -i ntriples ../../src/main/configuration/configuration.nt > ../../target/deb-pkg/configuration/configuration.rdf
 
 # Build the package
 cd ../../target/deb-pkg

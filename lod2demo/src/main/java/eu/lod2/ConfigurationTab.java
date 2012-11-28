@@ -79,7 +79,7 @@ public class ConfigurationTab extends CustomComponent
 		private Label currentgraph;
 
 		// fields
-		private ComboBox graphSelector;
+		private ComboBox currentGraphPicker;
 
 		public ConfigurationTab(LOD2DemoState st, Label cg) {
 
@@ -92,35 +92,34 @@ public class ConfigurationTab extends CustomComponent
 				// Configuration form start
 				// Set all properties at once for the moment.
 				Form t2f = new Form();
-                t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
+                //t2f.setDebugId(this.getClass().getSimpleName()+"_t2f");
 				t2f.setCaption("Configuration");
-
 
 				// the graph selector
 				// it displays all acceptable graphs in Virtuoso 
-				graphSelector = new ComboBox("Select default graph: ");
-                graphSelector.setDebugId(this.getClass().getSimpleName()+"_graphSelector");
-				addCandidateGraphs(graphSelector);
-				if (cg.getValue() != null 
-								&& cg.getValue() != "no current  graph selected"
+				currentGraphPicker = new ComboBox("Select default graph: ");
+                //currentGraphPicker.setDebugId(this.getClass().getSimpleName()+"_graphSelector2");
+				addCandidateGraphs(currentGraphPicker);
+
+				if (cg.getValue() != null
+								&& cg.getValue() != "no current graph selected"
 								&& cg.getValue() != "null"
 				   ) {
-						graphSelector.setValue(cg.getValue());
-						graphSelector.setColumns(cg.toString().length());
+						currentGraphPicker.setValue(cg.getValue());
+						currentGraphPicker.setColumns(cg.toString().length());
 				};
-				graphSelector.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
-				t2f.getLayout().addComponent(graphSelector);
+				currentGraphPicker.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
+				t2f.getLayout().addComponent(currentGraphPicker);
 
 				// initialize the footer area of the form
 				HorizontalLayout t2ffooterlayout = new HorizontalLayout();
 				t2f.setFooter(t2ffooterlayout);
-
 				Button commitButton = new Button("Set configuration", new ClickListener() {
 								public void buttonClick(ClickEvent event) {
 								storeConfiguration(event);
 								}
 								});
-                commitButton.setDebugId(this.getClass().getSimpleName()+"_commitButton");
+                //commitButton.setDebugId(this.getClass().getSimpleName()+"_commitButton");
 				commitButton.setDescription("Commit the new configuration settings.");
 				t2f.getFooter().addComponent(commitButton);
 
@@ -134,14 +133,14 @@ public class ConfigurationTab extends CustomComponent
 		}
 
 		private void storeConfiguration(ClickEvent event) {
-				state.setCurrentGraph((String) graphSelector.getValue());
-				currentgraph.setValue((String) graphSelector.getValue());
+				state.setCurrentGraph((String) currentGraphPicker.getValue());
+				currentgraph.setValue((String) currentGraphPicker.getValue());
 
 		};
 
 		// propagate the information of one tab to another.
 		public void setDefaults() {
-				graphSelector.setValue(state.getCurrentGraph());
+				currentGraphPicker.setValue(state.getCurrentGraph());
 		};
 
 		// obsolete implementation
