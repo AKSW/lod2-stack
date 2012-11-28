@@ -32,6 +32,8 @@ import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Layout.*;
 
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -55,14 +57,21 @@ public class Lodrefine extends CustomComponent
     // reference to the global internal state
     private LOD2DemoState state;
 
+    private String username;
+    private String password;
+    private String service;
+
+
     public Lodrefine(LOD2DemoState st) {
 
         // The internal state 
         state = st;
 
+        initLogin();
+
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName() + "/lodrefine");
+	  	URL url = new URL(service);
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();
@@ -79,5 +88,49 @@ public class Lodrefine extends CustomComponent
 	public void setDefaults() {
 	};
 
+    private void initLogin() {
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+
+			// initialize the hostname and portnumber
+			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/lodrefine>. <http://localhost/lodrefine> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/lodrefine> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/lodrefine> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+			TupleQueryResult result = tupleQuery.evaluate();
+			while (result.hasNext()) {
+				BindingSet bindingSet = result.next();
+				Value valueOfH = bindingSet.getValue("u");
+				if (valueOfH instanceof LiteralImpl) {
+					LiteralImpl literalH = (LiteralImpl) valueOfH;
+					username = literalH.getLabel();
+				};
+				Value valueOfP = bindingSet.getValue("p");
+				if (valueOfP instanceof LiteralImpl) {
+					LiteralImpl literalP = (LiteralImpl) valueOfP;
+					password = literalP.getLabel();
+				};
+				Value valueOfS = bindingSet.getValue("s");
+				if (valueOfS instanceof LiteralImpl) {
+					LiteralImpl literalS = (LiteralImpl) valueOfS;
+					String service0 = literalS.getLabel();
+					if (service0 == null | service0.equals("")) {
+						service = "http://localhost/lodrefine/";
+					} else {
+						service = service0;
+					};
+				};
+			}
+
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	};
 };
 
