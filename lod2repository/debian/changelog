@@ -1,3 +1,9 @@
+lod2repository (1.21) lod2; urgency=low
+
+  * add mateja to the list
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 14 Nov 2012 08:56:03 +0100
+
 lod2repository (1.19) lod2; urgency=low
 
   * create new packages for testing/stable
