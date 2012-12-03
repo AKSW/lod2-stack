@@ -424,10 +424,25 @@ public class LOD2Demo extends Application
                 }
             };
             
-            MenuBar.Command mq6c = new MenuBar.Command() {
+            MenuBar.Command mq_s_6c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                 	workspace.removeAllComponents();
                     Sparqled content = new Sparqled(state);
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+            
+            MenuBar.Command mq_s_7c = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                	workspace.removeAllComponents();
+                    SparqledManager content = new SparqledManager(state);
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
@@ -634,7 +649,9 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);
             MenuBar.MenuItem mqs4 = mq1.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
             // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
-            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq6c);
+            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, null);
+            MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
+            MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
 
             MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
