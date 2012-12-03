@@ -1,3 +1,18 @@
+lod2demo (1.2.5) lod2; urgency=low
+
+  * fix configuration mistake 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 13:51:30 +0100
+
+lod2demo (1.2.4) lod2; urgency=low
+
+  * activate automatically the isparql vad package in virtuoso
+  * adapt pwd & user for the conductor
+  * configure the colanut app reference
+  * base ourselves on the default-jdk & default-jre
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 12:46:27 +0100
+
 lod2demo (1.2.3) lod2; urgency=low
 
   * make the d2r-cordis configuration active working

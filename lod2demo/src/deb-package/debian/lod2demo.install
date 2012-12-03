@@ -10,5 +10,6 @@ lod2demo.war /usr/share/lod2demo
 test.sql /var/lib/lod2demo
 create_user.sql /var/lib/lod2demo
 remove_user.sql /var/lib/lod2demo
+vad_install.sql /var/lib/lod2demo
 configuration/configuration.rdf etc/lod2demo
 proxy.conf /var/lib/lod2demo

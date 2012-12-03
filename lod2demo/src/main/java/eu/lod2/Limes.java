@@ -70,6 +70,7 @@ public class Limes extends CustomComponent
     private ExportSelector3 targetGraph;
     private Link colanutLink;
     private Embedded colanutbrowser;
+    private LOD2DemoInitApp initColanut;
 
     public Limes(LOD2DemoState st) {
 
@@ -77,6 +78,8 @@ public class Limes extends CustomComponent
         state = st;
 
         VerticalLayout colanutspatiallayout = new VerticalLayout();
+
+        initColanut = new LOD2DemoInitApp(st, "http://localhost/colanut");
 
 
         // Configuration form start
@@ -111,7 +114,7 @@ public class Limes extends CustomComponent
         colanutspatiallayout.addComponent(t2f);
         try { 
 
-            URL url = new URL(state.getHostName() + "/colanut?se="+
+            URL url = new URL(initColanut.service + "?se="+
                     URLEncoder.encode("http://localhost:8890/sparql", "UTF-8") + 
                     "&te=" + URLEncoder.encode("http://localhost:8890/sparql", "UTF-8") +
                     "&sgp=source&tgp=target");
@@ -178,7 +181,7 @@ public class Limes extends CustomComponent
         };
 
         try {
-            URL url = new URL(state.getHostName() + "/colanut?se="+
+            URL url = new URL(initColanut.service + "?se="+
                               URLEncoder.encode("http://localhost:8890/sparql", "UTF-8") + 
                               "&te=" + URLEncoder.encode("http://localhost:8890/sparql", "UTF-8") +
                               "&sgp=source&tgp=target" +
