@@ -44,6 +44,7 @@ import org.restlet.data.MediaType;
 
 import virtuoso.sesame2.driver.VirtuosoRepository;
 import eu.lod2.LOD2DemoState;
+import eu.lod2.LOD2DemoInitApp;
 
 /**
  * Extract RDF via a D2R wrapper which maps a SQL database to a RDF view.
@@ -63,8 +64,12 @@ public class D2RCordis extends CustomComponent
         state = st;
 
 	Embedded browser = new Embedded();
-	try { 
-	  	URL url = new URL(state.getHostName() + "/d2r-cordis");
+	try {
+
+        LOD2DemoInitApp urlD2r = new LOD2DemoInitApp(st, "http://localhost/d2r-cordis");
+
+        System.err.println(urlD2r.service);
+	  	URL url = new URL(urlD2r.service);
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

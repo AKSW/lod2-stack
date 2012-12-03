@@ -1,3 +1,16 @@
+lod2demo (1.2.3) lod2; urgency=low
+
+  * make the d2r-cordis configuration active working
+  * make sparqled a dependency
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 06:12:34 +0100
+
+lod2demo (1.2.2) lod2; urgency=low
+
+  * fix removal scripts
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 29 Nov 2012 18:24:12 +0100
+
 lod2demo (1.2.1) lod2; urgency=low
 
   * add lod-refine configuration & dependency

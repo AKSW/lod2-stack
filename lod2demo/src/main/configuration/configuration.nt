@@ -1,8 +1,10 @@
 <http://localhost:8890/DAV>  <http://lod2.eu/lod2demo/SystemGraphFor> <http://localhost/lod2democonfiguration>.
 <http://localhost:8890/DAV>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2demo/SystemGraph>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/ontowiki>.
+<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/d2r-cordis>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/lodrefine>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/virtuoso>.
+<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/ssb>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/hostname> "localhost:8080"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/SystemGraphFor> <http://localhost/lod2democonfiguration>.
 <http://localhost/lod2democonfiguration>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2demo/SystemGraph>.
@@ -22,3 +24,13 @@
 <http://www.openlinksw.com/schemas/virtrdf#>  <http://lod2.eu/lod2demo/SystemGraphFor> <http://localhost/lod2democonfiguration>.
 <http://www.w3.org/2002/07/owl#>  <http://lod2.eu/lod2demo/SystemGraphFor> <http://localhost/lod2democonfiguration>.
 <http://localhost/ssb> <http://lod2.eu/lod2demo/service> "http://localhost/ssb"^^<http://www.w3.org/2001/XMLSchema#string> .
+http://localhost/colanut <http://lod2.eu/lod2demo/service>  "http://demo.lod2.eu/colanut"^^<http://www.w3.org/2001/XMLSchema#string>
+<http://localhost/ssb> <http://lod2.eu/lod2demo/service>  "http://demo.lod2.eu/ssb"^^<http://www.w3.org/2001/XMLSchema#string>
+<http://localhost/ssb> <http://lod2.eu/lod2demo/password> ""^^<http://www.w3.org/2001/XMLSchema#string>
+<http://localhost/ssb> <http://lod2.eu/lod2demo/username> ""^^<http://www.w3.org/2001/XMLSchema#string>
+<http://localhost/d2r-cordis> <http://lod2.eu/lod2demo/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/d2r-cordis> <http://lod2.eu/lod2demo/service> "http://localhost/d2r-cordis"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/d2r-cordis> <http://lod2.eu/lod2demo/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ssb> <http://lod2.eu/lod2demo/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ssb> <http://lod2.eu/lod2demo/service> "http://localhost/ssb"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ssb> <http://lod2.eu/lod2demo/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
