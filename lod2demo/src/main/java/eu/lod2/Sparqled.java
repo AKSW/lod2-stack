@@ -19,19 +19,13 @@ import org.apache.http.message.BasicNameValuePair;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window.Notification;
 
 public class Sparqled extends CustomComponent {
 	
 	private LOD2DemoState state;
-	private VerticalLayout sparqledTab;
 	
 	public Sparqled(LOD2DemoState state){
 		this.state = state;
-		
-		sparqledTab = new VerticalLayout();
 		
 		if (state.getCurrentGraph() != null && !state.getCurrentGraph().equals(""))
 			calculateSummaryGraph();
@@ -45,11 +39,9 @@ public class Sparqled extends CustomComponent {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		sparqledTab.addComponent(browser);
 		
 		// The composition root MUST be set
-		sparqledTab.setSizeFull();
-		setCompositionRoot(sparqledTab);
+		setCompositionRoot(browser);
 	}
 	
 	private void processResponse(String method, HttpResponse response){
@@ -60,7 +52,6 @@ public class Sparqled extends CustomComponent {
 			builder.append("Code: ").append(response.getStatusLine().getStatusCode()).append("\n");
 			builder.append("Reason: ").append(response.getStatusLine().getReasonPhrase());
 			System.err.println(builder.toString());
-			sparqledTab.getWindow().showNotification(builder.toString(), Notification.TYPE_ERROR_MESSAGE);
 		}
 	}
 	
@@ -71,8 +62,6 @@ public class Sparqled extends CustomComponent {
 		String deleteUrl = state.getHostName() + "/sparqled/rest/summaries/delete";
 		String createUrl = state.getHostName() + "/sparqled/rest/summaries/create";
 		String setUrl = state.getHostName() + "/sparqled/AssistedSparqlEditorServlet";
-		
-		final String errorMessage = "There was a problem while calculating and setting the summary graph";
 		
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpDelete delete = new HttpDelete(deleteUrl + "?graph=" + summaryGraph);
@@ -98,10 +87,8 @@ public class Sparqled extends CustomComponent {
 			processResponse("PUT", response);
 		} catch (ClientProtocolException e) {
 			System.err.println(e.getMessage());
-			sparqledTab.getWindow().showNotification(errorMessage + "\n\n" + e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
-			sparqledTab.getWindow().showNotification(errorMessage + "\n\n" + e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 		} finally {
 			client.getConnectionManager().shutdown();
 		}
