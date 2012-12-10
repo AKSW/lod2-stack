@@ -210,15 +210,34 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
-
-            MenuBar.Command me7c = new MenuBar.Command() {
+            
+            MenuBar.Command me7c_1 = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
-                    workspace.removeAllComponents();
-                    DebCKAN content = new DebCKAN(state);
+                	workspace.removeAllComponents();
+                    IframedUrl content = new IframedUrl(state, "http://publicdata.eu/dataset?res_format=RDF&q=rdf");
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
-                    content.setHeight("90%");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }  
+            };
+            
+            MenuBar.Command me7c_2 = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                	workspace.removeAllComponents();
+                    IframedUrl content = new IframedUrl(state, "http://datahub.io/dataset?groups=lodcloud");
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
                 }  
             };
 
@@ -630,7 +649,8 @@ public class LOD2Demo extends Application
             // sub menu's 
             MenuBar.MenuItem me1  = extraction.addItem("Upload RDF file or RDF from URL", null, me1c);
             //	    MenuBar.MenuItem me1b = extraction.addItem("Import RDF data from URL", null, me8c);
-            MenuBar.MenuItem me2  = extraction.addItem("Load RDF data from CKAN", null, me7c);
+            MenuBar.MenuItem me2_1  = extraction.addItem("Load RDF data from publicdata.eu", null, me7c_1);
+            MenuBar.MenuItem me2_2  = extraction.addItem("Load LOD cloud RDF data from the Data Hub", null, me7c_2);
             MenuBar.MenuItem me3  = extraction.addItem("Extract RDF from XML", null, null);
             MenuBar.MenuItem me6  = extraction.addItem("Extract RDF from SQL", null, me6c);
             MenuBar.MenuItem me4  = extraction.addItem("Extract RDF from text w.r.t. DBpedia",null, me4c);
