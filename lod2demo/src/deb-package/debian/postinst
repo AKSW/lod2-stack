@@ -146,6 +146,18 @@ case "$1" in
 	chown tomcat6:tomcat6 /tmp/uploads 
 	chmod 741 /tmp/uploads 
 
+#	# sparql editor configuration
+#	sparqlpwd=`date  +"%H.S.%M.P.%S.QL"`
+#	sparqlsubst="s/PWDSPARQL/$sparqlpwd/"
+#	sed -e $sparqlsubst -i /var/lib/lod2demo/create_user_sparql.sql
+#	sed -e $sparqlsubst -i /var/lib/lod2demo/sparqled_config.xml
+#	if [ -d /etc/sparqled ] ; then 
+#	    cp /var/lib/lod2demo/sparqled_config.xml /etc/sparqled/config.xml
+#	fi
+#	if running; then
+#    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user_sparql.sql;
+#	fi
+	
     ;;
     
 

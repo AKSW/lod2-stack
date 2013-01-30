@@ -1,3 +1,24 @@
+lod2demo (1.2.8) lod2; urgency=low
+
+  * integrate Vuk's changes: lists of CKAN RDF resources
+  * disable the SPARQLED configuration
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 14 Dec 2012 12:47:44 +0100
+
+lod2demo (1.2.7) lod2; urgency=low
+
+  * ensure that the virtuoso user is also able to open the conductor
+  * reorganize the querying tab
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 01 Dec 2012 05:30:40 +0100
+
+lod2demo (1.2.6) lod2; urgency=low
+
+  * configure sparqled via the lod2demo (requires tomcat restart)
+  * include the updates from Vuk.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 23:30:54 +0100
+
 lod2demo (1.2.5) lod2; urgency=low
 
   * fix configuration mistake 

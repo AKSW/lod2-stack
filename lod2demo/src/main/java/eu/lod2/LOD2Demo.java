@@ -664,14 +664,14 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
             MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
             MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
-            MenuBar.MenuItem mqs1 = mq1.addItem("Direct via Sesame API", null, mq1c);
+            // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
+            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq_s_6c);
+            MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
+            MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
+            //MenuBar.MenuItem mqs1 = mq1.addItem("Direct via Sesame API", null, mq1c);
             MenuBar.MenuItem mqs2 = mq1.addItem("OntoWiki SPARQL endpoint", null, mq2c);
             MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);
             MenuBar.MenuItem mqs4 = mq1.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
-            // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
-            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, null);
-            MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
-            MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
 
             MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
 
