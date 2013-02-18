@@ -151,14 +151,16 @@ public class GeoSpatial extends CustomComponent
 
 	private void initLogin() {
 		try {
+
 			RepositoryConnection con = state.getRdfStore().getConnection();
 
 			// initialize the hostname and portnumber
-			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/ssb>. <http://localhost/ssb> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/ssb> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/ssb> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
+            String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/ssb>. <http://localhost/ssb> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/ssb> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/ssb> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			TupleQueryResult result = tupleQuery.evaluate();
 			while (result.hasNext()) {
 				BindingSet bindingSet = result.next();
+
 				Value valueOfH = bindingSet.getValue("u");
 				if (valueOfH instanceof LiteralImpl) {
 					LiteralImpl literalH = (LiteralImpl) valueOfH;

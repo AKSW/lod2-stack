@@ -15,6 +15,9 @@
  */
 package eu.lod2;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.*;
 import java.util.Iterator;
 
@@ -22,6 +25,7 @@ import com.vaadin.Application;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.*;
+import com.vaadin.terminal.gwt.client.ui.richtextarea.VRichTextToolbar;
 import com.vaadin.terminal.gwt.server.UploadException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
@@ -61,11 +65,13 @@ public class LOD2Demo extends Application
     private VerticalLayout workspace;
 
     private Label     currentgraphlabel;
+    private VerticalLayout welcome;
 
     //    private static final Logger logger = Logger.getLogger(LOD2Demo.class.getName());
 
     @Override
         public void init() {
+
 
             state = new LOD2DemoState();
 
@@ -117,10 +123,19 @@ public class LOD2Demo extends Application
             welcomeContainer.setComponentAlignment(homeb, Alignment.TOP_RIGHT);
             welcomeContainer.addComponent(currentgraphlabel);
             welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
+
+            //create login/logout component that shows currently logged in user
+            LoginStatus login = new LoginStatus(state,this);
+            welcomeContainer.addComponent(login);
+            welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
             welcomeContainer.setWidth("100%");
 
             final VerticalLayout welcome = new VerticalLayout();
             welcome.addComponent(welcomeContainer);
+            // unfortunately, we need to be able to build components from outside
+            // this initialization function and the welcome component needs to be
+            // resized properly afterward
+            this.welcome=welcome;
 
             mainContainer.addComponent(welcome);
 
@@ -636,6 +651,25 @@ public class LOD2Demo extends Application
                 }
             };
 
+            MenuBar.Command userinfoCommand = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    try{
+                        showInWorkspace(new Authenticator(new UserInformation(state), state));
+                    }catch(Exception e){
+                        //TODO remove after testing
+                        Writer writer=new StringWriter();
+                        PrintWriter printer=new PrintWriter(writer);
+                        e.printStackTrace(printer);
+
+                        mainWindow.showNotification(
+                                "Caught exception "+ e.getClass().getName(),
+                                writer.toString(),
+                                Notification.TYPE_ERROR_MESSAGE
+                                );
+                    }
+                }
+            };
+
             // Secondly define menu layout
             // root menu's
             MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
@@ -695,6 +729,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mondecalist     = sparqlonline.addItem("Mondeca SPARQL endpoint Collection", null, mo7c);
 
             MenuBar.MenuItem conf  = configuration.addItem("Demonstrator configuration", null, mconfiguration);
+            MenuBar.MenuItem userconf = configuration.addItem("UserConfiguration", null, userinfoCommand);
             MenuBar.MenuItem about = configuration.addItem("About", null, mabout);
 
 
@@ -923,6 +958,19 @@ public class LOD2Demo extends Application
             }
         }
 
+    }
+
+    //* shows the given component in this application's workspace.
+    public void showInWorkspace(AbstractComponent component) {
+        workspace.removeAllComponents();
+        workspace.addComponent(component);
+        // stretch the content to the full workspace area
+        welcome.setHeight("110px");
+        component.setSizeFull();
+        workspace.setSizeFull();
+        workspace.setExpandRatio(component, 1.0f);
+        mainContainer.setExpandRatio(workspace, 2.0f);
+        mainWindow.getContent().setSizeFull();
     }
 }
 
