@@ -15,15 +15,11 @@
  */
 package eu.lod2;
 
+import com.vaadin.ui.Window;
+import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
 import org.openrdf.query.parser.ParsedQuery;
 import org.openrdf.query.parser.sparql.SPARQLParser;
 import org.openrdf.model.*;
@@ -34,6 +30,7 @@ import org.openrdf.rio.RDFParseException;
 import virtuoso.sesame2.driver.VirtuosoRepository;
 
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.io.*;
 import java.util.Vector;
@@ -113,7 +110,7 @@ public class LOD2DemoState
                 if (valueOfH instanceof LiteralImpl) {
                     LiteralImpl literalH = (LiteralImpl) valueOfH;
                     hostname = "http://" +literalH.getLabel();
-                };	
+                };
             }
 
         } catch (IOException e) {
@@ -217,31 +214,24 @@ public class LOD2DemoState
         };
     }
 
-    // TODO remove mock
-    User storedUser=null;
-
     /**
      * logs in the given user and password combination. If the combination of
      * username and password matches a user in the system, the user is returned.
      * Otherwise, the function returns null.
+     * An error window can be supplied to show error messages to the user. This is optional however.
+     */
+    public User logIn(String username, String password, Window errorWindow){
+        User user=this.findUser(username, password, errorWindow);
+        this.setUser(user);
+        return user;
+    }
+
+    /**
+     * log in the given user and password combination with no error window
+     * @see #logIn(String, String, com.vaadin.ui.Window)
      */
     public User logIn(String username, String password){
-        // TODO how to manage passwords? clear text? hash? mocked for now.
-        if(username.equalsIgnoreCase("test") && password.equalsIgnoreCase("test")){
-            User user;
-            if(this.storedUser==null){
-                user= new User("test");
-                user.setEmail("test@example.com");
-                user.setOrganization("testers");
-                this.storedUser=user;
-            }else{
-                user=this.storedUser;
-            }
-                this.setUser(user);
-            return user;
-        }else{
-            return null;
-        }
+        return this.logIn(username,password,null);
     }
 
     /**
@@ -251,52 +241,191 @@ public class LOD2DemoState
      * @param password : the password to look for
      * @return the user that was discovered in the database if any. Null is returned if no user was discovered with
      * a matching username password combination.
+     * @throws IllegalStateException : a non-recoverable exception was thrown while processing the update operation.
+     * this type of exceptions occur when the connection to the repository has failed or when there was an error in the
+     * query.
      */
-    private User findUser(String username, String password){
+    private User findUser(String username, String password, Window errorwindow){
         //* the user to return. Defaults to null, meaning no user was found.
         User result=null;
 
-        throw new UnsupportedOperationException("This function has yet to be implemented");
-        /*
+        if(username == null || password == null || username.length()<1 || password.length()<1 ){
+            // safety to avoid looking up empty usernames and passwords
+            return null;
+        }
+
         try{
             RepositoryConnection con = this.getRdfStore().getConnection();
+            String query =
+                    "prefix foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "prefix lod2: <http://lod2.eu/lod2demo/>" +
 
-            // TODO query
-            String query = "select ?fname ?lname ?org ?email from <" +
+                    "select ?fname ?lname ?org ?email from <" +
                     this.getRuntimeRDFgraph() + "> where {"+
-                    "u " +
+                    "?u a foaf:Person." +
+                    "?o a foaf:Organization." +
+                    "?o foaf:member ?u." +
+                    "?o foaf:name ?org." +
+                    "?u foaf:firstName ?fname."+
+                    "?u foaf:lastName ?lname."+
+                    "?u foaf:mbox ?email."+
+
+                    "?u lod2:password \"" + username + "\"^^<http://www.w3.org/2001/XMLSchema#string>."+
+                    "?u lod2:username \"" + password + "\"^^<http://www.w3.org/2001/XMLSchema#string>."+
+
             "}";
             TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
             TupleQueryResult queryResult = tupleQuery.evaluate();
+            int count=0;
             while (queryResult.hasNext()) {
+                // use the final result as the actual user to be returned. Logging when there is more than
+                // one result might be advised.
+                count++;
                 BindingSet bindingSet = queryResult.next();
-                Value valueOfH = bindingSet.getValue("u");
-                if (valueOfH instanceof LiteralImpl) {
-                    LiteralImpl literalH = (LiteralImpl) valueOfH;
-                    username = literalH.getLabel();
-                };
-                Value valueOfP = bindingSet.getValue("p");
-                if (valueOfP instanceof LiteralImpl) {
-                    LiteralImpl literalP = (LiteralImpl) valueOfP;
-                    password = literalP.getLabel();
-                };
-                Value valueOfS = bindingSet.getValue("s");
-                if (valueOfS instanceof LiteralImpl) {
-                    LiteralImpl literalS = (LiteralImpl) valueOfS;
-                    String service0 = literalS.getLabel();
-                    String service;
-                    if (service0 == null | service0.equals("")) {
-                        service = "http://localhost/ssb";
-                    } else {
-                        service = service0;
-                    };
-                };
+                result=new User(username);
+                result.setFirstName(this.getStringValue(bindingSet,"fname"));
+                result.setLastName(this.getStringValue(bindingSet,"lname"));
+                result.setOrganization(this.getStringValue(bindingSet,"org"));
+
+                String email=this.getStringValue(bindingSet,"email");
+                if(email!=null){
+                    email=email.replaceFirst("mailto:", "");
+                }
+                result.setEmail(email);
             }
-        }catch (Exception e){
-            //TODO think about what to do on exception.
+            if(count>1){
+                // multiple results for a single user-password combination. That's odd, let's log it.
+                if(errorwindow!=null){
+                    errorwindow.showNotification("Multiple users found", "Something odd just happened: we found more " +
+                            "than one version of this user-password combination. We simply took the last one we " +
+                            "discovered, but it might be wise to have a word with your administrator...");
+                }
+                System.out.println("Multiple results were found in the database for the user "+username);
+            }
+            con.close();
+
+        } catch (RepositoryException e) {
+            // repository is no longer live. This exception cannot be handled correctly, show to user.
+            e.printStackTrace(System.err);
+            throw new IllegalStateException("Sorry, the repository is no longer live. Please contact an administrator.\n\n" +
+                    "The original message was: "+e.getMessage());
+        } catch (QueryEvaluationException e) {
+            e.printStackTrace(System.err);
+            // could not evaluate query or get a next result from it. API is no help on this exception. Some googling
+            // tells us this results from improper setup. Nothing we can do here either! Show to user.
+            throw new IllegalStateException("Sorry, the it appears that your system has been setup incorrectly. Please contact an administrator. \n\n" +
+                    "The original message was: "+e.getMessage());
+        } catch (MalformedQueryException e) {
+            e.printStackTrace(System.err);
+            // there was a mistake in the query! This exception cannot be handled correctly. Show to user.
+            throw new IllegalStateException("Sorry, there appears to be a mistake in the authentication query. Please contact your software supplier.\n\n" +
+                    "The original message was: "+e.getMessage());
         }
-        return null;
-        */
+        return result;
+    }
+
+    /**
+     * Updates the previous information on the given user to the new information available on the given user. The new
+     * information on the user is contained in the given object.
+     * @param newUser
+     * @throws IllegalStateException : a non-recoverable exception was thrown while processing the update operation.
+     * this type of exceptions occur when the connection to the repository has failed or when there was an error in the
+     * query.
+     */
+    public void updateUser(User newUser){
+        try{
+            RepositoryConnection con = this.getRdfStore().getConnection();
+            Resource runtimeGraph = con.getValueFactory().createURI(this.getRuntimeRDFgraph());
+
+            // first remove all previous information on the user (that can be edited)
+            // NOTE that the following query will only remove the user from the organization. It will not remove the
+            // organization as such or change the name of the organization in the rdf file!
+            String removalQuery =
+                    "prefix foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "prefix lod2: <http://lod2.eu/lod2demo/>" +
+
+                    "CONSTRUCT {" +
+                            "?u foaf:firstName ?fname."+
+                            "?u foaf:lastName ?lname."+
+                            "?u foaf:mbox ?email."+
+                            "?o foaf:member ?u." +
+                            "} " +
+                    "FROM <" + this.getRuntimeRDFgraph() + "> WHERE {"+
+                            "?u a foaf:Person." +
+                            "?o a foaf:Organization." +
+                            "?o foaf:member ?u." +
+                            "?o foaf:name ?org." +
+                            "?u foaf:firstName ?fname."+
+                            "?u foaf:lastName ?lname."+
+                            "?u foaf:mbox ?email."+
+                            "?u lod2:username \"" + newUser.getUsername()+ "\"^^<http://www.w3.org/2001/XMLSchema#string>."+
+                    "}";
+            GraphQueryResult result=con.prepareGraphQuery(QueryLanguage.SPARQL, removalQuery).evaluate();
+            while(result.hasNext()){
+                Statement statement=result.next();
+                con.remove(statement,runtimeGraph );
+            }
+
+            // then add the new information on the user to the store
+            String creationQuery =
+                    "prefix foaf: <http://xmlns.com/foaf/0.1/> " +
+                    "prefix lod2: <http://lod2.eu/lod2demo/> " +
+
+                    "CONSTRUCT {" +
+                            "?u foaf:firstName \""+newUser.getFirstName()+"\". "+
+                            "?u foaf:lastName \""+newUser.getLastName()+"\". "+
+                            "?u foaf:mbox \"mailto:"+newUser.getEmail()+"\". "+
+                            "_:o a foaf:Organization. "+
+                            "_:o foaf:member ?u. " +
+                            "_:o foaf:name \""+newUser.getOrganization()+"\". "+
+                            "} " +
+                    "FROM <" + this.getRuntimeRDFgraph() + "> WHERE { "+
+                            "?u a foaf:Person. " +
+                            "?u lod2:username \"" + newUser.getUsername()+ "\"^^<http://www.w3.org/2001/XMLSchema#string>. "+
+                    "}";
+            result=con.prepareGraphQuery(QueryLanguage.SPARQL, creationQuery).evaluate();
+            while(result.hasNext()){
+                Statement statement=result.next();
+                con.add(statement,runtimeGraph);
+            }
+            con.close();
+        }catch (RepositoryException e) {
+            // repository is no longer live. This exception cannot be handled correctly, show to user.
+            e.printStackTrace(System.err);
+            throw new IllegalStateException("Sorry, the repository is no longer live. Please contact an administrator.\n\n" +
+                    "The original message was: "+e.getMessage());
+        } catch (QueryEvaluationException e) {
+            // could not evaluate query or get a next result from it. API is no help on this exception. Some googling
+            // tells us this results from improper setup. Nothing we can do here either! Show to user.
+            e.printStackTrace(System.err);
+            throw new IllegalStateException("Sorry, the it appears that your system has been setup incorrectly. Please contact an administrator. \n\n" +
+                    "The original message was: "+e.getMessage());
+        } catch (MalformedQueryException e) {
+            // there was a mistake in the query! This exception cannot be handled correctly. Show to user.
+            e.printStackTrace(System.err);
+            throw new IllegalStateException("Sorry, there appears to be a mistake in the authentication query. Please contact your software supplier.\n\n" +
+                    "The original message was: "+e.getMessage());
+        }
+    }
+
+    /**
+     * Returns the value of the parameter with the given name in the given bindingset if it exists and
+     * is of the type LiteralImpl. Returns null otherwise.
+     * @param bindings the bindingset to look for values in
+     * @param name the name of the parameter to look in
+     * @return return the value of the parameter with the given name if any.
+     */
+    private String getStringValue(BindingSet bindings, String name){
+        Value value=bindings.getValue(name);
+        String result=null;
+        if (value instanceof LiteralImpl) {
+            LiteralImpl literal = (LiteralImpl) value;
+            result = literal.getLabel();
+        }else{
+            //fallback option
+            result=value.stringValue();
+        }
+        return result;
     }
 
     //* the currently logged in user
@@ -369,8 +498,6 @@ public class LOD2DemoState
             this.lastName = lastName;
         }
 
-        // TODO (how) do we allow setting the usernames?
-
         public void setOrganization(String organization) {
             this.organization = organization;
         }
@@ -391,7 +518,15 @@ public class LOD2DemoState
             return email;
         }
 
-        //TODO implement further?
+        public User clone(){
+            User clone=new User(this.getUsername());
+            clone.setFirstName(this.getFirstName());
+            clone.setLastName(this.getLastName());
+            clone.setOrganization(this.getOrganization());
+            clone.setEmail(this.getEmail());
+            return clone;
+        }
+
     }
 
     public interface LoginListener {
@@ -402,7 +537,6 @@ public class LOD2DemoState
          */
         public void notifyLogin(User user);
     }
-
 }
 
 

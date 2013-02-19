@@ -3,6 +3,7 @@ package eu.lod2;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 /**
  * This is the class that takes care of verifying that the user credentials are fine
@@ -65,13 +66,19 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
         login.addListener(new LoginForm.LoginListener() {
             public void onLogin(LoginForm.LoginEvent event) {
                 // let the state pick the new user from the provided information
-                LOD2DemoState.User user = state.logIn(event.getLoginParameter("username"),
-                        event.getLoginParameter("password"));
-                // check if a user was found, if not, show a message to the user
-                if(user==null){
-                    getWindow().showNotification("Login Failed", "Sorry, the given combination of username " +
-                            "and password was not found.");
+                try{
+                    LOD2DemoState.User user = state.logIn(event.getLoginParameter("username"),
+                            event.getLoginParameter("password"));
 
+                    // check if a user was found, if not, show a message to the user
+                    if(user==null){
+                        getWindow().showNotification("Login Failed", "Sorry, the given combination of username " +
+                                "and password was not found.");
+
+                    }
+                }catch (Exception e){
+                    getWindow().showNotification("Login Failed", e.getMessage(), Window.Notification.TYPE_ERROR_MESSAGE);
+                    e.printStackTrace(System.err);
                 }
             }
         });

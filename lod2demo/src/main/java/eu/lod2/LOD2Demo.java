@@ -653,20 +653,7 @@ public class LOD2Demo extends Application
 
             MenuBar.Command userinfoCommand = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
-                    try{
-                        showInWorkspace(new Authenticator(new UserInformation(state), state));
-                    }catch(Exception e){
-                        //TODO remove after testing
-                        Writer writer=new StringWriter();
-                        PrintWriter printer=new PrintWriter(writer);
-                        e.printStackTrace(printer);
-
-                        mainWindow.showNotification(
-                                "Caught exception "+ e.getClass().getName(),
-                                writer.toString(),
-                                Notification.TYPE_ERROR_MESSAGE
-                                );
-                    }
+                    showInWorkspace(new Authenticator(new UserInformation(state), state));
                 }
             };
 

@@ -46,14 +46,8 @@ public class UserInformation extends VerticalLayout {
 
             return;
         }
-        BeanItem<LOD2DemoState.User> userItem= new BeanItem<LOD2DemoState.User>(user);
 
-        final Form form= new Form();
-        form.setCaption("User details");
-        form.setWriteThrough(false);
-        form.setInvalidCommitted(false);
-
-        form.setItemDataSource(userItem);
+        final Form form= new UserForm(user,this.state);
 
         List<String> properties= Arrays.asList(new String[] {"username", "firstName", "lastName", "email","organization"});
         form.setVisibleItemProperties(properties);
@@ -64,8 +58,6 @@ public class UserInformation extends VerticalLayout {
                 tf.setWidth("400px");
                 tf.setRequired(true);
                 tf.setRequiredError("This is a required field");
-//                tf.setNullSettingAllowed(true);
-//                tf.setNullRepresentation("");
                 return tf;
             }
         });
@@ -79,13 +71,13 @@ public class UserInformation extends VerticalLayout {
                     getWindow().showNotification("Save Successful","Your new information has been saved successfully.",
                             Window.Notification.TYPE_HUMANIZED_MESSAGE);
                 } catch (Exception e) {
-                    // ignored
+                    getWindow().showNotification("Could not save information",e.getMessage(),
+                            Window.Notification.TYPE_ERROR_MESSAGE);
                 }
             }
         });
 
         this.addComponent(saver);
-
     }
 
     //* simple notification function that allows showing a number of messages in a single panel
@@ -95,6 +87,31 @@ public class UserInformation extends VerticalLayout {
             result+=m+"<br><br>";
         }
         getWindow().showNotification(title,result, Window.Notification.TYPE_WARNING_MESSAGE,true);
+    }
+
+    public class UserForm extends Form {
+        private LOD2DemoState.User user;
+        private LOD2DemoState state;
+
+        public UserForm(LOD2DemoState.User user, LOD2DemoState state){
+            super();
+            this.user=user;
+            this.state=state;
+
+            this.setCaption("User details");
+            this.setWriteThrough(false);
+            this.setInvalidCommitted(false);
+
+            BeanItem<LOD2DemoState.User> userItem= new BeanItem<LOD2DemoState.User>(user);
+            this.setItemDataSource(userItem);
+        }
+
+        @Override
+        public void commit(){
+            super.commit();
+            LOD2DemoState.User newUser=this.user;
+            state.updateUser(newUser);
+        }
     }
 
 }
