@@ -583,8 +583,13 @@
     <artifactId>commons-lang3</artifactId>
     <version>${apache-commons-lang.version}</version>
     </dependency>
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpmime</artifactId>
+          <version>4.1.2</version>
+      </dependency>
 
-	
+
   </dependencies>
 
 

@@ -23,10 +23,10 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
      */
     public Authenticator(AbstractComponent protectedComponent,LOD2DemoState state){
         this.state=state;
-        this.state.addLoginListener(this);
         this.protectedComponent=protectedComponent;
-        // check whether the user is logged in and handle the result
-        this.checkLoggedIn();
+        this.state.addLoginListener(this);
+        // when a login listener gets added, a notification is provided immediately. No need to check for login
+        // explicitly
     }
 
     /**

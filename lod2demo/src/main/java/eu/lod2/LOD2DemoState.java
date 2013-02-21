@@ -68,6 +68,12 @@ public class LOD2DemoState
     public String googleAnalyticsID = "";
     public String googleAnalyticsDomain = "";
 
+    // for ckan
+    public String CKANApiKey = "";
+    public String CKANUser = "";
+    public String CKANPwd = "";
+
+
     public Repository rdfStore;
 
     public Boolean InitStatus = false;
@@ -202,6 +208,9 @@ public class LOD2DemoState
             googleAnalyticsID    = properties.getProperty("googleAnalyticsID", "");
             googleAnalyticsDomain = properties.getProperty("googleAnalyticsDomain", "");
 
+            CKANApiKey = properties.getProperty("CKANApiKey");
+            CKANUser = properties.getProperty("CKANUser");
+            CKANPwd = properties.getProperty("CKANPwd");
 
             //		System.print("$"+jDBCuser+"$");
             //		System.print("$"+jDBCpassword+"$");

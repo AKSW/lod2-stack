@@ -17,38 +17,21 @@ package eu.lod2;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
-import java.net.*;
 import java.util.Iterator;
 
 import com.vaadin.Application;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.*;
-import com.vaadin.terminal.gwt.client.ui.richtextarea.VRichTextToolbar;
 import com.vaadin.terminal.gwt.server.UploadException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
-import com.vaadin.ui.AbstractOrderedLayout;
-import com.vaadin.ui.AbstractOrderedLayout.*;
-import com.vaadin.data.Property.*;
 import com.vaadin.ui.MenuBar.*;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.BaseTheme;
 import org.vaadin.googleanalytics.tracking.*;
-
-
-
-import eu.lod2.LOD2DemoState;
-import eu.lod2.LOD2Exception;
-import java.lang.RuntimeException;
-import java.util.logging.Level;
 
 /**
  * The Application's "main" class
@@ -657,6 +640,14 @@ public class LOD2Demo extends Application
                 }
             };
 
+            MenuBar.Command publishCommand = new Command() {
+                public void menuSelected(MenuItem selectedItem){
+                    // publishing should be protected with an authenticator, otherwise a store could be published
+                    // without provenance information!
+                    showInWorkspace(new Authenticator(new CKANPublisherPanel(state), state));
+                }
+            };
+
             // Secondly define menu layout
             // root menu's
             MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
@@ -695,6 +686,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mqs4 = mq1.addItem("Virtuoso interactive SPARQL endpoint", null, mq4c);
 
             MenuBar.MenuItem ma = authoring.addItem("OntoWiki", null, mau);
+            MenuBar.MenuItem publishing = authoring.addItem("Publish to CKAN", null, publishCommand);
 
             MenuBar.MenuItem linking1 = linking.addItem("Silk", null, silk);
             MenuBar.MenuItem linking2 = linking.addItem("Limes", null, limes);
@@ -936,9 +928,15 @@ public class LOD2Demo extends Application
            // not an UploadException
            // Shows an error notification
             if (errorWindow != null) {
+                StringWriter sw=new StringWriter();
+                PrintWriter writer=new PrintWriter(sw);
+                event.getThrowable().printStackTrace(writer);
+                String stack=sw.toString();
                 errorWindow.showNotification(
                         "An internal error has occurred, please " +
                                 "contact the administrator!",
+                        "The error message was: \n"+
+                                stack,
                         Notification.TYPE_ERROR_MESSAGE);
                 System.err.println(event.getThrowable().getMessage());
                 System.err.println(event.toString());
