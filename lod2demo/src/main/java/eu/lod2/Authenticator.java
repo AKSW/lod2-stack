@@ -93,6 +93,7 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
         this.removeAllComponents();
 
         this.addComponent(this.protectedComponent);
+        this.protectedComponent.setSizeFull();
     }
 
     public void notifyLogin(LOD2DemoState.User user){

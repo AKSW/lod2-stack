@@ -76,6 +76,7 @@ public class UserInformation extends VerticalLayout {
                 }
             }
         });
+        this.setSpacing(true);
 
         this.addComponent(saver);
     }
