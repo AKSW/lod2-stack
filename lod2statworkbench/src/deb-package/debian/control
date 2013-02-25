@@ -1,0 +1,15 @@
+Source: lod2demo
+Section: misc
+Priority: extra
+Maintainer: Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://lod2.eu
+
+Package: lod2demo
+Architecture: all
+Depends: tomcat6
+Description: The LOD2 demonstrator application
+ This package is a web application which allows one to explore 
+ the different components in the LOD2 stack. It also serves as
+ the root meta-package to install all LOD2 stack components.

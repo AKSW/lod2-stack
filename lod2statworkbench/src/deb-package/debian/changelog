@@ -1,0 +1,301 @@
+lod2demo (1.2.8) lod2; urgency=low
+
+  * integrate Vuk's changes: lists of CKAN RDF resources
+  * disable the SPARQLED configuration
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 14 Dec 2012 12:47:44 +0100
+
+lod2demo (1.2.7) lod2; urgency=low
+
+  * ensure that the virtuoso user is also able to open the conductor
+  * reorganize the querying tab
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 01 Dec 2012 05:30:40 +0100
+
+lod2demo (1.2.6) lod2; urgency=low
+
+  * configure sparqled via the lod2demo (requires tomcat restart)
+  * include the updates from Vuk.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 23:30:54 +0100
+
+lod2demo (1.2.5) lod2; urgency=low
+
+  * fix configuration mistake 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 13:51:30 +0100
+
+lod2demo (1.2.4) lod2; urgency=low
+
+  * activate automatically the isparql vad package in virtuoso
+  * adapt pwd & user for the conductor
+  * configure the colanut app reference
+  * base ourselves on the default-jdk & default-jre
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 12:46:27 +0100
+
+lod2demo (1.2.3) lod2; urgency=low
+
+  * make the d2r-cordis configuration active working
+  * make sparqled a dependency
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 06:12:34 +0100
+
+lod2demo (1.2.2) lod2; urgency=low
+
+  * fix removal scripts
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 29 Nov 2012 18:24:12 +0100
+
+lod2demo (1.2.1) lod2; urgency=low
+
+  * add lod-refine configuration & dependency
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 17 Nov 2012 14:26:31 +0100
+
+lod2demo (1.2.0) lod2; urgency=low
+
+  * lod2 stack 2.0 demonstrator
+  * sparqled integrated
+  * lodrefine integrated
+  * proxy settings integrated
+  * configuration.nt in the system configuration 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 17 Nov 2012 11:03:30 +0100
+
+lod2demo (1.1.34) lod2; urgency=low
+
+  * add the id's for the UI testing into the application
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 17 Jul 2012 14:25:39 +0200
+
+lod2demo (1.1.33) lod2; urgency=low
+
+  * make the lod2demo exploit the connection potential of 6.1.5
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 03 Jul 2012 13:07:00 +0200
+
+lod2demo (1.1.32) lod2; urgency=low
+
+  * protect from infinite loops if virtuso is not installed.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 03 Jul 2012 04:04:59 +0200
+
+lod2demo (1.1.31) lod2; urgency=low
+
+  * improved debian installation
+  * improved visualisation
+  * using the lod2webapi
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 23 Jun 2012 02:06:38 +0200
+
+lod2demo (1.1.30) lod2; urgency=low
+
+  * fix virtuoso page configuration
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 24 May 2012 01:42:27 +0200
+
+lod2demo (1.1.29) lod2; urgency=low
+
+  * update package installation procedure
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 24 May 2012 01:17:09 +0200
+
+lod2demo (1.1.28) lod2; urgency=low
+
+  * add more waits in the postinst
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 28 Feb 2012 01:46:08 -0800
+
+lod2demo (1.1.27) lod2; urgency=low
+
+  * add pages for limes and spatial semantic browser 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 21 Feb 2012 08:10:19 -0800
+
+lod2demo (1.1.26) lod2; urgency=low
+
+  * test the upload in 2 stages
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 06 Feb 2012 08:06:00 -0800
+
+lod2demo (1.1.25) lod2; urgency=low
+
+  * improve postinst script 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 23 Jan 2012 01:14:35 -0800
+
+lod2demo (1.1.24) lod2; urgency=low
+
+  * improve valiant integration
+  * better About page
+  * a number of bugfixes
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 13 Dec 2011 08:01:51 -0800
+
+lod2demo (1.1.23) lod2; urgency=low
+
+  * bug fix in debian configuration
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 22 Nov 2011 08:16:13 -0800
+
+lod2demo (1.1.22) lod2; urgency=low
+
+  * new about page
+  * improved xml processing
+  * improve poolparty integration
+  * reorganisation tools
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 22 Nov 2011 07:53:00 -0800
+
+lod2demo (1.1.21) lod2; urgency=low
+
+  * ontowiki query page works
+  * rdf upload via virtuoso conductor now depends on credential info 
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 09 Nov 2011 07:24:30 -0800
+
+lod2demo (1.1.20) lod2; urgency=low
+
+  * add google analytics to that we can follow demo.lod2.eu
+  * add about page
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 24 Oct 2011 05:28:42 -0700
+
+lod2demo (1.1.19) lod2; urgency=low
+
+  * add about page
+  * fix postinst script to create the /tmp/uploads dir
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 12 Oct 2011 06:23:34 -0700
+
+lod2demo (1.1.18) lod2; urgency=low
+
+  * improve debian packaging
+  * automatic installation of configuration graph
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 10 Oct 2011 06:09:54 -0700
+
+lod2demo (1.1.17) lod2; urgency=low
+
+  * make reference to sigmaee generic
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 04 Oct 2011 07:06:29 -0700
+
+lod2demo (1.1.16) lod2; urgency=low
+
+  * bug fix package building
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 03:37:59 -0700
+
+lod2demo (1.1.15) lod2; urgency=low
+
+  * bug fix in the EXML tab
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 03:36:59 -0700
+
+lod2demo (1.1.14) lod2; urgency=low
+
+  * Add XML-RDF pages
+  * make JDBC connection to virtuoso configurable
+  * add SameAs linking page
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 03 Oct 2011 02:36:45 -0700
+
+lod2demo (1.1.13) lod2; urgency=low
+
+  [ Bert Van Nuffelen (TenForce/LOD2) ]
+  * add intro page
+  * apply more mockup style
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 30 Aug 2011 15:40:21 -0700
+
+lod2demo (1.1.12) lod2; urgency=low
+
+  * add widget reference back
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 29 Aug 2011 03:22:49 -0700
+
+lod2demo (1.1.11) lod2; urgency=low
+
+  * style header similar as mockup
+  * add authoring page: ontowiki
+  * add d2r-cordis, onlinePoolParty, onlinePoolPartySPARQL, CKAN page,
+    Mondeca,
+  * add target RDF graph widget and apply it for EPoolPartyExtractor
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 29 Aug 2011 02:30:24 -0700
+
+lod2demo (1.1.10) lod2; urgency=low
+
+  * implement configuration for ontowiki
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 25 Aug 2011 13:20:56 -0700
+
+lod2demo (1.1.9) lod2; urgency=low
+
+  * add switch for local virtuoso access as Virtuoso has a different port on
+    localhost.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 24 Aug 2011 15:41:58 -0700
+
+lod2demo (1.1.8) lod2; urgency=low
+
+  * add extra lod2 stack dependencies
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 22 Aug 2011  02:37:31 -0700
+
+lod2demo (1.1.7) lod2; urgency=low
+
+  * correct layout for rdf file upload, adjust pointers to tools
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 15 Aug 2011  02:37:31 -0700
+
+lod2demo (1.1.6) lod2; urgency=low
+
+  * new layout with menu's instead of tabs, split functionalities in separate
+    classes.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 14 Aug 2011  02:37:31 -0700
+
+lod2demo (1.1.5) lod2; urgency=low
+
+  * Make the demonstrator closer to the agreed view: global visible current
+    graph, embedded tools, different options for Extraction and Loading, ..
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 11 Aug 2011  02:37:31 -0700
+lod2demo (1.1.4) lod2; urgency=low
+
+  * take for the online 'lod2'-sigma also the hostname configuration into
+    account.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 8 Aug 2011  02:37:31 -0700
+lod2demo (1.1.3) lod2; urgency=low
+
+  * add references to packages d2r-cordis & silk. Add activation call for
+    to allow editing of graphs in OntoWiki.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sun, 7 Aug 2011  02:37:31 -0700
+lod2demo (1.1.2) lod2; urgency=low
+
+  * add reading of configuration graph in virtuoso. This will enable to
+    specify configuration information in a system readable way.
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+lod2demo (1.1.1) lod2; urgency=low
+
+  * alter lod2 dependency for ontowiki
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+lod2demo (1.1) lod2; urgency=low
+
+  * integrate online sigma page.
+  * add lod2 dependencies
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 7 June 2011 02:37:31 -0700
+
+lod2demo (1.0) lod2; urgency=low
+
+  * Initial Release .
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 24 May 2011 04:35:01 -0700
