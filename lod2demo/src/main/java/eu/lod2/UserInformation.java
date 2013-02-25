@@ -4,9 +4,6 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Shows the known information on the user in an editable fashion.
  */
@@ -47,26 +44,14 @@ public class UserInformation extends VerticalLayout {
             return;
         }
 
-        final Form form= new UserForm(user,this.state);
-
-        List<String> properties= Arrays.asList(new String[] {"username", "firstName", "lastName", "email","organization"});
-        form.setVisibleItemProperties(properties);
-
-        form.setFormFieldFactory(new DefaultFieldFactory() {
-            public Field createField(Item item, Object propertyId, Component uiContext) {
-                TextField tf=(TextField) super.createField(item, propertyId,uiContext);
-                tf.setWidth("400px");
-                tf.setRequired(true);
-                tf.setRequiredError("This is a required field");
-                return tf;
-            }
-        });
+        final UserForm form= new UserForm(user,this.state);
 
         this.addComponent(form);
 
         Button saver = new Button("Save", new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 try {
+                    form.validate();
                     form.commit();
                     getWindow().showNotification("Save Successful","Your new information has been saved successfully.",
                             Window.Notification.TYPE_HUMANIZED_MESSAGE);
@@ -76,7 +61,9 @@ public class UserInformation extends VerticalLayout {
                 }
             }
         });
-        this.setSpacing(true);
+        HorizontalLayout buttons=new HorizontalLayout();
+        buttons.addComponent(saver);
+        buttons.setMargin(true);
 
         this.addComponent(saver);
     }
@@ -96,6 +83,9 @@ public class UserInformation extends VerticalLayout {
 
         public UserForm(LOD2DemoState.User user, LOD2DemoState state){
             super();
+
+            this.addFieldFactory();
+
             this.user=user;
             this.state=state;
 
@@ -105,6 +95,23 @@ public class UserInformation extends VerticalLayout {
 
             BeanItem<LOD2DemoState.User> userItem= new BeanItem<LOD2DemoState.User>(user);
             this.setItemDataSource(userItem);
+
+            String[] properties= new String[] {"username", "firstName", "lastName", "email","organization"};
+            this.setVisibleItemProperties(properties);
+
+
+        }
+
+        public void addFieldFactory(){
+            this.setFormFieldFactory(new DefaultFieldFactory() {
+                public Field createField(Item item, Object propertyId, Component uiContext) {
+                    TextField tf = (TextField) super.createField(item, propertyId, uiContext);
+                    tf.setWidth("400px");
+                    tf.setRequired(true);
+                    tf.setRequiredError("Please specify a value for " + tf.getCaption());
+                    return tf;
+                }
+            });
         }
 
         @Override

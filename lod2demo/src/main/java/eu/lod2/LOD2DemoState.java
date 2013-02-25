@@ -15,27 +15,26 @@
  */
 package eu.lod2;
 
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
+import org.openrdf.model.Resource;
+import org.openrdf.model.Statement;
+import org.openrdf.model.Value;
+import org.openrdf.model.impl.LiteralImpl;
 import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.model.*;
-import org.openrdf.model.impl.*;
-import org.openrdf.rio.*;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import virtuoso.sesame2.driver.VirtuosoRepository;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Properties;
-import java.io.*;
-import java.util.Vector;
-
-import com.vaadin.ui.Label;
 // import java.lang.RuntimeException;
 
 public class LOD2DemoState
@@ -336,7 +335,7 @@ public class LOD2DemoState
     /**
      * Updates the previous information on the given user to the new information available on the given user. The new
      * information on the user is contained in the given object.
-     * @param newUser
+     * @param newUser : the information on the user to add to the database
      * @throws IllegalStateException : a non-recoverable exception was thrown while processing the update operation.
      * this type of exceptions occur when the connection to the repository has failed or when there was an error in the
      * query.
@@ -527,6 +526,7 @@ public class LOD2DemoState
             return email;
         }
 
+        @Override
         public User clone(){
             User clone=new User(this.getUsername());
             clone.setFirstName(this.getFirstName());

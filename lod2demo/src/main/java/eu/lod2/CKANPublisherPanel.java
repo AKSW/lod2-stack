@@ -1,23 +1,22 @@
 package eu.lod2;
 
-import com.google.gwt.json.client.JSONParser;
 import com.vaadin.ui.*;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.openrdf.model.Resource;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
@@ -40,6 +39,7 @@ public class CKANPublisherPanel extends Panel {
     private Publisher publisher=null;
     //* the full name and id of the dataset that was retrieved by the user.
     private Map<String,String> fullDatasetIdentifiers=null;
+    public final static String storageLocation="/storage/f/";
 
     public CKANPublisherPanel(LOD2DemoState state){
         super();
@@ -110,6 +110,8 @@ public class CKANPublisherPanel extends Panel {
         this.publisher=new Publisher();
         this.publisher.CKANapi=this.CKANInfo.get("CKAN api key");
         this.publisher.CKANrepos=this.CKANInfo.get("CKAN repository");
+        this.publisher.CKANuser=this.CKANInfo.get("CKAN username");
+        this.publisher.CKANpwd=this.CKANInfo.get("password");
 
         if(this.publisher.CKANrepos.endsWith("/")){
             // remove trailing slash
@@ -123,10 +125,19 @@ public class CKANPublisherPanel extends Panel {
             if(datasetIdentifiers==null){
                 this.requestCreatePermission(this.PackageInfo,this.publisher);
                 return;
+            }else if(this.packageDetails){
+                try{
+                    this.publisher.updateDataset(datasetIdentifiers.get("id"),this.PackageInfo);
+                }catch (Exception e){
+                    getWindow().showNotification("Could not update package",
+                            "An error occurred while updating the package with name: "+name+".\n" +
+                                    "The error message was: "+e.getMessage(),
+                            Window.Notification.TYPE_ERROR_MESSAGE);
+                }
             }
         }catch (Exception e){
             getWindow().showNotification("Could not retrieve package",
-                    "An error occured while searching for a package with the name "+name+".\n" +
+                    "An error occurred while searching for a package with the name "+name+".\n" +
                             "The error message was: "+e.getMessage(),
                     Window.Notification.TYPE_ERROR_MESSAGE);
         }
@@ -152,7 +163,7 @@ public class CKANPublisherPanel extends Panel {
         layout.setMargin(true);
         layout.setSpacing(true);
 
-        Label message = new Label("No package was found with this name on the CKAN server. Do you wish to create it?");
+        Label message = new Label("No package with this name was found on the CKAN server. Do you wish to create it?");
         notifier.addComponent(message);
         final CKANPublisherPanel panel=this;
 
@@ -185,16 +196,56 @@ public class CKANPublisherPanel extends Panel {
 
     protected void handleResourceFields(Map<String,AbstractTextField> resourceFields){
         try{
-            //            TODO use correct information
-            //            String location=publishDataset(values.get(properties.get(0)),values.get(properties.get(1)),
-            //                    values.get(properties.get(2)));
 
-            getWindow().showNotification("Upload Successful", "Your dataset is available under " + "some location here" + ".",
-                    Window.Notification.TYPE_HUMANIZED_MESSAGE);
+            Map<String, String> values=this.readFieldsMap(resourceFields);
+            String location=publishDataset(this.publisher,values.get("filename"));
+            values.remove("filename");
+            createResourceLink(location, this.fullDatasetIdentifiers.get("id"), values);
+
+
+            this.createSuccessMessage("Congratulations, your dataset is available under "+
+                    this.publisher.CKANrepos+storageLocation + location + ".");
         } catch (Exception e) {
-            getWindow().showNotification("Could not save information",e.getMessage(),
-                    Window.Notification.TYPE_ERROR_MESSAGE);
+            getWindow().showNotification("Could not create resource","An unexpected error occurred while creating the resource. " +
+                    "<br>The message was: <br><br>"+e.getMessage(),
+                    Window.Notification.TYPE_ERROR_MESSAGE,true);
         }
+    }
+
+    /**
+     * Shows the given message in a panel with title "upload successful".
+     * Also gives the user the option of uploading a new file
+     * @param message : the success messsage to show
+     */
+    public void createSuccessMessage(String message){
+        this.removeAllComponents();
+
+        Panel panel=new Panel("Upload successful");
+        VerticalLayout layout=(VerticalLayout) panel.getContent();
+
+        layout.addComponent(new Label(message));
+
+        Button button=new Button("Upload another file");
+        final CKANPublisherPanel publisherPanel=this;
+        button.addListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                publisherPanel.fullDatasetIdentifiers=null;
+                publisherPanel.render();
+            }
+        });
+        layout.addComponent(button);
+
+        this.addComponent(panel);
+    }
+
+    /**
+     * Creates a resource that is linked to the given pacakgeId
+     * @param location : the url of the resource to link
+     * @param packageId : the id of the package to link the resource to
+     * @param resourceProperties : additional properties of the resource
+     */
+    private void createResourceLink(String location, String packageId, Map<String, String> resourceProperties) throws IOException {
+        this.publisher.linkResourceBackup(this.publisher.CKANrepos + storageLocation + location, packageId, resourceProperties);
     }
 
     /**
@@ -207,7 +258,10 @@ public class CKANPublisherPanel extends Panel {
         for(String prop : fieldMap.keySet()){
             AbstractTextField field=fieldMap.get(prop);
             field.validate();
-            result.put(prop,((String)field.getValue()).trim());
+            String value=(String)field.getValue();
+            if(value != null && !value.trim().isEmpty()){
+                result.put(prop, value.trim());
+            }
         }
         return result;
     }
@@ -222,8 +276,8 @@ public class CKANPublisherPanel extends Panel {
 
         // create required field for each property
         String[] properties= new String[]{
-                "CKAN repository", "CKAN api key"};
-        Map fields=new LinkedHashMap<String, TextField>();
+                "CKAN repository", "CKAN api key", "CKAN username", "Password"};
+        LinkedHashMap<String, AbstractTextField> fields=new LinkedHashMap<String, AbstractTextField>();
         for(String property : properties){
             TextField field=new TextField(property);
             field.setRequired(true);
@@ -237,6 +291,7 @@ public class CKANPublisherPanel extends Panel {
         return fields;
     }
 
+    private boolean packageDetails =false;
     /**
      * Creates the text fields that are required for the package configuration
      */
@@ -253,18 +308,35 @@ public class CKANPublisherPanel extends Panel {
         fields.put(nameTag, nameField);
         layout.addComponent(nameField);
 
+        final VerticalLayout details= new VerticalLayout();
         String descriptionTag="notes";
         TextArea description=new TextArea(descriptionTag);
         fields.put(descriptionTag,description);
-        layout.addComponent(description);
+        details.addComponent(description);
 
         String[] properties= new String[] {"title", "url", "version"};
         // TODO in a perfect world, tags would be added as well
         for(String property : properties){
             TextField field=new TextField(property);
-            layout.addComponent(field);
+            details.addComponent(field);
             fields.put(property, field);
         }
+
+        CheckBox cb = new CheckBox("Extra details?");
+        cb.setDescription("Check to add extra details to the package.\n Empty fields will be ignored.");
+        cb.setImmediate(true);
+        cb.setValue(packageDetails);
+        cb.addListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                packageDetails =!packageDetails;
+                details.setVisible(packageDetails);
+            }
+        });
+        layout.addComponent(cb);
+
+        details.setVisible(packageDetails);
+        layout.addComponent(details);
+
         this.addComponent(panel);
 
         // add previously entered values if any
@@ -277,20 +349,25 @@ public class CKANPublisherPanel extends Panel {
     }
 
     /**
-     * Creates the text fielsd that are required for the resource configuration
+     * Creates the text fields that are required for the resource configuration
      */
     protected Map<String, AbstractTextField> createResourceFields(){
         Panel panel= new Panel("CKAN resource information");
         VerticalLayout layout = (VerticalLayout) panel.getContent();
 
         final Map<String,AbstractTextField> fields=new LinkedHashMap<String, AbstractTextField>();
-        String[] properties= new String[] {"url", "name", "filename"};
+        String[] properties= new String[] {"name", "filename"};
         for(String property : properties){
             TextField field=new TextField(property);
             field.setRequired(true);
             layout.addComponent(field);
             fields.put(property, field);
         }
+
+        TextArea descriptionArea = new TextArea("description");
+        layout.addComponent(descriptionArea);
+        fields.put("description", descriptionArea);
+
         this.addComponent(panel);
         return fields;
     }
@@ -298,30 +375,28 @@ public class CKANPublisherPanel extends Panel {
     /**
      * Attempts to publish the current dataset in the application state to the given ckan repository. Throws an
      * exception with a useful error message on fail.
-     * @param ckan : the url of the ckan repository to use for publishing
-     * @param ckanApi : the api key to use when publishing to this repository
+     * @param publisher : the publisher to use when publising the resource
      * @param datasetName : the name of the dataset to publish
      *
      * @return : the filename that was created for the new file
      */
-    protected String publishDataset(String ckan, String ckanApi, String datasetName)
+    protected String publishDataset(Publisher publisher, String datasetName)
             throws RepositoryException, RDFHandlerException, IOException {
         String fullFilename= null;
 
-        Publisher publisher=new Publisher();
-        publisher.CKANrepos=ckan;
-        publisher.CKANapi=ckanApi;
-        this.state.getCurrentGraph();
+        String currentGraphName=this.state.getCurrentGraph();
 
         RepositoryConnection con = this.state.getRdfStore().getConnection();
         try{
 
+            Resource currentGraph=con.getValueFactory().createURI(currentGraphName);
             File temp=File.createTempFile(datasetName,".rdf", new File("/tmp"));
             temp.deleteOnExit();
 
             FileWriter fw=new FileWriter(temp);
             RDFWriter w = Rio.createWriter(RDFFormat.RDFXML, fw);
-            con.export(w);
+
+            con.export(w,currentGraph);
             fullFilename= publisher.requestFileLocationInCKAN(datasetName+".rdf");
             publisher.uploadFileToCkan(temp,fullFilename);
         }finally {
@@ -339,6 +414,8 @@ public class CKANPublisherPanel extends Panel {
         // the information necessary to execute operations on the CKAN store
         public String CKANrepos="";
         public String CKANapi="";
+        public String CKANuser="";
+        public String CKANpwd="";
         public String CKANapiHeader="X-CKAN-API-Key";
 
 
@@ -433,6 +510,32 @@ public class CKANPublisherPanel extends Panel {
         }
 
         /**
+         * Updates the dataset with the given id with the given properties
+         * @param id : the id of the dataset to update
+         * @param packageInfo : the package information to add to the dataset
+         */
+        public void updateDataset(String id, Map<String, String> packageInfo) throws IOException {
+            // current values must be requested and re-applied or they will be overwritten!!!
+            Map<String,Object> currentInfo=this.getPackageInfo(id);
+
+            for(String key : packageInfo.keySet()){
+                String newValue=packageInfo.get(key);
+                if(key!=null && !key.isEmpty()){
+                    currentInfo.put(key,newValue);
+                }
+            }
+
+            String jsonCall=new ObjectMapper().writeValueAsString(currentInfo);
+
+            Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/action/package_update");
+            boolean success=(Boolean) resultMapping.get("success");
+            if(!success){
+                throw new IllegalStateException("Could not create a new package, the server responded with "+
+                        new ObjectMapper().writeValueAsString(resultMapping.get("error")));
+            }
+        }
+
+        /**
          * Uploads the given file to ckan.
          * @param file : the file to upload
          * @param filename : the filename to use when uploading. Note that this is the full filename as returned by the
@@ -440,7 +543,6 @@ public class CKANPublisherPanel extends Panel {
          */
         private void uploadFileToCkan(File file, String filename) throws IOException {
             String body = "";
-            String generatedFilename=null;
 
             HttpClient httpclient = new DefaultHttpClient();
 
@@ -457,6 +559,10 @@ public class CKANPublisherPanel extends Panel {
                 HttpPost postRequest = new HttpPost(this.CKANrepos+"/storage/upload_handle");
                 postRequest.setEntity(reqEntity);
                 postRequest.setHeader(CKANapiHeader, this.CKANapi);
+
+                Credentials credentials= new UsernamePasswordCredentials(this.CKANuser, this.CKANpwd);
+                postRequest.addHeader(BasicScheme.authenticate(credentials, "UTF-8", false));
+
                 HttpResponse response = httpclient.execute(postRequest);
                 int statusCode = response.getStatusLine().getStatusCode();
                 BufferedReader br = new BufferedReader(
@@ -471,6 +577,10 @@ public class CKANPublisherPanel extends Panel {
                             body,
                             Window.Notification.TYPE_ERROR_MESSAGE);
 
+                }else if(!body.toLowerCase().contains("<h1>Upload - Successful</h1>".toLowerCase())){
+                    // TODO why don't they just send a json object??????
+                    throw new IllegalStateException("The server sent an unexpected response. The server response was: "+
+                            body);
                 }
             }finally {
                 httpclient.getConnectionManager().shutdown();
@@ -479,11 +589,12 @@ public class CKANPublisherPanel extends Panel {
 
         /**
          * Posts the given json to the action api.
+         *
          * @param json : the parameters in json format
          * @param method : the method of the api to call
          * @return the returned json object from the api
          */
-        private Map<String, Object> postToCKANApi(String json, String method) throws UnsupportedEncodingException {
+        private HashMap<String,Object> postToCKANApi(String json, String method) throws UnsupportedEncodingException {
             if (json.isEmpty() || method.isEmpty())
                 return null;
             DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -491,8 +602,8 @@ public class CKANPublisherPanel extends Panel {
             HttpPost httpPost = new HttpPost(this.CKANrepos+method);
             httpPost.addHeader(CKANapiHeader, this.CKANapi);
 
-            //TODO ignoring authentication for now
-            //httpPost.addHeader(BasicScheme.authenticate(credentials, ENCODING, false));
+            Credentials credentials= new UsernamePasswordCredentials(this.CKANuser, this.CKANpwd);
+            httpPost.addHeader(BasicScheme.authenticate(credentials, "UTF-8", false));
 
             StringEntity dataentity = new StringEntity(json);
             //NOTE: this contenttype is very important. If it is set to anything else (for example, true content
@@ -507,15 +618,12 @@ public class CKANPublisherPanel extends Panel {
                 HttpResponse response = httpClient.execute(httpPost);
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
-                    long contentLength = entity.getContentLength();
-                    Header contentEncoding = entity.getContentEncoding();
-                    Header contentType = entity.getContentType();
                     String body = EntityUtils.toString(entity);
                     try {
                         getWindow().showNotification("method "+method,
                                 "params:\n"+json+
                                 "\n\nreceived:\n"+body, Window.Notification.TYPE_ERROR_MESSAGE);
-                        return new ObjectMapper().readValue(body, HashMap.class);
+                        return (HashMap<String, Object>)new ObjectMapper().readValue(body, HashMap.class);
                     } catch (Exception e) {
                         throw new IllegalStateException("An invalid response object was returned by the CKAN while " +
                                 "performing the '"+method+" operation.'\n" +
@@ -538,15 +646,13 @@ public class CKANPublisherPanel extends Panel {
          * @param packageInfo : the information on the package as entered by the user
          * @return a map holding identification information on the created package (holding keys id and name)
          */
-        public Map<String,String> createDataset(Map<String, String> packageInfo) throws UnsupportedEncodingException {
+        public Map<String,String> createDataset(Map<String, String> packageInfo) throws IOException, IllegalStateException {
             String jsonCall="{";
-            int count=0;
-            for(String key : packageInfo.keySet()){
-                jsonCall+=((count>0?",":"")+"\""+key+"\":\""+packageInfo.get(key)+"\"");
-                count++;
-            }
-            // these are apparently required (not in api)
-            //jsonCall+=",\"published_by\":\"test\",\"description\":\"test\",\"url\":\"http://test.test\",\"status\":\"published\"";
+
+            jsonCall+=this.buildJSONParams(packageInfo);
+            // TODO implementation dependent! make the calls conform to the datasets that we support
+            // these are apparently required (not in api, the store that we are using for testing is using a custom schema!!)
+            jsonCall+=",\"published_by\":\"acp\",\"description\":\"test\",\"url\":\"http://test.test\",\"status\":\"http://ec.europa.eu/open-data/kos/dataset-status/Completed\"";
 
             jsonCall+="}";
 
@@ -554,7 +660,7 @@ public class CKANPublisherPanel extends Panel {
             boolean success=(Boolean) resultMapping.get("success");
             if(!success){
                 throw new IllegalStateException("Could not create a new package, the server responded with "+
-                        ((Map<String,Object>) resultMapping.get("error")).get("message"));
+                        new ObjectMapper().writeValueAsString(resultMapping.get("error")));
             }
             Map<String,Object> result=(Map<String,Object>)resultMapping.get("result");
             Map<String,String> identification=new HashMap<String, String>();
@@ -562,6 +668,118 @@ public class CKANPublisherPanel extends Panel {
             identification.put("name", (String) result.get("name"));
 
             return identification;
+        }
+
+        /**
+         * Creates a json string representation of the properties in the given map
+         * @param parameters : the map to convert to json
+         * @return a list of json properties, without the {} around them
+         */
+        private String buildJSONParams(Map<String, String> parameters) {
+            String json="";
+            int count=0;
+            for(String key : parameters.keySet()){
+                String value=parameters.get(key);
+                if(value!=null && !value.isEmpty()){
+                    json+=((count>0?",":"")+"\""+key+"\":\""+value+"\"");
+                    count++;
+                }
+            }
+            return json;
+        }
+
+        /**
+         * Links the given url as a resource to the given packageId. The values in the map of properties are also set.
+         * @param resourceUrl : the url of the resource to link
+         * @param packageId : the package to link the resource to
+         * @param properties : the properties to add to the resource
+         * TODO note: the resource_create function has been not been <s>fully</s> implemented in the ckan repository that we are using
+         *            (see the create.py file in ckan/logic/action and
+         *                   http://lists.okfn.org/pipermail/ckan-dev/2012-April/002013.html)
+         * @deprecated use eu.lod2.CKANPublisherPanel.Publisher#linkResourceBackup(java.lang.String, java.lang.String, java.util.Map<java.lang.String,java.lang.String>)
+         */
+        @Deprecated
+        public void linkResource(String resourceUrl, String packageId, Map<String,String> properties) throws IOException {
+            String jsonCall="{\"package_id\":\""+packageId+"\"," +
+                    "\"url\":\""+resourceUrl+"\",";
+
+            jsonCall+=this.buildJSONParams(properties);
+
+            jsonCall+="}";
+
+            Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/action/resource_create");
+            boolean success=(Boolean) resultMapping.get("success");
+            if(!success){
+                throw new IllegalStateException("Could not create a new package, the server responded with "+
+                        new ObjectMapper().writeValueAsString(resultMapping.get("error")));
+            }
+        }
+
+        /**
+         * publishes the given resource url to the given package using a workaround. The workaround is to first get all
+         * information on the package. We then isolate the resources information and update the package resources with
+         * that list plus a newly created resource.
+         * @param resourceUrl : the url of the resource to publish
+         * @param packageId : the id of the package to publish to
+         * @param properties : additional properties of the resource
+         *
+         * TODO note: this method is a workaround. It is necessary because the ODP store does not support resource_create
+         */
+        public void linkResourceBackup(String resourceUrl, String packageId, Map<String,String> properties) throws IOException {
+            // first get the current information on the package (accessing json in java is a bit convoluted
+            Map<String,Object> currentInfo=this.getPackageInfo(packageId);
+            List<Map<String,Object>> resources= (List<Map<String, Object>>) currentInfo.get("resources");
+
+            if(resources==null){
+                resources=new ArrayList<Map<String, Object>>();
+                currentInfo.put("resources", resources);
+            }
+            // build a new resource json object
+            String newResourceJson="{\"url\":\""+resourceUrl+"\","+this.buildJSONParams(properties)+"}";
+            Map<String,Object> newResource=new ObjectMapper().readValue(newResourceJson,HashMap.class);
+            resources.add(newResource);
+
+            //upload the new statistics on the dataset
+            // TODO does the server handle multiple writes correctly? Otherwise silent information loss is possible.
+            String updateCall=new ObjectMapper().writeValueAsString(currentInfo);
+            Map<String, Object> result=this.postToCKANApi(updateCall,"/api/action/package_update");
+            if(!(Boolean)result.get("success")){
+                throw new IllegalStateException("Could not create a new resource, the server responded with "+
+                        new ObjectMapper().writeValueAsString(result.get("error")));
+            }
+        }
+
+        /**
+         * Looks up the current information on the given package. Throws an exception with a meaningful message if the
+         * lookup process fails.
+         * @param packageId ; the id of the package to search for
+         * @return : a json object map with the current information on the package
+         */
+        private Map<String, Object> getPackageInfo(String packageId) throws IOException {
+            String jsonCall="{\"q\":\"id:"+packageId+"\"}";
+
+            Map<String,Object> response=(Map<String,Object>)this.postToCKANApi(jsonCall,"/api/action/package_search");
+            Map<String,Object> currentInfo = null;
+            try{
+                currentInfo=((List<Map<String,Object>>)
+                        ((Map<String,Object>) response.get("result"))
+                                .get("results")).get(0);
+            }catch(NullPointerException e){
+                //just for clarity
+                throw new IllegalStateException("The server responded with an object of an unexpected format. " +
+                        "The object was: \n"+new ObjectMapper().writeValueAsString(response));
+            }
+
+            // all keys must be retained or their information is lost.
+            // some values must be transformed, as requested by the ODP CKAN repository's implementation
+            // TODO note: CKAN implementation specific!! have to remove redundant " at start and end of string
+            // requesting all language uris from the server's developers and reversing the mapping)
+            String languageTag=(String)currentInfo.get("metadata_language");
+            if(languageTag != null && languageTag.startsWith("\"") && languageTag.endsWith("\"")){
+                languageTag=languageTag.substring(1,languageTag.length()-1);
+                currentInfo.put("metadata_language",languageTag);
+            }
+            return currentInfo;
         }
     }
 }
