@@ -135,6 +135,8 @@ public class LOD2DemoState
             e.printStackTrace();
         }
 
+        this.loadRuntimeConfig();
+
         InitStatus = new Boolean(ErrorMessage);
 
     }
@@ -145,6 +147,33 @@ public class LOD2DemoState
         currentGraph = graphname;
     };
 
+    /**
+     * Loads the runtime configuration for the demonstrator into the virtuoso store. Removes the previous configuration
+     * if any.
+     */
+    private void loadRuntimeConfig(){
+        String Filename = "/etc/lod2demo/lod2runtime.rdf";
+
+        try {
+            RepositoryConnection con = rdfStore.getConnection();
+
+            File configurationFile = new File(Filename);
+            Resource contextURI = con.getValueFactory().createURI(runtimeRDFgraph);
+
+            // first empty the graph to remove any previous configuration
+            con.clear(contextURI);
+            con.add(configurationFile, "http://lod2.eu/", RDFFormat.RDFXML, contextURI);
+        } catch (IOException e) {
+            ErrorMessage = "the configuration file is not readable or present:" + Filename;
+            e.printStackTrace();
+        } catch (RepositoryException e) {
+            ErrorMessage = "Query execution failed due to problems with the repository.";
+            e.printStackTrace();
+        } catch (RDFParseException e) {
+            ErrorMessage = "the configuration graph url is incorrect.";
+            e.printStackTrace();
+        }
+    }
 
     // accessors
     public String getCurrentGraph() {
@@ -197,6 +226,7 @@ public class LOD2DemoState
     // read the local configuration file /etc/lod2demo/lod2demo.conf
     private void readConfiguration() {
 
+        // TODO @karel read the runtime config file correctly
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream("/etc/lod2demo/lod2demo.conf"));

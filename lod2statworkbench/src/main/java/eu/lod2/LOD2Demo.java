@@ -62,8 +62,8 @@ public class LOD2Demo extends Application
             mainWindow = new Window("LOD2 Prototype");
             setTheme("lod2");
             mainContainer =  new VerticalLayout();
-	    mainWindow.addComponent(mainContainer);
-	    mainContainer.setSizeFull();
+            mainWindow.addComponent(mainContainer);
+	        mainContainer.setSizeFull();
 	
 
             final AbsoluteLayout welcomeSlagzin = new AbsoluteLayout();
@@ -648,7 +648,14 @@ public class LOD2Demo extends Application
                 }
             };
 
-            // Secondly define menu layout
+            MenuBar.Command mDeleteGraphs = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    showInWorkspace(new Authenticator(new DeleteGraphs(state),state));
+                }
+            };
+
+
+        // Secondly define menu layout
             // root menu's
             MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
             MenuBar.MenuItem querying      = menubar.addItem("Querying & Exploration", null, null);
@@ -710,6 +717,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem conf  = configuration.addItem("Demonstrator configuration", null, mconfiguration);
             MenuBar.MenuItem userconf = configuration.addItem("UserConfiguration", null, userinfoCommand);
             MenuBar.MenuItem about = configuration.addItem("About", null, mabout);
+            MenuBar.MenuItem delgraphs = configuration.addItem("Delete Graphs", null, mDeleteGraphs);
 
 
             HorizontalLayout menubarContainer = new HorizontalLayout();
