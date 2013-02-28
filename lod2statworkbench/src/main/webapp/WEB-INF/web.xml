@@ -20,6 +20,24 @@
     	<param-value>eu.lod2.widgetset.LOD2Demo</param-value>
 	</init-param>
         </servlet>
+        <servlet>
+                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
+                <!--<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class> -->
+                <servlet-class>eu.lod2.stat.StatLOD2DemoServlet</servlet-class> 
+                <init-param>
+                        <description>Vaadin application class to start</description>
+                        <param-name>application</param-name>
+                        <param-value>eu.lod2.stat.StatLOD2Demo</param-value>
+		</init-param>
+        <init-param>
+    	<param-name>widgetset</param-name>
+    	<param-value>eu.lod2.widgetset.LOD2Demo</param-value>
+	</init-param>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
+                <url-pattern>/stat/*</url-pattern>
+        </servlet-mapping>
         <servlet-mapping>
                 <servlet-name>LOD2 Demo Servlet</servlet-name>
                 <url-pattern>/*</url-pattern>
