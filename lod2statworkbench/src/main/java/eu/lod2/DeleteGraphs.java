@@ -16,16 +16,12 @@ package eu.lod2;
  * the License.
  */
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import eu.lod2.LOD2DemoState;
-import org.apache.commons.collections.ListUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -33,20 +29,18 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.openrdf.model.Value;
-import sun.misc.Regexp;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.*;
-import java.util.regex.Pattern;
 
 //import org.restlet.engine.util.ListUtils;
 
@@ -183,7 +177,7 @@ public class DeleteGraphs extends CustomComponent
         for(String id:all.getItemIds()){
             BeanItem<DeleteGraphsTable> item=all.getItem(id);
             String name=item.getBean().getGraph();
-            if(useRegex && Pattern.matches(filter,name)){
+            if(useRegex && name.matches(filter)){
                 this.table.select(id);
             }else if(!useRegex && name.contains(filter)){
                 this.table.select(id);
@@ -327,8 +321,7 @@ public class DeleteGraphs extends CustomComponent
             if (r.nextquery) {
                 System.err.println(r.nextquery_params);
                 result = r.the_graphs;
-                result = ListUtils.union(result,request_graphs(r.nextquery_params));
-
+                result.addAll(request_graphs(r.nextquery_params));
             } else {
                 result = r.the_graphs;
             }

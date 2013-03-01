@@ -11,17 +11,17 @@ import com.vaadin.ui.*;
 public class LoginStatus extends HorizontalLayout implements LOD2DemoState.LoginListener {
     //* the state of the application
     protected LOD2DemoState state;
-    //* the application
-    protected LOD2Demo application;
+    //* the component that should show the login screen when the user clicks the login button
+    protected AbstractLayout targetComponent;
 
     /**
      * creates a new LoginStatus component that is supplied with the given
-     * application state and the application workspace.
+     * application state and the component to show the login screen in.
      */
-    public LoginStatus(LOD2DemoState state, LOD2Demo application){
+    public LoginStatus(LOD2DemoState state, AbstractLayout target){
         this.state=state;
         this.setMargin(true);
-        this.application=application;
+        this.targetComponent=target;
         this.state.addLoginListener(this);
     }
 
@@ -70,7 +70,8 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
         login.addListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 // move application to the user information page
-                application.showInWorkspace(new Authenticator(new UserInformation(state), state));
+                targetComponent.removeAllComponents();
+                targetComponent.addComponent(new Authenticator(new UserInformation(state), state));
             }
         });
 

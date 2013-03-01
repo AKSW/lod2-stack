@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 
+import com.vaadin.Application;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.terminal.*;
 import com.vaadin.terminal.gwt.server.UploadException;
@@ -37,7 +38,7 @@ import eu.lod2.stat.CustomComponentFactory.CompType;
  * The Application's "main" class
  */
 @SuppressWarnings("serial")
-public class StatLOD2Demo extends LOD2Demo 
+public class StatLOD2Demo extends Application
 {
 	
     private LOD2DemoState state;
@@ -110,7 +111,7 @@ public class StatLOD2Demo extends LOD2Demo
         welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
 
         //create login/logout component that shows currently logged in user
-        LoginStatus login = new LoginStatus(state,this);
+        LoginStatus login = new LoginStatus(state,workspace);
         welcomeContainer.addComponent(login);
         welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
         welcomeContainer.setWidth("100%");

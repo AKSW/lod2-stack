@@ -108,7 +108,7 @@ public class LOD2Demo extends Application
             welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
 
             //create login/logout component that shows currently logged in user
-            LoginStatus login = new LoginStatus(state,this);
+            LoginStatus login = new LoginStatus(state,this.workspace);
             welcomeContainer.addComponent(login);
             welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
             welcomeContainer.setWidth("100%");
@@ -650,7 +650,7 @@ public class LOD2Demo extends Application
 
             MenuBar.Command mDeleteGraphs = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
-                    showInWorkspace(new Authenticator(new DeleteGraphs(state),state));
+                    showInWorkspace(new Authenticator(new DeleteGraphs(state), state));
                 }
             };
 
