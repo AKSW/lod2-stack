@@ -132,19 +132,19 @@ public class CKANPublisherPanel extends Panel {
                     getWindow().showNotification("Could not update package",
                             "An error occurred while updating the package with name: "+name+".\n" +
                                     "The error message was: "+e.getMessage(),
-                            Window.Notification.TYPE_ERROR_MESSAGE);
+                            Window.Notification.TYPE_ERROR_MESSAGE,true);
                 }
             }
         }catch (Exception e){
             getWindow().showNotification("Could not retrieve package",
                     "An error occurred while searching for a package with the name "+name+".\n" +
                             "The error message was: "+e.getMessage(),
-                    Window.Notification.TYPE_ERROR_MESSAGE);
+                    Window.Notification.TYPE_ERROR_MESSAGE,true);
         }
         if(name==null){
             getWindow().showNotification("Could not retrieve package",
                     "We could not retrieve a package with the name "+name+" in the given ckan store...",
-                    Window.Notification.TYPE_HUMANIZED_MESSAGE);
+                    Window.Notification.TYPE_HUMANIZED_MESSAGE,true);
             this.PackageInfo=null;
         }
 
@@ -173,7 +173,7 @@ public class CKANPublisherPanel extends Panel {
                     panel.fullDatasetIdentifiers=publisher.createDataset(packageProperties);
                 } catch (Exception e) {
                     getWindow().showNotification("Package creation failed", "Could not create the package. " +
-                            "Received error with message: "+e.getMessage());
+                            "Received error with message: "+e.getMessage(), Window.Notification.TYPE_ERROR_MESSAGE,true);
                 }
                 notifier.getParent().removeWindow(notifier);
                 panel.render();
@@ -530,8 +530,8 @@ public class CKANPublisherPanel extends Panel {
             Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/action/package_update");
             boolean success=(Boolean) resultMapping.get("success");
             if(!success){
-                throw new IllegalStateException("Could not create a new package, the server responded with "+
-                        new ObjectMapper().writeValueAsString(resultMapping.get("error")));
+                throw new IllegalStateException("<div>Could not create a new package, the server responded with </div>"+
+                        this.printCKANErrorMessage(resultMapping));
             }
         }
 
@@ -573,9 +573,11 @@ public class CKANPublisherPanel extends Panel {
                     body += line;
                 }
                 if(statusCode!=200){
-                    getWindow().showNotification("Upload Statuscode: "+statusCode,
-                            body,
-                            Window.Notification.TYPE_ERROR_MESSAGE);
+                    getWindow().showNotification("Upload failed: "+statusCode,
+                            "Could not upload the file to the server. The server responded with:<br>"+
+                                    body+"<br>If you believe this message is not correct, or you do not how to respond " +
+                                    "to it, please contact support.",
+                            Window.Notification.TYPE_ERROR_MESSAGE,true);
 
                 }else if(!body.toLowerCase().contains("<h1>Upload - Successful</h1>".toLowerCase())){
                     // TODO why don't they just send a json object??????
@@ -620,9 +622,10 @@ public class CKANPublisherPanel extends Panel {
                 if (entity != null) {
                     String body = EntityUtils.toString(entity);
                     try {
-                        getWindow().showNotification("method "+method,
-                                "params:\n"+json+
-                                "\n\nreceived:\n"+body, Window.Notification.TYPE_ERROR_MESSAGE);
+//                        some debug information
+//                        getWindow().showNotification("method "+method,
+//                                "params:\n"+json+
+//                                "\n\nreceived:\n"+body, Window.Notification.TYPE_ERROR_MESSAGE);
                         return (HashMap<String, Object>)new ObjectMapper().readValue(body, HashMap.class);
                     } catch (Exception e) {
                         throw new IllegalStateException("An invalid response object was returned by the CKAN while " +
@@ -659,8 +662,8 @@ public class CKANPublisherPanel extends Panel {
             Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/action/package_create");
             boolean success=(Boolean) resultMapping.get("success");
             if(!success){
-                throw new IllegalStateException("Could not create a new package, the server responded with "+
-                        new ObjectMapper().writeValueAsString(resultMapping.get("error")));
+                throw new IllegalStateException("<div>Could not create a new package, the server responded with </div>"+
+                        this.printCKANErrorMessage(resultMapping));
             }
             Map<String,Object> result=(Map<String,Object>)resultMapping.get("result");
             Map<String,String> identification=new HashMap<String, String>();
@@ -710,8 +713,8 @@ public class CKANPublisherPanel extends Panel {
             Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/action/resource_create");
             boolean success=(Boolean) resultMapping.get("success");
             if(!success){
-                throw new IllegalStateException("Could not create a new package, the server responded with "+
-                        new ObjectMapper().writeValueAsString(resultMapping.get("error")));
+                throw new IllegalStateException("<div>Could not create a new package, the server responded with </div>"+
+                        this.printCKANErrorMessage(resultMapping));
             }
         }
 
@@ -744,8 +747,8 @@ public class CKANPublisherPanel extends Panel {
             String updateCall=new ObjectMapper().writeValueAsString(currentInfo);
             Map<String, Object> result=this.postToCKANApi(updateCall,"/api/action/package_update");
             if(!(Boolean)result.get("success")){
-                throw new IllegalStateException("Could not create a new resource, the server responded with "+
-                        new ObjectMapper().writeValueAsString(result.get("error")));
+                throw new IllegalStateException("<div>Could not create a new resource, the server responded with </div>"+
+                        this.printCKANErrorMessage(result));
             }
         }
 
@@ -780,6 +783,116 @@ public class CKANPublisherPanel extends Panel {
                 currentInfo.put("metadata_language",languageTag);
             }
             return currentInfo;
+        }
+
+        /**
+         * Prints the error message in the response in a form that is readable by non-technical humans
+         * @param response : the response object sent by the ckan server. If this response is not an error message,
+         *                 the result will be a simple string visualization of the json object
+         * @throws IOException : writing the response's json to a string did not succeed.
+         * @return a non-technical version of the error message sent by the server in html format.
+         */
+        private String printCKANErrorMessage(Map<String,Object> response) throws IOException {
+            // cloning so we do not destroy the original result
+            Map<String,Object> error=new HashMap<String, Object>((Map<String,Object>)response.get("error"));
+            ObjectMapper mapper=new ObjectMapper();
+            if(error!=null){
+                String message=(String) error.get("message");
+                String type=(String) error.get("__type");
+                error.remove("message");
+                error.remove("__type");
+
+                String details=null;
+
+                if(type.equalsIgnoreCase("validation error")){
+                    if(message==null){
+                        message="The CKAN server could not understand the format of the request. This typically means " +
+                                "that the CKAN server that you are trying to contact is custom made and that it is " +
+                                "currently not supported by the LOD2 stack. If you believe that this is the case and " +
+                                "you feel the CKAN server deserves to be supported, please contact LOD2 support.";
+                    }
+
+                    details= this.jsonToHtml(error);
+
+                }
+
+                String result="<h1>Received an error message of type: "+type+"</h1>";
+                if(message==null){
+                    message="No message was attached to the error";
+                }
+                result+="<p>"+message+"</p>";
+
+                if(details!=null && !details.isEmpty()){
+                    result+="<div>The server provided further details to the message:</div>"+details;
+                }
+                return result;
+            }else{
+                return mapper.writeValueAsString(response);
+            }
+        }
+
+        /**
+         * @see #jsonToHtml(java.util.Map)
+         */
+        private String jsonToHtml(Object base){
+            if(base==null){
+                return "";
+            }
+            try{
+                // base case
+                return new ObjectMapper().writeValueAsString(base);
+            }catch (IOException e){
+                return "unreadable object!";
+            }
+        }
+
+        /**
+         * @see #jsonToHtml(java.util.Map)
+         */
+        private String jsonToHtml(List<Object> list){
+            String result="";
+            for(Object value: list){
+                if(value == null){
+                    result+=jsonToHtml(value);
+                }else{
+                    if(value instanceof Map){
+                        result+=jsonToHtml((Map<String,Object>)value);
+                    }else if(value instanceof List){
+                        result+=jsonToHtml((List<Object>)value);
+                    }else{
+                        result+=jsonToHtml(value);
+                    }
+                }
+            }
+            return result;
+        }
+
+        /**
+         * Prints the contents of the given json object as html
+         * Note: method overloading is done on the static (compile-time) type of the arguments to the method, hence the
+         * ugly instanceof and cast.
+         * @param map : the json object to print
+         * @return a html representation of the json map
+         */
+        private String jsonToHtml(Map<String,Object> map){
+            String result="<table>";
+            for(String property : map.keySet()){
+                result+="<tr><td>"+property+"</td>";
+                Object value=map.get(property);
+                if(value == null){
+                    result+="<td>"+jsonToHtml(value)+"</td></tr>";
+                }else{
+                    if(value instanceof Map){
+                        result+="<td>"+jsonToHtml((Map<String,Object>)value)+"</td></tr>";
+                    }else if(value instanceof List){
+                        result+="<td>"+jsonToHtml((List<Object>)value)+"</td></tr>";
+                    }else{
+                        result+="<td>"+jsonToHtml(value)+"</td></tr>";
+                    }
+                }
+
+            }
+            return result+"</table>";
         }
     }
 }
