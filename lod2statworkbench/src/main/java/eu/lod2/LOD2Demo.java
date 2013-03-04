@@ -107,12 +107,6 @@ public class LOD2Demo extends Application
             welcomeContainer.addComponent(currentgraphlabel);
             welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
 
-            //create login/logout component that shows currently logged in user
-            LoginStatus login = new LoginStatus(state,this.workspace);
-            welcomeContainer.addComponent(login);
-            welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
-            welcomeContainer.setWidth("100%");
-
             final VerticalLayout welcome = new VerticalLayout();
             welcome.addComponent(welcomeContainer);
             // unfortunately, we need to be able to build components from outside
@@ -733,6 +727,14 @@ public class LOD2Demo extends Application
             workspace = new VerticalLayout();
 
             mainContainer.addComponent(workspace);
+
+
+            //create login/logout component that shows currently logged in user
+            LoginStatus login = new LoginStatus(state,this.workspace);
+            welcomeContainer.addComponent(login);
+            welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
+            welcomeContainer.setWidth("100%");
+
         /*
             workspace.setHeight("80%");
 

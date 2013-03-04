@@ -101,20 +101,23 @@ public class StatLOD2Demo extends Application
         currentgraphlabel.addStyleName("currentgraphlabel");
         // Create an horizontal container
         HorizontalLayout welcomeContainer = new HorizontalLayout();
+        HorizontalLayout stateContainer = new HorizontalLayout();
+        VerticalLayout toolsContainer = new VerticalLayout();
+        toolsContainer.setWidth("100%");
+        welcomeContainer.setWidth("100%");
+
 
         //menubarContainer.addComponent(lod2logo);
         welcomeContainer.addComponent(welcomeSlagzin);
+        welcomeContainer.addComponent(toolsContainer);
+        toolsContainer.addComponent(stateContainer);
         welcomeContainer.setComponentAlignment(welcomeSlagzin, Alignment.TOP_LEFT);
-        welcomeContainer.addComponent(homeb);
-        welcomeContainer.setComponentAlignment(homeb, Alignment.TOP_RIGHT);
-        welcomeContainer.addComponent(currentgraphlabel);
-        welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
+        stateContainer.addComponent(homeb);
+        welcomeContainer.setComponentAlignment(toolsContainer, Alignment.TOP_RIGHT);
+        stateContainer.addComponent(currentgraphlabel);
+        stateContainer.setComponentAlignment(homeb, Alignment.TOP_LEFT);
+        stateContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
 
-        //create login/logout component that shows currently logged in user
-        LoginStatus login = new LoginStatus(state,workspace);
-        welcomeContainer.addComponent(login);
-        welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
-        welcomeContainer.setWidth("100%");
 
         final VerticalLayout welcome = new VerticalLayout();
         welcome.addComponent(welcomeContainer);
@@ -275,6 +278,13 @@ public class StatLOD2Demo extends Application
         workspace = new VerticalLayout();
 
         mainContainer.addComponent(workspace);
+
+
+        //create login/logout component that shows currently logged in user
+        LoginStatus login = new LoginStatus(state,workspace);
+        toolsContainer.addComponent(login);
+        //welcome.setComponentAlignment(login, Alignment.TOP_RIGHT);
+
     /*
         workspace.setHeight("80%");
 

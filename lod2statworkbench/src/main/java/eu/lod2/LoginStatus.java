@@ -20,9 +20,9 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
      */
     public LoginStatus(LOD2DemoState state, AbstractLayout target){
         this.state=state;
-        this.setMargin(true);
         this.targetComponent=target;
         this.state.addLoginListener(this);
+        this.setSpacing(true);
     }
 
     //* re-renders this component based on the user that is currently logged in
@@ -43,7 +43,7 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
      * pre: user is not null
      */
     protected void createUserInfo(LOD2DemoState.User user){
-        Label name=new Label(user.getUsername());
+        Label name=new Label("Logged in as: "+user.getUsername());
         name.setContentMode(Label.CONTENT_TEXT);
         Button logout= new Button("Log out");
 

@@ -96,7 +96,6 @@ public class LOD2DemoState
         try {
             RepositoryConnection con = rdfStore.getConnection();
 
-
             File configurationFile = new File(Filename);
             Resource contextURI = con.getValueFactory().createURI(configurationRDFgraph);
             Resource[] contexts = new Resource[]{contextURI};
