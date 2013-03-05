@@ -93,20 +93,11 @@ public class StoreFactory {
         StoreType type=this.findStoreType(storeUri, connection);
         Repository result;
 
-        switch(type){
-            case PERSISTENTMEMSTORE:
-                result=this.buildPersistentMemStore(storeUri,connection);
-                break;
-            case VIRTSTORE:
-                result=this.buildVirtStore(storeUri, connection);
-                break;
-            case NATIVESTORE:
-                result=this.buildNativeStore(storeUri, connection);
-                break;
-            case MEMSTORE: default:
-                result=this.buildMemStore(storeUri, connection);
-                break;
+        if(type==null){
+            type=StoreType.MEMSTORE;
         }
+
+        result=type.buildRepos(storeUri,connection,this);
         result.initialize();
 
         this.loadDefaultContents(storeUri,connection,result);
@@ -169,84 +160,6 @@ public class StoreFactory {
     }
 
     /**
-     * Returns a new memory store that is configured by the given parameterValues
-     * NOTE: this function is currently a simple redirect to the default memory store creator, as no configuration is
-     * expected for this kind of store
-     * @param store : the uri of the description for the store to create
-     * @param con : the connection to the configuration rdf file
-     * @return a new memory repository
-     */
-    public Repository buildMemStore(@SuppressWarnings("unused") Resource store,
-                                    @SuppressWarnings("unused") RepositoryConnection con){
-        return this.buildMemStore();
-    }
-
-    /**
-     * Returns a new memory store with the default configuration
-     * @return a new memeory store
-     */
-    public Repository buildMemStore(){
-        return new SailRepository(new MemoryStore());
-    }
-
-    /**
-     * Sets up a virtuoso store based on the configuration for the given store description uri in the configuration
-     * connection.
-     * @param store the uri of the description for the store to create
-     * @param con the connection to the configuration rdf file
-     * @return a new virtuoso store
-     */
-    private Repository buildVirtStore(Resource store, RepositoryConnection con)
-            throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-        String jdbcConnection=this.requirePropertyValue(store, con, JDBCconnectionURI);
-        String jdbcUser=this.requirePropertyValue(store, con, JDBCuserURI);
-        String jdbcPwd=this.requirePropertyValue(store,con, JDBCpwdURI);
-        return new VirtuosoRepository(jdbcConnection,
-                                      jdbcUser,
-                                      jdbcPwd);
-    }
-
-    /**
-     * Sets up a native store based on the configuration for the given store description uri in the configuration
-     * connection.
-     * @param con the connection to the configuration rdf file
-     * @param store the uri of the description for the store to create
-     * @return a new native store
-     */
-    private Repository buildNativeStore(Resource store, RepositoryConnection con)
-            throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-        String filename=this.requirePropertyValue(store, con, filenameURI);
-        List<String> indexes=this.getPropertyValue(store, con, indexesURI);
-        if(indexes==null || indexes.isEmpty()){
-            return new SailRepository(new NativeStore(new File(filename)));
-        }else{
-            String index=indexes.get(0);
-            if(indexes.size()>1){
-                System.out.print("Warning: multiple values found for "+ indexesURI+", selecting "+index);
-            }
-            return new SailRepository(new NativeStore(new File(filename)));
-        }
-    }
-
-    /**
-     * Creates a new persistent memory store based on the given configuration connection and store uri
-     * @param store : the uri of the store to configure
-     * @param con : the connection to the configuration store
-     * @return the new memory store repository
-     */
-    private Repository buildPersistentMemStore(Resource store, RepositoryConnection con)
-            throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-        String filename=this.requirePropertyValue(store,con, filenameURI);
-        MemoryStore memstore=new MemoryStore(new File(filename));
-
-        String sync=this.requestPropertyValue(store,con, syncDelayURI);
-        if(sync!=null){
-            memstore.setSyncDelay(Long.parseLong(sync));
-        }
-        return new SailRepository(memstore);
-    }
-
-    /**
      * Creates a temporary memory repository with the contents of the configuration file.
      * @param configFile : the path to the file with the configuration data
      * @return a temporary memory repository that can be queried to get a configuration file that creates repositories.
@@ -278,6 +191,14 @@ public class StoreFactory {
 
         con.close();
         return configRepos;
+    }
+
+    /**
+     * Returns a basic memory store
+     * @return a basic memory store without configuration
+     */
+    private Repository buildMemStore(){
+        return new SailRepository(new MemoryStore());
     }
 
     /**
@@ -346,10 +267,53 @@ public class StoreFactory {
     }
 
     public static enum StoreType {
-        MEMSTORE("memorystore"),
-        PERSISTENTMEMSTORE("filestore"),
-        NATIVESTORE("disk"),
-        VIRTSTORE("virtuoso");
+        MEMSTORE("memorystore") {
+            @Override
+            public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory) {
+                return new SailRepository(new MemoryStore());
+            }
+        },
+        PERSISTENTMEMSTORE("filestore") {
+            @Override
+            public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
+                    throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
+                String filename=factory.requirePropertyValue(storeUri,connection, filenameURI);
+                MemoryStore memstore=new MemoryStore(new File(filename));
+
+                String sync=factory.requestPropertyValue(storeUri,connection, syncDelayURI);
+                if(sync!=null){
+                    memstore.setSyncDelay(Long.parseLong(sync));
+                }
+                return new SailRepository(memstore);
+            }
+        },
+        NATIVESTORE("disk") {
+            @Override
+            public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
+                    throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
+                String filename=factory.requirePropertyValue(storeUri, connection, filenameURI);
+                List<String> indexes=factory.getPropertyValue(storeUri, connection, indexesURI);
+                if(indexes==null || indexes.isEmpty()){
+                    return new SailRepository(new NativeStore(new File(filename)));
+                }else{
+                    String index=indexes.get(0);
+                    if(indexes.size()>1){
+                        System.out.print("Warning: multiple values found for "+ indexesURI+", selecting "+index);
+                    }
+                    return new SailRepository(new NativeStore(new File(filename)));
+                }
+            }
+        },
+        VIRTSTORE("virtuoso") {
+            @Override
+            public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
+                    throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
+                String jdbcConnection=factory.requirePropertyValue(storeUri, connection, JDBCconnectionURI);
+                String jdbcUser=factory.requirePropertyValue(storeUri, connection, JDBCuserURI);
+                String jdbcPwd=factory.requirePropertyValue(storeUri,connection, JDBCpwdURI);
+                return new VirtuosoRepository(jdbcConnection,jdbcUser,jdbcPwd);
+            }
+        };
 
         private String fullName;
 
@@ -371,5 +335,15 @@ public class StoreFactory {
             }
             return null;
         }
+
+        /**
+         * Creates a repository based on this type and the provided configuration
+         * @param storeUri the uri of the repository to initialize
+         * @param connection the connection to the configuration repository
+         * @param factory the factory to use for configuring the store
+         * @return a new but not yet initialized repository with the correct configuration
+         */
+        public abstract Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
+                throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException;
     }
 }
