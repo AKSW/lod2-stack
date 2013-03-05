@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	 xmlns:config="http://lod2.eu/config/">
+  <rdf:Description rdf:about="http://localhost/mainrepos">
+    <rdf:type rdf:resource="http://lod2.eu/config/repository"/>
+    <config:storeType>virtuoso</config:storeType>
+    <config:jdbcConnect>jdbc:virtuoso://localhost:1111</config:jdbcConnect>
+    <config:jdbcUser>dba</config:jdbcUser>
+    <config:jdbcPWD>PWDLOD2</config:jdbcPWD>
+  </rdf:Description>
+  <!-- Some example store confiruations below
+  <rdf:Description rdf:about="http://localhost/testrepos1">
+    <rdf:type rdf:resource="http://lod2.eu/config/repository"/>
+    <config:storeType>memorystore</config:storeType>
+    <config:load>/tmp/test.rdf</config:load>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/testrepos2">
+    <rdf:type rdf:resource="http://lod2.eu/repository"/>
+    <config:storeType>filestore</config:storeType>
+    <config:syncdelay>60000</config:syncdelay>
+    <config:fileName>/tmp/testrepos2/</config:fileName>
+    <config:load>/tmp/test2.rdf</config:load>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/testrepos3">
+    <rdf:type rdf:resource="http://lod2.eu/config/repository"/>
+    <config:storeType>filestore</config:storeType>
+    <config:fileName>/tmp/testrepos3/</config:fileName>
+    <config:load>/tmp/test3.1.rdf</config:load>
+    <config:load>/tmp/test3.2.rdf</config:load>
+    <config:indexes>spoc,posc,cosp</config:indexes>
+  </rdf:Description> -->
+</rdf:RDF>

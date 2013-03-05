@@ -129,6 +129,7 @@ case "$1" in
 	sed -e $subst -i /var/lib/lod2demo/create_user.sql
 	sed -e $subst -i /etc/lod2demo/configuration.rdf
         sed -e $subst -i /etc/lod2demo/lod2demo.conf
+	sed -e $subst -i /etc/lod2demo/storeconfig.rdf
 		
 	if running; then
     	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user.sql;

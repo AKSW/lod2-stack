@@ -13,6 +13,7 @@ remove_user.sql /var/lib/lod2demo
 vad_install.sql /var/lib/lod2demo
 configuration/configuration.rdf etc/lod2demo
 configuration/lod2runtime.rdf etc/lod2demo
+configuration/storeconfig.rdf etc/lod2demo
 proxy.conf /var/lib/lod2demo
 create_user_sparql.sql /var/lib/lod2demo
 sparqled_config.xml /var/lib/lod2demo

@@ -54,8 +54,6 @@ public class LOD2Demo extends Application
 
     @Override
         public void init() {
-
-
             state = new LOD2DemoState();
 
 

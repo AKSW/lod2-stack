@@ -3,10 +3,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.lod2</groupId>
-  <artifactId>lod2demo</artifactId>
+  <artifactId>lod2statdemo</artifactId>
   <packaging>war</packaging>
-  <version>1.2.4</version>
-  <name>LOD2 demonstrator</name>
+  <version>1.0.0</version>
+  <name>LOD2 statistical workbench</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

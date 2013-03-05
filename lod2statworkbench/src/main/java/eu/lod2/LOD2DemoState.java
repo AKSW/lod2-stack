@@ -25,6 +25,7 @@ import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryResult;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 import virtuoso.sesame2.driver.VirtuosoRepository;
@@ -34,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 // import java.lang.RuntimeException;
 
@@ -79,11 +81,22 @@ public class LOD2DemoState
     public String ErrorMessage = "true";
 
     // initialize the state with an default configuration
-    // After succesfull initialisation the rdfStore connection is an active connection 
+    // After succesfull initialisation the rdfStore connection is an active connection
     public LOD2DemoState() {
 
         readConfiguration();
-        rdfStore = new VirtuosoRepository(jDBCconnectionstring, jDBCuser, jDBCpassword);
+
+        try{
+            StoreFactory storeFactory=new StoreFactory();
+            Repository configurator=storeFactory.fetchConfiguration("/etc/lod2demo/storeconfig.rdf");
+            Map<String,Repository> stores=storeFactory.buildRepositories(configurator);
+            rdfStore=stores.get("http://localhost/mainrepos");
+            configurator.shutDown();
+        }catch(Exception e){
+            ErrorMessage = "Could not fetch the store configuration";
+            e.printStackTrace();
+        }
+
         try {
             rdfStore.initialize();
         } catch (RepositoryException e) {

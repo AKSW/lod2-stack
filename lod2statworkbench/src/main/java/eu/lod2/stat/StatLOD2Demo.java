@@ -61,7 +61,7 @@ public class StatLOD2Demo extends Application
         state = new LOD2DemoState();
         customComponentFactory = new CustomComponentFactory(state);
 
-        mainWindow = new Window("LOD2 Prototype");
+        mainWindow = new Window("LOD2 Statistical Workbench DEMO");
         setTheme("lod2");
         mainContainer =  new VerticalLayout();
 	    mainWindow.addComponent(mainContainer);
@@ -147,12 +147,12 @@ public class StatLOD2Demo extends Application
 		MenuBar.Command cmdOntoWikiCreateKB = getCustomComponentCommand(CompType.CreateKB);
         MenuBar.Command cmdOntoWikiImport = getCustomComponentCommand(CompType.ImportCSV);
         MenuBar.Command cmdValidation = getCustomComponentCommand(CompType.Validation);
-        MenuBar.Command cmdUploadRDF = getCustomComponentCommand(CompType.UploadRDF);
-        MenuBar.Command cmdExtractXML = getCustomComponentCommand(CompType.ExtractFromXML, false);
-        MenuBar.Command cmdExtractXMLE = getCustomComponentCommand(CompType.ExtractFromXMLExtended, false);
-        MenuBar.Command cmdLoadFromPublicData = getFramedUrlCommand("http://publicdata.eu/dataset?res_format=RDF&q=rdf");
-        MenuBar.Command cmdLoadFromDataHub = getFramedUrlCommand("http://datahub.io/dataset?groups=lodcloud");
-        MenuBar.Command cmdD2R = getCustomComponentCommand(CompType.D2R);
+        //MenuBar.Command cmdUploadRDF = getCustomComponentCommand(CompType.UploadRDF);
+        //MenuBar.Command cmdExtractXML = getCustomComponentCommand(CompType.ExtractFromXML, false);
+        //MenuBar.Command cmdExtractXMLE = getCustomComponentCommand(CompType.ExtractFromXMLExtended, false);
+        MenuBar.Command cmdLoadFromPublicData = getFramedUrlCommand("http://publicdata.eu/dataset?q=statistical&res_format=application%2Frdf%2Bxml&_res_format_limit=0&sort=relevance+asc");
+        MenuBar.Command cmdLoadFromDataHub = getFramedUrlCommand("http://datahub.io/dataset?tags=statistics&q=&groups=lodcloud");
+        //MenuBar.Command cmdD2R = getCustomComponentCommand(CompType.D2R);
         MenuBar.Command cmdSparqled = getCustomComponentCommand(CompType.Sparqled);
         MenuBar.Command cmdSparqledManager = getCustomComponentCommand(CompType.SparqledManager);
         MenuBar.Command cmdSparqlOntowiki = getCustomComponentCommand(CompType.SparqlOW);
@@ -198,9 +198,15 @@ public class StatLOD2Demo extends Application
             }
         };
 
+        MenuBar.Command mDeleteGraphs = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new Authenticator(new DeleteGraphs(state), state));
+            }
+        };
+
         // root menus
         MenuBar.MenuItem menuGraph    	= menubar.addItem("Graph", null, null);
-        MenuBar.MenuItem menuExtraction = menubar.addItem("Extraction & Loading", null, null);
+        MenuBar.MenuItem menuExtraction = menubar.addItem("Find more Data Online", null, null);
         MenuBar.MenuItem menuEdit     	= menubar.addItem("Edit & Transform", null, null);
         MenuBar.MenuItem menuQuery      = menubar.addItem("Querying & Exploration", null, null);
         MenuBar.MenuItem menuEnrich    	= menubar.addItem("Enrichment", null, null);
@@ -211,6 +217,7 @@ public class StatLOD2Demo extends Application
         menuGraph.addItem("Create Knowledge Base", null, cmdOntoWikiCreateKB);
         menuGraph.addItem("Import", null, cmdOntoWikiImport);
         menuGraph.addItem("Validate", null, cmdValidation);
+        menuGraph.addItem("Remove Graphs", null, mDeleteGraphs);
         menuGraph.addItem("Publish to CKAN", null, publishCommand);
         
         // edit menu
@@ -219,13 +226,13 @@ public class StatLOD2Demo extends Application
         menuEdit.addItem("Transform and Update Graph (SPARQL Update Endpoint)", null, cmdSparqlUpdateVirtuoso);
         
         // extraction menus
-        menuExtraction.addItem("Upload RDF File or RDF from URL", null, cmdUploadRDF);
-        MenuBar.MenuItem itemExtractFromXML = menuExtraction.addItem("Extract RDF from XML", null, null);
-        itemExtractFromXML.addItem("Basic extraction", null, cmdExtractXML);
-        itemExtractFromXML.addItem("Extended extraction", null, cmdExtractXMLE);
+        //menuExtraction.addItem("Upload RDF File or RDF from URL", null, cmdUploadRDF);
+        //MenuBar.MenuItem itemExtractFromXML = menuExtraction.addItem("Extract RDF from XML", null, null);
+        //itemExtractFromXML.addItem("Basic extraction", null, cmdExtractXML);
+        //itemExtractFromXML.addItem("Extended extraction", null, cmdExtractXMLE);
         menuExtraction.addItem("Load RDF data from publicdata.eu", null, cmdLoadFromPublicData);
         menuExtraction.addItem("Load RDF data from Data Hub", null, cmdLoadFromDataHub);
-        menuExtraction.addItem("Extract RDF from SQL", null, cmdD2R);
+        //menuExtraction.addItem("Extract RDF from SQL", null, cmdD2R);
         
         // querying menu
         MenuBar.MenuItem itemSparqlQuerying = menuQuery.addItem("SPARQL querying", null, null);
