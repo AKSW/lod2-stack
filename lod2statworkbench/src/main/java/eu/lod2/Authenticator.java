@@ -63,6 +63,7 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
         LoginForm login= new LoginForm();
         login.setWidth("100%");
         login.setHeight("300px");
+
         login.addListener(new LoginForm.LoginListener() {
             public void onLogin(LoginForm.LoginEvent event) {
                 // let the state pick the new user from the provided information

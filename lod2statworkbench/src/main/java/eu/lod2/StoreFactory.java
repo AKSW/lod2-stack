@@ -76,6 +76,8 @@ public class StoreFactory {
             reposmap.put(name,this.setupStore(repos, config));
         }
 
+        con.close();
+
         return reposmap;
     }
 

@@ -54,7 +54,7 @@ public class CustomComponentFactory {
 		LODCloud,
 		DBPedia,
 		SPARQLPoolParty,
-		MondecaSPARQLList
+        EditDatasetOW, EditStructureDefOW, EditComponentPropOW, MondecaSPARQLList
 	}
 	
 	private LOD2DemoState state;
@@ -89,6 +89,9 @@ public class CustomComponentFactory {
 			case DBPedia: return new DBpedia(state);
 			case SPARQLPoolParty: return new SPARQLPoolParty(state);
 			case MondecaSPARQLList: return new MondecaSPARQLList(state);
+            case EditDatasetOW : return new OntoWikiPathExtended(state,"/model/info",true);
+            case EditStructureDefOW : return new OntoWikiPathExtended(state,"/model/info",true);
+            case EditComponentPropOW : return new OntoWikiPathExtended(state,"/model/info",true);
 			default: return null;
 		}
 	}

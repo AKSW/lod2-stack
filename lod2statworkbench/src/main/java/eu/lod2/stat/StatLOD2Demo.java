@@ -17,9 +17,10 @@ package eu.lod2.stat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Iterator;
+import java.util.*;
 
 import com.vaadin.Application;
+import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.terminal.*;
 import com.vaadin.terminal.gwt.server.UploadException;
@@ -30,6 +31,11 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.MenuBar.*;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.BaseTheme;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import org.openrdf.query.*;
+import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
 import org.vaadin.googleanalytics.tracking.*;
 import eu.lod2.*;
 import eu.lod2.stat.CustomComponentFactory.CompType;
@@ -66,8 +72,6 @@ public class StatLOD2Demo extends Application
         mainContainer =  new VerticalLayout();
 	    mainWindow.addComponent(mainContainer);
 	    mainContainer.setSizeFull();
-	
-	    //TODO: current graph??
 
         final AbsoluteLayout welcomeSlagzin = new AbsoluteLayout();
         welcomeSlagzin.setWidth("370px");
@@ -161,19 +165,23 @@ public class StatLOD2Demo extends Application
         MenuBar.Command cmdOntoWikiEdit = getCustomComponentCommand(CompType.EditWithOW);
         MenuBar.Command cmdSparqlUpdateVirtuoso = getFramedUrlCommand(sparqlAuthURL);
         MenuBar.Command cmdPoolPartyEdit = getCustomComponentCommand(CompType.OnlinePoolParty);
-        MenuBar.Command cmdCkan = getCustomComponentCommand(CompType.CKAN);
+        //MenuBar.Command cmdCkan = getCustomComponentCommand(CompType.CKAN);
         MenuBar.Command cmdGeoSpatial = getCustomComponentCommand(CompType.GeoSpatial);
         MenuBar.Command cmdSilk = getCustomComponentCommand(CompType.Silk);
         MenuBar.Command cmdLodRefine = getCustomComponentCommand(CompType.LodRefine);
         MenuBar.Command cmdLimes = getCustomComponentCommand(CompType.Limes);
         MenuBar.Command cmdSameAs = getCustomComponentCommand(CompType.SameAs);
-        MenuBar.Command cmdPublicData = getFramedUrlCommand("http://publicdata.eu");
-        MenuBar.Command cmdSigMa = getFramedUrlCommand("http://sig.ma");
-        MenuBar.Command cmdSindice = getFramedUrlCommand("http://sindice.com");
-        MenuBar.Command cmdLODCloud = getCustomComponentCommand(CompType.LODCloud);
+        //MenuBar.Command cmdPublicData = getFramedUrlCommand("http://publicdata.eu");
+        //MenuBar.Command cmdSigMa = getFramedUrlCommand("http://sig.ma");
+        MenuBar.Command cmdSindice = getFramedUrlCommand("http://sindice.com/main/submit");
+        //MenuBar.Command cmdLODCloud = getCustomComponentCommand(CompType.LODCloud);
         MenuBar.Command cmdDBPedia = getCustomComponentCommand(CompType.DBPedia);
         MenuBar.Command cmdSPARQLPoolParty = getCustomComponentCommand(CompType.SPARQLPoolParty);
         MenuBar.Command cmdMondecaSPARQLList = getCustomComponentCommand(CompType.MondecaSPARQLList);
+        MenuBar.Command cmdEditDataset = this.getEditDatasetCommand(this.state);
+        MenuBar.Command cmdEditStructureDef = this.getEditStructureDefinition(this.state);
+        MenuBar.Command cmdEditComponentProp = this.getEditComponentPropertyCommand(this.state);
+
         MenuBar.Command cmdDemoConfig = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
                 workspace.removeAllComponents();
@@ -204,13 +212,20 @@ public class StatLOD2Demo extends Application
             }
         };
 
+        /*
+         legend for menu item names:
+         - *: stub
+         - !: incomplete functionality
+         */
+
         // root menus
-        MenuBar.MenuItem menuGraph    	= menubar.addItem("Graph", null, null);
+        MenuBar.MenuItem menuGraph    	= menubar.addItem("Manage Graph", null, null);
         MenuBar.MenuItem menuExtraction = menubar.addItem("Find more Data Online", null, null);
         MenuBar.MenuItem menuEdit     	= menubar.addItem("Edit & Transform", null, null);
-        MenuBar.MenuItem menuQuery      = menubar.addItem("Querying & Exploration", null, null);
-        MenuBar.MenuItem menuEnrich    	= menubar.addItem("Enrichment", null, null);
-        MenuBar.MenuItem menuOnline   	= menubar.addItem("Online Tools & Services", null, null);
+        //MenuBar.MenuItem menuQuery      = menubar.addItem("Querying & Exploration", null, null);
+        MenuBar.MenuItem menuEnrich    	= menubar.addItem("Enrich Datacube", null, null);
+        //MenuBar.MenuItem menuOnline   	= menubar.addItem("Online Tools & Services", null, null);
+        MenuBar.MenuItem menuPresent    = menubar.addItem("Present & Publish", null, null);
         MenuBar.MenuItem menuHelp 		= menubar.addItem("Help", null, null);
         
         //graph menu
@@ -218,11 +233,13 @@ public class StatLOD2Demo extends Application
         menuGraph.addItem("Import", null, cmdOntoWikiImport);
         menuGraph.addItem("Validate", null, cmdValidation);
         menuGraph.addItem("Remove Graphs", null, mDeleteGraphs);
-        menuGraph.addItem("Publish to CKAN", null, publishCommand);
-        
+
         // edit menu
-        menuEdit.addItem("Edit Graph (OntoWiki)", null, cmdOntoWikiEdit);
-        menuEdit.addItem("Edit Code Lists (PoolParty)", null, cmdPoolPartyEdit);
+        MenuItem editmenu=menuEdit.addItem("Edit Graph (OntoWiki)", null, cmdOntoWikiEdit);
+        editmenu.addItem("!Edit qb:Dataset",null, cmdEditDataset);
+        editmenu.addItem("!Edit qb:StructureDefinition",null, cmdEditStructureDef);
+        editmenu.addItem("!Edit qb:ComponentProperty",null,cmdEditComponentProp);
+        menuEdit.addItem("!Edit Code Lists (PoolParty)", null, cmdPoolPartyEdit);
         menuEdit.addItem("Transform and Update Graph (SPARQL Update Endpoint)", null, cmdSparqlUpdateVirtuoso);
         
         // extraction menus
@@ -235,7 +252,7 @@ public class StatLOD2Demo extends Application
         //menuExtraction.addItem("Extract RDF from SQL", null, cmdD2R);
         
         // querying menu
-        MenuBar.MenuItem itemSparqlQuerying = menuQuery.addItem("SPARQL querying", null, null);
+        MenuBar.MenuItem itemSparqlQuerying = menuEdit.addItem("SPARQL querying", null, null);
         MenuBar.MenuItem itemSparqled = itemSparqlQuerying.addItem("SparQLed - Assisted Querying", null, cmdSparqled);
         itemSparqled.addItem("Use currently selected graph", null, cmdSparqled);
         itemSparqled.addItem("Use manager to calculate summary graph", null, cmdSparqledManager);
@@ -244,10 +261,12 @@ public class StatLOD2Demo extends Application
         itemSparqlQuerying.addItem("Virtuoso interactive SPARQL endpoint", null, cmdSparqlVirtuosoI);
 //        menuQuery.addItem("Find RDF Data Cubes", null, null);
 //        menuQuery.addItem("RDF Data Cube Matching Analysis", null, null);
-        menuQuery.addItem("*Visualization with CubeViz", null, null);
-        menuQuery.addItem("CKAN", null, cmdCkan);
-        menuQuery.addItem("Geo-Spatial exploration", null, cmdGeoSpatial);
-        
+        menuPresent.addItem("*Visualization with CubeViz", null, null);
+        // seems like duplicate of publicdata.eu
+        //menuQuery.addItem("CKAN", null, cmdCkan);
+        menuPresent.addItem("Geo-Spatial exploration", null, cmdGeoSpatial);
+        menuPresent.addItem("Publish to CKAN", null, publishCommand);
+
         // enrichment menu
         menuEnrich.addItem("Interlinking dimensions (Silk)", null, cmdSilk);
         menuEnrich.addItem("Data enrichment and reconciliation (LODRefine)", null, cmdLodRefine);
@@ -255,14 +274,21 @@ public class StatLOD2Demo extends Application
         menuEnrich.addItem("Interlinking with SameAs", null, cmdSameAs);
         
         // online menu
-        menuOnline.addItem("Sindice", null, cmdSindice);
-        menuOnline.addItem("Sig.ma", null, cmdSigMa);
-        menuOnline.addItem("Europe's Public Data", null, cmdPublicData);
-        MenuBar.MenuItem itemOnlineSparql = menuOnline.addItem("Online SPARQL Endpoints", null, null);
-        itemOnlineSparql.addItem("LOD cloud", null, cmdLODCloud);
-        itemOnlineSparql.addItem("DBPedia", null, cmdDBPedia);
-        itemOnlineSparql.addItem("PoolParty SPARQL endpoint", null, cmdSPARQLPoolParty);
-        itemOnlineSparql.addItem("Mondeca SPARQL endpoint Collection", null, cmdMondecaSPARQLList);
+        //moved to present and publish
+        menuPresent.addItem("Publish to Sindice", null, cmdSindice);
+        //menuOnline.addItem("Sig.ma", null, cmdSigMa); // not a fitting case for stat wb?
+        // duplicate?
+        //menuOnline.addItem("Europe's Public Data", null, cmdPublicData);
+        //MenuBar.MenuItem itemOnlineSparql = menuOnline.addItem("Online SPARQL Endpoints", null, null);
+        // no longer working
+        //itemOnlineSparql.addItem("LOD cloud", null, cmdLODCloud);
+        // moved to find more data
+        menuExtraction.addItem("DBPedia", null, cmdDBPedia);
+        // TODO relevant for stat workbench, maybe for extra context?
+        // moved to sparql querying
+        itemSparqlQuerying.addItem("!PoolParty Code Lists SPARQL endpoint", null, cmdSPARQLPoolParty);
+        // moved to extract
+        menuExtraction.addItem("Mondeca SPARQL endpoint Collection", null, cmdMondecaSPARQLList);
         
         // help menu
         menuHelp.addItem("Demonstrator Configuration", null, cmdDemoConfig);
@@ -564,7 +590,7 @@ public class StatLOD2Demo extends Application
      * @return
      */
     private MenuBar.Command getCustomComponentCommand(final CompType componentType, final boolean expand){
-		return new MenuBar.Command() {
+        return new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
                 workspace.removeAllComponents();
                 CustomComponent content = customComponentFactory.create(componentType);
@@ -580,6 +606,235 @@ public class StatLOD2Demo extends Application
                 }
             }
 		};
+    }
+
+    private Command getEditDatasetCommand(final LOD2DemoState state){
+        return new Command(){
+            public void menuSelected(MenuItem selectedItem){
+                String currentGraph=state.getCurrentGraph();
+                final SparqlResultSelector choices=new SparqlResultSelector(
+                        "select distinct ?s ?name " +
+                                (currentGraph==null || currentGraph.isEmpty()?"":"from <"+currentGraph+"> ")+
+                                "where {" +
+                                "?s a <http://purl.org/linked-data/cube#DataSet>." +
+                                "optional { ?s rdfs:label ?name.}" +
+                                "}", state);
+                choices.setCaption("Select the dataset to edit");
+                choices.setMessage("Please select the dataset to edit from the drop-down menu: ");
+                choices.setWidth("300px");
+                choices.setModal(true);
+                choices.addListener(new Property.ValueChangeListener() {
+                    public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                        String key=(String) valueChangeEvent.getProperty().getValue();
+                        String dataset=choices.getResults().get(key);
+                        // TODO talk to the ontowiki service
+                        showInWorkspace(new Label("you selected uri "+dataset));
+                    }
+                });
+
+                getMainWindow().addWindow(choices);
+            }
+        };
+    }
+
+    private Command getEditStructureDefinition(final LOD2DemoState state){
+        return new Command(){
+            public void menuSelected(MenuItem selectedItem){
+                String currentGraph=state.getCurrentGraph();
+                final SparqlResultSelector choices=new SparqlResultSelector(
+                        "select distinct ?s ?name " +
+                                (currentGraph==null || currentGraph.isEmpty()?"":"from <"+currentGraph+"> ")+
+                                "where {" +
+                                "?s a <http://purl.org/linked-data/cube#DataStructureDefinition>." +
+                                "optional { ?s rdfs:label ?name.}" +
+                                "}", state);
+                choices.setCaption("Select the data structure definition to edit");
+                choices.setMessage("Please select the data structure definition to edit from the drop-down menu: ");
+                choices.setWidth("300px");
+                choices.setModal(true);
+                choices.addListener(new Property.ValueChangeListener() {
+                    public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                        String key=(String) valueChangeEvent.getProperty().getValue();
+                        String dataset=choices.getResults().get(key);
+                        // TODO talk to the ontowiki service
+                        showInWorkspace(new Label("you selected uri "+dataset));
+                    }
+                });
+
+                getMainWindow().addWindow(choices);
+            }
+        };
+    }
+
+    private Command getEditComponentPropertyCommand(final LOD2DemoState state){
+        return new Command(){
+            public void menuSelected(MenuItem selectedItem){
+                String currentGraph=state.getCurrentGraph();
+                final SparqlResultSelector choices=new SparqlResultSelector(
+                        "select distinct ?s ?name " +
+                                (currentGraph==null || currentGraph.isEmpty()?"":"from <"+currentGraph+"> ")+
+                                "where {" +
+                                "{ ?s a  <http://purl.org/linked-data/cube#DimensionProperty> } union "+
+                                "{ ?s a  <http://purl.org/linked-data/cube#ComponentProperty> } union "+
+                                "{ ?s a  <http://purl.org/linked-data/cube#AttributeProperty> } union "+
+                                "{ ?s a  <http://purl.org/linked-data/cube#MeasureProperty> } "+
+                                "optional { ?s rdfs:label ?name.} " +
+                                "}", state);
+                choices.setCaption("Select the component property to edit");
+                choices.setMessage("Please select the component property to edit from the drop-down menu: ");
+                choices.setWidth("500px");
+                choices.setModal(true);
+                choices.addListener(new Property.ValueChangeListener() {
+                    public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                        String key=(String) valueChangeEvent.getProperty().getValue();
+                        String dataset=choices.getResults().get(key);
+                        //TODO talk to the ontowiki service
+                        showInWorkspace(new Label("you selected uri "+dataset));
+                    }
+                });
+
+                getMainWindow().addWindow(choices);
+            }
+        };
+    }
+
+    private class SparqlResultSelector extends Window implements Property.ValueChangeListener{
+        private String query;
+        private Set<Property.ValueChangeListener> listeners=new HashSet<Property.ValueChangeListener>();
+        private LOD2DemoState state;
+
+        //* the results that were returned by the query. Maps from name to uri. Name is the representation to be shown to the user
+        private Map<String,String> results;
+
+        public SparqlResultSelector(String query, LOD2DemoState state){
+            super();
+            this.query=query;
+            this.state=state;
+            this.results=this.fetchResults();
+            this.buildSelector();
+        }
+
+        public void addListener(Property.ValueChangeListener listener){
+            this.listeners.add(listener);
+        }
+
+        public void removeListener(Property.ValueChangeListener listener){
+            this.listeners.remove(listener);
+        }
+
+        public Map<String,String> getResults(){
+            return new HashMap<String, String>(this.results);
+        }
+
+        private Map<String,String> fetchResults(){
+            try{
+                RepositoryConnection connection=state.getRdfStore().getConnection();
+                TupleQueryResult result=connection.prepareTupleQuery(QueryLanguage.SPARQL, this.query).evaluate();
+                List<String> bindings=result.getBindingNames();
+                String nameBindingName="name";
+                if(bindings.size()!=1 && (bindings.size()!=2 || !bindings.contains(nameBindingName))){
+                    throw new IllegalArgumentException("The sparql result selector window requires its query to have only a single result, " +
+                            "with an optional unique 'name' added to the result.");
+                }
+
+                boolean useName=bindings.size()>1;
+                String resultName=nameBindingName; // default to name, so single binding of 'name' is allowed
+                for(String bind:bindings){
+                    if(!bind.equals(nameBindingName)){
+                        resultName=bind;
+                    }
+                }
+                Map<String, String> mappings=new HashMap<String, String>();
+                while(result.hasNext()){
+                    BindingSet res=result.next();
+                    String value=res.getValue(resultName).stringValue();
+                    String name;
+                    if(useName && res.getValue(nameBindingName)!=null){
+                        // use the name and the value for better readability
+                        name=res.getValue(nameBindingName).stringValue() +": "+value;
+                    }else{
+                        name=value;
+                    }
+                    mappings.put(name,value);
+                }
+                return mappings;
+            }catch (QueryEvaluationException e){
+                throw new IllegalArgumentException("The query result selector requires its query to be valid.");
+            } catch (RepositoryException e) {
+                throw new IllegalStateException("The LOD2 demonstrator has been incorrectly configured: the repository could not be used.");
+            } catch (MalformedQueryException e) {
+                throw new IllegalArgumentException("The query result selector requires its query to be valid.");
+            }
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        private String message;
+
+
+        /**
+         * Builds a selector for the query results in the current map. If the map is empty, a message is shown in stead.
+         */
+        public void buildSelector(){
+            VerticalLayout content=(VerticalLayout)this.getContent();
+            content.setSpacing(true);
+            final Window window=this;
+
+            if(this.results.isEmpty()){
+                content.addComponent(new Label("Sorry, no results were found for your request. Please ensure that your " +
+                        "data contains a valid datacube (see 'Validate' under 'Manage Graph')."));
+                Button ok=new Button("OK");
+                ok.addListener(new ClickListener() {
+                    public void buttonClick(ClickEvent clickEvent) {
+                        window.getParent().removeWindow(window);
+                    }
+                });
+                content.addComponent(ok);
+                content.setComponentAlignment(ok,Alignment.BOTTOM_CENTER);
+                return;
+            }
+
+            NativeSelect selector=new NativeSelect(this.getMessage());
+
+            String select=null;
+            for(String key:this.results.keySet()){
+                selector.addItem(key);
+                select=key;
+            }
+            selector.setImmediate(true);
+            selector.addListener(this);
+            selector.setValue(select);
+            selector.setWidth("80%");
+
+            selector.setNullSelectionAllowed(false);
+
+            content.addComponent(selector);
+            content.setComponentAlignment(selector,Alignment.MIDDLE_CENTER);
+
+            Button button= new Button("Select");
+            content.addComponent(button);
+
+            button.addListener(new ClickListener() {
+                public void buttonClick(ClickEvent clickEvent) {
+                    for(Property.ValueChangeListener listener:listeners){
+                        listener.valueChange(lastChange);
+                    }
+                    getParent().removeWindow(window);
+                }
+            });
+            content.setComponentAlignment(button,Alignment.BOTTOM_CENTER);
+        }
+
+        private Property.ValueChangeEvent lastChange;
+        public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+            this.lastChange=valueChangeEvent;
+        }
     }
 }
 

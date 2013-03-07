@@ -1,36 +1,23 @@
 package eu.lod2.stat;
 
-import java.net.*;
-import java.net.URI;
-import java.io.*;
-
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.google.gwt.user.client.Cookies;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Alignment.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
-
-import org.openrdf.model.*;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.repository.Repository;
+import eu.lod2.LOD2DemoState;
+import org.apache.http.cookie.Cookie;
+import org.openrdf.model.Value;
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.query.*;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.model.impl.*;
 
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Embedded OntoWiki tool
@@ -46,6 +33,7 @@ public class OntoWikiPathExtended extends CustomComponent
 	private String service;
 	private String pathExtension;
 	private boolean selectCurrentGraph;
+    private String sessionId;
 
   public OntoWikiPathExtended(LOD2DemoState st, String pathExtension, boolean selectCurrentGraph) {
 
@@ -60,6 +48,7 @@ public class OntoWikiPathExtended extends CustomComponent
     try { 
 			URL url = new URL(service);
       browser = new Embedded("", new ExternalResource(url));
+
       browser.setType(Embedded.TYPE_BROWSER);
       browser.setSizeFull();
       //panel.addComponent(browser);
@@ -94,7 +83,8 @@ public class OntoWikiPathExtended extends CustomComponent
 				if (valueOfP instanceof LiteralImpl) {
 					LiteralImpl literalP = (LiteralImpl) valueOfP;
 					password = literalP.getLabel();
-				};	
+				};
+
 				Value valueOfS = bindingSet.getValue("s");
 				if (valueOfS instanceof LiteralImpl) {
 					LiteralImpl literalS = (LiteralImpl) valueOfS;
@@ -104,6 +94,9 @@ public class OntoWikiPathExtended extends CustomComponent
 					} else {
 						service = service0;
 					};
+
+                    //this.authenticate(username, password, service);
+
 					service += pathExtension;
 					
 					String curGraph = state.getCurrentGraph();
@@ -118,6 +111,9 @@ public class OntoWikiPathExtended extends CustomComponent
 							service += "/?m=unsupported-encoding";
 							e.printStackTrace();
 						}
+                    if(this.sessionId!=null){
+                        service+="&C="+this.sessionId;
+                    }
 //					else service += "/";
 				};	
 			}
@@ -133,7 +129,38 @@ public class OntoWikiPathExtended extends CustomComponent
 			e.printStackTrace();
 		}
 
-	};
+    }
+
+    /**
+     * Authenticates the given user with the given password
+     * @param user the username
+     * @param password the password that should match the given username
+     * @param service the location of the ontowiki service
+     */
+    private void authenticate(String user, String password, String service) throws IOException, IllegalAccessException {
+
+        /*
+        // the authentication post request should originate from the client.
+        // TODO: use the correct cookie from the client side
+        String script="(function(){ var xmlhttp = null;\n" +
+                "if (window.XMLHttpRequest)\n" +
+                "{// code for IE7+, Firefox, Chrome, Opera, Safari\n" +
+                "    xmlhttp = new XMLHttpRequest();\n" +
+                "}\n" +
+                "else\n" +
+                "{// code for IE6, IE5\n" +
+                "    xmlhttp = new ActiveXObject(\"Microsoft.XMLHTTP\");\n" +
+                "}\n" +
+                "\n" +
+                "var url = \""+service+"/service/auth\";\n" +
+                "xmlhttp.open(\"POST\", url, true);\n" +
+                "xmlhttp.setRequestHeader(\"Content-type\", \"application/x-www-form-urlencoded\");\n" +
+                "var params = \"u=\"+encodeURIComponent(\""+user+"\")+\"&p=\"+encodeURIComponent(\""+password+"\");\n" +
+                "xmlhttp.send(params);})();";
+        window.executeJavaScript(script);
+        */
+
+    }
 
 
     private void activateCurrentGraph() {
