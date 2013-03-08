@@ -1,6 +1,6 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          lod2demo
+# Provides:          lod2statworkbench
 # Required-Start:    $network $local_fs
 # Required-Stop:
 # Default-Start:     2 3 4 5
@@ -15,9 +15,9 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC=lod2demo             # Introduce a short description here
-NAME=lod2demo             # Introduce the short server's name here
-DAEMON=/usr/sbin/lod2demo # Introduce the server's location here
+DESC=lod2statworkbench             # Introduce a short description here
+NAME=lod2statworkbench             # Introduce the short server's name here
+DAEMON=/usr/sbin/lod2statworkbench # Introduce the server's location here
 DAEMON_ARGS=""             # Arguments to run the daemon with
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

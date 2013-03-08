@@ -3,9 +3,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.lod2</groupId>
-  <artifactId>lod2statdemo</artifactId>
+  <artifactId>lod2statworkbench</artifactId>
   <packaging>war</packaging>
-  <version>1.0.0</version>
+  <version>1.2.8</version>
   <name>LOD2 statistical workbench</name>
 
   <properties>
@@ -85,7 +85,7 @@
         <configuration>
           <webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
           <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-          <runTarget>lod2demo</runTarget>
+          <runTarget>lod2statworkbench</runTarget>
           <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
           <noServer>true</noServer>
           <port>8080</port>
@@ -115,7 +115,7 @@
         </executions>
       </plugin>
 
-      <!-- A simple Jetty test server at http://localhost:8080/lod2demo can be launched with the Maven goal jetty:run 
+      <!-- A simple Jetty test server at http://localhost:8080/lod2statworkbench can be launched with the Maven goal jetty:run 
   and stopped with jetty:stop -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -123,12 +123,12 @@
         <version>6.1.24</version>
         <configuration>
           <stopPort>9966</stopPort>
-          <stopKey>lod2demo</stopKey>
+          <stopKey>lod2statworkbench</stopKey>
           <!-- Redeploy every x seconds if changes are detected, 0 for no automatic redeployment -->
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <!-- make sure Jetty also finds the widgetset -->
           <webAppConfig>
-            <contextPath>/lod2demo</contextPath>
+            <contextPath>/lod2statworkbench</contextPath>
             <baseResource implementation="org.mortbay.resource.ResourceCollection">
               <!-- Workaround for Maven/Jetty issue http://jira.codehaus.org/browse/JETTY-680 -->
               <!-- <resources>src/main/webapp,${project.build.directory}/${project.build.finalName}</resources> -->

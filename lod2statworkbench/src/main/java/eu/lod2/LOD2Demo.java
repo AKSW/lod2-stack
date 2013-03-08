@@ -774,7 +774,7 @@ public class LOD2Demo extends Application
 //            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
             GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker(state.googleAnalyticsID, state.googleAnalyticsDomain);
             mainWindow.addComponent(tracker);
-            tracker.trackPageview("/lod2demo");
+            tracker.trackPageview("/lod2statworkbench");
             };
 
 

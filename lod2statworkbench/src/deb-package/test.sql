@@ -1,1 +1,1 @@
-sparql select * from <http://localhost/lod2demo> where {?s ?p ?o};
+sparql select * from <http://localhost/lod2statworkbench> where {?s ?p ?o};

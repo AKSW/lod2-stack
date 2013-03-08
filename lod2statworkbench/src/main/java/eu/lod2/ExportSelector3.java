@@ -135,7 +135,7 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
 
         /*  XXX TODO Exploring the content of the graph requires some more work.
 
-            String windowurl = "http://localhost:8080/lod2demo/explore";
+            String windowurl = "http://localhost:8080/lod2statworkbench/explore";
 
             layout.addComponent(new Link("Explore", new ExternalResource(windowurl), "explore-this", -1, -1, Window.BORDER_DEFAULT));
          */

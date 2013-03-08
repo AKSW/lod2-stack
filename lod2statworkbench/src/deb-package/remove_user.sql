@@ -7,4 +7,4 @@ DB.DBA.USER_DROP_IF_EXISTS(in name varchar)
   dbg_printf('user dropped %s', 'success'); 
 };
 
-user_drop_if_exists('lod2demo');
+user_drop_if_exists('lod2statworkbench');

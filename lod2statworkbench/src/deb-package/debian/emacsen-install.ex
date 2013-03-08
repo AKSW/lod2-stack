@@ -1,12 +1,12 @@
 #! /bin/sh -e
-# /usr/lib/emacsen-common/packages/install/lod2demo
+# /usr/lib/emacsen-common/packages/install/lod2statworkbench
 
 # Written by Jim Van Zandt <jrv@debian.org>, borrowing heavily
 # from the install scripts for gettext by Santiago Vila
 # <sanvila@ctv.es> and octave by Dirk Eddelbuettel <edd@debian.org>.
 
 FLAVOR=$1
-PACKAGE=lod2demo
+PACKAGE=lod2statworkbench
 
 if [ ${FLAVOR} = emacs ]; then exit 0; fi
 

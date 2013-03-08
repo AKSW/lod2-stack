@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for lod2demo
+# prerm script for lod2statworkbench
 #
 # see: dh_installdeb(1)
 
@@ -54,7 +54,7 @@ case "$1" in
     remove)
 	if running; then
 		if [ -n "$ISQLIDOBC" ] ; then 
-    	           env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/remove_user.sql;
+    	           env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/remove_user.sql;
 		fi
         else 
 		exit 0;
@@ -66,12 +66,12 @@ case "$1" in
 
 
 	date=`date +"%d%m%Y-%H%m"`
-	mkdir -p /var/lib/lod2demo/dump_$date
-	sed -i "s/DUMP/dump_$date/" /var/lib/lod2demo/unload.sql;
+	mkdir -p /var/lib/lod2statworkbench/dump_$date
+	sed -i "s/DUMP/dump_$date/" /var/lib/lod2statworkbench/unload.sql;
 
 	if running; then
 		if [ -n "$ISQLIDOBC" ] ; then 
-    	        	env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/unload.sql;
+    	        	env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/unload.sql;
 		fi
         else 
 		exit 0;

@@ -110,7 +110,7 @@ public class ELoadRDFFile extends CustomComponent
 			RepositoryConnection con = state.getRdfStore().getConnection();
 
 			// initialize the hostname and portnumber
-			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/virtuoso>. <http://localhost/virtuoso> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/virtuoso> <http://lod2.eu/lod2demo/username> ?u. OPTIONAL { <http://localhost/virtuoso> <http://lod2.eu/lod2demo/service> ?s.}} LIMIT 100";
+			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/virtuoso>. <http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/password> ?p. <http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/username> ?u. OPTIONAL { <http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/service> ?s.}} LIMIT 100";
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			TupleQueryResult result = tupleQuery.evaluate();
 			while (result.hasNext()) {

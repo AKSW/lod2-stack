@@ -18,7 +18,7 @@
     line-height:1.5;
     font-size:0.875em;
 }
-/*    background-image: url("/lod2demo/VAADIN/themes/lod2/app_images/LOD2.logo.jpg");
+/*    background-image: url("/lod2statworkbench/VAADIN/themes/lod2/app_images/LOD2.logo.jpg");
 */
 
 .v-table-cell-wrapper {
@@ -52,7 +52,7 @@
     font-family:'Droid Sans', Arial, sans-serif; font-weight:normal; font-style:normal;
 	font-size:1.4em;
     line-height:1.5;
-    background: url("/lod2demo/VAADIN/themes/lod2/app_images/LOD2.logo.jpg");
+    background: url("/lod2statworkbench/VAADIN/themes/lod2/app_images/LOD2.logo.jpg");
 }
 
 

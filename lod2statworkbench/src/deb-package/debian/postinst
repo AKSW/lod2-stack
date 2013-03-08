@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for lod2demo
+# postinst script for lod2statworkbench
 #
 # see: dh_installdeb(1)
 
@@ -24,7 +24,7 @@ VIRTUOSOVERSION=virtuoso-opensource-6.1
 SHORTNAME=virtuoso
 PIDFILE=/var/run/$VIRTUOSOVERSION.pid
 
-LOD2DEMODIR=/var/lib/lod2demo
+LOD2DEMODIR=/var/lib/lod2statworkbench
 
 running_pid() {
 # Check if a given process pid's cmdline matches a given name
@@ -52,7 +52,7 @@ running() {
 
 # ensure we can connect properly to virtuoso
 connect() {
-    c=`env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/test.sql`;
+    c=`env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/test.sql`;
     if [ -z "$c" ] ; then
 	return 1;
     else 
@@ -94,8 +94,8 @@ case "$1" in
 
 	# add ontowiki directory to DirsAllowed
 	# try to remove the addition first in order to avoid double entries
-	sed 's/^\(DirsAllowed.*\)\(, \/var\/lib\/lod2demo\)\(.*\)/\1\3/' -i $virtuosoini
-	sed 's/^\(DirsAllowed.*\)/\1, \/var\/lib\/lod2demo/' -i $virtuosoini
+	sed 's/^\(DirsAllowed.*\)\(, \/var\/lib\/lod2statworkbench\)\(.*\)/\1\3/' -i $virtuosoini
+	sed 's/^\(DirsAllowed.*\)/\1, \/var\/lib\/lod2statworkbench/' -i $virtuosoini
 
 
 	wait 
@@ -126,17 +126,17 @@ case "$1" in
 	# substitute everywhere to be in sync with the password
 	mypwd=`date  +"%H.L.%M.O.%S.D2"`
 	subst="s/PWDLOD2/$mypwd/"
-	sed -e $subst -i /var/lib/lod2demo/create_user.sql
-	sed -e $subst -i /etc/lod2demo/configuration.rdf
-        sed -e $subst -i /etc/lod2demo/lod2demo.conf
-	sed -e $subst -i /etc/lod2demo/storeconfig.rdf
+	sed -e $subst -i /var/lib/lod2statworkbench/create_user.sql
+	sed -e $subst -i /etc/lod2statworkbench/configuration.rdf
+        sed -e $subst -i /etc/lod2statworkbench/lod2statworkbench.conf
+	sed -e $subst -i /etc/lod2statworkbench/storeconfig.rdf
 		
 	if running; then
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user.sql;
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/load.sql;
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/vad_install.sql;
-		chown tomcat6:tomcat6 /etc/lod2demo/lod2demo.conf
-		chmod 640 /etc/lod2demo/lod2demo.conf
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/create_user.sql;
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/load.sql;
+    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/vad_install.sql;
+		chown tomcat6:tomcat6 /etc/lod2statworkbench/lod2statworkbench.conf
+		chmod 640 /etc/lod2statworkbench/lod2statworkbench.conf
 		wait ;
         else 
 		exit 1;
@@ -150,13 +150,13 @@ case "$1" in
 #	# sparql editor configuration
 #	sparqlpwd=`date  +"%H.S.%M.P.%S.QL"`
 #	sparqlsubst="s/PWDSPARQL/$sparqlpwd/"
-#	sed -e $sparqlsubst -i /var/lib/lod2demo/create_user_sparql.sql
-#	sed -e $sparqlsubst -i /var/lib/lod2demo/sparqled_config.xml
+#	sed -e $sparqlsubst -i /var/lib/lod2statworkbench/create_user_sparql.sql
+#	sed -e $sparqlsubst -i /var/lib/lod2statworkbench/sparqled_config.xml
 #	if [ -d /etc/sparqled ] ; then 
-#	    cp /var/lib/lod2demo/sparqled_config.xml /etc/sparqled/config.xml
+#	    cp /var/lib/lod2statworkbench/sparqled_config.xml /etc/sparqled/config.xml
 #	fi
 #	if running; then
-#    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user_sparql.sql;
+#    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2statworkbench/create_user_sparql.sql;
 #	fi
 	
     ;;

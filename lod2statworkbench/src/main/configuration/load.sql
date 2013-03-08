@@ -67,7 +67,7 @@ CREATE PROCEDURE dump_one_graph
 ;
 
 
-dump_one_graph('http://localhost/lod2democonfiguration', '/var/lib/lod2demo/configuration.preload.nt');
+dump_one_graph('http://localhost/lod2statworkbenchconfiguration', '/var/lib/lod2statworkbench/configuration.preload.nt');
 
-DB.DBA.TTLP_MT (file_to_string_output ('/var/lib/lod2demo/configuration.nt'), '', 'http://localhost/lod2democonfiguration');
-DB.DBA.RDF_LOAD_RDFXML (file_to_string_output ('/var/lib/lod2demo/tools.owl'), '', 'http://lod2.eu/tools.owl');
+DB.DBA.TTLP_MT (file_to_string_output ('/var/lib/lod2statworkbench/configuration.nt'), '', 'http://localhost/lod2statworkbenchconfiguration');
+DB.DBA.RDF_LOAD_RDFXML (file_to_string_output ('/var/lib/lod2statworkbench/tools.owl'), '', 'http://lod2.eu/tools.owl');

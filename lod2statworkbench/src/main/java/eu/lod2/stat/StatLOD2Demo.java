@@ -236,9 +236,9 @@ public class StatLOD2Demo extends Application
 
         // edit menu
         MenuItem editmenu=menuEdit.addItem("Edit Graph (OntoWiki)", null, cmdOntoWikiEdit);
-        editmenu.addItem("!Edit qb:Dataset",null, cmdEditDataset);
-        editmenu.addItem("!Edit qb:StructureDefinition",null, cmdEditStructureDef);
-        editmenu.addItem("!Edit qb:ComponentProperty",null,cmdEditComponentProp);
+        editmenu.addItem("Edit qb:Dataset",null, cmdEditDataset);
+        editmenu.addItem("Edit qb:StructureDefinition",null, cmdEditStructureDef);
+        editmenu.addItem("Edit qb:ComponentProperty",null,cmdEditComponentProp);
         menuEdit.addItem("!Edit Code Lists (PoolParty)", null, cmdPoolPartyEdit);
         menuEdit.addItem("Transform and Update Graph (SPARQL Update Endpoint)", null, cmdSparqlUpdateVirtuoso);
         
@@ -359,7 +359,7 @@ public class StatLOD2Demo extends Application
 //            GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker("UA-26375798-1", "demo.lod2.eu");
         GoogleAnalyticsTracker tracker = new GoogleAnalyticsTracker(state.googleAnalyticsID, state.googleAnalyticsDomain);
         mainWindow.addComponent(tracker);
-        tracker.trackPageview("/lod2demo");
+        tracker.trackPageview("/lod2statworkbench");
         };
 
 
@@ -614,21 +614,21 @@ public class StatLOD2Demo extends Application
                 String currentGraph=state.getCurrentGraph();
                 final SparqlResultSelector choices=new SparqlResultSelector(
                         "select distinct ?s ?name " +
-                                (currentGraph==null || currentGraph.isEmpty()?"":"from <"+currentGraph+"> ")+
+                                "from <"+currentGraph+"> "+
                                 "where {" +
                                 "?s a <http://purl.org/linked-data/cube#DataSet>." +
                                 "optional { ?s rdfs:label ?name.}" +
                                 "}", state);
                 choices.setCaption("Select the dataset to edit");
                 choices.setMessage("Please select the dataset to edit from the drop-down menu: ");
-                choices.setWidth("300px");
+                choices.setWidth("500px");
                 choices.setModal(true);
                 choices.addListener(new Property.ValueChangeListener() {
                     public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
                         String key=(String) valueChangeEvent.getProperty().getValue();
                         String dataset=choices.getResults().get(key);
-                        // TODO talk to the ontowiki service
-                        showInWorkspace(new Label("you selected uri "+dataset));
+
+                        showInWorkspace(new OntoWikiPathExtended(state,"/resource/properties?m="+state.getCurrentGraph()+"&r="+dataset,false));
                     }
                 });
 
@@ -643,21 +643,21 @@ public class StatLOD2Demo extends Application
                 String currentGraph=state.getCurrentGraph();
                 final SparqlResultSelector choices=new SparqlResultSelector(
                         "select distinct ?s ?name " +
-                                (currentGraph==null || currentGraph.isEmpty()?"":"from <"+currentGraph+"> ")+
+                                "from <"+currentGraph+"> "+
                                 "where {" +
                                 "?s a <http://purl.org/linked-data/cube#DataStructureDefinition>." +
                                 "optional { ?s rdfs:label ?name.}" +
                                 "}", state);
                 choices.setCaption("Select the data structure definition to edit");
                 choices.setMessage("Please select the data structure definition to edit from the drop-down menu: ");
-                choices.setWidth("300px");
+                choices.setWidth("500px");
                 choices.setModal(true);
                 choices.addListener(new Property.ValueChangeListener() {
                     public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
                         String key=(String) valueChangeEvent.getProperty().getValue();
                         String dataset=choices.getResults().get(key);
-                        // TODO talk to the ontowiki service
-                        showInWorkspace(new Label("you selected uri "+dataset));
+
+                        showInWorkspace(new OntoWikiPathExtended(state,"/resource/properties?m="+state.getCurrentGraph()+"&r="+dataset,false));
                     }
                 });
 
@@ -672,7 +672,7 @@ public class StatLOD2Demo extends Application
                 String currentGraph=state.getCurrentGraph();
                 final SparqlResultSelector choices=new SparqlResultSelector(
                         "select distinct ?s ?name " +
-                                (currentGraph==null || currentGraph.isEmpty()?"":"from <"+currentGraph+"> ")+
+                                "from <"+currentGraph+"> "+
                                 "where {" +
                                 "{ ?s a  <http://purl.org/linked-data/cube#DimensionProperty> } union "+
                                 "{ ?s a  <http://purl.org/linked-data/cube#ComponentProperty> } union "+
@@ -688,8 +688,8 @@ public class StatLOD2Demo extends Application
                     public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
                         String key=(String) valueChangeEvent.getProperty().getValue();
                         String dataset=choices.getResults().get(key);
-                        //TODO talk to the ontowiki service
-                        showInWorkspace(new Label("you selected uri "+dataset));
+
+                        showInWorkspace(new OntoWikiPathExtended(state,"/resource/properties?m="+state.getCurrentGraph()+"&r="+dataset,false));
                     }
                 });
 
@@ -786,7 +786,22 @@ public class StatLOD2Demo extends Application
             content.setSpacing(true);
             final Window window=this;
 
-            if(this.results.isEmpty()){
+            String currentGraph=state.getCurrentGraph();
+            if(currentGraph==null || currentGraph.isEmpty()){
+                content.addComponent(new Label("You did not specify a graph to work with. Please do so below and try again: "));
+                ConfigurationTab configure=new ConfigurationTab(state,currentgraphlabel);
+                content.addComponent(configure);
+                content.setComponentAlignment(configure,Alignment.BOTTOM_CENTER);
+                Button ok=new Button("OK");
+                ok.addListener(new ClickListener() {
+                    public void buttonClick(ClickEvent clickEvent) {
+                        window.getParent().removeWindow(window);
+                    }
+                });
+                content.addComponent(ok);
+                content.setComponentAlignment(ok,Alignment.BOTTOM_CENTER);
+                return;
+            }else if(this.results.isEmpty()){
                 content.addComponent(new Label("Sorry, no results were found for your request. Please ensure that your " +
                         "data contains a valid datacube (see 'Validate' under 'Manage Graph')."));
                 Button ok=new Button("OK");

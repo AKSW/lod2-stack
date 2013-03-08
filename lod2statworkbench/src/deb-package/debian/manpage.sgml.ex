@@ -27,7 +27,7 @@ manpage.1: manpage.sgml
   <!ENTITY dhemail     "<email>Bert.Van.Nuffelen@tenforce.com</email>">
   <!ENTITY dhusername  "Bert Van Nuffelen">
   <!ENTITY dhucpackage "<refentrytitle>LOD2DEMO</refentrytitle>">
-  <!ENTITY dhpackage   "lod2demo">
+  <!ENTITY dhpackage   "lod2statworkbench">
 
   <!ENTITY debian      "<productname>Debian</productname>">
   <!ENTITY gnu         "<acronym>GNU</acronym>">

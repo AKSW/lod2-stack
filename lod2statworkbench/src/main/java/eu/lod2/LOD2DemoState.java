@@ -43,7 +43,7 @@ public class LOD2DemoState
 {
     // configuration store: this is an RDF graph with all configuration data installed.
     // We assume this graph is accessible via the Virtuoso connection.
-    private String configurationRDFgraph = "http://localhost/lod2democonfiguration";
+    private String configurationRDFgraph = "http://localhost/lod2statworkbenchconfiguration";
 
     // The lod2 runtime configuration file. This holds information on the users in the
     // system and can be extended with further information that is important to the
@@ -88,7 +88,7 @@ public class LOD2DemoState
 
         try{
             StoreFactory storeFactory=new StoreFactory();
-            Repository configurator=storeFactory.fetchConfiguration("/etc/lod2demo/storeconfig.rdf");
+            Repository configurator=storeFactory.fetchConfiguration("/etc/lod2statworkbench/storeconfig.rdf");
             Map<String,Repository> stores=storeFactory.buildRepositories(configurator);
             rdfStore=stores.get("http://localhost/mainrepos");
             configurator.shutDown();
@@ -104,7 +104,7 @@ public class LOD2DemoState
             e.printStackTrace();
         };
 
-        String Filename = "/etc/lod2demo/configuration.rdf";
+        String Filename = "/etc/lod2statworkbench/configuration.rdf";
 
         try {
             RepositoryConnection con = rdfStore.getConnection();
@@ -118,7 +118,7 @@ public class LOD2DemoState
             con.add(configurationFile, "http://lod2.eu/", RDFFormat.RDFXML, contexts);
 
             // initialize the hostname and portnumber
-            String query = "select ?h from <" + configurationRDFgraph + "> where {<" + configurationRDFgraph + "> <http://lod2.eu/lod2demo/hostname> ?h} LIMIT 100";
+            String query = "select ?h from <" + configurationRDFgraph + "> where {<" + configurationRDFgraph + "> <http://lod2.eu/lod2statworkbench/hostname> ?h} LIMIT 100";
             TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
             TupleQueryResult result = tupleQuery.evaluate();
             while (result.hasNext()) {
@@ -164,7 +164,7 @@ public class LOD2DemoState
      * if any.
      */
     private void loadRuntimeConfig(){
-        String Filename = "/etc/lod2demo/lod2runtime.rdf";
+        String Filename = "/etc/lod2statworkbench/lod2runtime.rdf";
 
         try {
             RepositoryConnection con = rdfStore.getConnection();
@@ -235,13 +235,13 @@ public class LOD2DemoState
         };
     }
 
-    // read the local configuration file /etc/lod2demo/lod2demo.conf
+    // read the local configuration file /etc/lod2statworkbench/lod2statworkbench.conf
     private void readConfiguration() {
 
         // TODO @karel read the runtime config file correctly
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("/etc/lod2demo/lod2demo.conf"));
+            properties.load(new FileInputStream("/etc/lod2statworkbench/lod2statworkbench.conf"));
             jDBCconnectionstring = properties.getProperty("JDBCconnection");
             jDBCuser             = properties.getProperty("JDBCuser");
             jDBCpassword         = properties.getProperty("JDBCpassword");
@@ -258,7 +258,7 @@ public class LOD2DemoState
 
         } catch (IOException e) {
             // the file is absent or has faults in configuration settings
-            ErrorMessage = "Reading configuration file in /etc/lod2demo/lod2demo.conf failed.";
+            ErrorMessage = "Reading configuration file in /etc/lod2statworkbench/lod2statworkbench.conf failed.";
             // print more detail to catalina logs
             e.printStackTrace();
         };
@@ -308,7 +308,7 @@ public class LOD2DemoState
             RepositoryConnection con = this.getRdfStore().getConnection();
             String query =
                     "prefix foaf: <http://xmlns.com/foaf/0.1/>" +
-                    "prefix lod2: <http://lod2.eu/lod2demo/>" +
+                    "prefix lod2: <http://lod2.eu/lod2statworkbench/>" +
 
                     "select ?fname ?lname ?org ?email from <" +
                     this.getRuntimeRDFgraph() + "> where {"+
@@ -392,7 +392,7 @@ public class LOD2DemoState
             // organization as such or change the name of the organization in the rdf file!
             String removalQuery =
                     "prefix foaf: <http://xmlns.com/foaf/0.1/>" +
-                    "prefix lod2: <http://lod2.eu/lod2demo/>" +
+                    "prefix lod2: <http://lod2.eu/lod2statworkbench/>" +
 
                     "CONSTRUCT {" +
                             "?u foaf:firstName ?fname."+
@@ -419,7 +419,7 @@ public class LOD2DemoState
             // then add the new information on the user to the store
             String creationQuery =
                     "prefix foaf: <http://xmlns.com/foaf/0.1/> " +
-                    "prefix lod2: <http://lod2.eu/lod2demo/> " +
+                    "prefix lod2: <http://lod2.eu/lod2statworkbench/> " +
 
                     "CONSTRUCT {" +
                             "?u foaf:firstName \""+newUser.getFirstName()+"\". "+

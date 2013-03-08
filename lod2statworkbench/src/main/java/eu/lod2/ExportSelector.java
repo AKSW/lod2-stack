@@ -122,7 +122,7 @@ implements AbstractSelect.NewItemHandler,
             RepositoryConnection con = state.getRdfStore().getConnection();
 
             // initialize the hostname and portnumber
-            String query = "SELECT  DISTINCT ?g { GRAPH ?g { ?s  ?p  ?o }. OPTIONAL {?g <http://lod2.eu/lod2demo/SystemGraphFor> ?sys.}. FILTER (!bound(?sys))} limit 100";
+            String query = "SELECT  DISTINCT ?g { GRAPH ?g { ?s  ?p  ?o }. OPTIONAL {?g <http://lod2.eu/lod2statworkbench/SystemGraphFor> ?sys.}. FILTER (!bound(?sys))} limit 100";
             TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
             TupleQueryResult result = tupleQuery.evaluate();
 

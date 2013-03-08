@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for lod2demo
+# postrm script for lod2statworkbench
 #
 # see: dh_installdeb(1)
 
@@ -21,7 +21,7 @@ set -e
 case "$1" in
     purge|remove|abort-install|disappear)
 
-	rm -rf /var/lib/lod2demo
+	rm -rf /var/lib/lod2statworkbench
 
     ;;	
 

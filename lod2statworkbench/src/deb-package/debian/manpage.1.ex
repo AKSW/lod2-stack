@@ -16,16 +16,16 @@
 .\" .sp <n>    insert n+1 empty lines
 .\" for manpage-specific macros, see man(7)
 .SH NAME
-lod2demo \- program to do something
+lod2statworkbench \- program to do something
 .SH SYNOPSIS
-.B lod2demo
+.B lod2statworkbench
 .RI [ options ] " files" ...
 .br
 .B bar
 .RI [ options ] " files" ...
 .SH DESCRIPTION
 This manual page documents briefly the
-.B lod2demo
+.B lod2statworkbench
 and
 .B bar
 commands.
@@ -33,7 +33,7 @@ commands.
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
 .\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
-\fBlod2demo\fP is a program that...
+\fBlod2statworkbench\fP is a program that...
 .SH OPTIONS
 These programs follow the usual GNU command line syntax, with long
 options starting with two dashes (`-').
@@ -53,7 +53,7 @@ The programs are documented fully by
 .IR "The Rise and Fall of a Fooish Bar" ,
 available via the Info system.
 .SH AUTHOR
-lod2demo was written by <upstream author>.
+lod2statworkbench was written by <upstream author>.
 .PP
 This manual page was written by Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>,
 for the Debian project (and may be used by others).

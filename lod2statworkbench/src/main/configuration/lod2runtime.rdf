@@ -2,13 +2,13 @@
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	 xmlns:foaf="http://xmlns.com/foaf/0.1/">
   <rdf:Description rdf:about="http://localhost/OntoWiki/Config/">
-    <ns1:SystemGraphFor xmlns:ns1="http://lod2.eu/lod2demo/" rdf:resource="http://localhost/lod2runtime"/>
-    <ns2:type xmlns:ns2="http://www.w3.org/TR/rdf-schema/" rdf:resource="http://lod2.eu/lod2demo/SystemGraph"/>
+    <ns1:SystemGraphFor xmlns:ns1="http://lod2.eu/lod2statworkbench/" rdf:resource="http://localhost/lod2runtime"/>
+    <ns2:type xmlns:ns2="http://www.w3.org/TR/rdf-schema/" rdf:resource="http://lod2.eu/lod2statworkbench/SystemGraph"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://localhost/lod2runtime">
-    <ns9:SystemGraphFor xmlns:ns9="http://lod2.eu/lod2demo/" rdf:resource="http://localhost/lod2runtime"/>
-    <ns16:hostname xmlns:ns16="http://lod2.eu/lod2demo/" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">192.168.33.8:8080</ns16:hostname>
-    <ns17:type xmlns:ns17="http://www.w3.org/TR/rdf-schema/" rdf:resource="http://lod2.eu/lod2demo/SystemGraph"/>
+    <ns9:SystemGraphFor xmlns:ns9="http://lod2.eu/lod2statworkbench/" rdf:resource="http://localhost/lod2runtime"/>
+    <ns16:hostname xmlns:ns16="http://lod2.eu/lod2statworkbench/" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">192.168.33.8:8080</ns16:hostname>
+    <ns17:type xmlns:ns17="http://www.w3.org/TR/rdf-schema/" rdf:resource="http://lod2.eu/lod2statworkbench/SystemGraph"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://localhost/Organizations/testorg">
     <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
@@ -19,9 +19,9 @@
 	<foaf:firstName>test</foaf:firstName>
 	<foaf:lastName>test</foaf:lastName>
 	<foaf:mbox rdf:resource="mailto:test@test.com"/>
-	<foaf:openid rdf:resource="http://lod2.eu/lod2demo/Users/TestUser/"/> 
-	<ns18:password xmlns:ns18="http://lod2.eu/lod2demo/" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">test</ns18:password>
-	<ns20:username xmlns:ns20="http://lod2.eu/lod2demo/" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">test</ns20:username>
+	<foaf:openid rdf:resource="http://lod2.eu/lod2statworkbench/Users/TestUser/"/> 
+	<ns18:password xmlns:ns18="http://lod2.eu/lod2statworkbench/" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">test</ns18:password>
+	<ns20:username xmlns:ns20="http://lod2.eu/lod2statworkbench/" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">test</ns20:username>
       </rdf:Description>
     </foaf:member>
   </rdf:Description>

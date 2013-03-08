@@ -423,9 +423,9 @@ Virtuoso is a knowledge store and virtualization platform that transparently int
 
 
 
-<!-- http://localhost/lod2demo -->
+<!-- http://localhost/lod2statworkbench -->
 
-<owl:NamedIndividual rdf:about="&localhost;lod2demo">
+<owl:NamedIndividual rdf:about="&localhost;lod2statworkbench">
 <rdf:type rdf:resource="&lod2;Tool"/>
 <rdfs:label xml:lang="en">LOD2 Demonstrator</rdfs:label>
 <tool_homepage rdf:datatype="&xsd;string">http://http://code.google.com/p/lod2-stack/</tool_homepage>

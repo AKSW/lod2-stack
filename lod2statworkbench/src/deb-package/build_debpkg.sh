@@ -2,7 +2,7 @@
 
 # $1 the version passed by the maven call
 
-PACKAGE_NAME=lod2demo
+PACKAGE_NAME=lod2statworkbench
 VERSION=$1
 
 echo "Building Debian package for ${MODULE_NAME}"
@@ -16,12 +16,12 @@ mkdir -p ../../target/deb-pkg
 
 # copy war file to package workspace
 # remove the version in the name
-cp ../../target/${PACKAGE_NAME}-${VERSION}.war ../../target/deb-pkg/lod2demo.war
+cp ../../target/${PACKAGE_NAME}-${VERSION}.war ../../target/deb-pkg/lod2statworkbench.war
 cp -r ../../src/main/html/ ../../target/deb-pkg/
 cp ../../src/main/html/*html ../../target/deb-pkg/
 mkdir ../../target/deb-pkg/configuration
 cp -r ../../src/main/configuration/* ../../target/deb-pkg/configuration
-cp -r ../../src/main/configuration/lod2demo.conf ../../target/deb-pkg/
+cp -r ../../src/main/configuration/lod2statworkbench.conf ../../target/deb-pkg/
 # Add the Debian control files
 cp -r debian ../../target/deb-pkg
 cp    Makefile ../../target/deb-pkg

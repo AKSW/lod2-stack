@@ -26,7 +26,7 @@ public class LOD2DemoServlet extends ApplicationServlet {
         super.writeAjaxPageHtmlHeader(page, title, themeUri, request);
         page.append("<script type=\"text/javascript\" src=\"http://sig.ma/js/sigma-widget.js\"></script>");
 	// this can possibly be removed => the project deployment seems not to refresh all information in the browser.
-//        page.append("<link rel=\"shortcut icon\" href=\"/lod2demo/VAADIN/themes/lod2/favicon.ico\" type=\"image/x-icon\" />");
+//        page.append("<link rel=\"shortcut icon\" href=\"/lod2statworkbench/VAADIN/themes/lod2/favicon.ico\" type=\"image/x-icon\" />");
     }
 
     @Override

@@ -6,7 +6,7 @@
     <config:storeType>virtuoso</config:storeType>
     <config:jdbcConnect>jdbc:virtuoso://localhost:1111</config:jdbcConnect>
     <config:jdbcUser>dba</config:jdbcUser>
-    <config:jdbcPWD>PWDLOD2</config:jdbcPWD>
+    <config:jdbcPWD>dba</config:jdbcPWD>
   </rdf:Description>
   <!-- Some example store confiruations below
   <rdf:Description rdf:about="http://localhost/testrepos1">

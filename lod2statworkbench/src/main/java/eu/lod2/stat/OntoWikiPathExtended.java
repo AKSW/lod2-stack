@@ -69,7 +69,7 @@ public class OntoWikiPathExtended extends CustomComponent
 			RepositoryConnection con = state.getRdfStore().getConnection();
 
 			// initialize the hostname and portnumber
-			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2demo/configures> <http://localhost/ontowiki>. <http://localhost/ontowiki> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/ontowiki> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/ontowiki> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
+			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/ontowiki>. <http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/password> ?p. <http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/username> ?u. <http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/service> ?s.} LIMIT 100";
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			TupleQueryResult result = tupleQuery.evaluate();
 			while (result.hasNext()) {
@@ -100,7 +100,7 @@ public class OntoWikiPathExtended extends CustomComponent
 					service += pathExtension;
 					
 					String curGraph = state.getCurrentGraph();
-					if (selectCurrentGraph) 
+					if (selectCurrentGraph)
 						if (curGraph==null) service += "/?m=currentGraphIsNull";
 						else if (curGraph.equals("")) service += "/?m=currentGraphIsEmpty";
 						else
