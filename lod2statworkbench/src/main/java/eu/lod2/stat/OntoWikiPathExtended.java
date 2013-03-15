@@ -101,9 +101,10 @@ public class OntoWikiPathExtended extends CustomComponent
 					
 					String curGraph = state.getCurrentGraph();
 					if (selectCurrentGraph)
-						if (curGraph==null) service += "/?m=currentGraphIsNull";
-						else if (curGraph.equals("")) service += "/?m=currentGraphIsEmpty";
-						else
+//						if (curGraph==null) service += "/?m=currentGraphIsNull";
+//						else if (curGraph.equals("")) service += "/?m=currentGraphIsEmpty";
+//						else
+						if (curGraph != null && !curGraph.equals(""))
 						try {
 							String encodedUrl = URLEncoder.encode(curGraph, "UTF-8");
 							service += "/?m=" + encodedUrl;

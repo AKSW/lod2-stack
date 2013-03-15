@@ -181,6 +181,7 @@ public class StatLOD2Demo extends Application
         MenuBar.Command cmdEditDataset = this.getEditDatasetCommand(this.state);
         MenuBar.Command cmdEditStructureDef = this.getEditStructureDefinition(this.state);
         MenuBar.Command cmdEditComponentProp = this.getEditComponentPropertyCommand(this.state);
+        MenuBar.Command cmdVisualizeCubeviz = getCustomComponentCommand(CompType.VisualizeCubeviz);
 
         MenuBar.Command cmdDemoConfig = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
@@ -261,7 +262,7 @@ public class StatLOD2Demo extends Application
         itemSparqlQuerying.addItem("Virtuoso interactive SPARQL endpoint", null, cmdSparqlVirtuosoI);
 //        menuQuery.addItem("Find RDF Data Cubes", null, null);
 //        menuQuery.addItem("RDF Data Cube Matching Analysis", null, null);
-        menuPresent.addItem("*Visualization with CubeViz", null, null);
+        menuPresent.addItem("Visualization with CubeViz", null, cmdVisualizeCubeviz);
         // seems like duplicate of publicdata.eu
         //menuQuery.addItem("CKAN", null, cmdCkan);
         menuPresent.addItem("Geo-Spatial exploration", null, cmdGeoSpatial);
