@@ -47,7 +47,7 @@ import eu.lod2.stat.CustomComponentFactory.CompType;
  * The Application's "main" class
  */
 @SuppressWarnings("serial")
-public class StatLOD2Demo extends Application
+public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGraphListener
 {
 	
     private LOD2DemoState state;
@@ -189,7 +189,7 @@ public class StatLOD2Demo extends Application
         MenuBar.Command cmdDemoConfig = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
                 workspace.removeAllComponents();
-                ConfigurationTab content = new ConfigurationTab(state, currentgraphlabel);
+                ConfigurationTab content = new ConfigurationTab(state);
                 workspace.addComponent(content);
                 // stretch the content to the full workspace area
                 welcome.setHeight("110px");
@@ -250,10 +250,12 @@ public class StatLOD2Demo extends Application
 
         //graph menu
         menuGraph.addItem("Select Default Graph", null, cmdDemoConfig);
-        menuGraph.addItem("Create Knowledge Base", null, cmdOntoWikiCreateKB);
+        menuGraph.addItem("Create Graph", null, cmdOntoWikiCreateKB);
         MenuBar.MenuItem menuImport=menuGraph.addItem("Import", null, null);
         menuImport.addItem("Import from CSV",null,cmdOntoWikiImport);
-        menuImport.addItem("Import from XML", null, cmdOntoWikiImport);
+        MenuBar.MenuItem excelImport= menuImport.addItem("Import from XML", null, null);
+        excelImport.addItem("From Text", null, extractXML);
+        excelImport.addItem("From File", null, extractXMLExtended);
         MenuBar.MenuItem menuExport= menuGraph.addItem("Export", null, null);
         menuExport.addItem("Export as RDF/XML", null, exportRDFXML);
         menuExport.addItem("Export as Turtle", null, exportTurtle);
@@ -605,11 +607,36 @@ public class StatLOD2Demo extends Application
      */
     private MenuBar.Command getOWExportCommand(final String format){
         return new MenuBar.Command() {
-            public void menuSelected(MenuItem selectedItem) {
-                //TODO fix current graph
+            public void menuSelected(final MenuItem selectedItem) {
+                String currentGraph=state.getCurrentGraph();
+                if(currentGraph==null || currentGraph.isEmpty()){
+                    final Window window=new Window("No graph selected");
+                    window.setWidth("550px");
+                    LOD2DemoState.CurrentGraphListener listener=new LOD2DemoState.CurrentGraphListener() {
+                        boolean ignoreFirst=true;
+                        public void notifyCurrentGraphChange(String graph) {
+                            if(ignoreFirst){
+                                ignoreFirst=false;
+                                return;
+                            }
+                            window.getParent().removeWindow(window);
+                            menuSelected(selectedItem);
+                            state.removeCurrentGraphListener(this);
+                        }
+                    };
+                    VerticalLayout layout=(VerticalLayout) window.getContent();
+                    layout.addComponent(new Label("You did not specify a graph to work with. Please do so below and try again: "));
+                    ConfigurationTab configure=new ConfigurationTab(state);
+                    layout.addComponent(configure);
+                    layout.setComponentAlignment(configure, Alignment.BOTTOM_CENTER);
+                    getMainWindow().addWindow(window);
+                    window.center();
+                    state.addCurrentGraphListener(listener);
+                    return;
+                }
                 try {
                     getMainWindow().open(new ExternalResource(state.getHostNameWithoutPort()+"/ontowiki/model/export?m="+
-                            URLEncoder.encode(state.getCurrentGraph(),"UTF-8")+"&f="+format));
+                            URLEncoder.encode(currentGraph,"UTF-8")+"&f="+format));
                 } catch (UnsupportedEncodingException e) {
                     // should never happen
                     throw new RuntimeException("The lod2 server encountered error when exporting the graph: "+e.getMessage()+" Please contact an administrator");
@@ -745,6 +772,10 @@ public class StatLOD2Demo extends Application
         };
     }
 
+    public void notifyCurrentGraphChange(String graph) {
+        this.currentgraphlabel.setValue(graph);
+    }
+
     private class SparqlResultSelector extends Window implements Property.ValueChangeListener, LOD2DemoState.CurrentGraphListener{
         private String query;
         private Set<Property.ValueChangeListener> listeners=new HashSet<Property.ValueChangeListener>();
@@ -847,14 +878,14 @@ public class StatLOD2Demo extends Application
             String currentGraph=state.getCurrentGraph();
             if(currentGraph==null || currentGraph.isEmpty()){
                 content.addComponent(new Label("You did not specify a graph to work with. Please do so below and try again: "));
-                ConfigurationTab configure=new ConfigurationTab(state,currentgraphlabel);
+                ConfigurationTab configure=new ConfigurationTab(state);
                 content.addComponent(configure);
                 content.setComponentAlignment(configure, Alignment.BOTTOM_CENTER);
                 return;
             }else if(this.results.isEmpty()){
                 content.addComponent(new Label("Sorry, no results were found for your request. Please ensure that your " +
                         "data contains a valid datacube (see 'Validate' under 'Manage Graph'). \n You can also select another graph below:"));
-                ConfigurationTab configure=new ConfigurationTab(state,currentgraphlabel);
+                ConfigurationTab configure=new ConfigurationTab(state);
                 content.addComponent(configure);
                 content.setComponentAlignment(configure, Alignment.BOTTOM_CENTER);
                 Button ok=new Button("I will check");

@@ -37,7 +37,7 @@ import org.vaadin.googleanalytics.tracking.*;
  * The Application's "main" class
  */
 @SuppressWarnings("serial")
-public class LOD2Demo extends Application 
+public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphListener
 {
 
     private LOD2DemoState state;
@@ -326,7 +326,7 @@ public class LOD2Demo extends Application
             MenuBar.Command mconfiguration = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-                    ConfigurationTab content = new ConfigurationTab(state, currentgraphlabel);
+                    ConfigurationTab content = new ConfigurationTab(state);
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
@@ -964,6 +964,10 @@ public class LOD2Demo extends Application
         workspace.setExpandRatio(component, 1.0f);
         mainContainer.setExpandRatio(workspace, 2.0f);
         mainWindow.getContent().setSizeFull();
+    }
+
+    public void notifyCurrentGraphChange(String graph) {
+        this.currentgraphlabel.setValue(graph);
     }
 }
 

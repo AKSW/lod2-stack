@@ -76,16 +76,14 @@ public class ConfigurationTab extends CustomComponent
 
 		// reference to the global internal state
 		private LOD2DemoState state;
-		private Label currentgraph;
 
 		// fields
 		private ComboBox currentGraphPicker;
 
-		public ConfigurationTab(LOD2DemoState st, Label cg) {
+		public ConfigurationTab(LOD2DemoState st) {
 
 				// The internal state and 
 				state = st;
-				currentgraph = cg;
 
 				VerticalLayout configurationTab = new VerticalLayout();
 
@@ -101,13 +99,8 @@ public class ConfigurationTab extends CustomComponent
                 //currentGraphPicker.setDebugId(this.getClass().getSimpleName()+"_graphSelector2");
 				addCandidateGraphs(currentGraphPicker);
 
-				if (cg.getValue() != null
-								&& cg.getValue() != "no current graph selected"
-								&& cg.getValue() != "null"
-				   ) {
-						currentGraphPicker.setValue(cg.getValue());
-						currentGraphPicker.setColumns(cg.toString().length());
-				};
+				currentGraphPicker.setValue(this.state.getCurrentGraph());
+
 				currentGraphPicker.setFilteringMode(Filtering.FILTERINGMODE_CONTAINS);
 				t2f.getLayout().addComponent(currentGraphPicker);
 
@@ -134,8 +127,6 @@ public class ConfigurationTab extends CustomComponent
 
 		private void storeConfiguration(ClickEvent event) {
 				state.setCurrentGraph((String) currentGraphPicker.getValue());
-				currentgraph.setValue((String) currentGraphPicker.getValue());
-
 		};
 
 		// propagate the information of one tab to another.

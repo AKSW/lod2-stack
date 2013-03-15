@@ -2,9 +2,8 @@ package eu.lod2.stat;
 
 import com.google.gwt.user.client.Cookies;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Embedded;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
+import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
 import org.apache.http.cookie.Cookie;
 import org.openrdf.model.Value;
@@ -23,7 +22,7 @@ import java.net.URLEncoder;
  * Embedded OntoWiki tool
  */
 //@SuppressWarnings("serial")
-public class OntoWikiPathExtended extends CustomComponent
+public class OntoWikiPathExtended extends CustomComponent implements LOD2DemoState.CurrentGraphListener
 {
 
   // reference to the global internal state
@@ -35,29 +34,64 @@ public class OntoWikiPathExtended extends CustomComponent
 	private boolean selectCurrentGraph;
     private String sessionId;
 
+    private VerticalLayout componentLayout=null;
+
   public OntoWikiPathExtended(LOD2DemoState st, String pathExtension, boolean selectCurrentGraph) {
 
-    // The internal state 
-	this.pathExtension = pathExtension;
-	this.selectCurrentGraph = selectCurrentGraph;
-    this.state = st;
-    initLogin();
-    activateCurrentGraph();
+        // The internal state
+        this.pathExtension = pathExtension;
+        this.selectCurrentGraph = selectCurrentGraph;
+        this.state = st;
 
-    Embedded browser = new Embedded();
-    try { 
-			URL url = new URL(service);
-      browser = new Embedded("", new ExternalResource(url));
+      VerticalLayout layout=new VerticalLayout();
+      this.setCompositionRoot(layout);
+      this.componentLayout=layout;
+  }
 
-      browser.setType(Embedded.TYPE_BROWSER);
-      browser.setSizeFull();
-      //panel.addComponent(browser);
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
-    };
+  public void attach(){
+      // will ensure immediate notify
+      this.state.addCurrentGraphListener(this);
+  }
 
-    // The composition root MUST be set
-    setCompositionRoot(browser);
+  public void detach(){
+      this.state.removeCurrentGraphListener(this);
+  }
+
+    /**
+     * Refreshes the current visualization of the component to reflect the current state.
+     */
+  public void refresh(){
+      this.componentLayout.removeAllComponents();
+
+      String currentGraph=this.state.getCurrentGraph();
+      if(this.selectCurrentGraph && (currentGraph==null || currentGraph.isEmpty())){
+          Label message=new Label("No graph is currently selected. You can select one below:");
+          this.componentLayout.addComponent(message);
+          ConfigurationTab config=new ConfigurationTab(this.state);
+          this.componentLayout.addComponent(config);
+          this.componentLayout.setComponentAlignment(message,Alignment.TOP_LEFT);
+          this.componentLayout.setComponentAlignment(config,Alignment.TOP_LEFT);
+
+          return;
+      }
+      this.componentLayout.setSizeFull();
+
+      initLogin();
+      activateCurrentGraph();
+
+      Embedded browser = new Embedded();
+      try {
+          URL url = new URL(service);
+          browser = new Embedded("", new ExternalResource(url));
+
+          browser.setType(Embedded.TYPE_BROWSER);
+          browser.setSizeFull();
+          //panel.addComponent(browser);
+      } catch (MalformedURLException e) {
+          e.printStackTrace();
+      };
+
+      this.componentLayout.addComponent(browser);
   }
 
   // propagate the information of one tab to another.
@@ -188,6 +222,10 @@ public class OntoWikiPathExtended extends CustomComponent
 		}
 
 	}
+    }
+
+    public void notifyCurrentGraphChange(String graph) {
+        this.refresh();
     }
 };
 
