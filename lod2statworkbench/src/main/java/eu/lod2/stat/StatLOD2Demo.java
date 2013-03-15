@@ -17,10 +17,13 @@ package eu.lod2.stat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 import com.vaadin.Application;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.VaadinPropertyDescriptor;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.terminal.*;
 import com.vaadin.terminal.gwt.server.UploadException;
@@ -213,6 +216,22 @@ public class StatLOD2Demo extends Application
             }
         };
 
+        MenuBar.Command extractXML = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new EXML(state));
+            }
+        };
+        MenuBar.Command extractXMLExtended = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new EXMLExtended(state));
+            }
+        };
+
+        MenuBar.Command exportRDFXML = getOWExportCommand("rdfxml");
+        MenuBar.Command exportTurtle = getOWExportCommand("turtle");
+        MenuBar.Command exportRDFJson = getOWExportCommand("rdfjson");
+        MenuBar.Command exportRDFN3 = getOWExportCommand("rdfn3");
+
         /*
          legend for menu item names:
          - *: stub
@@ -228,10 +247,18 @@ public class StatLOD2Demo extends Application
         //MenuBar.MenuItem menuOnline   	= menubar.addItem("Online Tools & Services", null, null);
         MenuBar.MenuItem menuPresent    = menubar.addItem("Present & Publish", null, null);
         MenuBar.MenuItem menuHelp 		= menubar.addItem("Help", null, null);
-        
+
         //graph menu
+        menuGraph.addItem("Select Default Graph", null, cmdDemoConfig);
         menuGraph.addItem("Create Knowledge Base", null, cmdOntoWikiCreateKB);
-        menuGraph.addItem("Import", null, cmdOntoWikiImport);
+        MenuBar.MenuItem menuImport=menuGraph.addItem("Import", null, null);
+        menuImport.addItem("Import from CSV",null,cmdOntoWikiImport);
+        menuImport.addItem("Import from XML", null, cmdOntoWikiImport);
+        MenuBar.MenuItem menuExport= menuGraph.addItem("Export", null, null);
+        menuExport.addItem("Export as RDF/XML", null, exportRDFXML);
+        menuExport.addItem("Export as Turtle", null, exportTurtle);
+        menuExport.addItem("Export as RDF/JSON", null, exportRDFJson);
+        menuExport.addItem("Export as Notation 3", null, exportRDFN3);
         menuGraph.addItem("Validate", null, cmdValidation);
         menuGraph.addItem("Remove Graphs", null, mDeleteGraphs);
 
@@ -240,7 +267,7 @@ public class StatLOD2Demo extends Application
         editmenu.addItem("Edit qb:Dataset",null, cmdEditDataset);
         editmenu.addItem("Edit qb:StructureDefinition",null, cmdEditStructureDef);
         editmenu.addItem("Edit qb:ComponentProperty",null,cmdEditComponentProp);
-        menuEdit.addItem("!Edit Code Lists (PoolParty)", null, cmdPoolPartyEdit);
+        menuEdit.addItem("Edit Code Lists (PoolParty)", null, cmdPoolPartyEdit);
         menuEdit.addItem("Transform and Update Graph (SPARQL Update Endpoint)", null, cmdSparqlUpdateVirtuoso);
         
         // extraction menus
@@ -253,13 +280,14 @@ public class StatLOD2Demo extends Application
         //menuExtraction.addItem("Extract RDF from SQL", null, cmdD2R);
         
         // querying menu
-        MenuBar.MenuItem itemSparqlQuerying = menuEdit.addItem("SPARQL querying", null, null);
-        MenuBar.MenuItem itemSparqled = itemSparqlQuerying.addItem("SparQLed - Assisted Querying", null, cmdSparqled);
+        // many sparql query frontends are attached to the same endpoint (virtuoso) Removing duplicates
+        //MenuBar.MenuItem itemSparqlQuerying = menuEdit.addItem("SPARQL querying", null, null);
+        MenuBar.MenuItem itemSparqled = menuEdit.addItem("SparQLed - Assisted Querying", null, cmdSparqled);
         itemSparqled.addItem("Use currently selected graph", null, cmdSparqled);
         itemSparqled.addItem("Use manager to calculate summary graph", null, cmdSparqledManager);
-        itemSparqlQuerying.addItem("OntoWiki SPARQL endpoint", null, cmdSparqlOntowiki);
-        itemSparqlQuerying.addItem("Virtuoso SPARQL endpoint", null, cmdSparqlVirtuoso);
-        itemSparqlQuerying.addItem("Virtuoso interactive SPARQL endpoint", null, cmdSparqlVirtuosoI);
+        //itemSparqlQuerying.addItem("OntoWiki SPARQL endpoint", null, cmdSparqlOntowiki);
+        //itemSparqlQuerying.addItem("Virtuoso SPARQL endpoint", null, cmdSparqlVirtuoso);
+        //itemSparqlQuerying.addItem("Virtuoso interactive SPARQL endpoint", null, cmdSparqlVirtuosoI);
 //        menuQuery.addItem("Find RDF Data Cubes", null, null);
 //        menuQuery.addItem("RDF Data Cube Matching Analysis", null, null);
         menuPresent.addItem("Visualization with CubeViz", null, cmdVisualizeCubeviz);
@@ -285,14 +313,12 @@ public class StatLOD2Demo extends Application
         //itemOnlineSparql.addItem("LOD cloud", null, cmdLODCloud);
         // moved to find more data
         menuExtraction.addItem("DBPedia", null, cmdDBPedia);
-        // TODO relevant for stat workbench, maybe for extra context?
         // moved to sparql querying
-        itemSparqlQuerying.addItem("!PoolParty Code Lists SPARQL endpoint", null, cmdSPARQLPoolParty);
+        menuEdit.addItem("PoolParty Code Lists SPARQL endpoint", null, cmdSPARQLPoolParty);
         // moved to extract
         menuExtraction.addItem("Mondeca SPARQL endpoint Collection", null, cmdMondecaSPARQLList);
         
         // help menu
-        menuHelp.addItem("Demonstrator Configuration", null, cmdDemoConfig);
         menuHelp.addItem("User Configuration", null, userinfoCommand);
         menuHelp.addItem("*Documentation", null, null);
         menuHelp.addItem("*Examples", null, null);
@@ -572,7 +598,27 @@ public class StatLOD2Demo extends Application
             }
         };
     }
-    
+
+    /**
+     * A function to get an ontowiki export command
+     * @param format - the formating string defining the format to export in
+     */
+    private MenuBar.Command getOWExportCommand(final String format){
+        return new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                //TODO fix current graph
+                try {
+                    getMainWindow().open(new ExternalResource(state.getHostNameWithoutPort()+"/ontowiki/model/export?m="+
+                            URLEncoder.encode(state.getCurrentGraph(),"UTF-8")+"&f="+format));
+                } catch (UnsupportedEncodingException e) {
+                    // should never happen
+                    throw new RuntimeException("The lod2 server encountered error when exporting the graph: "+e.getMessage()+" Please contact an administrator");
+                }
+            }
+        };
+    }
+
+
     /** Just a method to get rid of the boilerplate code when Commands are created for the menu
      * @param componentType - a factory that takes CompType as an argument is used because 
      * the component has to be created inside menuSelected() method. Otherwise the constructor
@@ -606,7 +652,7 @@ public class StatLOD2Demo extends Application
 	                mainWindow.getContent().setSizeFull();
                 }
             }
-		};
+        };
     }
 
     private Command getEditDatasetCommand(final LOD2DemoState state){
@@ -622,7 +668,7 @@ public class StatLOD2Demo extends Application
                                 "}", state);
                 choices.setCaption("Select the dataset to edit");
                 choices.setMessage("Please select the dataset to edit from the drop-down menu: ");
-                choices.setWidth("500px");
+                choices.setWidth("550px");
                 choices.setModal(true);
                 choices.addListener(new Property.ValueChangeListener() {
                     public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
@@ -651,7 +697,7 @@ public class StatLOD2Demo extends Application
                                 "}", state);
                 choices.setCaption("Select the data structure definition to edit");
                 choices.setMessage("Please select the data structure definition to edit from the drop-down menu: ");
-                choices.setWidth("500px");
+                choices.setWidth("550px");
                 choices.setModal(true);
                 choices.addListener(new Property.ValueChangeListener() {
                     public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
@@ -683,7 +729,7 @@ public class StatLOD2Demo extends Application
                                 "}", state);
                 choices.setCaption("Select the component property to edit");
                 choices.setMessage("Please select the component property to edit from the drop-down menu: ");
-                choices.setWidth("500px");
+                choices.setWidth("550px");
                 choices.setModal(true);
                 choices.addListener(new Property.ValueChangeListener() {
                     public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
@@ -699,7 +745,7 @@ public class StatLOD2Demo extends Application
         };
     }
 
-    private class SparqlResultSelector extends Window implements Property.ValueChangeListener{
+    private class SparqlResultSelector extends Window implements Property.ValueChangeListener, LOD2DemoState.CurrentGraphListener{
         private String query;
         private Set<Property.ValueChangeListener> listeners=new HashSet<Property.ValueChangeListener>();
         private LOD2DemoState state;
@@ -711,8 +757,19 @@ public class StatLOD2Demo extends Application
             super();
             this.query=query;
             this.state=state;
+            this.state.addCurrentGraphListener(this);
+        }
+
+        private void refresh(){
+            this.removeAllComponents();
             this.results=this.fetchResults();
             this.buildSelector();
+        }
+
+        @Override
+        public void detach(){
+            super.detach();
+            this.state.removeCurrentGraphListener(this);
         }
 
         public void addListener(Property.ValueChangeListener listener){
@@ -792,20 +849,15 @@ public class StatLOD2Demo extends Application
                 content.addComponent(new Label("You did not specify a graph to work with. Please do so below and try again: "));
                 ConfigurationTab configure=new ConfigurationTab(state,currentgraphlabel);
                 content.addComponent(configure);
-                content.setComponentAlignment(configure,Alignment.BOTTOM_CENTER);
-                Button ok=new Button("OK");
-                ok.addListener(new ClickListener() {
-                    public void buttonClick(ClickEvent clickEvent) {
-                        window.getParent().removeWindow(window);
-                    }
-                });
-                content.addComponent(ok);
-                content.setComponentAlignment(ok,Alignment.BOTTOM_CENTER);
+                content.setComponentAlignment(configure, Alignment.BOTTOM_CENTER);
                 return;
             }else if(this.results.isEmpty()){
                 content.addComponent(new Label("Sorry, no results were found for your request. Please ensure that your " +
-                        "data contains a valid datacube (see 'Validate' under 'Manage Graph')."));
-                Button ok=new Button("OK");
+                        "data contains a valid datacube (see 'Validate' under 'Manage Graph'). \n You can also select another graph below:"));
+                ConfigurationTab configure=new ConfigurationTab(state,currentgraphlabel);
+                content.addComponent(configure);
+                content.setComponentAlignment(configure, Alignment.BOTTOM_CENTER);
+                Button ok=new Button("I will check");
                 ok.addListener(new ClickListener() {
                     public void buttonClick(ClickEvent clickEvent) {
                         window.getParent().removeWindow(window);
@@ -850,6 +902,11 @@ public class StatLOD2Demo extends Application
         private Property.ValueChangeEvent lastChange;
         public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
             this.lastChange=valueChangeEvent;
+        }
+
+        public void notifyCurrentGraphChange(String graph) {
+            this.query=this.query.replaceFirst("from <.*?>","from <"+graph+">");
+            this.refresh();
         }
     }
 }

@@ -25,10 +25,8 @@ import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
-import virtuoso.sesame2.driver.VirtuosoRepository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +35,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 // import java.lang.RuntimeException;
 
 public class LOD2DemoState
@@ -197,11 +196,54 @@ public class LOD2DemoState
         return hostname;
     };
 
+    public String getHostNameWithoutPort() {
+        int portIdx=hostname.lastIndexOf(":");
+        if(portIdx>=0){
+            return hostname.substring(0,portIdx);
+        }else{
+            return hostname;
+        }
+    }
+
+    /**
+     * updates the current graph to the given graphname. Also updates any currentgraph listeners
+     * @param graphname the new current graph
+     */
     public void setCurrentGraph(String graphname) {
         currentGraph = graphname;
         cGraph.setValue(graphname);
-    };
+        this.informCurrentGraphListeners();
+    }
 
+    private Set<CurrentGraphListener> currentGraphListeners=new HashSet<CurrentGraphListener>();
+
+    /**
+     * Adds the given listener to the set of graph listeners. Immediately notifies the listener of the current graph.
+     * @param listener the listener to add
+     */
+    public void addCurrentGraphListener(CurrentGraphListener listener){
+        this.currentGraphListeners.add(listener);
+        listener.notifyCurrentGraphChange(this.getCurrentGraph());
+    }
+
+    /**
+     * Removes the given listener from the set of current graph listeners if it is present
+     * @param listener the listener to remove
+     */
+    public void removeCurrentGraphListener(CurrentGraphListener listener){
+        this.currentGraphListeners.remove(listener);
+    }
+
+    /**
+     * Sends an update with the current graph to the current graph listeners
+     */
+    public void informCurrentGraphListeners(){
+        Set<CurrentGraphListener> listeners=new HashSet<CurrentGraphListener>(this.currentGraphListeners);
+        String currentGraph=this.getCurrentGraph();
+        for(CurrentGraphListener listener: listeners){
+            listener.notifyCurrentGraphChange(currentGraph);
+        }
+    }
 
     public Repository getRdfStore() {
         return rdfStore;
@@ -587,6 +629,14 @@ public class LOD2DemoState
          * @param user :: the user that is currently logged in or null if no such user exists.
          */
         public void notifyLogin(User user);
+    }
+
+    public interface CurrentGraphListener {
+        /**
+         * the listener is informed that the current graph has changed. The current graph is provided.
+         * @param graph tha current graph
+         */
+        public void notifyCurrentGraphChange(String graph);
     }
 }
 
