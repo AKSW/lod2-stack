@@ -126,7 +126,6 @@ public class Validation extends CustomComponent {
 		mainContrainer.setSizeFull();
 		
 		final ListSelect criteriaList = new ListSelect("Validation criteria");
-		criteriaList.removeAllItems();
 		final Object itemObsDataSets = criteriaList.addItem();
 		criteriaList.setItemCaption(itemObsDataSets, "Obsevations and DataSets");
 		final Object itemProvenance = criteriaList.addItem();
