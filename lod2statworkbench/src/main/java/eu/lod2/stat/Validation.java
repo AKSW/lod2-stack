@@ -126,7 +126,7 @@ public class Validation extends CustomComponent {
 		mainContrainer.setSizeFull();
 		
 		final ListSelect criteriaList = new ListSelect("Validation criteria");
-//		criteriaList.setReadOnly(true);
+		criteriaList.removeAllItems();
 		final Object itemObsDataSets = criteriaList.addItem();
 		criteriaList.setItemCaption(itemObsDataSets, "Obsevations and DataSets");
 		final Object itemProvenance = criteriaList.addItem();
@@ -163,7 +163,7 @@ public class Validation extends CustomComponent {
 		criteriaList.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 //				mainContrainer.getWindow().showNotification("LALA");
-				Object selectedItem = event.getProperty();
+				Object selectedItem = event.getProperty().getValue();
 				validationTab.removeAllComponents();
 				if (selectedItem == itemZbz) {
 					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
@@ -176,8 +176,16 @@ public class Validation extends CustomComponent {
 					validationTab.addComponent(text);
 					validationTab.setSizeFull();
 				}
-				validationTab.requestRepaint();
-				mainContrainer.requestRepaintAll();
+				else {
+					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
+					testLbl.setValue("Detailed info for the criteria, quick fixes, and pointers to Ontowiki go here");
+					validationTab.addComponent(testLbl);
+					validationTab.setSizeFull();
+				}
+				mainContrainer.setExpandRatio(criteriaList, 0.0f);
+//				mainContrainer.addComponent(validationTab);
+				mainContrainer.setExpandRatio(validationTab, 2.0f);
+				mainContrainer.setSizeFull();
 			}
 		});
 	}
