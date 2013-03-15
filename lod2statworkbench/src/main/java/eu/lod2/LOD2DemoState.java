@@ -197,12 +197,17 @@ public class LOD2DemoState
     };
 
     public String getHostNameWithoutPort() {
-        int portIdx=hostname.lastIndexOf(":");
-        if(portIdx>=0){
-            return hostname.substring(0,portIdx);
+        if(hostname.matches(".*:\\d+")){
+            int portIdx=hostname.lastIndexOf(":");
+            if(portIdx>=0){
+                return hostname.substring(0,portIdx);
+            }else{
+                return hostname;
+            }
         }else{
             return hostname;
         }
+
     }
 
     /**
