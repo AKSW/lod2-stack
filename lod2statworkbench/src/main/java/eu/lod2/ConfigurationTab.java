@@ -127,7 +127,11 @@ public class ConfigurationTab extends CustomComponent
 
 		private void storeConfiguration(ClickEvent event) {
             state.setCurrentGraph((String) currentGraphPicker.getValue());
-            this.getWindow().showNotification("Current graph changed", "The current graph has been changed to: "+this.state.getCurrentGraph(), Window.Notification.TYPE_HUMANIZED_MESSAGE);
+            Window window=this.getWindow();
+            if(window!=null){
+                // window can be null if the graph change reaction destroys this component immediately
+                this.getWindow().showNotification("Current graph changed", "The current graph has been changed to: "+this.state.getCurrentGraph(), Window.Notification.TYPE_HUMANIZED_MESSAGE);
+            }
 		};
 
 		// propagate the information of one tab to another.
