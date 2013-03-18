@@ -279,7 +279,12 @@ public class CKANPublisherPanel extends Panel {
                 "CKAN repository", "CKAN api key", "CKAN username", "Password"};
         LinkedHashMap<String, AbstractTextField> fields=new LinkedHashMap<String, AbstractTextField>();
         for(String property : properties){
-            TextField field=new TextField(property);
+            AbstractTextField field;
+            if(property.equals("Password")){
+                field=new PasswordField(property);
+            }else{
+                field=new TextField(property);
+            }
             field.setRequired(true);
             layout.addComponent(field);
             fields.put(property, field);

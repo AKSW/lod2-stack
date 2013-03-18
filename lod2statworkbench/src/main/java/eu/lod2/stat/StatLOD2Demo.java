@@ -227,6 +227,12 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
             }
         };
 
+        MenuBar.Command importDirectly = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new OntoWikiPathExtended(state,"/model/add",true));
+            }
+        };
+
         MenuBar.Command exportRDFXML = getOWExportCommand("rdfxml");
         MenuBar.Command exportTurtle = getOWExportCommand("turtle");
         MenuBar.Command exportRDFJson = getOWExportCommand("rdfjson");
@@ -254,6 +260,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         MenuBar.MenuItem menuImport=menuGraph.addItem("Import", null, null);
         menuImport.addItem("Import from CSV",null,cmdOntoWikiImport);
         MenuBar.MenuItem excelImport= menuImport.addItem("Import from XML", null, null);
+        MenuBar.MenuItem directImport= menuImport.addItem("Import triples from file", null, importDirectly);
         excelImport.addItem("From Text", null, extractXML);
         excelImport.addItem("From File", null, extractXMLExtended);
         MenuBar.MenuItem menuExport= menuGraph.addItem("Export", null, null);
