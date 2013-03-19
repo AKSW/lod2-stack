@@ -1,6 +1,8 @@
 package eu.lod2.stat;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.openrdf.query.Binding;
 import org.openrdf.query.BindingSet;
@@ -17,10 +19,13 @@ import org.openrdf.repository.RepositoryException;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 
 import eu.lod2.LOD2DemoState;
@@ -35,15 +40,19 @@ public class Validation extends CustomComponent {
 	private String testCodeLists;
 	private String testDSDSpecified;
 	private String testLinkToDataSet;
+	private ListSelect criteriaList;
+	private VerticalLayout validationTab;
+	private HorizontalLayout mainContrainer;
+	private VerticalLayout criteriaLayout;
+	private String testDimensionRange;
+	private String testCodesFromCodeLists;
+	private String errorMsg;
 	
-	public Validation(LOD2DemoState state){
-		this.state = state;
-		
+	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("select ?d ?o\nfrom <").append(state.getCurrentGraph()).append(">\n{\n");
-		strBuilder.append("  ?d a <http://purl.org/linked-data/cube#DataSet>.\n");
+		strBuilder.append("select ?o\nfrom <").append(state.getCurrentGraph()).append(">\n{\n");
 		strBuilder.append("  ?o a <http://purl.org/linked-data/cube#Observation>.\n");
-		strBuilder.append("} limit 1");
+		strBuilder.append("}");
 		testDataCubeModel = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
@@ -60,8 +69,9 @@ public class Validation extends CustomComponent {
 		strBuilder.append("  ?dataSet a <http://purl.org/linked-data/cube#DataSet> . ");
 		strBuilder.append("  OPTIONAL { ");
 		strBuilder.append("    ?dataSet <http://purl.org/linked-data/cube#structure> ?struct . \n");
+		strBuilder.append("    ?struct a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n");
 		strBuilder.append("  } ");
-		strBuilder.append("} limit 1");
+		strBuilder.append("}");
 		testLinkToDSD = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
@@ -70,9 +80,35 @@ public class Validation extends CustomComponent {
 		strBuilder.append("  ?obs a <http://purl.org/linked-data/cube#Observation> . ");
 		strBuilder.append("  OPTIONAL { ");
 		strBuilder.append("    ?obs <http://purl.org/linked-data/cube#dataSet> ?dataSet . \n");
+		strBuilder.append("    ?dataSet a <http://purl.org/linked-data/cube#DataSet> . \n");
 		strBuilder.append("  } ");
-		strBuilder.append("} limit 1");
+		strBuilder.append("}");
 		testLinkToDataSet = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("select ?dim \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?dim a <http://purl.org/linked-data/cube#DimensionProperty> . ");
+		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] } ");
+		strBuilder.append("}");
+		testDimensionRange = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?dim ?val \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs <http://purl.org/linked-data/cube#dataSet> ?ds . \n");
+		strBuilder.append("  ?ds <http://purl.org/linked-data/cube#structure> ?dsd . \n");
+		strBuilder.append("  ?dsd <http://purl.org/linked-data/cube#component> ?cs . \n");
+		strBuilder.append("  ?obs <http://purl.org/linked-data/cube#dimension> ?dim . \n");
+//		strBuilder.append("  ?obs qb:dataSet/qb:structure/qb:component/qb:componentProperty ?dim . \n");
+		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("  ?dim qb:codeList ?list . \n");
+		strBuilder.append("  ?list a <http://www.w3.org/2004/02/skos/core#ConceptScheme> . \n");
+		strBuilder.append("  ?obs ?dim ?val . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?val a <http://www.w3.org/2004/02/skos/core#Concept>. ?val <http://www.w3.org/2004/02/skos/core#inScheme> ?list . } ");
+		strBuilder.append("}");
+		testCodesFromCodeLists = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
 		strBuilder.append("select ?property \n");
@@ -95,14 +131,15 @@ public class Validation extends CustomComponent {
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsdDefinition a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n}");
 		testDSDSpecified = strBuilder.toString();
+	}
+	
+	public Validation(LOD2DemoState state){
+		this.state = state;
 		
-//		strBuilder = new StringBuilder("ASK FROM <http://elpo.stat.gov.rs/lod2/demo> { ?s ?p ?o . }");
-//		strBuilder.append("ask from <").append(state.getCurrentGraph()).append("> { ?s ?p ?o }");
-//		strBuilder.append("  ?s ?p ?o. \n");
-//		strBuilder.append("  [] a <http://purl.org/linked-data/cube#Observation>. \n");
-//		strBuilder.append("}");
-//		String boolStr = strBuilder.toString();
+		createTestQueries();
 		
+		// TODO: popup if the graph was not selected already
+				
 		final String resDataCube = validate(testDataCubeModel);
 		final String resProvenance = validate(testProvenance);
 		final String resLinkToDSD = validate(testLinkToDSD);
@@ -120,28 +157,27 @@ public class Validation extends CustomComponent {
 		validationResults.append("<li>Is DSD specified? - ").append(resDSDSpecified!=null).append("</li>");
 		validationResults.append("</ol></p>");
 		
-		// TODO: popup if the graph was not selected already
-		
-		final HorizontalLayout mainContrainer = new HorizontalLayout();
+		mainContrainer = new HorizontalLayout();
 		mainContrainer.setSizeFull();
 		
-		final ListSelect criteriaList = new ListSelect("Validation criteria");
-		final Object itemObsDataSets = criteriaList.addItem();
-		criteriaList.setItemCaption(itemObsDataSets, "Obsevations and DataSets");
+		criteriaList = new ListSelect("Validation criteria");
+		final Object itemSummary = criteriaList.addItem();
+		criteriaList.setItemCaption(itemSummary, "Summary");
 		final Object itemProvenance = criteriaList.addItem();
 		criteriaList.setItemCaption(itemProvenance, "Provenance information");
 		final Object itemObsLinks = criteriaList.addItem();
 		criteriaList.setItemCaption(itemObsLinks, "Observations linked to DataSets");
 		final Object itemDataSetLinks = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDataSetLinks, "DataSets linked to DSDs");
-		final Object itemPropsDefined = criteriaList.addItem();
-		criteriaList.setItemCaption(itemPropsDefined, "Used properties defined in the DSD");
-		final Object itemCodeLists = criteriaList.addItem();
-		criteriaList.setItemCaption(itemCodeLists, "Cide lists defined for coded properties");
+		final Object itemDimDefined = criteriaList.addItem();
+		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
+//		final Object itemCodeLists = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemCodeLists, "Cide lists defined for coded properties");
 		final Object itemZbz = criteriaList.addItem();
 		criteriaList.setItemCaption(itemZbz, "Old view - for debugging/testing");
 		
-		final VerticalLayout validationTab = new VerticalLayout();
+		validationTab = new VerticalLayout();
+		validationTab.setMargin(false, false, false, true);
 		Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
 		testLbl.setValue(validationResults.toString());
 		validationTab.addComponent(testLbl);
@@ -163,8 +199,19 @@ public class Validation extends CustomComponent {
 			public void valueChange(ValueChangeEvent event) {
 //				mainContrainer.getWindow().showNotification("LALA");
 				Object selectedItem = event.getProperty().getValue();
-				validationTab.removeAllComponents();
-				if (selectedItem == itemZbz) {
+//				validationTab.removeAllComponents();
+				if (selectedItem == itemSummary)
+					summary();
+				else if (selectedItem == itemProvenance)
+					provenance();
+				else if (selectedItem == itemObsLinks)
+					observationLinks();
+				else if (selectedItem == itemDataSetLinks)
+					dataSetLinks();
+				else if (selectedItem == itemDimDefined)
+					dimensionDefinitions();
+				else if (selectedItem == itemZbz) {
+					validationTab.removeAllComponents();
 					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
 					testLbl.setValue(validationResults.toString());
 					validationTab.addComponent(testLbl);
@@ -173,20 +220,237 @@ public class Validation extends CustomComponent {
 							resLinkToDSD + "</p><p>" + resCodedProperties + "</p><p>" + resCodeLists + "</p><p>" + 
 							resDSDSpecified + "</p>");
 					validationTab.addComponent(text);
-					validationTab.setSizeFull();
+//					validationTab.setSizeFull();
+					showContent();
 				}
 				else {
+					validationTab.removeAllComponents();
 					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
 					testLbl.setValue("Detailed info for the criteria, quick fixes, and pointers to Ontowiki go here");
 					validationTab.addComponent(testLbl);
-					validationTab.setSizeFull();
+//					validationTab.setSizeFull();
+					showContent();
 				}
-				mainContrainer.setExpandRatio(criteriaList, 0.0f);
+//				mainContrainer.setExpandRatio(criteriaList, 0.0f);
 //				mainContrainer.addComponent(validationTab);
-				mainContrainer.setExpandRatio(validationTab, 2.0f);
-				mainContrainer.setSizeFull();
+//				mainContrainer.setExpandRatio(validationTab, 2.0f);
+//				mainContrainer.setSizeFull();
 			}
 		});
+	}
+	
+	private void summary(){
+		validationTab.removeAllComponents();
+		Label label = new Label("", Label.CONTENT_XHTML);
+		List<String> obsList = getObservations();
+		List<String> dsList = getDataSets();
+		List<String> dsdList = getDataStructureDefinitions();
+		StringBuilder sb = new StringBuilder();
+		sb.append("<h2>Summary</h2>");
+		sb.append("This page contains summary information about the working graph, i.e. ");
+		sb.append("number of observations, data sets, DSDs, dimensions, etc. ");
+		sb.append("Therefore, this page only detects if some resources are missing, for more information, e.g. ");
+		sb.append(" missing links refer to other validation criteria.");
+		sb.append("<p>Summary information: <ul><li>");
+		if (obsList.size() == 0) sb.append("ERROR - the graph is missing observations");
+		else sb.append("There are ").append(obsList.size()).append(" observations");
+		sb.append("</li><li>");
+		if (dsList.size() == 0) sb.append("ERROR - the graph is missing data sets");
+		else sb.append("There are ").append(dsList.size()).append(" data sets");
+		sb.append("</li><li>");
+		if (dsdList.size() == 0) sb.append("ERROR - the graph is missing data structure definitions");
+		else sb.append("There are ").append(dsdList.size()).append(" data structure definitions");
+		sb.append("</li></ul></p>");
+		sb.append("<p>TODO: add info about dimensions, maybe include pointers on cubeviz possibilities</p>");
+		label.setValue(sb.toString());
+		validationTab.addComponent(label);
+		showContent();
+	}
+	
+	private void provenance(){
+		validationTab.removeAllComponents();
+		Label label = new Label("Under construction ...",Label.CONTENT_TEXT);
+		validationTab.addComponent(label);
+		showContent();
+	}
+	
+	private void observationLinks(){
+		validationTab.removeAllComponents();
+		TupleQueryResult res = executeTupleQuery(testLinkToDataSet);
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - there are no observations in the graph");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		ArrayList<String> observations = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				if (set.getValue("dataSet") == null)
+					observations.add(set.getValue("obs").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		if (observations.size() == 0){
+			Label label = new Label();
+			label.setValue("All observations have links to data sets");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Below is the list of observations that are not linked to any data set. Click on any of them to get more information and choose a quick solution");
+		validationTab.addComponent(label);
+		
+		final ListSelect listObs = new ListSelect("Observations", observations);
+		validationTab.addComponent(listObs);
+		listObs.setImmediate(true);
+		final TextArea details = new TextArea("Details");
+		details.setSizeFull();
+		validationTab.addComponent(details);
+		validationTab.setExpandRatio(details, 2.0f);
+		details.setValue("Properties of the selected observation");
+		final Button fix = new Button("Quick Fix");
+		validationTab.addComponent(fix);
+		
+		listObs.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
+				StringBuilder sb = new StringBuilder();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						sb.append("[").append(set.getValue("p").stringValue());
+						sb.append(", ").append(set.getValue("o").stringValue()).append("]\n");
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+				details.setValue(sb.toString());
+			}
+		});
+		
+		showContent();
+	}
+	
+	private void dataSetLinks(){
+		validationTab.removeAllComponents();
+		TupleQueryResult res = executeTupleQuery(testLinkToDSD);
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - there are no data sets in the graph");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		ArrayList<String> dataSets = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				if (set.getValue("struct") == null)
+					dataSets.add(set.getValue("dataSet").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		if (dataSets.size() == 0){
+			Label label = new Label();
+			label.setValue("All data sets have links to data sets");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Below is the list of data sets that are not linked to any DSD. Click on any of them to get more information and choose a quick solution");
+		validationTab.addComponent(label);
+		
+		final ListSelect listDataSets= new ListSelect("Data Sets", dataSets);
+		validationTab.addComponent(listDataSets);
+		listDataSets.setImmediate(true);
+		final TextArea details = new TextArea("Details");
+		details.setSizeFull();
+		validationTab.addComponent(details);
+		validationTab.setExpandRatio(details, 2.0f);
+		details.setValue("Properties of the selected data set");
+		final Button fix = new Button("Quick Fix");
+		validationTab.addComponent(fix);
+		
+		listDataSets.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
+				StringBuilder sb = new StringBuilder();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						sb.append("[").append(set.getValue("p").stringValue());
+						sb.append(", ").append(set.getValue("o").stringValue()).append("]\n");
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+				details.setValue(sb.toString());
+			}
+		});
+		
+		showContent();
+	}
+	
+	private void dimensionDefinitions(){
+		validationTab.removeAllComponents();
+		TupleQueryResult res = executeTupleQuery(testCodesFromCodeLists);
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		ArrayList<String> values = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				values.add(set.getValue("val").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		if (values.size() == 0){
+			Label label = new Label();
+			label.setValue("All values of coded dimensions are linked to the code lists");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Following resources should be of type skos:Concept and linked to the appropriate code list");
+		validationTab.addComponent(label);
+		
+		final ListSelect listValues= new ListSelect("Resources", values);
+		validationTab.addComponent(listValues);
+		
+		showContent();
+	}
+	
+	private void showContent(){
+		validationTab.setSizeFull();
+		mainContrainer.setExpandRatio(criteriaList, 0.0f);
+		mainContrainer.setExpandRatio(validationTab, 2.0f);
+		mainContrainer.setSizeFull();
 	}
 	
 	private String validateBoolean(String query){
@@ -196,13 +460,10 @@ public class Validation extends CustomComponent {
 			BooleanQuery booleanQuery = con.prepareBooleanQuery(QueryLanguage.SPARQL, query);
 			res.append(booleanQuery.evaluate());
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); res.append(e.getMessage());
 		} catch (MalformedQueryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); res.append(e.getMessage());
 		} catch (QueryEvaluationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); res.append(e.getMessage());
 		}
 		return res.toString();
@@ -213,16 +474,96 @@ public class Validation extends CustomComponent {
 			RepositoryConnection con = state.getRdfStore().getConnection();
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			TupleQueryResult tupleResult = tupleQuery.evaluate();
-			if (!tupleResult.hasNext()) return null;
-			else return tupleResult;
+			return tupleResult;
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedQueryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (QueryEvaluationException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private TupleQueryResult getResourceProperties(String resource){
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			StringBuilder q = new StringBuilder();
+			q.append("select ?p ?o from <").append(state.getCurrentGraph()).append("> where { <");
+			q.append(resource).append("> ?p ?o . }");
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			return tupleQuery.evaluate();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<String> getObservations(){
+		StringBuilder q = new StringBuilder();
+		q.append("select ?o from <").append(state.getCurrentGraph());
+		q.append("> where { ?o a <http://purl.org/linked-data/cube#Observation> . }");
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			TupleQueryResult result = tupleQuery.evaluate();
+			ArrayList<String> list = new ArrayList<String>();
+			while (result.hasNext())
+				list.add(result.next().getValue("o").stringValue());
+			return list;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<String> getDataSets(){
+		StringBuilder q = new StringBuilder();
+		q.append("select ?ds from <").append(state.getCurrentGraph());
+		q.append("> where { ?ds a <http://purl.org/linked-data/cube#DataSet> . }");
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			TupleQueryResult result = tupleQuery.evaluate();
+			ArrayList<String> list = new ArrayList<String>();
+			while (result.hasNext())
+				list.add(result.next().getValue("ds").stringValue());
+			return list;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<String> getDataStructureDefinitions(){
+		StringBuilder q = new StringBuilder();
+		q.append("select ?dsd from <").append(state.getCurrentGraph());
+		q.append("> where { ?dsd a <http://purl.org/linked-data/cube#DataStructureDefinition> . }");
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			TupleQueryResult result = tupleQuery.evaluate();
+			ArrayList<String> list = new ArrayList<String>();
+			while (result.hasNext())
+				list.add(result.next().getValue("dsd").stringValue());
+			return list;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -247,13 +588,10 @@ public class Validation extends CustomComponent {
 				res.replace(res.length()-2, res.length(), "]<br>");
 			}
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); res.append(e.getMessage());
 		} catch (MalformedQueryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); res.append(e.getMessage());
 		} catch (QueryEvaluationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace(); res.append(e.getMessage());
 		}
 		return res.toString();
