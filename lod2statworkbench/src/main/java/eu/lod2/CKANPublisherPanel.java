@@ -31,7 +31,7 @@ import java.util.*;
 /**
  * The CKANPublisherPanel class allows the user to publish their rdf store on a CKAN database.
  */
-public class CKANPublisherPanel extends Panel {
+public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGraphListener {
     protected LOD2DemoState state;
     private Map<String, String> CKANInfo;
     private Map<String, String> PackageInfo;
@@ -51,6 +51,7 @@ public class CKANPublisherPanel extends Panel {
     @Override
     public void attach(){
         super.attach();
+        this.state.addCurrentGraphListener(this);
         this.render();
     }
 
@@ -64,7 +65,8 @@ public class CKANPublisherPanel extends Panel {
         String currentGraph=this.state.getCurrentGraph();
         if(currentGraph==null || currentGraph.isEmpty()){
             this.addComponent(new Label("Please select a graph first using the " +
-                    "\"demonstrator configuration\" interface"));
+                    "interface below:"));
+            this.addComponent(new ConfigurationTab(this.state));
         }else if(this.CKANInfo==null || this.PackageInfo==null || this.fullDatasetIdentifiers==null){
             final Map<String, AbstractTextField> ckanFields=this.createCKANInfo();
             final Map<String, AbstractTextField> packageFields= this.createPackageFields();
@@ -408,6 +410,10 @@ public class CKANPublisherPanel extends Panel {
             con.close();
         }
         return fullFilename;
+    }
+
+    public void notifyCurrentGraphChange(String graph) {
+        this.render();
     }
 
     /**
