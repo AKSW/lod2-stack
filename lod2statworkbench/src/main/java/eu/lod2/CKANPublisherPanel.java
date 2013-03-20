@@ -1,5 +1,6 @@
 package eu.lod2;
 
+import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -205,8 +206,8 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
             createResourceLink(location, this.fullDatasetIdentifiers.get("id"), values);
 
 
-            this.createSuccessMessage("Congratulations, your dataset is available under "+
-                    this.publisher.CKANrepos+storageLocation + location + ".");
+            this.createSuccessMessage("Congratulations, your dataset is available under ",
+                    this.publisher.CKANrepos+storageLocation + location);
         } catch (Exception e) {
             getWindow().showNotification("Could not create resource","An unexpected error occurred while creating the resource. " +
                     "<br>The message was: <br><br>"+e.getMessage(),
@@ -219,13 +220,18 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
      * Also gives the user the option of uploading a new file
      * @param message : the success messsage to show
      */
-    public void createSuccessMessage(String message){
+    public void createSuccessMessage(String message, String location){
         this.removeAllComponents();
 
         Panel panel=new Panel("Upload successful");
         VerticalLayout layout=(VerticalLayout) panel.getContent();
+        layout.setSpacing(true);
 
         layout.addComponent(new Label(message));
+
+        Link link = new Link(location, new ExternalResource(location));
+        link.setDescription("Download Resource");
+        layout.addComponent(link);
 
         Button button=new Button("Upload another file");
         final CKANPublisherPanel publisherPanel=this;
