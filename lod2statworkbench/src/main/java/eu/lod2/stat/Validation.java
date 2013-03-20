@@ -1,6 +1,7 @@
 package eu.lod2.stat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
+import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 
@@ -21,13 +23,18 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
+import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
 
 public class Validation extends CustomComponent {
@@ -96,7 +103,7 @@ public class Validation extends CustomComponent {
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
-		strBuilder.append("select ?dim ?val \n");
+		strBuilder.append("select ?dim ?val ?list \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -136,6 +143,10 @@ public class Validation extends CustomComponent {
 	public Validation(LOD2DemoState state){
 		this.state = state;
 		
+//		String curGraph = state.getCurrentGraph();
+//		if (curGraph == null || curGraph.isEmpty())
+//			showGraphChooser();
+		
 		createTestQueries();
 		
 		// TODO: popup if the graph was not selected already
@@ -161,6 +172,7 @@ public class Validation extends CustomComponent {
 		mainContrainer.setSizeFull();
 		
 		criteriaList = new ListSelect("Validation criteria");
+		criteriaList.setNullSelectionAllowed(false);
 		final Object itemSummary = criteriaList.addItem();
 		criteriaList.setItemCaption(itemSummary, "Summary");
 		final Object itemProvenance = criteriaList.addItem();
@@ -240,6 +252,36 @@ public class Validation extends CustomComponent {
 		});
 	}
 	
+	private void showGraphChooser(){
+		final Window window = new Window("Choose graph");
+		window.setModal(true);
+		
+		VerticalLayout content = new VerticalLayout();
+		content.setSpacing(true);
+		content.addComponent(new Label("First you need to select a graph"));
+		List<String> graphs = null;
+		try {
+			graphs = ConfigurationTab.request_graphs();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		final ComboBox comboGraphs = new ComboBox("Select working graph: ", graphs);
+		content.addComponent(comboGraphs);
+		Button ok = new Button("OK");
+		ok.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				String theChosenOne = (String)comboGraphs.getValue();
+				if (theChosenOne != null && !theChosenOne.isEmpty()){
+					state.setCurrentGraph(theChosenOne);
+					state.cGraph.setValue(theChosenOne);
+				}
+				Validation.this.getWindow().removeWindow(window);
+			}
+		});
+		content.addComponent(ok);
+		state.cGraph.getWindow().addWindow(window);
+	}
+	
 	private void summary(){
 		validationTab.removeAllComponents();
 		Label label = new Label("", Label.CONTENT_XHTML);
@@ -311,6 +353,7 @@ public class Validation extends CustomComponent {
 		validationTab.addComponent(label);
 		
 		final ListSelect listObs = new ListSelect("Observations", observations);
+		listObs.setNullSelectionAllowed(false);
 		validationTab.addComponent(listObs);
 		listObs.setImmediate(true);
 		final TextArea details = new TextArea("Details");
@@ -377,6 +420,7 @@ public class Validation extends CustomComponent {
 		validationTab.addComponent(label);
 		
 		final ListSelect listDataSets= new ListSelect("Data Sets", dataSets);
+		listDataSets.setNullSelectionAllowed(false);
 		validationTab.addComponent(listDataSets);
 		listDataSets.setImmediate(true);
 		final TextArea details = new TextArea("Details");
@@ -409,8 +453,7 @@ public class Validation extends CustomComponent {
 	
 	private void dimensionDefinitions(){
 		validationTab.removeAllComponents();
-		TupleQueryResult res = executeTupleQuery(testCodesFromCodeLists);
-		
+		final TupleQueryResult res = executeTupleQuery(testCodesFromCodeLists);
 		if (res == null) {
 			Label label = new Label();
 			label.setValue("ERROR - " + errorMsg);
@@ -419,17 +462,19 @@ public class Validation extends CustomComponent {
 			return;
 		}
 		
-		ArrayList<String> values = new ArrayList<String>();
+		final HashMap<String, String> map = new HashMap<String, String>();
+//		ArrayList<String> values = new ArrayList<String>();
 		try {
 			while (res.hasNext()){
 				BindingSet set = res.next();
-				values.add(set.getValue("val").stringValue());
+				map.put(set.getValue("val").stringValue(), set.getValue("list").stringValue());
+//				values.add(set.getValue("val").stringValue());
 			}
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
 		
-		if (values.size() == 0){
+		if (map.size() == 0){
 			Label label = new Label();
 			label.setValue("All values of coded dimensions are linked to the code lists");
 			validationTab.addComponent(label);
@@ -441,12 +486,20 @@ public class Validation extends CustomComponent {
 		label.setValue("Following resources should be of type skos:Concept and linked to the appropriate code list");
 		validationTab.addComponent(label);
 		
-		final ListSelect listValues= new ListSelect("Resources", values);
+		final ListSelect listValues= new ListSelect("Resources", map.keySet());
+		listValues.setNullSelectionAllowed(false);
 		validationTab.addComponent(listValues);
 		
 		Button fix = new Button("Quick Fix");
 		validationTab.addComponent(fix);
 		validationTab.setExpandRatio(fix, 2.0f);
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				String resource = (String)listValues.getValue();
+				String codeList = map.get(resource);
+				getWindow().addWindow(new QuickFixCodesFromCodeLists(resource, codeList));
+			}
+		});
 		
 		showContent();
 	}
@@ -600,6 +653,59 @@ public class Validation extends CustomComponent {
 			e.printStackTrace(); res.append(e.getMessage());
 		}
 		return res.toString();
+	}
+	
+	private void uploadTriples(String triples){
+//		getWindow().showNotification("LALA", triples);
+		getWindow().showNotification("Upload", triples, Notification.TYPE_ERROR_MESSAGE);
+		Repository r = state.getRdfStore();
+		try {
+			RepositoryConnection con = r.getConnection();
+			// TODO: create statements, and call add on the connection object
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private class QuickFixCodesFromCodeLists extends Window {
+		public QuickFixCodesFromCodeLists(final String resource, final String codeList){
+			this.setCaption("Quick Fix");
+			this.setWidth(400, UNITS_PIXELS);
+			this.setHeight(300, UNITS_PIXELS);
+			VerticalLayout content = new VerticalLayout();
+			content.setSizeFull();
+			if (resource == null || resource.isEmpty())
+				content.addComponent(new Label("You need to select a resource first"));
+			else 
+				content.addComponent(new Label("If you choose to apply the fix, the selected resource (" +
+						resource + ") will be of type skos:Conept and linked to the code list " + codeList +
+						"via skos:inScheme property"));
+			HorizontalLayout layoutButtons = new HorizontalLayout();
+			content.addComponent(layoutButtons);
+			content.setComponentAlignment(layoutButtons, Alignment.MIDDLE_CENTER);
+			Button btnOK = new Button("OK");
+			layoutButtons.addComponent(btnOK);
+			Button btnCancel = new Button("Cancel");
+			layoutButtons.addComponent(btnCancel);
+			
+			btnCancel.addListener(new Button.ClickListener() {
+				public void buttonClick(ClickEvent event) {
+					Validation.this.getWindow().removeWindow(QuickFixCodesFromCodeLists.this);
+				}
+			});
+			
+			btnOK.addListener(new Button.ClickListener() {
+				public void buttonClick(ClickEvent event) {
+					StringBuilder triples = new StringBuilder();
+					triples.append("<").append(resource).append("> a <http://www.w3.org/2004/02/skos/core#Concept> . <");
+					triples.append(resource).append("> <http://www.w3.org/2004/02/skos/core#inScheme> <");
+					triples.append(codeList).append("> . ");
+//					uploadTriples(triples.toString());
+					Validation.this.getWindow().removeWindow(QuickFixCodesFromCodeLists.this);
+				}
+			});
+			setContent(content);
+		}
 	}
 
 }
