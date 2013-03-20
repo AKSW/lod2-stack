@@ -95,18 +95,18 @@ public class Validation extends CustomComponent {
 		
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select ?dim ?val \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  ?obs <http://purl.org/linked-data/cube#dataSet> ?ds . \n");
-		strBuilder.append("  ?ds <http://purl.org/linked-data/cube#structure> ?dsd . \n");
-		strBuilder.append("  ?dsd <http://purl.org/linked-data/cube#component> ?cs . \n");
-		strBuilder.append("  ?obs <http://purl.org/linked-data/cube#dimension> ?dim . \n");
-//		strBuilder.append("  ?obs qb:dataSet/qb:structure/qb:component/qb:componentProperty ?dim . \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?dsd qb:component ?cs . \n");
+		strBuilder.append("  ?cs qb:dimension ?dim . \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  ?dim qb:codeList ?list . \n");
 		strBuilder.append("  ?list a <http://www.w3.org/2004/02/skos/core#ConceptScheme> . \n");
 		strBuilder.append("  ?obs ?dim ?val . \n");
-		strBuilder.append("  FILTER NOT EXISTS { ?val a <http://www.w3.org/2004/02/skos/core#Concept>. ?val <http://www.w3.org/2004/02/skos/core#inScheme> ?list . } ");
+		strBuilder.append("  FILTER NOT EXISTS { ?val a skos:Concept . ?val skos:inScheme ?list . } ");
 		strBuilder.append("}");
 		testCodesFromCodeLists = strBuilder.toString();
 		
@@ -178,6 +178,7 @@ public class Validation extends CustomComponent {
 		
 		validationTab = new VerticalLayout();
 		validationTab.setMargin(false, false, false, true);
+		validationTab.setSpacing(true);
 		Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
 		testLbl.setValue(validationResults.toString());
 		validationTab.addComponent(testLbl);
@@ -442,6 +443,10 @@ public class Validation extends CustomComponent {
 		
 		final ListSelect listValues= new ListSelect("Resources", values);
 		validationTab.addComponent(listValues);
+		
+		Button fix = new Button("Quick Fix");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
 		
 		showContent();
 	}
