@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.openrdf.model.Statement;
+import org.openrdf.model.URI;
+import org.openrdf.model.ValueFactory;
 import org.openrdf.query.Binding;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.BooleanQuery;
@@ -531,7 +534,7 @@ public class Validation extends CustomComponent {
 		try {
 			RepositoryConnection con = state.getRdfStore().getConnection();
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-			TupleQueryResult tupleResult = tupleQuery.evaluate();
+			TupleQueryResult tupleResult = tupleQuery.evaluate(); 
 			return tupleResult;
 		} catch (RepositoryException e) {
 			e.printStackTrace();
@@ -655,16 +658,28 @@ public class Validation extends CustomComponent {
 		return res.toString();
 	}
 	
-	private void uploadTriples(String triples){
-//		getWindow().showNotification("LALA", triples);
-		getWindow().showNotification("Upload", triples, Notification.TYPE_ERROR_MESSAGE);
-		Repository r = state.getRdfStore();
+	private void uploadStatements(Iterable<? extends Statement> statements){
 		try {
-			RepositoryConnection con = r.getConnection();
-			// TODO: create statements, and call add on the connection object
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			URI graph = state.getRdfStore().getValueFactory().createURI(state.getCurrentGraph());
+			con.add(statements, graph);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Statement getStatementFromUris(String s, String p, String o){
+//		ValueFactory v = state.getRdfStore().getValueFactory();
+//		try {
+			ValueFactory factory = state.getRdfStore().getValueFactory();
+			URI sub = factory.createURI(s);
+			URI pre = factory.createURI(p);
+			URI obj = factory.createURI(o);
+			return factory.createStatement(sub, pre, obj);
+//		} catch (RepositoryException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
 	}
 	
 	private class QuickFixCodesFromCodeLists extends Window {
@@ -679,7 +694,7 @@ public class Validation extends CustomComponent {
 			else 
 				content.addComponent(new Label("If you choose to apply the fix, the selected resource (" +
 						resource + ") will be of type skos:Conept and linked to the code list " + codeList +
-						"via skos:inScheme property"));
+						" via skos:inScheme property"));
 			HorizontalLayout layoutButtons = new HorizontalLayout();
 			content.addComponent(layoutButtons);
 			content.setComponentAlignment(layoutButtons, Alignment.MIDDLE_CENTER);
@@ -696,15 +711,21 @@ public class Validation extends CustomComponent {
 			
 			btnOK.addListener(new Button.ClickListener() {
 				public void buttonClick(ClickEvent event) {
-					StringBuilder triples = new StringBuilder();
-					triples.append("<").append(resource).append("> a <http://www.w3.org/2004/02/skos/core#Concept> . <");
-					triples.append(resource).append("> <http://www.w3.org/2004/02/skos/core#inScheme> <");
-					triples.append(codeList).append("> . ");
-//					uploadTriples(triples.toString());
+					if (resource == null || resource.isEmpty())
+						return;
+					
+					ArrayList<Statement> statements = new ArrayList<Statement>();
+					String concept = "http://www.w3.org/2004/02/skos/core#Concept";
+					String inScheme = "http://www.w3.org/2004/02/skos/core#inScheme";
+					String type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+					statements.add(getStatementFromUris(resource, type, concept));
+					statements.add(getStatementFromUris(resource, inScheme, codeList));
+					uploadStatements(statements);
 					Validation.this.getWindow().removeWindow(QuickFixCodesFromCodeLists.this);
 				}
 			});
 			setContent(content);
+			QuickFixCodesFromCodeLists.this.center();
 		}
 	}
 
