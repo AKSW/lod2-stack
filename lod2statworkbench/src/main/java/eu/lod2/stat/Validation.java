@@ -28,9 +28,11 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Form;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -85,14 +87,14 @@ public class Validation extends CustomComponent {
 		testLinkToDSD = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
-		strBuilder.append("select ?obs ?dataSet \n");
+		strBuilder.append("select ?obs (count(?dataSet) as ?dsNum) \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs a <http://purl.org/linked-data/cube#Observation> . ");
 		strBuilder.append("  OPTIONAL { ");
 		strBuilder.append("    ?obs <http://purl.org/linked-data/cube#dataSet> ?dataSet . \n");
 		strBuilder.append("    ?dataSet a <http://purl.org/linked-data/cube#DataSet> . \n");
 		strBuilder.append("  } ");
-		strBuilder.append("}");
+		strBuilder.append("} group by ?obs having (count(?dataSet) != 1)");
 		testLinkToDataSet = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
@@ -186,10 +188,8 @@ public class Validation extends CustomComponent {
 		criteriaList.setItemCaption(itemDataSetLinks, "DataSets linked to DSDs");
 		final Object itemDimDefined = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
-//		final Object itemCodeLists = criteriaList.addItem();
-//		criteriaList.setItemCaption(itemCodeLists, "Cide lists defined for coded properties");
-		final Object itemZbz = criteriaList.addItem();
-		criteriaList.setItemCaption(itemZbz, "Old view - for debugging/testing");
+		final Object itemDimReq = criteriaList.addItem();
+		criteriaList.setItemCaption(itemDimReq, "All dimensions required");
 		
 		validationTab = new VerticalLayout();
 		validationTab.setMargin(false, false, false, true);
@@ -213,9 +213,7 @@ public class Validation extends CustomComponent {
 		criteriaList.setImmediate(true);
 		criteriaList.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
-//				mainContrainer.getWindow().showNotification("LALA");
 				Object selectedItem = event.getProperty().getValue();
-//				validationTab.removeAllComponents();
 				if (selectedItem == itemSummary)
 					summary();
 				else if (selectedItem == itemProvenance)
@@ -226,31 +224,15 @@ public class Validation extends CustomComponent {
 					dataSetLinks();
 				else if (selectedItem == itemDimDefined)
 					dimensionDefinitions();
-				else if (selectedItem == itemZbz) {
-					validationTab.removeAllComponents();
-					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
-					testLbl.setValue(validationResults.toString());
-					validationTab.addComponent(testLbl);
-					Label text = new Label("Validation", Label.CONTENT_XHTML);
-					text.setValue("<p>" + resDataCube + "</p><p>" + resProvenance + "</p><p>" + 
-							resLinkToDSD + "</p><p>" + resCodedProperties + "</p><p>" + resCodeLists + "</p><p>" + 
-							resDSDSpecified + "</p>");
-					validationTab.addComponent(text);
-//					validationTab.setSizeFull();
-					showContent();
-				}
+				else if (selectedItem == itemDimReq)
+					dimensionsRequired();
 				else {
 					validationTab.removeAllComponents();
 					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
 					testLbl.setValue("Detailed info for the criteria, quick fixes, and pointers to Ontowiki go here");
 					validationTab.addComponent(testLbl);
-//					validationTab.setSizeFull();
 					showContent();
 				}
-//				mainContrainer.setExpandRatio(criteriaList, 0.0f);
-//				mainContrainer.addComponent(validationTab);
-//				mainContrainer.setExpandRatio(validationTab, 2.0f);
-//				mainContrainer.setSizeFull();
 			}
 		});
 	}
@@ -326,24 +308,23 @@ public class Validation extends CustomComponent {
 		
 		if (res == null) {
 			Label label = new Label();
-			label.setValue("ERROR - there are no observations in the graph");
+			label.setValue("ERROR");
 			validationTab.addComponent(label);
 			showContent();
 			return;
 		}
 		
-		ArrayList<String> observations = new ArrayList<String>();
+		final HashMap<String, String> map = new HashMap<String, String>();
 		try {
 			while (res.hasNext()){
 				BindingSet set = res.next();
-				if (set.getValue("dataSet") == null)
-					observations.add(set.getValue("obs").stringValue());
+				map.put(set.getValue("obs").stringValue(), set.getValue("dsNum").stringValue());
 			}
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
 		
-		if (observations.size() == 0){
+		if (map.size() == 0){
 			Label label = new Label();
 			label.setValue("All observations have links to data sets");
 			validationTab.addComponent(label);
@@ -352,20 +333,38 @@ public class Validation extends CustomComponent {
 		}
 		
 		Label label = new Label();
-		label.setValue("Below is the list of observations that are not linked to any data set. Click on any of them to get more information and choose a quick solution");
+		label.setValue("Below is the list of observations that are not linked to exactly one data set. Click on any of them to get more information and choose a quick solution");
 		validationTab.addComponent(label);
 		
-		final ListSelect listObs = new ListSelect("Observations", observations);
+		final ListSelect listObs = new ListSelect("Observations", map.keySet());
 		listObs.setNullSelectionAllowed(false);
 		validationTab.addComponent(listObs);
 		listObs.setImmediate(true);
 		final TextArea details = new TextArea("Details");
-		details.setSizeFull();
 		validationTab.addComponent(details);
-		validationTab.setExpandRatio(details, 2.0f);
+		details.setHeight("200px");
+		details.setWidth("100%");
 		details.setValue("Properties of the selected observation");
+		
+		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
+		validationTab.addComponent(lblProblem);
+		
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
+		panelLayout.addComponent(new Label("After the fix the selected observation will belong only to the data set selected below"));
+		final ComboBox comboDataSets = new ComboBox(null, getDataSets());
+		comboDataSets.setNullSelectionAllowed(false);
+		panelLayout.addComponent(comboDataSets);
 		final Button fix = new Button("Quick Fix");
-		validationTab.addComponent(fix);
+		panelLayout.addComponent(fix);
+		panelLayout.setExpandRatio(fix, 2.0f);
 		
 		listObs.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -381,6 +380,16 @@ public class Validation extends CustomComponent {
 					e.printStackTrace();
 				}
 				details.setValue(sb.toString());
+				String chosenObs = (String)event.getProperty().getValue();
+				lblProblem.setValue("<b>Problem description: </b>The selected observation belongs to " + map.get(chosenObs) +
+						" data sets. It should belong to exactly one.");
+			}
+		});
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				String notif = (String)comboDataSets.getValue();
+				getWindow().showNotification(notif);
 			}
 		});
 		
@@ -504,6 +513,12 @@ public class Validation extends CustomComponent {
 			}
 		});
 		
+		showContent();
+	}
+	
+	private void dimensionsRequired(){
+		validationTab.removeAllComponents();
+		validationTab.addComponent(new Label("Under construction ..."));
 		showContent();
 	}
 	
@@ -669,17 +684,11 @@ public class Validation extends CustomComponent {
 	}
 	
 	private Statement getStatementFromUris(String s, String p, String o){
-//		ValueFactory v = state.getRdfStore().getValueFactory();
-//		try {
-			ValueFactory factory = state.getRdfStore().getValueFactory();
-			URI sub = factory.createURI(s);
-			URI pre = factory.createURI(p);
-			URI obj = factory.createURI(o);
-			return factory.createStatement(sub, pre, obj);
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
+		ValueFactory factory = state.getRdfStore().getValueFactory();
+		URI sub = factory.createURI(s);
+		URI pre = factory.createURI(p);
+		URI obj = factory.createURI(o);
+		return factory.createStatement(sub, pre, obj);
 	}
 	
 	private class QuickFixCodesFromCodeLists extends Window {
@@ -722,6 +731,7 @@ public class Validation extends CustomComponent {
 					statements.add(getStatementFromUris(resource, inScheme, codeList));
 					uploadStatements(statements);
 					Validation.this.getWindow().removeWindow(QuickFixCodesFromCodeLists.this);
+					dimensionDefinitions();
 				}
 			});
 			setContent(content);
