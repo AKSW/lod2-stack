@@ -59,6 +59,8 @@ public class Validation extends CustomComponent {
 	private String testDimensionRange;
 	private String testCodesFromCodeLists;
 	private String errorMsg;
+	private String testNoDuplicateObservations;
+	private String testDimensionsRequired;
 	
 	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
@@ -143,6 +145,40 @@ public class Validation extends CustomComponent {
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsdDefinition a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n}");
 		testDSDSpecified = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+		strBuilder.append("select distinct ?obs \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?dsd qb:component ?cs . \n");
+		strBuilder.append("  ?cs qb:dimension ?dim . \n");
+		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?obs ?dim [] } \n");
+		strBuilder.append("}");
+		testDimensionsRequired = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+		strBuilder.append("select distinct ?obs1 ?obs2 \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs1 qb:dataSet ?dataSet . \n");
+		strBuilder.append("  ?obs2 qb:dataSet ?dataSet . \n");
+		strBuilder.append("  FILTER (?obs1 != ?obs2) \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?dataSet qb:structure ?dsd . \n");
+		strBuilder.append("    ?dsd qb:component ?cs . \n");
+		strBuilder.append("    ?cs qb:dimension ?dim . \n");
+		strBuilder.append("    ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("    ?obs1 ?dim ?val1 . \n");
+		strBuilder.append("    ?obs2 ?dim ?val2 . \n");
+		strBuilder.append("    FILTER (?val1 != ?val2) \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("}");
+		testNoDuplicateObservations = strBuilder.toString();
 	}
 	
 	public Validation(LOD2DemoState state){
@@ -190,6 +226,8 @@ public class Validation extends CustomComponent {
 		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
 		final Object itemDimReq = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDimReq, "All dimensions required");
+		final Object itemObsUnique = criteriaList.addItem();
+		criteriaList.setItemCaption(itemObsUnique, "No duplicate observations");
 		
 		validationTab = new VerticalLayout();
 		validationTab.setMargin(false, false, false, true);
@@ -226,6 +264,8 @@ public class Validation extends CustomComponent {
 					dimensionDefinitions();
 				else if (selectedItem == itemDimReq)
 					dimensionsRequired();
+				else if (selectedItem == itemObsUnique)
+					noDuplicateObs();
 				else {
 					validationTab.removeAllComponents();
 					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
@@ -518,7 +558,47 @@ public class Validation extends CustomComponent {
 	
 	private void dimensionsRequired(){
 		validationTab.removeAllComponents();
-		validationTab.addComponent(new Label("Under construction ..."));
+		validationTab.addComponent(new Label("Following observation don't have a value for each dimension: "));
+		TupleQueryResult res = executeTupleQuery(testDimensionsRequired);
+		ArrayList<String> listObs = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				listObs.add(set.getValue("obs").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		ListSelect ls = new ListSelect("Observations", listObs);
+		ls.setNullSelectionAllowed(false);
+		validationTab.addComponent(ls);
+		Button fix = new Button("Quick Fix");
+		fix.setEnabled(false);
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		showContent();
+	}
+	
+	private void noDuplicateObs(){
+		validationTab.removeAllComponents();
+		validationTab.addComponent(new Label("Following observations belong to the same data set and have the same value for all dimensions."));
+		TupleQueryResult res = executeTupleQuery(testNoDuplicateObservations);
+		ArrayList<String> listObs = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				listObs.add(set.getValue("obs1").stringValue() + "  &  " + set.getValue("obs2").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		ListSelect ls = new ListSelect("Observations", listObs);
+		ls.setNullSelectionAllowed(false);
+		validationTab.addComponent(ls);
+		Button fix = new Button("Quick Fix");
+		fix.setEnabled(false);
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
 		showContent();
 	}
 	
