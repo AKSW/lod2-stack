@@ -42,7 +42,7 @@ import com.vaadin.ui.Window.Notification;
 import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
 
-public class Validation extends CustomComponent {
+public class Validation extends CustomComponent implements LOD2DemoState.CurrentGraphListener {
 	
 	private LOD2DemoState state;
 	private String testDataCubeModel;
@@ -183,35 +183,35 @@ public class Validation extends CustomComponent {
 	
 	public Validation(LOD2DemoState state){
 		this.state = state;
-		
-//		String curGraph = state.getCurrentGraph();
-//		if (curGraph == null || curGraph.isEmpty())
-//			showGraphChooser();
-		
-		createTestQueries();
-		
-		// TODO: popup if the graph was not selected already
-				
-		final String resDataCube = validate(testDataCubeModel);
-		final String resProvenance = validate(testProvenance);
-		final String resLinkToDSD = validate(testLinkToDSD);
-		final String resCodedProperties = validate(testCodedProperties);
-		final String resCodeLists = validate(testCodeLists);
-		final String resDSDSpecified = validate(testDSDSpecified);
-		
-		final StringBuilder validationResults = new StringBuilder();
-		validationResults.append("<p>These are the validation results: </p><p><ol>");
-		validationResults.append("<li>Is the model an RDF Data Cube model? - ").append(resDataCube!=null).append("</li>");
-		validationResults.append("<li>Does the model contain provenance information? - ").append(resProvenance!=null).append("</li>");
-		validationResults.append("<li>Is link to DSD given? - ").append(resLinkToDSD!=null).append("</li>");
-		validationResults.append("<li>Are coded properties specified? - ").append(resCodedProperties!=null).append("</li>");
-		validationResults.append("<li>Were code lists defined? - ").append(resCodeLists!=null).append("</li>");
-		validationResults.append("<li>Is DSD specified? - ").append(resDSDSpecified!=null).append("</li>");
-		validationResults.append("</ol></p>");
-		
 		mainContrainer = new HorizontalLayout();
 		mainContrainer.setSizeFull();
-		
+		setCompositionRoot(mainContrainer);
+	}
+	
+	private void refresh(){
+		mainContrainer.removeAllComponents();
+		String currentGraph = state.getCurrentGraph();
+	    if (currentGraph == null || currentGraph.isEmpty()){
+	    	VerticalLayout l = new VerticalLayout();
+	    	l.setSizeFull();
+	    	mainContrainer.addComponent(l);
+	        Label message=new Label("No graph is currently selected. You can select one below:");
+	        l.addComponent(message);
+	        l.setExpandRatio(message, 0.0f);
+	        ConfigurationTab config=new ConfigurationTab(this.state);
+	        l.addComponent(config);
+	        l.setExpandRatio(config, 2.0f);
+	        l.setComponentAlignment(message,Alignment.TOP_LEFT);
+	        l.setComponentAlignment(config,Alignment.TOP_LEFT);
+	
+	        return;
+	    }
+	    
+	    createTestQueries();
+	    createGUI();
+	}
+	
+	private void createGUI(){
 		criteriaList = new ListSelect("Validation criteria");
 		criteriaList.setNullSelectionAllowed(false);
 		final Object itemSummary = criteriaList.addItem();
@@ -232,14 +232,6 @@ public class Validation extends CustomComponent {
 		validationTab = new VerticalLayout();
 		validationTab.setMargin(false, false, false, true);
 		validationTab.setSpacing(true);
-		Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
-		testLbl.setValue(validationResults.toString());
-		validationTab.addComponent(testLbl);
-		Label text = new Label("Validation", Label.CONTENT_XHTML);
-		text.setValue("<p>" + resDataCube + "</p><p>" + resProvenance + "</p><p>" + 
-				resLinkToDSD + "</p><p>" + resCodedProperties + "</p><p>" + resCodeLists + "</p><p>" + 
-				resDSDSpecified + "</p>");
-		validationTab.addComponent(text);
 		validationTab.setSizeFull();
 		
 		mainContrainer.addComponent(criteriaList);
@@ -247,7 +239,6 @@ public class Validation extends CustomComponent {
 		mainContrainer.addComponent(validationTab);
 		mainContrainer.setExpandRatio(validationTab, 2.0f);
 		
-		setCompositionRoot(mainContrainer);
 		criteriaList.setImmediate(true);
 		criteriaList.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -267,11 +258,7 @@ public class Validation extends CustomComponent {
 				else if (selectedItem == itemObsUnique)
 					noDuplicateObs();
 				else {
-					validationTab.removeAllComponents();
-					Label testLbl = new Label("Some content...", Label.CONTENT_XHTML);
-					testLbl.setValue("Detailed info for the criteria, quick fixes, and pointers to Ontowiki go here");
-					validationTab.addComponent(testLbl);
-					showContent();
+					summary();
 				}
 			}
 		});
@@ -571,6 +558,7 @@ public class Validation extends CustomComponent {
 		}
 		ListSelect ls = new ListSelect("Observations", listObs);
 		ls.setNullSelectionAllowed(false);
+		ls.setWidth("100%");
 		validationTab.addComponent(ls);
 		Button fix = new Button("Quick Fix");
 		fix.setEnabled(false);
@@ -584,17 +572,33 @@ public class Validation extends CustomComponent {
 		validationTab.addComponent(new Label("Following observations belong to the same data set and have the same value for all dimensions."));
 		TupleQueryResult res = executeTupleQuery(testNoDuplicateObservations);
 		ArrayList<String> listObs = new ArrayList<String>();
+		final HashMap<String, String> map = new HashMap<String, String>();
 		try {
 			while (res.hasNext()){
 				BindingSet set = res.next();
 				listObs.add(set.getValue("obs1").stringValue() + "  &  " + set.getValue("obs2").stringValue());
+				map.put(set.getValue("obs1").stringValue(), set.getValue("obs2").stringValue());
 			}
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
-		ListSelect ls = new ListSelect("Observations", listObs);
-		ls.setNullSelectionAllowed(false);
-		validationTab.addComponent(ls);
+		ListSelect ls1 = new ListSelect("Observations", map.keySet());
+		ls1.setNullSelectionAllowed(false);
+		ls1.setWidth("100%");
+		validationTab.addComponent(ls1);
+		ls1.setImmediate(true);
+		final ListSelect ls2 = new ListSelect("Duplicates");
+		ls2.setNullSelectionAllowed(false);
+		ls2.setImmediate(true);
+		ls2.setWidth("100%");
+		validationTab.addComponent(ls2);
+		ls1.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				ls2.removeAllItems();
+				ls2.addItem(map.get(event.getProperty().getValue()));
+			}
+		});
+		
 		Button fix = new Button("Quick Fix");
 		fix.setEnabled(false);
 		validationTab.addComponent(fix);
@@ -725,34 +729,6 @@ public class Validation extends CustomComponent {
 		return null;
 	}
 	
-	private String validate(String query){
-		StringBuilder res = new StringBuilder();
-		try {
-			RepositoryConnection con = state.getRdfStore().getConnection();
-			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-			TupleQueryResult tupleResult = tupleQuery.evaluate();
-			if (!tupleResult.hasNext()) return null;
-			while (tupleResult.hasNext()){
-				BindingSet set = tupleResult.next();
-				Iterator<Binding> it = set.iterator();
-				res.append("[");
-				while (it.hasNext()){
-					Binding binding = it.next();
-					res.append(binding.getName()).append(":").append(binding.getValue().stringValue());
-					res.append(", ");
-				} 
-				res.replace(res.length()-2, res.length(), "]<br>");
-			}
-		} catch (RepositoryException e) {
-			e.printStackTrace(); res.append(e.getMessage());
-		} catch (MalformedQueryException e) {
-			e.printStackTrace(); res.append(e.getMessage());
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace(); res.append(e.getMessage());
-		}
-		return res.toString();
-	}
-	
 	private void uploadStatements(Iterable<? extends Statement> statements){
 		try {
 			RepositoryConnection con = state.getRdfStore().getConnection();
@@ -817,6 +793,21 @@ public class Validation extends CustomComponent {
 			setContent(content);
 			QuickFixCodesFromCodeLists.this.center();
 		}
+	}
+	
+	public void notifyCurrentGraphChange(String graph) {
+        refresh();
+    }
+
+	@Override
+	public void attach() {
+		state.addCurrentGraphListener(this);
+		refresh();
+	}
+
+	@Override
+	public void detach() {
+		state.removeCurrentGraphListener(this);
 	}
 
 }
