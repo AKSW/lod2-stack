@@ -61,6 +61,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private String errorMsg;
 	private String testNoDuplicateObservations;
 	private String testDimensionsRequired;
+	private Panel validationPanel;
 	
 	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
@@ -184,7 +185,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	public Validation(LOD2DemoState state){
 		this.state = state;
 		mainContrainer = new HorizontalLayout();
-		mainContrainer.setSizeFull();
+		mainContrainer.setSizeUndefined();
+		mainContrainer.setSpacing(true);
 		setCompositionRoot(mainContrainer);
 	}
 	
@@ -230,14 +232,16 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		criteriaList.setItemCaption(itemObsUnique, "No duplicate observations");
 		
 		validationTab = new VerticalLayout();
-		validationTab.setMargin(false, false, false, true);
+		validationTab.setMargin(false);
 		validationTab.setSpacing(true);
-		validationTab.setSizeFull();
+		validationPanel = new Panel(validationTab);
+		validationPanel.setSizeFull();
+		validationPanel.setScrollable(true);
 		
 		mainContrainer.addComponent(criteriaList);
 		mainContrainer.setExpandRatio(criteriaList, 0.0f);
-		mainContrainer.addComponent(validationTab);
-		mainContrainer.setExpandRatio(validationTab, 2.0f);
+		mainContrainer.addComponent(validationPanel);
+		mainContrainer.setExpandRatio(validationPanel, 2.0f);
 		
 		criteriaList.setImmediate(true);
 		criteriaList.addListener(new Property.ValueChangeListener() {
@@ -367,6 +371,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listObs.setNullSelectionAllowed(false);
 		validationTab.addComponent(listObs);
 		listObs.setImmediate(true);
+		listObs.setWidth("100%");
 		final TextArea details = new TextArea("Details");
 		validationTab.addComponent(details);
 		details.setHeight("200px");
@@ -388,6 +393,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		panelLayout.addComponent(new Label("After the fix the selected observation will belong only to the data set selected below"));
 		final ComboBox comboDataSets = new ComboBox(null, getDataSets());
 		comboDataSets.setNullSelectionAllowed(false);
+		comboDataSets.setWidth("100%");
 		panelLayout.addComponent(comboDataSets);
 		final Button fix = new Button("Quick Fix");
 		panelLayout.addComponent(fix);
@@ -607,9 +613,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	}
 	
 	private void showContent(){
-		validationTab.setSizeFull();
 		mainContrainer.setExpandRatio(criteriaList, 0.0f);
-		mainContrainer.setExpandRatio(validationTab, 2.0f);
+		mainContrainer.setExpandRatio(validationPanel, 2.0f);
 		mainContrainer.setSizeFull();
 	}
 	
