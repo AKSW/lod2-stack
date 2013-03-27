@@ -79,14 +79,14 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		testProvenance = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
-		strBuilder.append("select ?dataSet ?struct \n");
+		strBuilder.append("select ?dataSet (count(?struct) as ?dsdNum) \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dataSet a <http://purl.org/linked-data/cube#DataSet> . ");
 		strBuilder.append("  OPTIONAL { ");
 		strBuilder.append("    ?dataSet <http://purl.org/linked-data/cube#structure> ?struct . \n");
 		strBuilder.append("    ?struct a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n");
 		strBuilder.append("  } ");
-		strBuilder.append("}");
+		strBuilder.append("} group by ?dataSet having (count(?struct) != 1)");
 		testLinkToDSD = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
@@ -457,46 +457,65 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		
 		if (res == null) {
 			Label label = new Label();
-			label.setValue("ERROR - there are no data sets in the graph");
+			label.setValue("ERROR");
 			validationTab.addComponent(label);
 			showContent();
 			return;
 		}
 		
-		ArrayList<String> dataSets = new ArrayList<String>();
+		final HashMap<String, String> map = new HashMap<String, String>();
 		try {
 			while (res.hasNext()){
 				BindingSet set = res.next();
-				if (set.getValue("struct") == null)
-					dataSets.add(set.getValue("dataSet").stringValue());
+				map.put(set.getValue("dataSet").stringValue(), set.getValue("dsdNum").stringValue());
 			}
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
 		
-		if (dataSets.size() == 0){
+		if (map.size() == 0){
 			Label label = new Label();
-			label.setValue("All data sets have links to data sets");
+			label.setValue("All data sets have exactly one link to the DSD");
 			validationTab.addComponent(label);
 			showContent();
 			return;
 		}
 		
 		Label label = new Label();
-		label.setValue("Below is the list of data sets that are not linked to any DSD. Click on any of them to get more information and choose a quick solution");
+		label.setValue("Below is the list of data sets that are not linked to exactly one DSD. Click on any of them to get more information and choose a quick solution");
 		validationTab.addComponent(label);
 		
-		final ListSelect listDataSets= new ListSelect("Data Sets", dataSets);
+		final ListSelect listDataSets= new ListSelect("Data Sets", map.keySet());
 		listDataSets.setNullSelectionAllowed(false);
 		validationTab.addComponent(listDataSets);
 		listDataSets.setImmediate(true);
+		listDataSets.setWidth("100%");
 		final TextArea details = new TextArea("Details");
-		details.setSizeFull();
 		validationTab.addComponent(details);
-		validationTab.setExpandRatio(details, 2.0f);
+		details.setHeight("200px");
+		details.setWidth("100%");
 		details.setValue("Properties of the selected data set");
+		
+		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
+		validationTab.addComponent(lblProblem);
+		
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
+		panelLayout.addComponent(new Label("After the fix the selected data sets will link only to the DSD selected below"));
+		final ComboBox comboDSDs = new ComboBox(null, getDataStructureDefinitions());
+		comboDSDs.setNullSelectionAllowed(false);
+		comboDSDs.setWidth("100%");
+		panelLayout.addComponent(comboDSDs);
 		final Button fix = new Button("Quick Fix");
-		validationTab.addComponent(fix);
+		panelLayout.addComponent(fix);
+		panelLayout.setExpandRatio(fix, 2.0f);
 		
 		listDataSets.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -512,6 +531,38 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					e.printStackTrace();
 				}
 				details.setValue(sb.toString());
+				String chosenDataSet = (String)event.getProperty().getValue();
+				lblProblem.setValue("<b>Problem description: </b>The selected data set belongs to " + map.get(chosenDataSet) +
+						" DSDs. It should belong to exactly one.");
+			}
+		});
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				String chosenDSD = (String)comboDSDs.getValue();
+				String dataSet = (String)listDataSets.getValue();
+				
+				if (chosenDSD == null) {
+					getWindow().showNotification("DSD was not selected", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				if (dataSet == null) {
+					getWindow().showNotification("Data set was not selected", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				
+				String structProp = "http://purl.org/linked-data/cube#structure";
+				List<String> forRemoval = getDataSetDSDs(dataSet);
+				if (forRemoval.size()>0){
+					ArrayList<Statement> stmts = new ArrayList<Statement>();
+					for (String dsd: forRemoval)
+						stmts.add(getStatementFromUris(dataSet, structProp, dsd));
+					removeStatements(stmts);
+				}
+				ArrayList<Statement> addStmts = new ArrayList<Statement>();
+				addStmts.add(getStatementFromUris(dataSet, structProp, chosenDSD));
+				uploadStatements(addStmts);
+				dataSetLinks();
 			}
 		});
 		
@@ -752,6 +803,29 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 			ArrayList<String> list = new ArrayList<String>();
 			while (result.hasNext())
 				list.add(result.next().getValue("ds").stringValue());
+			return list;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<String> getDataSetDSDs(String dataSet){
+		StringBuilder q = new StringBuilder();
+		q.append("select ?dsd from <").append(state.getCurrentGraph());
+		q.append("> where { <").append(dataSet).append("> <http://purl.org/linked-data/cube#structure> ?dsd . ");
+		q.append("?dsd a <http://purl.org/linked-data/cube#DataStructureDefinition> . }");
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			TupleQueryResult result = tupleQuery.evaluate();
+			ArrayList<String> list = new ArrayList<String>();
+			while (result.hasNext())
+				list.add(result.next().getValue("dsd").stringValue());
 			return list;
 		} catch (RepositoryException e) {
 			e.printStackTrace();
