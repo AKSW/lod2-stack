@@ -421,8 +421,30 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		
 		fix.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				String notif = (String)comboDataSets.getValue();
-				getWindow().showNotification(notif);
+				String chosenDataSet = (String)comboDataSets.getValue();
+				String observation = (String)listObs.getValue();
+				
+				if (chosenDataSet == null) {
+					getWindow().showNotification("DataSet was not selected", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				if (observation == null) {
+					getWindow().showNotification("Observation was not selected", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				
+				String dataSetProp = "http://purl.org/linked-data/cube#dataSet";
+				List<String> forRemoval = getObsDataSets(observation);
+				if (forRemoval.size()>0){
+					ArrayList<Statement> stmts = new ArrayList<Statement>();
+					for (String ds: forRemoval)
+						stmts.add(getStatementFromUris(observation, dataSetProp, ds));
+					removeStatements(stmts);
+				}
+				ArrayList<Statement> addStmts = new ArrayList<Statement>();
+				addStmts.add(getStatementFromUris(observation, dataSetProp, chosenDataSet));
+				uploadStatements(addStmts);
+				observationLinks();
 			}
 		});
 		
@@ -618,22 +640,6 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		mainContrainer.setSizeFull();
 	}
 	
-	private String validateBoolean(String query){
-		StringBuilder res = new StringBuilder("{").append(query).append("}[");
-		try {
-			RepositoryConnection con = state.getRdfStore().getConnection();
-			BooleanQuery booleanQuery = con.prepareBooleanQuery(QueryLanguage.SPARQL, query);
-			res.append(booleanQuery.evaluate());
-		} catch (RepositoryException e) {
-			e.printStackTrace(); res.append(e.getMessage());
-		} catch (MalformedQueryException e) {
-			e.printStackTrace(); res.append(e.getMessage());
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace(); res.append(e.getMessage());
-		}
-		return res.toString();
-	}
-	
 	private TupleQueryResult executeTupleQuery(String query){
 		try {
 			RepositoryConnection con = state.getRdfStore().getConnection();
@@ -734,11 +740,44 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		return null;
 	}
 	
+	private List<String> getObsDataSets(String obs){
+		StringBuilder q = new StringBuilder();
+		q.append("select ?ds from <").append(state.getCurrentGraph());
+		q.append("> where { <").append(obs).append("> <http://purl.org/linked-data/cube#dataSet> ?ds . ");
+		q.append("?ds a <http://purl.org/linked-data/cube#DataSet> . }");
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			TupleQueryResult result = tupleQuery.evaluate();
+			ArrayList<String> list = new ArrayList<String>();
+			while (result.hasNext())
+				list.add(result.next().getValue("ds").stringValue());
+			return list;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	private void uploadStatements(Iterable<? extends Statement> statements){
 		try {
 			RepositoryConnection con = state.getRdfStore().getConnection();
 			URI graph = state.getRdfStore().getValueFactory().createURI(state.getCurrentGraph());
 			con.add(statements, graph);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void removeStatements(Iterable<? extends Statement> statements){
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			URI graph = state.getRdfStore().getValueFactory().createURI(state.getCurrentGraph());
+			con.remove(statements, graph);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
