@@ -33,6 +33,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -372,11 +373,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		validationTab.addComponent(listObs);
 		listObs.setImmediate(true);
 		listObs.setWidth("100%");
-		final TextArea details = new TextArea("Details");
-		validationTab.addComponent(details);
-		details.setHeight("200px");
-		details.setWidth("100%");
-		details.setValue("Properties of the selected observation");
+		
+		final Table detailsTable = new Table("Details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
 		
 		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
 		validationTab.addComponent(lblProblem);
@@ -402,17 +405,17 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listObs.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
-				StringBuilder sb = new StringBuilder();
+				int i=1;
+				detailsTable.removeAllItems();
 				try {
 					while (res.hasNext()){
 						BindingSet set = res.next();
-						sb.append("[").append(set.getValue("p").stringValue());
-						sb.append(", ").append(set.getValue("o").stringValue()).append("]\n");
+						detailsTable.addItem(new Object [] { set.getValue("p").stringValue(),
+								set.getValue("o").stringValue() }, new Integer(i++));
 					}
 				} catch (QueryEvaluationException e) {
 					e.printStackTrace();
 				}
-				details.setValue(sb.toString());
 				String chosenObs = (String)event.getProperty().getValue();
 				lblProblem.setValue("<b>Problem description: </b>The selected observation belongs to " + map.get(chosenObs) +
 						" data sets. It should belong to exactly one.");
@@ -490,11 +493,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		validationTab.addComponent(listDataSets);
 		listDataSets.setImmediate(true);
 		listDataSets.setWidth("100%");
-		final TextArea details = new TextArea("Details");
-		validationTab.addComponent(details);
-		details.setHeight("200px");
-		details.setWidth("100%");
-		details.setValue("Properties of the selected data set");
+		
+		final Table detailsTable = new Table("Details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
 		
 		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
 		validationTab.addComponent(lblProblem);
@@ -520,17 +525,17 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listDataSets.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
-				StringBuilder sb = new StringBuilder();
+				int i=1;
+				detailsTable.removeAllItems();
 				try {
 					while (res.hasNext()){
 						BindingSet set = res.next();
-						sb.append("[").append(set.getValue("p").stringValue());
-						sb.append(", ").append(set.getValue("o").stringValue()).append("]\n");
+						detailsTable.addItem(new Object [] { set.getValue("p").stringValue(),
+								set.getValue("o").stringValue() }, new Integer(i++));
 					}
 				} catch (QueryEvaluationException e) {
 					e.printStackTrace();
 				}
-				details.setValue(sb.toString());
 				String chosenDataSet = (String)event.getProperty().getValue();
 				lblProblem.setValue("<b>Problem description: </b>The selected data set belongs to " + map.get(chosenDataSet) +
 						" DSDs. It should belong to exactly one.");
