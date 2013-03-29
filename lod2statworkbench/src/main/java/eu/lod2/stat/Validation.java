@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
+import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.query.Binding;
 import org.openrdf.query.BindingSet;
@@ -179,7 +180,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("    ?obs2 ?dim ?val2 . \n");
 		strBuilder.append("    FILTER (?val1 != ?val2) \n");
 		strBuilder.append("  } \n");
-		strBuilder.append("}");
+		strBuilder.append("} order by ?obs1");
 		testNoDuplicateObservations = strBuilder.toString();
 	}
 	
@@ -654,39 +655,93 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void noDuplicateObs(){
 		validationTab.removeAllComponents();
 		validationTab.addComponent(new Label("Following observations belong to the same data set and have the same value for all dimensions."));
+		
+		final ListSelect ls1 = new ListSelect("Observations");
+		ls1.setNullSelectionAllowed(false);
+		ls1.setImmediate(true);
+		ls1.setWidth("100%");
+		validationTab.addComponent(ls1);
+		
 		TupleQueryResult res = executeTupleQuery(testNoDuplicateObservations);
-		ArrayList<String> listObs = new ArrayList<String>();
-		final HashMap<String, String> map = new HashMap<String, String>();
+		final HashMap<String, List<String>> mapDuplicates = new HashMap<String, List<String>>();
+		String lastObs = "";
+		List<String> lastDuplicates = null;
 		try {
 			while (res.hasNext()){
 				BindingSet set = res.next();
-				listObs.add(set.getValue("obs1").stringValue() + "  &  " + set.getValue("obs2").stringValue());
-				map.put(set.getValue("obs1").stringValue(), set.getValue("obs2").stringValue());
+				String obs1 = set.getValue("obs1").stringValue();
+				if (!obs1.equals(lastObs)){
+					lastObs = obs1;
+					lastDuplicates = new ArrayList<String>();
+					mapDuplicates.put(lastObs, lastDuplicates);
+					ls1.addItem(lastObs);
+				}
+				lastDuplicates.add(set.getValue("obs2").stringValue());
 			}
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
-		ListSelect ls1 = new ListSelect("Observations", map.keySet());
-		ls1.setNullSelectionAllowed(false);
-		ls1.setWidth("100%");
-		validationTab.addComponent(ls1);
-		ls1.setImmediate(true);
+		
 		final ListSelect ls2 = new ListSelect("Duplicates");
 		ls2.setNullSelectionAllowed(false);
 		ls2.setImmediate(true);
 		ls2.setWidth("100%");
 		validationTab.addComponent(ls2);
+		
 		ls1.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				ls2.removeAllItems();
-				ls2.addItem(map.get(event.getProperty().getValue()));
+				for (String duplicate: mapDuplicates.get(event.getProperty().getValue()))
+					ls2.addItem(duplicate);
 			}
 		});
 		
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
+		panelLayout.addComponent(new Label("After the fix duplicates of the selected observation will be removed from the graph"));
+		
 		Button fix = new Button("Quick Fix");
 		fix.setEnabled(false);
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+		panelLayout.addComponent(fix);
+		panelLayout.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				String obsString = (String)ls1.getValue();
+				if (obsString == null || obsString.isEmpty())
+					getWindow().showNotification("Select observation first", Notification.TYPE_ERROR_MESSAGE);
+				ValueFactory factory = state.getRdfStore().getValueFactory();
+				URI obsURI = factory.createURI(obsString);
+				TupleQueryResult res = getResourceProperties(obsString);
+				ArrayList<Statement> stmts = new ArrayList<Statement>();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						URI propURI = factory.createURI(set.getValue("p").stringValue());
+						Value objValue = set.getValue("o");
+						stmts.add(factory.createStatement(obsURI, propURI, objValue));
+					}
+					res = getResourceLinks(obsString);
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						URI propURI = factory.createURI(set.getValue("p").stringValue());
+						URI subURI = factory.createURI(set.getValue("s").stringValue());
+						stmts.add(factory.createStatement(subURI, propURI, obsURI));
+					}
+					removeStatements(stmts);
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 		showContent();
 	}
 	
@@ -718,6 +773,24 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 			StringBuilder q = new StringBuilder();
 			q.append("select ?p ?o from <").append(state.getCurrentGraph()).append("> where { <");
 			q.append(resource).append("> ?p ?o . }");
+			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
+			return tupleQuery.evaluate();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private TupleQueryResult getResourceLinks(String resource){
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			StringBuilder q = new StringBuilder();
+			q.append("select ?s ?p from <").append(state.getCurrentGraph()).append("> where { ?s ?p <");
+			q.append(resource).append("> . }");
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, q.toString());
 			return tupleQuery.evaluate();
 		} catch (RepositoryException e) {
