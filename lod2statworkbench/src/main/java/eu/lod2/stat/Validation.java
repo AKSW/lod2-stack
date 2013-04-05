@@ -64,6 +64,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private String testNoDuplicateObservations;
 	private String testDimensionsRequired;
 	private Panel validationPanel;
+	private String testMeasuresInDSD;
+	private String testDimensionsHaveRange;
 	
 	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
@@ -101,6 +103,24 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  } ");
 		strBuilder.append("} group by ?obs having (count(?dataSet) != 1)");
 		testLinkToDataSet = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?dsd \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?dsd a qb:DataStructureDefinition . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?dsd qb:component ?cs . ?cs qb:measure [] . } \n");
+		strBuilder.append("}");
+		testMeasuresInDSD = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?dim \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] . } \n");
+		strBuilder.append("}");
+		testDimensionsHaveRange = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
 		strBuilder.append("select ?dim \n");
@@ -226,6 +246,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		criteriaList.setItemCaption(itemObsLinks, "Observations linked to DataSets");
 		final Object itemDataSetLinks = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDataSetLinks, "DataSets linked to DSDs");
+		final Object itemMeasuresInDSDs = criteriaList.addItem();
+		criteriaList.setItemCaption(itemMeasuresInDSDs, "Measures in DSDs");
+		final Object itemDimensionsHaveRange = criteriaList.addItem();
+		criteriaList.setItemCaption(itemDimensionsHaveRange, "Dimensions have range");
 		final Object itemDimDefined = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
 		final Object itemDimReq = criteriaList.addItem();
@@ -257,6 +281,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					observationLinks();
 				else if (selectedItem == itemDataSetLinks)
 					dataSetLinks();
+				else if (selectedItem == itemMeasuresInDSDs)
+					measuresInDSD();
+				else if (selectedItem == itemDimensionsHaveRange)
+					dimensionsHaveRange();
 				else if (selectedItem == itemDimDefined)
 					dimensionDefinitions();
 				else if (selectedItem == itemDimReq)
@@ -571,6 +599,100 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				dataSetLinks();
 			}
 		});
+		
+		showContent();
+	}
+	
+	private void measuresInDSD(){
+		validationTab.removeAllComponents();
+		TupleQueryResult res = executeTupleQuery(testMeasuresInDSD);
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final List<String> dsdList = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				dsdList.add(set.getValue("dsd").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		if (dsdList.size() == 0){
+			Label label = new Label();
+			label.setValue("All DSDs contain at least one measure");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following DSDs do not have at least one measure defined");
+		validationTab.addComponent(lbl);
+		
+		ListSelect listDSDs = new ListSelect("DSDs", dsdList);
+		listDSDs.setNullSelectionAllowed(false);
+//		listDSDs.setImmediate(true);
+		validationTab.addComponent(listDSDs);
+		
+		Button fix = new Button("Fix in Ontowiki");
+		fix.setEnabled(false);
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		showContent();
+	}
+	
+	private void dimensionsHaveRange(){
+		validationTab.removeAllComponents();
+		TupleQueryResult res = executeTupleQuery(testDimensionsHaveRange);
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final List<String> dimList = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				dimList.add(set.getValue("dim").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		if (dimList.size() == 0){
+			Label label = new Label();
+			label.setValue("All dimensions have a defined range");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following dimensions do not have a defined range");
+		validationTab.addComponent(lbl);
+		
+		ListSelect listDimensions = new ListSelect("Dimensions", dimList);
+		listDimensions.setNullSelectionAllowed(false);
+//		listDimensions.setImmediate(true);
+		validationTab.addComponent(listDimensions);
+		
+		Button fix = new Button("Fix in Ontowiki");
+		fix.setEnabled(false);
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
 		
 		showContent();
 	}
