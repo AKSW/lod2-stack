@@ -25,6 +25,7 @@ import org.openrdf.repository.RepositoryException;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -66,6 +67,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private Panel validationPanel;
 	private String testMeasuresInDSD;
 	private String testDimensionsHaveRange;
+	private AbstractLayout target;
 	
 	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
@@ -204,8 +206,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		testNoDuplicateObservations = strBuilder.toString();
 	}
 	
-	public Validation(LOD2DemoState state){
+	public Validation(LOD2DemoState state, AbstractLayout target){
 		this.state = state;
+		this.target = target;
 		mainContrainer = new HorizontalLayout();
 		mainContrainer.setSizeUndefined();
 		mainContrainer.setSpacing(true);
@@ -394,7 +397,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		Label label = new Label();
-		label.setValue("Below is the list of observations that are not linked to exactly one data set. Click on any of them to get more information and choose a quick solution");
+		label.setValue("Below is the list of observations that are not linked to exactly one data set. Click on any of them to get more information and either edit the resource in OntoWiki or choose a quick solution");
 		validationTab.addComponent(label);
 		
 		final ListSelect listObs = new ListSelect("Observations", map.keySet());
@@ -413,6 +416,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
 		validationTab.addComponent(lblProblem);
 		
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObs.getValue());
+			}
+		});
+		
 		Form panelQuickFix = new Form();
 		panelQuickFix.setCaption("Quick Fix");
 		panelQuickFix.setSizeFull();
@@ -422,14 +432,18 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		panelQuickFix.setLayout(panelLayout);
 		validationTab.addComponent(panelQuickFix);
 		validationTab.setExpandRatio(panelQuickFix, 2.0f);
-		panelLayout.addComponent(new Label("After the fix the selected observation will belong only to the data set selected below"));
+		panelLayout.addComponent(new Label("After the fix the selected observation will belong only to the data set selected below or you can choose to edit the selected observation manually in OntoWiki"));
 		final ComboBox comboDataSets = new ComboBox(null, getDataSets());
 		comboDataSets.setNullSelectionAllowed(false);
 		comboDataSets.setWidth("100%");
 		panelLayout.addComponent(comboDataSets);
 		final Button fix = new Button("Quick Fix");
-		panelLayout.addComponent(fix);
-		panelLayout.setExpandRatio(fix, 2.0f);
+		HorizontalLayout buttonsLayout = new HorizontalLayout();
+		buttonsLayout.setSpacing(true);
+		buttonsLayout.addComponent(fix);
+		buttonsLayout.addComponent(editInOW);
+		panelLayout.addComponent(buttonsLayout);
+		panelLayout.setExpandRatio(buttonsLayout, 2.0f);
 		
 		listObs.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -514,7 +528,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		Label label = new Label();
-		label.setValue("Below is the list of data sets that are not linked to exactly one DSD. Click on any of them to get more information and choose a quick solution");
+		label.setValue("Below is the list of data sets that are not linked to exactly one DSD. Click on any of them to get more information and either edit the data set in OntoWiki or choose a quick solution");
 		validationTab.addComponent(label);
 		
 		final ListSelect listDataSets= new ListSelect("Data Sets", map.keySet());
@@ -533,6 +547,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
 		validationTab.addComponent(lblProblem);
 		
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listDataSets.getValue());
+			}
+		});
+		
 		Form panelQuickFix = new Form();
 		panelQuickFix.setCaption("Quick Fix");
 		panelQuickFix.setSizeFull();
@@ -542,14 +563,18 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		panelQuickFix.setLayout(panelLayout);
 		validationTab.addComponent(panelQuickFix);
 		validationTab.setExpandRatio(panelQuickFix, 2.0f);
-		panelLayout.addComponent(new Label("After the fix the selected data sets will link only to the DSD selected below"));
+		panelLayout.addComponent(new Label("After the fix the selected data sets will link only to the DSD selected below or you can choose to edit the selected data set manually in OntoWiki"));
 		final ComboBox comboDSDs = new ComboBox(null, getDataStructureDefinitions());
 		comboDSDs.setNullSelectionAllowed(false);
 		comboDSDs.setWidth("100%");
 		panelLayout.addComponent(comboDSDs);
 		final Button fix = new Button("Quick Fix");
-		panelLayout.addComponent(fix);
-		panelLayout.setExpandRatio(fix, 2.0f);
+		HorizontalLayout buttonsLayout = new HorizontalLayout();
+		buttonsLayout.setSpacing(true);
+		buttonsLayout.addComponent(fix);
+		buttonsLayout.addComponent(editInOW);
+		panelLayout.addComponent(buttonsLayout);
+		panelLayout.setExpandRatio(buttonsLayout, 2.0f);
 		
 		listDataSets.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -637,15 +662,30 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		lbl.setValue("Following DSDs do not have at least one measure defined");
 		validationTab.addComponent(lbl);
 		
-		ListSelect listDSDs = new ListSelect("DSDs", dsdList);
+		final ListSelect listDSDs = new ListSelect("DSDs", dsdList);
 		listDSDs.setNullSelectionAllowed(false);
-//		listDSDs.setImmediate(true);
 		validationTab.addComponent(listDSDs);
 		
-		Button fix = new Button("Fix in Ontowiki");
-		fix.setEnabled(false);
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listDSDs.getValue());
+			}
+		});
+		
+		Button fix = new Button("Edit in OntoWiki");
+		HorizontalLayout buttonsLayout = new HorizontalLayout();
+		buttonsLayout.setSpacing(true);
+		buttonsLayout.addComponent(fix);
+		buttonsLayout.addComponent(editInOW);
+		validationTab.addComponent(buttonsLayout);
+		validationTab.setExpandRatio(buttonsLayout, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listDSDs.getValue());
+			}
+		});
 		
 		showContent();
 	}
@@ -684,15 +724,19 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		lbl.setValue("Following dimensions do not have a defined range");
 		validationTab.addComponent(lbl);
 		
-		ListSelect listDimensions = new ListSelect("Dimensions", dimList);
+		final ListSelect listDimensions = new ListSelect("Dimensions", dimList);
 		listDimensions.setNullSelectionAllowed(false);
-//		listDimensions.setImmediate(true);
 		validationTab.addComponent(listDimensions);
 		
-		Button fix = new Button("Fix in Ontowiki");
-		fix.setEnabled(false);
+		Button fix = new Button("Edit in OntoWiki");
 		validationTab.addComponent(fix);
 		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listDimensions.getValue());
+			}
+		});
 		
 		showContent();
 	}
@@ -709,12 +753,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final HashMap<String, String> map = new HashMap<String, String>();
-//		ArrayList<String> values = new ArrayList<String>();
 		try {
 			while (res.hasNext()){
 				BindingSet set = res.next();
 				map.put(set.getValue("val").stringValue(), set.getValue("list").stringValue());
-//				values.add(set.getValue("val").stringValue());
 			}
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
@@ -736,9 +778,21 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listValues.setNullSelectionAllowed(false);
 		validationTab.addComponent(listValues);
 		
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listValues.getValue());
+			}
+		});
+		
+		HorizontalLayout buttonsLayout = new HorizontalLayout();
+		buttonsLayout.setSpacing(true);
+		
 		Button fix = new Button("Quick Fix");
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+		validationTab.addComponent(buttonsLayout);
+		validationTab.setExpandRatio(buttonsLayout, 2.0f);
+		buttonsLayout.addComponent(fix);
+		buttonsLayout.addComponent(editInOW);
 		fix.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				String resource = (String)listValues.getValue();
@@ -871,6 +925,16 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		mainContrainer.setExpandRatio(criteriaList, 0.0f);
 		mainContrainer.setExpandRatio(validationPanel, 2.0f);
 		mainContrainer.setSizeFull();
+	}
+	
+	private void showInOntowiki(String resource){
+		if (resource == null || resource.isEmpty())
+			return;
+		target.removeAllComponents();
+		String path = "/resource/properties?m="+state.getCurrentGraph()+"&r="+resource;
+		OntoWikiPathExtended component = new OntoWikiPathExtended(state, path, false);
+		component.setSizeFull();
+		target.addComponent(component);
 	}
 	
 	private TupleQueryResult executeTupleQuery(String query){

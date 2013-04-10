@@ -29,7 +29,6 @@ public class CustomComponentFactory {
 	public static enum CompType {
 		CreateKB,
 		ImportCSV,
-		Validation,
 		UploadRDF,
 		ExtractFromXML,
 		ExtractFromXMLExtended,
@@ -68,7 +67,6 @@ public class CustomComponentFactory {
 		switch (type) {
 			case CreateKB: return new OntoWikiPathExtended(state,"/model/create",false); 
 			case ImportCSV: return new OntoWikiPathExtended(state,"/csvimport",true); 
-			case Validation: return new Validation(state);
 			case UploadRDF: return new ELoadRDFFile(state);
 			case ExtractFromXML: return new EXML(state);
 			case ExtractFromXMLExtended: return new EXMLExtended(state);
