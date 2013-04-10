@@ -77,11 +77,21 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		testDataCubeModel = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
-		strBuilder.append("select ?sub ?pub ?cre \n");
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix dct: <http://purl.org/dc/terms/> \n");
+		strBuilder.append("select ?ds ?label ?comment ?title ?description ?issued ?modified ?subject ?publisher ?licence \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  [] <http://purl.org/dc/terms/subject> ?sub . \n");
-		strBuilder.append("  [] <http://purl.org/dc/elements/1.1/publisher> ?pub . \n");
-		strBuilder.append("  [] <http://purl.org/dc/elements/1.1/creator> ?cre . \n}");
+		strBuilder.append("  ?ds a qb:DataSet . \n");
+		strBuilder.append("  OPTIONAL { ?ds rdfs:label ?label . } \n");
+		strBuilder.append("  OPTIONAL { ?ds rdfs:comment ?comment . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:title ?title . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:description ?description . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:issued ?issued . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:modified ?modified . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:subject ?subject . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:publisher ?publisher . } \n");
+		strBuilder.append("  OPTIONAL { ?ds dct:licence ?licence . } \n");
+		strBuilder.append("}");
 		testProvenance = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
@@ -361,8 +371,78 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	private void provenance(){
 		validationTab.removeAllComponents();
-		Label label = new Label("Under construction ...",Label.CONTENT_TEXT);
+		final String [] metaProps = new String [] {
+				"rdfs:label",
+				"rdfs:comment",
+				"dct:title",
+				"dct:description",
+				"dct:issued",
+				"dct:modified",
+				"dct:subject",
+				"dct:publisher",
+				"dct:licence"
+		};
+		
+		final Label label = new Label("It is recommended to mark datasets with metadata tu support discovery, presentation and processing. Choose a dataset below and check the values for recommended core set of metadata",Label.CONTENT_TEXT);
 		validationTab.addComponent(label);
+		
+		TupleQueryResult res = executeTupleQuery(testProvenance);
+		if (res == null) {
+			label.setValue("ERROR");
+			showContent();
+			return;
+		}
+		final HashMap<String, ArrayList<Value>> map = new HashMap<String, ArrayList<Value>>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				String ds = set.getValue("ds").stringValue();
+				ArrayList<Value> values = new ArrayList<Value>(9);
+				values.add(set.getValue("label"));
+				values.add(set.getValue("comment"));
+				values.add(set.getValue("title"));
+				values.add(set.getValue("description"));
+				values.add(set.getValue("issued"));
+				values.add(set.getValue("modified"));
+				values.add(set.getValue("subject"));
+				values.add(set.getValue("publisher"));
+				values.add(set.getValue("licence"));
+				map.put(ds, values);
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		final ComboBox combo = new ComboBox("Choose dataset", map.keySet());
+		combo.setWidth("100%");
+		combo.setNullSelectionAllowed(false);
+		combo.setImmediate(true);
+		validationTab.addComponent(combo);
+		
+		final Table table = new Table("Metadata of the chosen dataset");
+		table.setWidth("100%");
+		table.addContainerProperty("Property", String.class, null);
+		table.addContainerProperty("Value", Value.class, null);
+		validationTab.addComponent(table);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		validationTab.addComponent(editInOW);
+		validationTab.setExpandRatio(editInOW, 2.0f);
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)combo.getValue());
+			}
+		});
+		
+		combo.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				ArrayList<Value> list = map.get((String)event.getProperty().getValue());
+				table.removeAllItems();
+				for (int i=0; i<metaProps.length; i++)
+					table.addItem(new Object [] { metaProps[i], list.get(i) }, i);
+			}
+		});
+		
 		showContent();
 	}
 	
