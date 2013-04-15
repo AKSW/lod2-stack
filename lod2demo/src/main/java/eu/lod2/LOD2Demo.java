@@ -803,6 +803,12 @@ public class LOD2Demo extends Application
         introV.addComponent(introtextl);
         introtextl.setWidth("400px");
 
+
+        Link link=new Link("Please take the time to fill out our useability survey!",
+                new ExternalResource("http://www.surveygizmo.com/s3/1216102/LOD2-Stack-Usability-Survey-2013"));
+        link.setStyleName("notify-box");
+        introV.addComponent(link);
+
         HorizontalLayout introVH =  new HorizontalLayout();
         introV.addComponent(introVH);
 
