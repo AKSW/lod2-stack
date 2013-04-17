@@ -153,7 +153,11 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 		
 		MenuBar.Command cmdOntoWikiCreateKB = getCustomComponentCommand(CompType.CreateKB);
         MenuBar.Command cmdOntoWikiImport = getCustomComponentCommand(CompType.ImportCSV);
-        MenuBar.Command cmdValidation = getCustomComponentCommand(CompType.Validation);
+        MenuBar.Command cmdValidation = new MenuBar.Command() {
+			public void menuSelected(MenuItem selectedItem) {
+				showInWorkspace(new Validation(state, workspace));
+			}
+		};
         //MenuBar.Command cmdUploadRDF = getCustomComponentCommand(CompType.UploadRDF);
         //MenuBar.Command cmdExtractXML = getCustomComponentCommand(CompType.ExtractFromXML, false);
         //MenuBar.Command cmdExtractXMLE = getCustomComponentCommand(CompType.ExtractFromXMLExtended, false);
