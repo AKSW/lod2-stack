@@ -405,7 +405,7 @@ public class DeleteGraphs extends CustomComponent
         layout.setMargin(true);
         layout.setSpacing(true);
 
-        Label message = new Label("Warning! This function will results in the complete and irretrievable removal of the selected graphs.\n\n " +
+        Label message = new Label("Warning! This function will result in the complete and irretrievable removal of the selected graphs.\n\n " +
                 "Do you wish to continue?");
         notifier.addComponent(message);
         final DeleteGraphs panel=this;

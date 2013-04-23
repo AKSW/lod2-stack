@@ -15,12 +15,14 @@
  */
 package eu.lod2;
 
+import com.turnguard.webid.tomcat.security.WebIDUser;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Window;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Value;
+import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
@@ -28,10 +30,10 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
@@ -48,6 +50,9 @@ public class LOD2DemoState
     // system and can be extended with further information that is important to the
     // running system.
     private String runtimeRDFgraph ="http://localhost/lod2runtime";
+
+    //* the graph containing all the information on user rights
+    private String userGraph= "http://webidrealm.localhost/rolegraph";
 
     // the hostname and portnumber where the tools are installed.
     private String hostname = "http://localhost:8080";
@@ -78,6 +83,11 @@ public class LOD2DemoState
 
     public Boolean InitStatus = false;
     public String ErrorMessage = "true";
+
+    private HttpServletRequest lastRequest;
+    private String provenanceGraph = "http://lod2.eu/provenance";
+
+    public String adminRole = "http://demo.lod2.eu/Role/Administrator";
 
     // initialize the state with an default configuration
     // After succesfull initialisation the rdfStore connection is an active connection
@@ -267,6 +277,10 @@ public class LOD2DemoState
         return configurationRDFgraph;
     }
 
+    public String getUserGraph() {
+        return userGraph;
+    }
+
     //* returns the runtime RDF graph
     public String getRuntimeRDFgraph(){
         return this.runtimeRDFgraph;
@@ -285,7 +299,6 @@ public class LOD2DemoState
     // read the local configuration file /etc/lod2statworkbench/lod2statworkbench.conf
     private void readConfiguration() {
 
-        // TODO @karel read the runtime config file correctly
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream("/etc/lod2statworkbench/lod2statworkbench.conf"));
@@ -300,6 +313,9 @@ public class LOD2DemoState
             CKANUser = properties.getProperty("CKANUser");
             CKANPwd = properties.getProperty("CKANPwd");
 
+            userGraph = properties.getProperty("UserGraph");
+            provenanceGraph = properties.getProperty("ProvenanceGraph");
+
             //		System.print("$"+jDBCuser+"$");
             //		System.print("$"+jDBCpassword+"$");
 
@@ -311,233 +327,54 @@ public class LOD2DemoState
         };
     }
 
-    /**
-     * logs in the given user and password combination. If the combination of
-     * username and password matches a user in the system, the user is returned.
-     * Otherwise, the function returns null.
-     * An error window can be supplied to show error messages to the user. This is optional however.
-     */
-    public User logIn(String username, String password, Window errorWindow){
-        User user=this.findUser(username, password, errorWindow);
-        this.setUser(user);
-        return user;
-    }
-
-    /**
-     * log in the given user and password combination with no error window
-     * @see #logIn(String, String, com.vaadin.ui.Window)
-     */
-    public User logIn(String username, String password){
-        return this.logIn(username,password,null);
-    }
-
-    /**
-     * Looks up the given username - password combination in the database. Returns the user that is found if any.
-     * Note: this method is not supported yet!
-     * @param username : the username to look for
-     * @param password : the password to look for
-     * @return the user that was discovered in the database if any. Null is returned if no user was discovered with
-     * a matching username password combination.
-     * @throws IllegalStateException : a non-recoverable exception was thrown while processing the update operation.
-     * this type of exceptions occur when the connection to the repository has failed or when there was an error in the
-     * query.
-     */
-    private User findUser(String username, String password, Window errorwindow){
-        //* the user to return. Defaults to null, meaning no user was found.
-        User result=null;
-
-        if(username == null || password == null || username.length()<1 || password.length()<1 ){
-            // safety to avoid looking up empty usernames and passwords
-            return null;
-        }
-
-        try{
-            RepositoryConnection con = this.getRdfStore().getConnection();
-            String query =
-                    "prefix foaf: <http://xmlns.com/foaf/0.1/>" +
-                    "prefix lod2: <http://lod2.eu/lod2statworkbench/>" +
-
-                    "select ?fname ?lname ?org ?email from <" +
-                    this.getRuntimeRDFgraph() + "> where {"+
-                    "?u a foaf:Person." +
-                    "?o a foaf:Organization." +
-                    "?o foaf:member ?u." +
-                    "?o foaf:name ?org." +
-                    "?u foaf:firstName ?fname."+
-                    "?u foaf:lastName ?lname."+
-                    "?u foaf:mbox ?email."+
-
-                    "?u lod2:password \"" + username + "\"^^<http://www.w3.org/2001/XMLSchema#string>."+
-                    "?u lod2:username \"" + password + "\"^^<http://www.w3.org/2001/XMLSchema#string>."+
-
-            "}";
-            TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
-            TupleQueryResult queryResult = tupleQuery.evaluate();
-            int count=0;
-            while (queryResult.hasNext()) {
-                // use the final result as the actual user to be returned. Logging when there is more than
-                // one result might be advised.
-                count++;
-                BindingSet bindingSet = queryResult.next();
-                result=new User(username);
-                result.setFirstName(this.getStringValue(bindingSet,"fname"));
-                result.setLastName(this.getStringValue(bindingSet,"lname"));
-                result.setOrganization(this.getStringValue(bindingSet,"org"));
-
-                String email=this.getStringValue(bindingSet,"email");
-                if(email!=null){
-                    email=email.replaceFirst("mailto:", "");
-                }
-                result.setEmail(email);
-            }
-            if(count>1){
-                // multiple results for a single user-password combination. That's odd, let's log it.
-                if(errorwindow!=null){
-                    errorwindow.showNotification("Multiple users found", "Something odd just happened: we found more " +
-                            "than one version of this user-password combination. We simply took the last one we " +
-                            "discovered, but it might be wise to have a word with your administrator...");
-                }
-                System.out.println("Multiple results were found in the database for the user "+username);
-            }
-            con.close();
-
-        } catch (RepositoryException e) {
-            // repository is no longer live. This exception cannot be handled correctly, show to user.
-            e.printStackTrace(System.err);
-            throw new IllegalStateException("Sorry, the repository is no longer live. Please contact an administrator.\n\n" +
-                    "The original message was: "+e.getMessage());
-        } catch (QueryEvaluationException e) {
-            e.printStackTrace(System.err);
-            // could not evaluate query or get a next result from it. API is no help on this exception. Some googling
-            // tells us this results from improper setup. Nothing we can do here either! Show to user.
-            throw new IllegalStateException("Sorry, the it appears that your system has been setup incorrectly. Please contact an administrator. \n\n" +
-                    "The original message was: "+e.getMessage());
-        } catch (MalformedQueryException e) {
-            e.printStackTrace(System.err);
-            // there was a mistake in the query! This exception cannot be handled correctly. Show to user.
-            throw new IllegalStateException("Sorry, there appears to be a mistake in the authentication query. Please contact your software supplier.\n\n" +
-                    "The original message was: "+e.getMessage());
-        }
-        return result;
-    }
-
-    /**
-     * Updates the previous information on the given user to the new information available on the given user. The new
-     * information on the user is contained in the given object.
-     * @param newUser : the information on the user to add to the database
-     * @throws IllegalStateException : a non-recoverable exception was thrown while processing the update operation.
-     * this type of exceptions occur when the connection to the repository has failed or when there was an error in the
-     * query.
-     */
-    public void updateUser(User newUser){
-        try{
-            RepositoryConnection con = this.getRdfStore().getConnection();
-            Resource runtimeGraph = con.getValueFactory().createURI(this.getRuntimeRDFgraph());
-
-            // first remove all previous information on the user (that can be edited)
-            // NOTE that the following query will only remove the user from the organization. It will not remove the
-            // organization as such or change the name of the organization in the rdf file!
-            String removalQuery =
-                    "prefix foaf: <http://xmlns.com/foaf/0.1/>" +
-                    "prefix lod2: <http://lod2.eu/lod2statworkbench/>" +
-
-                    "CONSTRUCT {" +
-                            "?u foaf:firstName ?fname."+
-                            "?u foaf:lastName ?lname."+
-                            "?u foaf:mbox ?email."+
-                            "?o foaf:member ?u." +
-                            "} " +
-                    "FROM <" + this.getRuntimeRDFgraph() + "> WHERE {"+
-                            "?u a foaf:Person." +
-                            "?o a foaf:Organization." +
-                            "?o foaf:member ?u." +
-                            "?o foaf:name ?org." +
-                            "?u foaf:firstName ?fname."+
-                            "?u foaf:lastName ?lname."+
-                            "?u foaf:mbox ?email."+
-                            "?u lod2:username \"" + newUser.getUsername()+ "\"^^<http://www.w3.org/2001/XMLSchema#string>."+
-                    "}";
-            GraphQueryResult result=con.prepareGraphQuery(QueryLanguage.SPARQL, removalQuery).evaluate();
-            while(result.hasNext()){
-                Statement statement=result.next();
-                con.remove(statement,runtimeGraph );
-            }
-
-            // then add the new information on the user to the store
-            String creationQuery =
-                    "prefix foaf: <http://xmlns.com/foaf/0.1/> " +
-                    "prefix lod2: <http://lod2.eu/lod2statworkbench/> " +
-
-                    "CONSTRUCT {" +
-                            "?u foaf:firstName \""+newUser.getFirstName()+"\". "+
-                            "?u foaf:lastName \""+newUser.getLastName()+"\". "+
-                            "?u foaf:mbox \"mailto:"+newUser.getEmail()+"\". "+
-                            "_:o a foaf:Organization. "+
-                            "_:o foaf:member ?u. " +
-                            "_:o foaf:name \""+newUser.getOrganization()+"\". "+
-                            "} " +
-                    "FROM <" + this.getRuntimeRDFgraph() + "> WHERE { "+
-                            "?u a foaf:Person. " +
-                            "?u lod2:username \"" + newUser.getUsername()+ "\"^^<http://www.w3.org/2001/XMLSchema#string>. "+
-                    "}";
-            result=con.prepareGraphQuery(QueryLanguage.SPARQL, creationQuery).evaluate();
-            while(result.hasNext()){
-                Statement statement=result.next();
-                con.add(statement,runtimeGraph);
-            }
-            con.close();
-        }catch (RepositoryException e) {
-            // repository is no longer live. This exception cannot be handled correctly, show to user.
-            e.printStackTrace(System.err);
-            throw new IllegalStateException("Sorry, the repository is no longer live. Please contact an administrator.\n\n" +
-                    "The original message was: "+e.getMessage());
-        } catch (QueryEvaluationException e) {
-            // could not evaluate query or get a next result from it. API is no help on this exception. Some googling
-            // tells us this results from improper setup. Nothing we can do here either! Show to user.
-            e.printStackTrace(System.err);
-            throw new IllegalStateException("Sorry, the it appears that your system has been setup incorrectly. Please contact an administrator. \n\n" +
-                    "The original message was: "+e.getMessage());
-        } catch (MalformedQueryException e) {
-            // there was a mistake in the query! This exception cannot be handled correctly. Show to user.
-            e.printStackTrace(System.err);
-            throw new IllegalStateException("Sorry, there appears to be a mistake in the authentication query. Please contact your software supplier.\n\n" +
-                    "The original message was: "+e.getMessage());
-        }
-    }
-
-    /**
-     * Returns the value of the parameter with the given name in the given bindingset if it exists and
-     * is of the type LiteralImpl. Returns null otherwise.
-     * @param bindings the bindingset to look for values in
-     * @param name the name of the parameter to look in
-     * @return return the value of the parameter with the given name if any.
-     */
-    private String getStringValue(BindingSet bindings, String name){
-        Value value=bindings.getValue(name);
-        String result=null;
-        if (value instanceof LiteralImpl) {
-            LiteralImpl literal = (LiteralImpl) value;
-            result = literal.getLabel();
-        }else{
-            //fallback option
-            result=value.stringValue();
-        }
-        return result;
-    }
-
     //* the currently logged in user
-    private User user;
+    private WebIDUser user;
 
-    //* sets the currently logged in user to the given user.
-    public void setUser(User user){
+    /**
+     * Sets the currently logged in user to the given user. If the user has the same URI, no notification is sent, as the
+     * information on the user is assumed to be kept the same. If the URI changes or the user changes from or to null, an
+     * update is sent.
+     * @param user the WebIDUser to change to
+     */
+    public void setUser(WebIDUser user){
+        String previousUser=this.user == null? null : this.user.getURI().toString();
+        String userUri= user==null?null:user.getURI().toString();
         this.user = user;
+
+        if((previousUser== null && user==null) ||
+            (previousUser!=null && previousUser.equals(userUri))){
+            // no change of importance
+            return;
+        }
+
+        if(this.user!=null){
+            try{
+                // a new user has arrived, lets see if we have a role for him. If we don't, lets make him a 'User'
+                RepositoryConnection con=rdfStore.getConnection();
+                String userGraph=getUserGraph();
+                boolean hasRole= con.prepareBooleanQuery(QueryLanguage.SPARQL, "ASK FROM <"+userGraph+"> " +
+                    "Where { <"+userUri+"> <http://schema.turnguard.com/webid/2.0/core#hasRole> ?value }").evaluate();
+
+                if(!hasRole){
+                    // add the new role if the user does not have one yet
+                    ValueFactory thePlant=con.getValueFactory();
+                    Statement product = thePlant.createStatement((Resource)
+                            user.getURI(), new URIImpl("http://schema.turnguard.com/webid/2.0/core#hasRole"), new URIImpl("http://demo.lod2.eu/Role/User"));
+                    con.add(product, new URIImpl(userGraph));
+                }
+            }catch(Exception e){
+                throw new RuntimeException("Could not verify user privileges because of a server configuration issue, " +
+                        "please notify the development team. The error message was: "+e.getMessage());
+            }
+        }
+        // an important change happened, lets get everyone up to date!
         for(LoginListener listener : loginListeners){
             this.notifyListener(listener);
         }
     }
 
     //* returns the currently logged in user.
-    public User getUser(){
+    public WebIDUser getUser(){
         return this.user;
     }
 
@@ -566,65 +403,8 @@ public class LOD2DemoState
         listener.notifyLogin(this.getUser());
     }
 
-    //* inner class representing a user of the system
-    public class User implements  Serializable{
-
-        protected String username;
-        protected String organization;
-        protected String email;
-        protected String firstName;
-        protected String lastName;
-
-        public User(String username){
-            this.username=username;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public void setOrganization(String organization) {
-            this.organization = organization;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getOrganization() {
-            return organization;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        @Override
-        public User clone(){
-            User clone=new User(this.getUsername());
-            clone.setFirstName(this.getFirstName());
-            clone.setLastName(this.getLastName());
-            clone.setOrganization(this.getOrganization());
-            clone.setEmail(this.getEmail());
-            return clone;
-        }
-
+    public String getProvenanceGraph() {
+        return provenanceGraph;
     }
 
     public interface LoginListener {
@@ -633,7 +413,7 @@ public class LOD2DemoState
          * provided if it exists.
          * @param user :: the user that is currently logged in or null if no such user exists.
          */
-        public void notifyLogin(User user);
+        public void notifyLogin(WebIDUser user);
     }
 
     public interface CurrentGraphListener {

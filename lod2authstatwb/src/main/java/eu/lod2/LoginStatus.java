@@ -1,5 +1,6 @@
 package eu.lod2;
 
+import com.turnguard.webid.tomcat.security.WebIDUser;
 import com.vaadin.ui.*;
 
 /**
@@ -27,7 +28,7 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
 
     //* re-renders this component based on the user that is currently logged in
     public void render(){
-        LOD2DemoState.User user = this.state.getUser();
+        WebIDUser user = this.state.getUser();
 
         this.removeAllComponents();
 
@@ -42,8 +43,8 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
      * shows the user that is currently logged in and allows him to log out
      * pre: user is not null
      */
-    protected void createUserInfo(LOD2DemoState.User user){
-        Label name=new Label("Logged in as: "+user.getUsername());
+    protected void createUserInfo(WebIDUser user){
+        Label name=new Label("Logged in as: "+user.getURI());
         name.setContentMode(Label.CONTENT_TEXT);
         Button logout= new Button("Log out");
 
@@ -85,7 +86,7 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
     }
 
     //* when the logged in user changes, the component should re-render
-    public void notifyLogin(LOD2DemoState.User user) {
+    public void notifyLogin(WebIDUser user) {
         // user can be obtained using state,
         this.render();
     }

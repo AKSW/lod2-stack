@@ -15,39 +15,43 @@
  */
 package eu.lod2.stat;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-
+import com.turnguard.webid.tomcat.security.WebIDUser;
 import com.vaadin.Application;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.VaadinPropertyDescriptor;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.terminal.*;
+import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.Terminal;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 import com.vaadin.terminal.gwt.server.UploadException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.MenuBar.*;
+import com.vaadin.ui.MenuBar.Command;
+import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.BaseTheme;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import eu.lod2.*;
+import eu.lod2.stat.CustomComponentFactory.CompType;
 import org.openrdf.query.*;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.vaadin.googleanalytics.tracking.*;
-import eu.lod2.*;
-import eu.lod2.stat.CustomComponentFactory.CompType;
+import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * The Application's "main" class
  */
 @SuppressWarnings("serial")
-public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGraphListener
+public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGraphListener, HttpServletRequestListener
 {
 	
     private LOD2DemoState state;
@@ -64,10 +68,11 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 
     //    private static final Logger logger = Logger.getLogger(LOD2Demo.class.getName());
 
+
     @Override
     public void init() {
-    	
-        state = new LOD2DemoState();
+        ensureState();
+
         customComponentFactory = new CustomComponentFactory(state);
 
         mainWindow = new Window("LOD2 Statistical Workbench DEMO");
@@ -153,6 +158,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 		
 		MenuBar.Command cmdOntoWikiCreateKB = getCustomComponentCommand(CompType.CreateKB);
         MenuBar.Command cmdOntoWikiImport = getCustomComponentCommand(CompType.ImportCSV);
+
         MenuBar.Command cmdValidation = new MenuBar.Command() {
 			public void menuSelected(MenuItem selectedItem) {
 				showInWorkspace(new Validation(state, workspace));
@@ -216,7 +222,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 
         MenuBar.Command mDeleteGraphs = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
-                showInWorkspace(new Authenticator(new DeleteGraphs(state), state));
+                showInWorkspace(new Authenticator(new DeleteGraphs(state), new HashSet<String>(Arrays.asList(state.adminRole)),state));
             }
         };
 
@@ -272,7 +278,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         menuExport.addItem("Export as Turtle", null, exportTurtle);
         menuExport.addItem("Export as RDF/JSON", null, exportRDFJson);
         menuExport.addItem("Export as Notation 3", null, exportRDFN3);
-        menuGraph.addItem("Validate", null, cmdValidation);
+        //menuGraph.addItem("Validate", null, cmdValidation);
         menuGraph.addItem("Remove Graphs", null, mDeleteGraphs);
 
         // edit menu
@@ -417,6 +423,17 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 
 
 
+    }
+
+    /**
+     * This function ensures that a state is present. If a state object exists, then that object is reused, if it does not, it is created.
+     * Also returns the state for convenience
+     */
+    private LOD2DemoState ensureState() {
+        if(state==null){
+            state = new LOD2DemoState();
+        }
+        return state;
     }
 
     public void home() {
@@ -581,16 +598,21 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
     //* shows the given component in this application's workspace.
     public void showInWorkspace(AbstractComponent component) {
         workspace.removeAllComponents();
-        workspace.addComponent(component);
         // stretch the content to the full workspace area
         welcome.setHeight("110px");
-        component.setSizeFull();
+        ActionRecorder recorder=new ActionRecorder(component,"http://lod2.eu/id/tool/"+
+                (component instanceof DecoratorComponent ?
+                        ((DecoratorComponent) component).getLeafComponent().getClass().getSimpleName():
+                        component.getClass().getSimpleName()),state);
+        workspace.addComponent(recorder);
+        recorder.setSizeFull();
         workspace.setSizeFull();
-        workspace.setExpandRatio(component, 1.0f);
+        workspace.setExpandRatio(recorder, 1.0f);
         mainContainer.setExpandRatio(workspace, 2.0f);
         mainWindow.getContent().setSizeFull();
+
     }
-    
+
     /** Just a method to get rid of the boilerplate code when Commands are created for the menu
      * @param url - url for the frame
      * @return
@@ -679,16 +701,18 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
             public void menuSelected(MenuItem selectedItem) {
                 workspace.removeAllComponents();
                 CustomComponent content = customComponentFactory.create(componentType);
-                workspace.addComponent(content);
+                ActionRecorder recorder = new ActionRecorder(content, "http://lod2.eu/id/tool/"+componentType.name(), state);
+                workspace.addComponent(recorder);
                 // stretch the content to the full workspace area
                 welcome.setHeight("110px");
-                content.setSizeFull();
+                recorder.setSizeFull();
                 if (expand) {
                 	workspace.setSizeFull();
-	                workspace.setExpandRatio(content, 1.0f);
+	                workspace.setExpandRatio(recorder, 1.0f);
 	                mainContainer.setExpandRatio(workspace, 2.0f);
 	                mainWindow.getContent().setSizeFull();
                 }
+
             }
         };
     }
@@ -785,6 +809,24 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 
     public void notifyCurrentGraphChange(String graph) {
         this.currentgraphlabel.setValue(graph);
+    }
+
+    /**
+     * Method gets called when a client performs a request. This is the only way to access the http request object apparently
+     */
+    public void onRequestStart(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        LOD2DemoState state=ensureState();
+        Principal user=httpServletRequest.getUserPrincipal();
+        if(user instanceof WebIDUser){
+            state.setUser((WebIDUser)user);
+        }
+    }
+
+    /**
+     * Method gets called when a client's request ends. This needs to be implemented as well when one wants to access the request information
+     */
+    public void onRequestEnd(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        // thank you, come again!
     }
 
     private class SparqlResultSelector extends Window implements Property.ValueChangeListener, LOD2DemoState.CurrentGraphListener{
@@ -952,5 +994,4 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         }
     }
 }
-
 

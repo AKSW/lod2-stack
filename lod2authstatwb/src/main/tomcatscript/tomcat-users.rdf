@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF 
+  xml:base="http://schema.turnguard.com/webid/2.0/core"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:void="http://rdfs.org/ns/void#"
+  xmlns:webid="http://schema.turnguard.com/webid/2.0/core#"
+>
+
+    <owl:Ontology rdf:about="http://schema.turnguard.com/webid/2.0/core">
+        <dc:title>WebID UserDatabase Realm</dc:title>        
+        <dc:creator rdf:resource="https://my-profile.eu/people/karel.kremer/card#me"/>
+        <dc:format>application/rdf+xml</dc:format>
+        <dc:rights>Copyright © 2011 www.turnguard.com</dc:rights>		  
+    </owl:Ontology>
+
+
+    <rdfs:Class rdf:about="#User">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        <rdfs:label xml:lang="en">A user</rdfs:label>   
+    </rdfs:Class>
+
+    <rdfs:Class rdf:about="#Role">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        <rdfs:label xml:lang="en">A role</rdfs:label>   
+    </rdfs:Class>
+
+    <rdfs:Class rdf:about="#Group">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>   
+        <rdfs:label xml:lang="en">A group</rdfs:label>   
+    </rdfs:Class>
+
+    <!-- Properties -->
+    <rdf:Property rdf:about="#hasUser">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdfs:label xml:lang="en">A resource has a certain user</rdfs:label>
+        <rdfs:range rdf:resource="#User" />        
+    </rdf:Property>
+
+    <rdf:Property rdf:about="#hasRole">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdfs:label xml:lang="en">A resource has a certain role</rdfs:label>
+        <rdfs:range rdf:resource="#Role" />        
+    </rdf:Property>
+
+    <rdf:Property rdf:about="#hasGroup">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdfs:label xml:lang="en">A resource has a certain group</rdfs:label>
+        <rdfs:range rdf:resource="#Group" />        
+    </rdf:Property>
+
+
+    <!-- Roles -->
+    <rdf:Description rdf:about="http://demo.lod2.eu/Role/User">
+        <rdf:type rdf:resource="#Role"/>
+        <rdfs:label xml:lang="en">User</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://demo.lod2.eu/Role/Administrator">
+        <rdf:type rdf:resource="#Role"/>
+        <rdfs:label xml:lang="en">Administrator</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://demo.lod2.eu/Role/Logout">
+        <rdf:type rdf:resource="#Role"/>
+        <rdfs:label xml:lang="en">Logout</rdfs:label>
+    </rdf:Description>
+   
+    <!-- Users -->
+    <rdf:Description rdf:about="https://my-profile.eu/people/karel.kremer/card#me">
+        <rdf:type rdf:resource="#User"/>
+        <rdfs:label xml:lang="en">Karel</rdfs:label>
+	<webid:hasRole rdf:resource="http://demo.lod2.eu/Role/Administrator"/>
+	<webid:hasRole rdf:resource="http://demo.lod2.eu/Role/User"/>
+   </rdf:Description>
+</rdf:RDF>
