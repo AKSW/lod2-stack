@@ -1,0 +1,17 @@
+Source: lod2statworkbench
+Section: misc
+Priority: extra
+Maintainer: Karel Kremer <Karel.Kremer@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://lod2.eu
+
+Package: lod2statworkbench
+Architecture: all
+Depends: tomcat6, virtuoso-opensource (>= 6.1.5), apache2, default-jdk, default-jre, ontowiki-virtuoso, virtuoso-vad-isparql, silk, lod2webapi, sparqled
+Suggests: d2r-cordis, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut, lodrefine
+Description: The lod2 statistical workbench application
+ This package is a web application which allows one to explore 
+ the power of the lod2 stack in the context of a statistical
+ workbench. It also serves as the root meta-package to install
+ the LOD2 stack components that are required by this workflow.

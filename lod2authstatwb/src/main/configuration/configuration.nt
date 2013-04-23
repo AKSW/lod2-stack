@@ -1,0 +1,35 @@
+<http://localhost:8890/DAV>  <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
+<http://localhost:8890/DAV>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2statworkbench/SystemGraph>.
+<http://localhost/colanut> <http://lod2.eu/lod2statworkbench/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/colanut> <http://lod2.eu/lod2statworkbench/service> "http://localhost/colanut"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/colanut> <http://lod2.eu/lod2statworkbench/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/d2r-cordis> <http://lod2.eu/lod2statworkbench/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/d2r-cordis> <http://lod2.eu/lod2statworkbench/service> "http://localhost/d2r-cordis"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/d2r-cordis> <http://lod2.eu/lod2statworkbench/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/colanut>.
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/d2r-cordis>.
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/lodrefine>.
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/ontowiki>.
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/ssb>.
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/virtuoso>.
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/hostname> "localhost:8080"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/lod2statworkbenchconfiguration> <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
+<http://localhost/lod2statworkbenchconfiguration>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2statworkbench/SystemGraph>.
+<http://localhost/lodrefine> <http://lod2.eu/lod2statworkbench/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/lodrefine> <http://lod2.eu/lod2statworkbench/service> "http://localhost/lodrefine/"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/lodrefine> <http://lod2.eu/lod2statworkbench/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/OntoWiki/Config/>  <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
+<http://localhost/OntoWiki/Config/>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2statworkbench/SystemGraph>.
+<http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/service> "http://localhost/ontowiki"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/username> "Admin"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ssb> <http://lod2.eu/lod2statworkbench/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ssb> <http://lod2.eu/lod2statworkbench/service> "http://localhost/ssb"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ssb> <http://lod2.eu/lod2statworkbench/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/password> "PWDLOD2"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/service> "http://localhost:8890/conductor"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/username> "lod2demo"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://lod2.eu/tools.owl>  <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
+<http://ns.ontowiki.net/SysOnt/> <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
+<http://www.openlinksw.com/schemas/virtrdf#>  <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
+<http://www.w3.org/2002/07/owl#>  <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.
