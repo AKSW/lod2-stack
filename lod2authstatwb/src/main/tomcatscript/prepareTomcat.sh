@@ -1,11 +1,10 @@
 #!/bin/bash
 
-STARTUPDIR=`pwd`
+STARTDIR=`pwd`
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TOMCATCONF="/etc/tomcat6"
-#TOMCATCONF="/tmp/tctmp"
 TOMCATROOT="/usr/share/tomcat6"
-#TOMCATROOT="/tmp/tctmproot"
-LIBSLOCATION=$STARTUPDIR/lib
+LIBSLOCATION=$SCRIPTDIR/lib
 
 #get a password for the key and truststores
 PASSWORD=
@@ -18,7 +17,12 @@ while [ -z "$PASSWORD" ]; do
     then
 	echo "Sorry, try again..."
     else
-	PASSWORD=$PASSWORD1
+	if [ ${#PASSWORD1} -lt 6 ]
+	then
+	    echo "Sorry, the password must be at least 6 characters long..."
+	else
+	    PASSWORD=$PASSWORD1
+	fi
     fi
 done
 
@@ -41,7 +45,7 @@ echo "done"
 echo -n "configuring server.xml..."
 #check if server already configured correctly
 hasWebID= `grep -q com\.turnguard\.webid\.tomcat\.database\.impl\.virtuoso\.VirtuosoWebIDDatabaseFactoryImpl server.xml`
-if [ hasWebID ]
+if [ $hasWebID ]
 then
     echo "done"
     echo "Your server is already configured with a webid resource"
@@ -51,10 +55,10 @@ else
     if [ $RESOURCEINPUT ]
     then
 # no resources yet, use xslt that adds full resources file
-	xsltproc -o server.xml $STARTUPDIR/transformNoResources.xslt server.xml
+	xsltproc -o server.xml $SCRIPTDIR/transformNoResources.xslt server.xml
     else
 # reuse existing resources yet, simply add new resource
-	xsltproc -o server.xml $STARTUPDIR/transformResources.xslt server.xml
+	xsltproc -o server.xml $SCRIPTDIR/transformResources.xslt server.xml
     fi
     echo "done"
 fi
@@ -64,12 +68,12 @@ echo -n "adding required libraries to /usr/share/tomcat6/lib..."
 cp -f $LIBSLOCATION/* $TOMCATROOT/lib
 echo "done"
 
-cd $STARTUPDIR
-
 echo -n "uploading the rdf graph holding the user information to virtuoso..."
 # need to move to tmp as isql-vt may not have access to the current directory
-cp $STARTUPDIR/tomcat-users.rdf /tmp/tomcat-users.rdf
-isql-vt -U dba -P dba -H localhost < uploadUserGraph.sql # > /dev/null
+cp $SCRIPTDIR/tomcat-users.rdf /tmp/tomcat-users.rdf
+isql-vt -U dba -P dba -H localhost < $SCRIPTDIR/uploadUserGraph.sql # > /dev/null
 echo "done"
+
+cd $STARTDIR
 
 echo "your tomcat server should now be ready to accept a secured application"

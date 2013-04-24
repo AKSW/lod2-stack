@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>Setting up WEBID authentication for the lod2 stat workbench</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-04-24 11:35:52 CEST"/>
+<meta name="author" content="Karel Kremer"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<style type="text/css">body{ width: 720px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">Setting up WEBID authentication for the lod2 stat workbench</h1>
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Script </a></li>
+<li><a href="#sec-2">2 Server configuration </a>
+<ul>
+<li><a href="#sec-2.1">2.1 Required libraries </a></li>
+<li><a href="#sec-2.2">2.2 Keystore and Truststore </a></li>
+<li><a href="#sec-2.3">2.3 Setting up an SSL connection </a></li>
+<li><a href="#sec-2.4">2.4 Using Virtuoso to store access rules </a></li>
+<li><a href="#sec-2.5">2.5 Adding roles to the server </a></li>
+<li><a href="#sec-2.6">2.6 Handling invalid certificates </a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 Configuring the web application </a>
+<ul>
+<li><a href="#sec-3.1">3.1 URL based security </a></li>
+<li><a href="#sec-3.2">3.2 Application based security </a></li>
+<li><a href="#sec-3.3">3.3 Application Dependencies </a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 Files </a>
+<ul>
+<li><a href="#sec-4.1">4.1 server.xml </a></li>
+<li><a href="#sec-4.2">4.2 web.xml </a></li>
+<li><a href="#sec-4.3">4.3 context.xml </a></li>
+<li><a href="#sec-4.4">4.4 tomcat-users.rdf </a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 Sources </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Script </h2>
+<div class="outline-text-2" id="text-1">
+
+<p>The steps that are taken in this file are combined in a script that is run when one installs the lod2statworkbench debian package. The script is located under src/main/tomcatscript. It is good to give it a quick look to see the full workflow. The steps concerning <a href="#sec-1">Handling invalid certificates</a> are optional and are as such not included in the script.
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Server configuration </h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2.1" class="outline-3">
+<h3 id="sec-2.1"><span class="section-number-3">2.1</span> Required libraries </h3>
+<div class="outline-text-3" id="text-2.1">
+
+<p>In order to secure the tomcat server, we will need a number of additional libraries. The <a href="http://webid.turnguard.com/WebIDTestServer/docs/installation">webid realm page</a> holds a list of the required libraries:
+</p>
+<ul>
+<li>
+com-turnguard-advanced-webid-tomcat-6.0.32.jar
+</li>
+<li>
+jsslutils-1.0.5.jar
+</li>
+<li>
+jsslutils-extra-apachetomcat6-1.0.5.jar
+</li>
+<li>
+log4j-1.2.14.jar
+</li>
+<li>
+sesame-onejar-2.3.1.jar
+</li>
+<li>
+slf4j-api-1.5.3.jar
+</li>
+<li>
+slf4j-log4j12-1.5.3.jar
+</li>
+<li>
+sesame-rio-rdfa-3.0.0-SNAPSHOT.jar
+</li>
+<li>
+xml-resolver-1.2.jar
+</li>
+<li>
+catalogs.tar.gz
+
+</li>
+</ul>
+
+<p>These files should be added to the tomcat_root/lib folder, so they can be shared between the tomcat server and the applications.
+</p></div>
+
+</div>
+
+<div id="outline-container-2.2" class="outline-3">
+<h3 id="sec-2.2"><span class="section-number-3">2.2</span> Keystore and Truststore </h3>
+<div class="outline-text-3" id="text-2.2">
+
+<p>We need to setup a keystore and a truststore for the tomcat server, as described on <a href="https://grips.semantic-web.at/display/LOD2/WebIDRealm+Installation+Protocol">https://grips.semantic-web.at/display/LOD2/WebIDRealm+Installation+Protocol</a>. I will repeat the information that I found there for convenience:
+</p>
+<p>
+creating a keystore
+</p>
+
+
+<pre class="src src-bash">  cd /var/lib/tomcat6/conf
+keytool -genkey -v -alias tomcat -keyalg RSA -validity 3650 -keystore /var/lib/tomcat6/conf/tomcat.keystore -dname <span style="color: #bc8f8f;">"CN=demo.lod2.eu, OU=demo, O=lod2"</span>
+</pre>
+
+
+
+<p>
+creating a truststore
+</p>
+
+
+<pre class="src src-bash">  cd /var/lib/tomcat6/conf
+keytool -genkey -v -alias demoKey -keyalg RSA -storetype PKCS12 -keystore demo.p12 -dname <span style="color: #bc8f8f;">"CN=demoKey, OU=demo, O=DieOrg"</span>
+</pre>
+
+
+
+<p>
+export demo.cer
+</p>
+
+
+<pre class="src src-bash">cd /var/lib/tomcat6/conf
+keytool -export -alias demoKey -keystore demo.p12 -storetype PKCS12 -rfc -file demo.cer
+</pre>
+
+
+
+<p>
+import demo.cer into keystore
+</p>
+
+
+<pre class="src src-bash">cd /var/lib/tomcat6/conf
+keytool -import -v -file demo.cer -keystore tomcat.keystore
+</pre>
+
+
+
+<p>
+Note: as noted in the following section, I had some problems when using the truststore. The truststore, however is optional
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2.3" class="outline-3">
+<h3 id="sec-2.3"><span class="section-number-3">2.3</span> Setting up an SSL connection </h3>
+<div class="outline-text-3" id="text-2.3">
+
+<p>To run the server over SSL, we need to set up a new Connection element in the tomcat server.xml file. The connection should look like this:
+</p>
+
+
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">Connector</span>
+    <span style="color: #b8860b;">port</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">8443</span><span style="color: #bc8f8f;">"</span>      <span style="color: #b8860b;">SSLImplementation</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.jsslutils.extra.apachetomcat6.JSSLutilsImplementation</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">acceptAnyCert</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">scheme</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">https</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">maxThreads</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">150</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">secure</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">SSLEnabled</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">sslProtocol</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">TLS</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">clientAuth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">keystoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat6/conf/tomcat.keystore</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">keystorePass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">password</span><span style="color: #bc8f8f;">"</span>/&gt;
+</pre>
+
+
+
+
+<p>
+In this xml element, the location of the keystore File has been provided, together with its password. It is possible to provide a keystoreType field as well, but in my case, I used the default type: JKS. The guide on the grips page also mentions a truststore. However, I did not succeed in getting this to work. The use of the truststore gave me some java exceptions, I suspect the versions of the libraries that I have are not in sync with each other, even though I got them from the grips page. It would be too much effort to look for a matching set as for demonstration purposes, a truststore is not really necessary.
+</p>
+<p>
+In case a truststore is used, the connector would need the following properties as well:
+</p>
+
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">Connector</span>
+  <span style="color: #b8860b;">truststoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat6/conf/tomcat.truststore</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #b8860b;">truststorePass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">password</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #b8860b;">truststoreType</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">PKCS12</span><span style="color: #bc8f8f;">"</span>/&gt;
+</pre>
+
+
+
+
+
+<p>
+In case a truststore is used and configured as described above, do not forget the turstoreType property. We are not using the default for the truststore.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2.4" class="outline-3">
+<h3 id="sec-2.4"><span class="section-number-3">2.4</span> Using Virtuoso to store access rules </h3>
+<div class="outline-text-3" id="text-2.4">
+
+<p>The lod2 stat workbench uses Virtuoso to store the information we have on user rights. This means we need to add a Resource element to the server.xml file as well:
+</p>
+
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">Resource</span>
+    <span style="color: #b8860b;">name</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">WebIDDatabase</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">auth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Container</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">type</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">com.turnguard.webid.tomcat.database.WebIDDatabase</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">description</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Using virtuoso as roles sources</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">factory</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">com.turnguard.webid.tomcat.database.impl.virtuoso.VirtuosoWebIDDatabaseFactoryImpl</span><span style="color: #bc8f8f;">"</span>            
+    <span style="color: #b8860b;">roleGraph</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://webidrealm.localhost/rolegraph</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">host</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">localhost</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">port</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">1111</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">user</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">dba</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">pass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">lod2</span><span style="color: #bc8f8f;">"</span>/&gt;
+</pre>
+
+
+
+
+<p>
+Note the name of the role graph that is to be used for virtuoso.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2.5" class="outline-3">
+<h3 id="sec-2.5"><span class="section-number-3">2.5</span> Adding roles to the server </h3>
+<div class="outline-text-3" id="text-2.5">
+
+<p>The server will need to know which roles are available for which users. To that end, an rdf graph will have to be created at the virtuoso endpoint, holding the correct triples. An example of such a graph can be found in the <a href="#sec-2.1">files section</a>.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2.6" class="outline-3">
+<h3 id="sec-2.6"><span class="section-number-3">2.6</span> Handling invalid certificates </h3>
+<div class="outline-text-3" id="text-2.6">
+
+<p>It is possible that the user does not present a valid certificate to the server. Because we have set clientAuth="true", the user will always be asked to present a certificate (we could have used "Want", but we didn't). To avoid the ugly 117 error page that will not mean anything to the user, we can set the custom error page for the 117 exception in the tomcat web.xml file. 
+</p>
+
+
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">error-page</span>&gt;
+
+&lt;<span style="color: #0000ff;">error-code</span>&gt;117&lt;/<span style="color: #0000ff;">error-code</span>&gt;
+
+&lt;<span style="color: #0000ff;">location</span>&gt;/invalidcertificate.html&lt;/<span style="color: #0000ff;">location</span>&gt;
+
+&lt;/<span style="color: #0000ff;">error-page</span>&gt;
+</pre>
+
+
+
+
+<p>
+The html page should be added to the tomcat ROOT folder in the webapps directory and it should give the user an explanation on what went wrong so he can solve it.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Configuring the web application </h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3.1" class="outline-3">
+<h3 id="sec-3.1"><span class="section-number-3">3.1</span> URL based security </h3>
+<div class="outline-text-3" id="text-3.1">
+
+<p>The web application can be secured on URL level. To specify the protected url patterns and the roles that can access them, the web.xml file needs to be edited. The following elements should be added:
+</p>
+
+
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">security-constraint</span>&gt;
+    &lt;<span style="color: #0000ff;">display-name</span>&gt;Stat&lt;/<span style="color: #0000ff;">display-name</span>&gt;
+    &lt;<span style="color: #0000ff;">web-resource-collection</span>&gt;
+        &lt;<span style="color: #0000ff;">web-resource-name</span>&gt;stat&lt;/<span style="color: #0000ff;">web-resource-name</span>&gt;
+        &lt;<span style="color: #0000ff;">url-pattern</span>&gt;/stat/*&lt;/<span style="color: #0000ff;">url-pattern</span>&gt;
+    &lt;/<span style="color: #0000ff;">web-resource-collection</span>&gt;
+    &lt;<span style="color: #0000ff;">auth-constraint</span>&gt;
+        &lt;<span style="color: #0000ff;">role-name</span>&gt;http://demo.lod2.eu/Role/Administrator&lt;/<span style="color: #0000ff;">role-name</span>&gt;
+    &lt;/<span style="color: #0000ff;">auth-constraint</span>&gt;
+    &lt;<span style="color: #0000ff;">user-data-constraint</span>&gt;
+        &lt;<span style="color: #0000ff;">transport-guarantee</span>&gt;CONFIDENTIAL&lt;/<span style="color: #0000ff;">transport-guarantee</span>&gt;
+    &lt;/<span style="color: #0000ff;">user-data-constraint</span>&gt;
+&lt;/<span style="color: #0000ff;">security-constraint</span>&gt;
+&lt;<span style="color: #0000ff;">security-role</span>&gt;
+    &lt;<span style="color: #0000ff;">role-name</span>&gt;http://demo.lod2.eu/Role/Administrator&lt;/<span style="color: #0000ff;">role-name</span>&gt;
+&lt;/<span style="color: #0000ff;">security-role</span>&gt;
+</pre>
+
+
+
+<p>
+Note that for every role-name that is used in the auth-constraints of a security-constraint, a security-role must be created.
+</p>
+<p>
+In order for the application to know which resource to use for discovering the roles, the context.xml file must be configured as well. The following elements should be added:
+</p>
+
+
+
+<pre class="src src-xml">&lt;<span style="color: #0000ff;">Valve</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.authenticator.SSLAuthenticator</span><span style="color: #bc8f8f;">"</span>/&gt;
+&lt;<span style="color: #0000ff;">Realm</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">com.turnguard.webid.tomcat.realm.WebIDRealm</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">resourceName</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">WebIDDatabase</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">validate</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">false</span><span style="color: #bc8f8f;">"</span>/&gt;
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3.2" class="outline-3">
+<h3 id="sec-3.2"><span class="section-number-3">3.2</span> Application based security </h3>
+<div class="outline-text-3" id="text-3.2">
+
+<p>The user that is logged in can also be requested at runtime. This means that the application itself can present specific behavior based on the roles of the current user. To do this, the application can use for instance the following procedure: 
+</p>
+
+
+<pre class="src src-java"><span style="color: #228b22;">String</span> <span style="color: #b8860b;">userName</span>=((<span style="color: #228b22;">WebIDUser</span>) user).getURI().toString();
+<span style="color: #228b22;">RepositoryConnection</span> <span style="color: #b8860b;">connection</span>=state.rdfStore.getConnection();
+<span style="color: #228b22;">TupleQueryResult</span> <span style="color: #b8860b;">results</span>=
+    connection.prepareTupleQuery(<span style="color: #5f9ea0;">QueryLanguage</span>.SPARQL, <span style="color: #bc8f8f;">"SELECT ?role FROM &lt;"</span> +
+                                 state.getUserGraph() + <span style="color: #bc8f8f;">"&gt; "</span> +
+                                 <span style="color: #bc8f8f;">"WHERE { "</span> +
+                                 <span style="color: #bc8f8f;">"&lt;"</span> + userName + <span style="color: #bc8f8f;">"&gt; &lt;<a href="http://schema.turnguard.com/webid/2.0/core#hasRole">http://schema.turnguard.com/webid/2.0/core#hasRole</a>&gt; ?role"</span> +
+                                 <span style="color: #bc8f8f;">"}"</span>).evaluate();
+<span style="color: #228b22;">boolean</span> <span style="color: #b8860b;">allowed</span>=<span style="color: #5f9ea0;">false</span>;
+<span style="color: #a020f0;">while</span>(results.hasNext()){
+    <span style="color: #228b22;">BindingSet</span> <span style="color: #b8860b;">bindings</span>=results.next();
+    <span style="color: #228b22;">String</span> <span style="color: #b8860b;">role</span>=bindings.getBinding(<span style="color: #bc8f8f;">"role"</span>).getValue().stringValue();
+    <span style="color: #a020f0;">if</span>(role!=<span style="color: #5f9ea0;">null</span> &amp;&amp; <span style="color: #a020f0;">this</span>.getAcceptedRoles().contains(role)){
+        allowed=<span style="color: #5f9ea0;">true</span>;
+        <span style="color: #a020f0;">break</span>;
+    }
+} 
+<span style="color: #a020f0;">if</span>(allowed){
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">do the cool stuff
+</span>}<span style="color: #a020f0;">else</span> {
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">do less cool stuff
+</span>}
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3.3" class="outline-3">
+<h3 id="sec-3.3"><span class="section-number-3">3.3</span> Application Dependencies </h3>
+<div class="outline-text-3" id="text-3.3">
+
+<p>Because both the virtuoso and the application need to make use of some libraries (for interacting with virtuoso and turnguard webid for instance), some application dependencies should be marked as <b>provided</b> in the pom file. If this is not configured like this, the libraries will be loaded twice, by different class loaders. This is a problem when using the application based security that is laid out above. The cast to WEBIDUser will fail, as the user was loaded by the library that is used in the tomcat6 server, while the cast is made to the version in the library used in the application. 
+</p>
+<p>
+This is important, as the application now assumes that the tomcat instance has been properly configured. To that end, a script was written that takes care of the configuration.
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Files </h2>
+<div class="outline-text-2" id="text-4">
+
+<p>This section holds all the files that were used in this document. Passwords have been set to defaults.
+</p>
+</div>
+
+<div id="outline-container-4.1" class="outline-3">
+<h3 id="sec-4.1"><span class="section-number-3">4.1</span> server.xml </h3>
+<div class="outline-text-3" id="text-4.1">
+
+
+
+
+<pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #b8860b;">version</span>=<span style="color: #bc8f8f;">'</span><span style="color: #bc8f8f;">1.0</span><span style="color: #bc8f8f;">'</span> <span style="color: #b8860b;">encoding</span>=<span style="color: #bc8f8f;">'</span><span style="color: #bc8f8f;">utf-8</span><span style="color: #bc8f8f;">'</span>?&gt;
+<span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+</span><span style="color: #b22222;">--&gt;</span>
+<span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ </span><span style="color: #b22222;">--&gt;</span>
+&lt;<span style="color: #0000ff;">Server</span> <span style="color: #b8860b;">port</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">8005</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">shutdown</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">SHUTDOWN</span><span style="color: #bc8f8f;">"</span>&gt;
+
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">APR library loader. Documentation at /docs/apr.html </span><span style="color: #b22222;">--&gt;</span>
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+  &lt;Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" /&gt;
+  </span><span style="color: #b22222;">--&gt;</span>
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html </span><span style="color: #b22222;">--&gt;</span>
+  &lt;<span style="color: #0000ff;">Listener</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.core.JasperListener</span><span style="color: #bc8f8f;">"</span> /&gt;
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Prevent memory leaks due to use of particular java/javax APIs</span><span style="color: #b22222;">--&gt;</span>
+  &lt;<span style="color: #0000ff;">Listener</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.core.JreMemoryLeakPreventionListener</span><span style="color: #bc8f8f;">"</span> /&gt;
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> JMX Support for the Tomcat server. Documentation at /docs/non-existent.html </span><span style="color: #b22222;">--&gt;</span>
+  &lt;<span style="color: #0000ff;">Listener</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.mbeans.ServerLifecycleListener</span><span style="color: #bc8f8f;">"</span> /&gt;
+  &lt;<span style="color: #0000ff;">Listener</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.mbeans.GlobalResourcesLifecycleListener</span><span style="color: #bc8f8f;">"</span> /&gt;
+
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Global JNDI resources
+       Documentation at /docs/jndi-resources-howto.html
+  </span><span style="color: #b22222;">--&gt;</span>
+  &lt;<span style="color: #0000ff;">GlobalNamingResources</span>&gt;
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Editable user database that can also be used by
+         UserDatabaseRealm to authenticate users
+    </span><span style="color: #b22222;">--&gt;</span>
+    &lt;<span style="color: #0000ff;">Resource</span> <span style="color: #b8860b;">name</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">UserDatabase</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">auth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Container</span><span style="color: #bc8f8f;">"</span>
+              <span style="color: #b8860b;">type</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.UserDatabase</span><span style="color: #bc8f8f;">"</span>
+              <span style="color: #b8860b;">description</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">User database that can be updated and saved</span><span style="color: #bc8f8f;">"</span>
+              <span style="color: #b8860b;">factory</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.users.MemoryUserDatabaseFactory</span><span style="color: #bc8f8f;">"</span>
+              <span style="color: #b8860b;">pathname</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">conf/tomcat-users.xml</span><span style="color: #bc8f8f;">"</span> /&gt; 
+     &lt;<span style="color: #0000ff;">Resource</span>
+                <span style="color: #b8860b;">name</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">WebIDDatabase</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">auth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Container</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">type</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">com.turnguard.webid.tomcat.database.WebIDDatabase</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">description</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Using virtuoso as roles sources</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">factory</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">com.turnguard.webid.tomcat.database.impl.virtuoso.VirtuosoWebIDDatabaseFactoryImpl</span><span style="color: #bc8f8f;">"</span>            
+                <span style="color: #b8860b;">roleGraph</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://webidrealm.localhost/rolegraph</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">host</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">localhost</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">port</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">1111</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">user</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">dba</span><span style="color: #bc8f8f;">"</span>
+                <span style="color: #b8860b;">pass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">dba</span><span style="color: #bc8f8f;">"</span>/&gt;
+  &lt;/<span style="color: #0000ff;">GlobalNamingResources</span>&gt;
+
+  <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container", 
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   </span><span style="color: #b22222;">--&gt;</span>
+  &lt;<span style="color: #0000ff;">Service</span> <span style="color: #b8860b;">name</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Catalina</span><span style="color: #bc8f8f;">"</span>&gt;
+  
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">The connectors can use a shared executor, you can define one or more named thread pools</span><span style="color: #b22222;">--&gt;</span>
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+    &lt;Executor name="tomcatThreadPool" namePrefix="catalina-exec-" 
+        maxThreads="150" minSpareThreads="4"/&gt;
+    </span><span style="color: #b22222;">--&gt;</span>
+    
+    
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> A "Connector" represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html (blocking &amp; non-blocking)
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL HTTP/1.1 Connector on port 8080
+    </span><span style="color: #b22222;">--&gt;</span>
+    &lt;<span style="color: #0000ff;">Connector</span> <span style="color: #b8860b;">port</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">8080</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">protocol</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">HTTP/1.1</span><span style="color: #bc8f8f;">"</span> 
+               <span style="color: #b8860b;">connectionTimeout</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">20000</span><span style="color: #bc8f8f;">"</span> 
+               <span style="color: #b8860b;">URIEncoding</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">UTF-8</span><span style="color: #bc8f8f;">"</span>
+               <span style="color: #b8860b;">redirectPort</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">8443</span><span style="color: #bc8f8f;">"</span> /&gt;
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> A "Connector" using the shared thread pool</span><span style="color: #b22222;">--&gt;</span>
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+    &lt;Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1" 
+               connectionTimeout="20000" 
+               redirectPort="8443" /&gt;
+    </span><span style="color: #b22222;">--&gt;</span>           
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Define a SSL HTTP/1.1 Connector on port 8443
+         This connector uses the JSSE configuration, when using APR, the 
+         connector should be using the OpenSSL style configuration
+         described in the APR documentation </span><span style="color: #b22222;">--&gt;</span>
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+    &lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
+               maxThreads="150" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" /&gt;
+    </span><span style="color: #b22222;">--&gt;</span>
+     &lt;<span style="color: #0000ff;">Connector</span>
+    <span style="color: #b8860b;">port</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">8443</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">SSLImplementation</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.jsslutils.extra.apachetomcat6.JSSLutilsImplementation</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">acceptAnyCert</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">scheme</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">https</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">maxThreads</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">150</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">secure</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">SSLEnabled</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">sslProtocol</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">TLS</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">clientAuth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">keystoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat6/conf/tomcat.keystore</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">keystorePass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">password</span><span style="color: #bc8f8f;">"</span>/&gt;
+
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Define an AJP 1.3 Connector on port 8009 </span><span style="color: #b22222;">--&gt;</span>
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+    &lt;Connector port="8009" protocol="AJP/1.3" redirectPort="8443" /&gt;
+    </span><span style="color: #b22222;">--&gt;</span>
+
+
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> An Engine represents the entry point (within Catalina) that processes
+         every request.  The Engine implementation for Tomcat stand alone
+         analyzes the HTTP headers included with the request, and passes them
+         on to the appropriate Host (virtual host).
+         Documentation at /docs/config/engine.html </span><span style="color: #b22222;">--&gt;</span>
+
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> You should set jvmRoute to support load-balancing via AJP ie :
+    &lt;Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1"&gt;         
+    </span><span style="color: #b22222;">--&gt;</span> 
+    &lt;<span style="color: #0000ff;">Engine</span> <span style="color: #b8860b;">name</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">Catalina</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">defaultHost</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">localhost</span><span style="color: #bc8f8f;">"</span>&gt;
+
+      <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">For clustering, please take a look at documentation at:
+          /docs/cluster-howto.html  (simple how to)
+          /docs/config/cluster.html (reference documentation) </span><span style="color: #b22222;">--&gt;</span>
+      <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+      &lt;Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/&gt;
+      </span><span style="color: #b22222;">--&gt;</span>        
+
+      <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> The request dumper valve dumps useful debugging information about
+           the request and response data received and sent by Tomcat.
+           Documentation at: /docs/config/valve.html </span><span style="color: #b22222;">--&gt;</span>
+      <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+      &lt;Valve className="org.apache.catalina.valves.RequestDumperValve"/&gt;
+      </span><span style="color: #b22222;">--&gt;</span>
+
+      <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> This Realm uses the UserDatabase configured in the global JNDI
+           resources under the key "UserDatabase".  Any edits
+           that are performed against this UserDatabase are immediately
+           available for use by the Realm.  </span><span style="color: #b22222;">--&gt;</span>
+      &lt;<span style="color: #0000ff;">Realm</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.realm.UserDatabaseRealm</span><span style="color: #bc8f8f;">"</span>
+             <span style="color: #b8860b;">resourceName</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">UserDatabase</span><span style="color: #bc8f8f;">"</span>/&gt;
+
+      <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Define the default virtual host
+           Note: XML Schema validation will not work with Xerces 2.2.
+       </span><span style="color: #b22222;">--&gt;</span>
+      &lt;<span style="color: #0000ff;">Host</span> <span style="color: #b8860b;">name</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">localhost</span><span style="color: #bc8f8f;">"</span>  <span style="color: #b8860b;">appBase</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">webapps</span><span style="color: #bc8f8f;">"</span>
+            <span style="color: #b8860b;">unpackWARs</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">autoDeploy</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
+            <span style="color: #b8860b;">xmlValidation</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">false</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">xmlNamespaceAware</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">false</span><span style="color: #bc8f8f;">"</span>&gt;
+
+        <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> SingleSignOn valve, share authentication between web applications
+             Documentation at: /docs/config/valve.html </span><span style="color: #b22222;">--&gt;</span>
+        <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+        &lt;Valve className="org.apache.catalina.authenticator.SingleSignOn" /&gt;
+        </span><span style="color: #b22222;">--&gt;</span>
+
+        <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Access log processes all example.
+             Documentation at: /docs/config/valve.html </span><span style="color: #b22222;">--&gt;</span>
+        <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">
+        &lt;Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"  
+               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/&gt;
+        </span><span style="color: #b22222;">--&gt;</span>
+
+      &lt;/<span style="color: #0000ff;">Host</span>&gt;
+    &lt;/<span style="color: #0000ff;">Engine</span>&gt;
+  &lt;/<span style="color: #0000ff;">Service</span>&gt;
+&lt;/<span style="color: #0000ff;">Server</span>&gt;
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4.2" class="outline-3">
+<h3 id="sec-4.2"><span class="section-number-3">4.2</span> web.xml </h3>
+<div class="outline-text-3" id="text-4.2">
+
+
+
+
+<pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #b8860b;">version</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">1.0</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">encoding</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">UTF-8</span><span style="color: #bc8f8f;">"</span>?&gt;
+&lt;<span style="color: #0000ff;">web-app</span> <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">xsi</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color: #bc8f8f;">"</span> <span style="color: #da70d6;">xmlns</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://java.sun.com/xml/ns/javaee</span><span style="color: #bc8f8f;">"</span> <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">web</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd</span><span style="color: #bc8f8f;">"</span> <span style="color: #da70d6;">xsi</span>:<span style="color: #b8860b;">schemaLocation</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">id</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">WebApp_ID</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">version</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">2.5</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #0000ff;">display-name</span>&gt;LOD2 stack demonstrator&lt;/<span style="color: #0000ff;">display-name</span>&gt;
+        &lt;<span style="color: #0000ff;">context-param</span>&gt;
+                &lt;<span style="color: #0000ff;">description</span>&gt;Vaadin production mode&lt;/<span style="color: #0000ff;">description</span>&gt;
+                &lt;<span style="color: #0000ff;">param-name</span>&gt;productionMode&lt;/<span style="color: #0000ff;">param-name</span>&gt;
+                &lt;<span style="color: #0000ff;">param-value</span>&gt;false&lt;/<span style="color: #0000ff;">param-value</span>&gt;
+        &lt;/<span style="color: #0000ff;">context-param</span>&gt;
+        &lt;<span style="color: #0000ff;">servlet</span>&gt;
+                &lt;<span style="color: #0000ff;">servlet-name</span>&gt;LOD2 Demo Servlet&lt;/<span style="color: #0000ff;">servlet-name</span>&gt;
+                <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">&lt;servlet-class&gt;com.vaadin.terminal.gwt.server.ApplicationServlet&lt;/servlet-class&gt; </span><span style="color: #b22222;">--&gt;</span>
+                &lt;<span style="color: #0000ff;">servlet-class</span>&gt;eu.lod2.LOD2DemoServlet&lt;/<span style="color: #0000ff;">servlet-class</span>&gt; 
+                &lt;<span style="color: #0000ff;">init-param</span>&gt;
+                        &lt;<span style="color: #0000ff;">description</span>&gt;Vaadin application class to start&lt;/<span style="color: #0000ff;">description</span>&gt;
+                        &lt;<span style="color: #0000ff;">param-name</span>&gt;application&lt;/<span style="color: #0000ff;">param-name</span>&gt;
+                        &lt;<span style="color: #0000ff;">param-value</span>&gt;eu.lod2.LOD2Demo&lt;/<span style="color: #0000ff;">param-value</span>&gt;
+                &lt;/<span style="color: #0000ff;">init-param</span>&gt;
+        &lt;<span style="color: #0000ff;">init-param</span>&gt;
+        &lt;<span style="color: #0000ff;">param-name</span>&gt;widgetset&lt;/<span style="color: #0000ff;">param-name</span>&gt;
+        &lt;<span style="color: #0000ff;">param-value</span>&gt;eu.lod2.widgetset.LOD2Demo&lt;/<span style="color: #0000ff;">param-value</span>&gt;
+        &lt;/<span style="color: #0000ff;">init-param</span>&gt;
+        &lt;/<span style="color: #0000ff;">servlet</span>&gt;
+        &lt;<span style="color: #0000ff;">servlet</span>&gt;
+                &lt;<span style="color: #0000ff;">servlet-name</span>&gt;LOD2 Demo Stat Servlet&lt;/<span style="color: #0000ff;">servlet-name</span>&gt;
+                <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;">&lt;servlet-class&gt;com.vaadin.terminal.gwt.server.ApplicationServlet&lt;/servlet-class&gt; </span><span style="color: #b22222;">--&gt;</span>
+                &lt;<span style="color: #0000ff;">servlet-class</span>&gt;eu.lod2.stat.StatLOD2DemoServlet&lt;/<span style="color: #0000ff;">servlet-class</span>&gt; 
+                &lt;<span style="color: #0000ff;">init-param</span>&gt;
+                        &lt;<span style="color: #0000ff;">description</span>&gt;Vaadin application class to start&lt;/<span style="color: #0000ff;">description</span>&gt;
+                        &lt;<span style="color: #0000ff;">param-name</span>&gt;application&lt;/<span style="color: #0000ff;">param-name</span>&gt;
+                        &lt;<span style="color: #0000ff;">param-value</span>&gt;eu.lod2.stat.StatLOD2Demo&lt;/<span style="color: #0000ff;">param-value</span>&gt;
+                &lt;/<span style="color: #0000ff;">init-param</span>&gt;
+        &lt;<span style="color: #0000ff;">init-param</span>&gt;
+        &lt;<span style="color: #0000ff;">param-name</span>&gt;widgetset&lt;/<span style="color: #0000ff;">param-name</span>&gt;
+        &lt;<span style="color: #0000ff;">param-value</span>&gt;eu.lod2.widgetset.LOD2Demo&lt;/<span style="color: #0000ff;">param-value</span>&gt;
+        &lt;/<span style="color: #0000ff;">init-param</span>&gt;
+        &lt;/<span style="color: #0000ff;">servlet</span>&gt;
+        &lt;<span style="color: #0000ff;">servlet-mapping</span>&gt;
+                &lt;<span style="color: #0000ff;">servlet-name</span>&gt;LOD2 Demo Stat Servlet&lt;/<span style="color: #0000ff;">servlet-name</span>&gt;
+                &lt;<span style="color: #0000ff;">url-pattern</span>&gt;/stat/*&lt;/<span style="color: #0000ff;">url-pattern</span>&gt;
+        &lt;/<span style="color: #0000ff;">servlet-mapping</span>&gt;
+        &lt;<span style="color: #0000ff;">servlet-mapping</span>&gt;
+                &lt;<span style="color: #0000ff;">servlet-name</span>&gt;LOD2 Demo Servlet&lt;/<span style="color: #0000ff;">servlet-name</span>&gt;
+                &lt;<span style="color: #0000ff;">url-pattern</span>&gt;/*&lt;/<span style="color: #0000ff;">url-pattern</span>&gt;
+        &lt;/<span style="color: #0000ff;">servlet-mapping</span>&gt;
+        &lt;<span style="color: #0000ff;">servlet-mapping</span>&gt;
+                &lt;<span style="color: #0000ff;">servlet-name</span>&gt;LOD2 Demo Servlet&lt;/<span style="color: #0000ff;">servlet-name</span>&gt;
+                &lt;<span style="color: #0000ff;">url-pattern</span>&gt;/VAADIN/*&lt;/<span style="color: #0000ff;">url-pattern</span>&gt;
+        &lt;/<span style="color: #0000ff;">servlet-mapping</span>&gt;
+    &lt;<span style="color: #0000ff;">security-constraint</span>&gt;
+        &lt;<span style="color: #0000ff;">display-name</span>&gt;Stat&lt;/<span style="color: #0000ff;">display-name</span>&gt;
+        &lt;<span style="color: #0000ff;">web-resource-collection</span>&gt;
+            &lt;<span style="color: #0000ff;">web-resource-name</span>&gt;stat&lt;/<span style="color: #0000ff;">web-resource-name</span>&gt;
+            &lt;<span style="color: #0000ff;">url-pattern</span>&gt;/stat/*&lt;/<span style="color: #0000ff;">url-pattern</span>&gt;
+        &lt;/<span style="color: #0000ff;">web-resource-collection</span>&gt;
+        &lt;<span style="color: #0000ff;">auth-constraint</span>&gt;
+            &lt;<span style="color: #0000ff;">role-name</span>&gt;http://demo.lod2.eu/Role/Administrator&lt;/<span style="color: #0000ff;">role-name</span>&gt;
+        &lt;/<span style="color: #0000ff;">auth-constraint</span>&gt;
+        &lt;<span style="color: #0000ff;">user-data-constraint</span>&gt;
+            &lt;<span style="color: #0000ff;">transport-guarantee</span>&gt;CONFIDENTIAL&lt;/<span style="color: #0000ff;">transport-guarantee</span>&gt;
+        &lt;/<span style="color: #0000ff;">user-data-constraint</span>&gt;
+    &lt;/<span style="color: #0000ff;">security-constraint</span>&gt;
+    &lt;<span style="color: #0000ff;">security-role</span>&gt;
+        &lt;<span style="color: #0000ff;">role-name</span>&gt;http://demo.lod2.eu/Role/Administrator&lt;/<span style="color: #0000ff;">role-name</span>&gt;
+    &lt;/<span style="color: #0000ff;">security-role</span>&gt;
+&lt;/<span style="color: #0000ff;">web-app</span>&gt;
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4.3" class="outline-3">
+<h3 id="sec-4.3"><span class="section-number-3">4.3</span> context.xml </h3>
+<div class="outline-text-3" id="text-4.3">
+
+
+
+
+<pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #b8860b;">version</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">1.0</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">encoding</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">UTF-8</span><span style="color: #bc8f8f;">"</span>?&gt;
+&lt;<span style="color: #0000ff;">Context</span> <span style="color: #b8860b;">antiJARLocking</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">path</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/lod2statworkbench</span><span style="color: #bc8f8f;">"</span>&gt;
+    &lt;<span style="color: #0000ff;">Valve</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">org.apache.catalina.authenticator.SSLAuthenticator</span><span style="color: #bc8f8f;">"</span>/&gt;
+    &lt;<span style="color: #0000ff;">Realm</span> <span style="color: #b8860b;">className</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">com.turnguard.webid.tomcat.realm.WebIDRealm</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">resourceName</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">WebIDDatabase</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">validate</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">false</span><span style="color: #bc8f8f;">"</span>/&gt;
+&lt;/<span style="color: #0000ff;">Context</span>&gt;
+</pre>
+
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4.4" class="outline-3">
+<h3 id="sec-4.4"><span class="section-number-3">4.4</span> tomcat-users.rdf </h3>
+<div class="outline-text-3" id="text-4.4">
+
+
+
+
+<pre class="src src-xml">&lt;?<span style="color: #a020f0;">xml</span> <span style="color: #b8860b;">version</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">1.0</span><span style="color: #bc8f8f;">"</span> <span style="color: #b8860b;">encoding</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">UTF-8</span><span style="color: #bc8f8f;">"</span>?&gt;
+&lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">RDF</span> 
+  <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">base</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://schema.turnguard.com/webid/2.0/core</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">rdf</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/1999/02/22-rdf-syntax-ns#</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">rdfs</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2000/01/rdf-schema#</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">owl</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">vs</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2003/06/sw-vocab-status/ns#</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">foaf</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://xmlns.com/foaf/0.1/</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">dc</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://purl.org/dc/elements/1.1/</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">void</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://rdfs.org/ns/void#</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #da70d6;">xmlns</span>:<span style="color: #b8860b;">webid</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://schema.turnguard.com/webid/2.0/core#</span><span style="color: #bc8f8f;">"</span>
+&gt;
+
+    &lt;<span style="color: #da70d6;">owl</span>:<span style="color: #0000ff;">Ontology</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://schema.turnguard.com/webid/2.0/core</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">title</span>&gt;WebID UserDatabase Realm&lt;/<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">title</span>&gt;        
+        &lt;<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">creator</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">https://my-profile.eu/people/karel.kremer/card#me</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">format</span>&gt;application/rdf+xml&lt;/<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">format</span>&gt;
+        &lt;<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">rights</span>&gt;Copyright &#169; 2011 www.turnguard.com&lt;/<span style="color: #da70d6;">dc</span>:<span style="color: #0000ff;">rights</span>&gt;                 
+    &lt;/<span style="color: #da70d6;">owl</span>:<span style="color: #0000ff;">Ontology</span>&gt;
+
+
+    &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">Class</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#User</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#Class</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;A user&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;   
+    &lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">Class</span>&gt;
+
+    &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">Class</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#Role</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#Class</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;A role&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;   
+    &lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">Class</span>&gt;
+
+    &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">Class</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#Group</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#Class</span><span style="color: #bc8f8f;">"</span>/&gt;   
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;A group&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;   
+    &lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">Class</span>&gt;
+
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Properties </span><span style="color: #b22222;">--&gt;</span>
+    &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Property</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#hasUser</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#ObjectProperty</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;A resource has a certain user&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">range</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#User</span><span style="color: #bc8f8f;">"</span> /&gt;        
+    &lt;/<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Property</span>&gt;
+
+    &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Property</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#hasRole</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#ObjectProperty</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;A resource has a certain role&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">range</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#Role</span><span style="color: #bc8f8f;">"</span> /&gt;        
+    &lt;/<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Property</span>&gt;
+
+    &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Property</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#hasGroup</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://www.w3.org/2002/07/owl#ObjectProperty</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;A resource has a certain group&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">range</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#Group</span><span style="color: #bc8f8f;">"</span> /&gt;        
+    &lt;/<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Property</span>&gt;
+
+
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Roles </span><span style="color: #b22222;">--&gt;</span>
+    &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Description</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://demo.lod2.eu/Role/Administrator</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#Role</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;Administrator&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;
+    &lt;/<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Description</span>&gt;
+   
+    <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Users </span><span style="color: #b22222;">--&gt;</span>
+    &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Description</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">about</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">https://my-profile.eu/people/karel.kremer/card#me</span><span style="color: #bc8f8f;">"</span>&gt;
+        &lt;<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">type</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">#User</span><span style="color: #bc8f8f;">"</span>/&gt;
+        &lt;<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span> <span style="color: #da70d6;">xml</span>:<span style="color: #b8860b;">lang</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">en</span><span style="color: #bc8f8f;">"</span>&gt;Karel&lt;/<span style="color: #da70d6;">rdfs</span>:<span style="color: #0000ff;">label</span>&gt;
+        &lt;<span style="color: #da70d6;">webid</span>:<span style="color: #0000ff;">hasRole</span> <span style="color: #da70d6;">rdf</span>:<span style="color: #b8860b;">resource</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">http://demo.lod2.eu/Role/Administrator</span><span style="color: #bc8f8f;">"</span>/&gt;
+   &lt;/<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">Description</span>&gt;
+&lt;/<span style="color: #da70d6;">rdf</span>:<span style="color: #0000ff;">RDF</span>&gt;
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Sources </h2>
+<div class="outline-text-2" id="text-5">
+
+<p>I followed guide from lod2 grips page <a href="https://grips.semantic-web.at/display/LOD2/WebIDRealm+Installation+Protocol">https://grips.semantic-web.at/display/LOD2/WebIDRealm+Installation+Protocol</a> and filled some gaps with the information from webid realm's own site: <a href="http://webid.turnguard.com/WebIDTestServer/docs/installation">http://webid.turnguard.com/WebIDTestServer/docs/installation</a>.
+</p></div>
+</div>
+<div id="postamble">
+<p class="author"> Author: Karel Kremer
+<a href="mailto:karel@ubuntu">&lt;karel@ubuntu&gt;</a>
+</p>
+<p class="date"> Date: 2013-04-24 11:35:52 CEST</p>
+<p class="creator">HTML generated by org-mode 6.33x in emacs 23</p>
+</div>
+</div>
+</body>
+</html>
