@@ -81,4 +81,8 @@
     <security-role>
         <role-name>http://demo.lod2.eu/Role/Logout</role-name>
     </security-role>
+    <!-- default role-->
+    <security-role>
+        <role-name>http://data.turnguard.com/webid/2.0/Void</role-name>
+    </security-role>
 </web-app>

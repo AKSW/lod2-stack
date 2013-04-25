@@ -275,7 +275,7 @@ public class DeleteGraphs extends CustomComponent
 
         List<String> availablegraphs = null;
         try {
-            availablegraphs = request_graphs("");
+            availablegraphs = request_graphs();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         };
@@ -301,14 +301,14 @@ public class DeleteGraphs extends CustomComponent
 
 
     // get the uri's for a list of abbreviations
-    public List<String> request_graphs(String parameters) throws Exception {
+    public List<String> request_graphs() throws Exception {
 
         List<String> result = null;
 
         HttpClient httpclient = new DefaultHttpClient();
         try {
 
-            String prefixurl = "http://localhost:8080/lod2webapi/graphs" + parameters;
+            String prefixurl = WEBAPIURL+ "graphsregex?regex=.*&all=true";
 
             HttpGet httpget = new HttpGet(prefixurl);
             httpget.addHeader("accept", "application/json");
@@ -316,7 +316,8 @@ public class DeleteGraphs extends CustomComponent
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             String responseBody = httpclient.execute(httpget, responseHandler);
-
+            result=parse_graph_api_result(responseBody).the_graphs;
+            /*
             WebAPIResult r = parse_graph_api_result(responseBody);
             if (r.nextquery) {
                 System.err.println(r.nextquery_params);
@@ -325,7 +326,7 @@ public class DeleteGraphs extends CustomComponent
             } else {
                 result = r.the_graphs;
             }
-
+            */
 
 
         } finally {
@@ -456,8 +457,6 @@ public class DeleteGraphs extends CustomComponent
             String prefixurl = WEBAPIURL+"remove_graphs";
 
             HttpPost post = new HttpPost(prefixurl);
-
-            post.addHeader("accept", "application/x-www-form-urlencoded");
 
             ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
             postParameters.add(new BasicNameValuePair("graphs", params));
