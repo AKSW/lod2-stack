@@ -278,7 +278,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         menuExport.addItem("Export as Turtle", null, exportTurtle);
         menuExport.addItem("Export as RDF/JSON", null, exportRDFJson);
         menuExport.addItem("Export as Notation 3", null, exportRDFN3);
-        //menuGraph.addItem("Validate", null, cmdValidation);
+        menuGraph.addItem("Validate", null, cmdValidation);
         menuGraph.addItem("Remove Graphs", null, mDeleteGraphs);
 
         // edit menu

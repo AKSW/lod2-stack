@@ -358,9 +358,15 @@ public class LOD2DemoState
                 if(!hasRole){
                     // add the new role if the user does not have one yet
                     ValueFactory thePlant=con.getValueFactory();
-                    Statement product = thePlant.createStatement((Resource)
-                            user.getURI(), new URIImpl("http://schema.turnguard.com/webid/2.0/core#hasRole"), new URIImpl("http://demo.lod2.eu/Role/User"));
-                    con.add(product, new URIImpl(userGraph));
+                    Resource userURI=user.getURI();
+                    Statement addRole = thePlant.createStatement(
+                            userURI, new URIImpl("http://schema.turnguard.com/webid/2.0/core#hasRole"), new URIImpl("http://demo.lod2.eu/Role/User"));
+                    Statement addType = thePlant.createStatement(
+                            userURI, new URIImpl("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), new URIImpl("http://schema.turnguard.com/webid/2.0/core#User"));
+
+
+                    con.add(addRole, new URIImpl(userGraph));
+                    con.add(addType, new URIImpl(userGraph));
                 }
             }catch(Exception e){
                 throw new RuntimeException("Could not verify user privileges because of a server configuration issue, " +

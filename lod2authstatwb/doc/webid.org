@@ -490,7 +490,11 @@ This section holds all the files that were used in this document. Passwords have
         <rdf:type rdf:resource="#Role"/>
         <rdfs:label xml:lang="en">Administrator</rdfs:label>
     </rdf:Description>
-   
+    <rdf:Description rdf:about="http://demo.lod2.eu/Role/User">
+        <rdf:type rdf:resource="#Role"/>
+        <rdfs:label xml:lang="en">User</rdfs:label>
+    </rdf:Description>
+
     <!-- Users -->
     <rdf:Description rdf:about="https://my-profile.eu/people/karel.kremer/card#me">
         <rdf:type rdf:resource="#User"/>

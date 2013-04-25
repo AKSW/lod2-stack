@@ -82,10 +82,15 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
             statements.add(valueFact.createStatement(action, new URIImpl("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), new URIImpl(actionType)));
             GregorianCalendar cal=new GregorianCalendar();
             cal.setTime(new Date());
-            statements.add(valueFact.createStatement(action,new URIImpl("http://lod2.eu/ref#executionTime"),
+            statements.add(valueFact.createStatement(action,new URIImpl("http://lod2.eu/provenance/ref#executionTime"),
                     valueFact.createLiteral(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal))));
-            statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/ref#target"), new URIImpl(this.toolURI)));
-            statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/ref#actor"), new URIImpl(userURI)));
+            statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/provenance/ref#usesTool"), new URIImpl(this.toolURI)));
+            statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/provenance/ref#actor"), new URIImpl(userURI)));
+            String target=state.getCurrentGraph();
+            if(target!=null){
+                //TODO note: we cannot be entirely sure about the target of the action. User might cheat and use the tool on some other graph
+                statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/provenance/ref#target"), new URIImpl(target)));
+            }
             for(Statement statement: statements){
                 connection.add(statement,new URIImpl(state.getProvenanceGraph()));
             }
