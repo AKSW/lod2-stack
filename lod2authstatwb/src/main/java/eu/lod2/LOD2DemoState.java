@@ -88,6 +88,7 @@ public class LOD2DemoState
     private String provenanceGraph = "http://lod2.eu/provenance";
 
     public String adminRole = "http://demo.lod2.eu/Role/Administrator";
+    public String userRole = "http://demo.lod2.eu/Role/User";
 
     // initialize the state with an default configuration
     // After succesfull initialisation the rdfStore connection is an active connection

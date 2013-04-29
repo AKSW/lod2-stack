@@ -17,9 +17,7 @@ import javax.xml.datatype.DatatypeFactory;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * This class can be used to register actions on a given component into the provenance graph
@@ -31,46 +29,90 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
     private String toolURI;
     //* the state of the application
     private LOD2DemoState state;
+    //* whether or not the component is actively logging user actions
+    private boolean active;
 
-    final private static String actionType="http://lod2.eu/ref#action";
+    final private static String actionType = "http://www.w3.org/ns/prov#Activity";
+    final private static String executionTimeStart = "http://www.w3.org/ns/prov#startedAtTime";
+    final private static String toolUse = "http://www.w3.org/ns/prov#used";
+    final private static String toolActor = "http://www.w3.org/ns/prov#wasStartedBy";
+    final private static String anonymousUser = "http://lod2.eu/provenance/anonymous";
+    final private static String targetPredicate = "http://www.w3.org/ns/prov#wasInfluencedBy";
 
-    //* immediately attaches the action recorder to the given target
+    //* the clicklistener for this recorder
+    private LayoutEvents.LayoutClickListener clickListener = null;
+
+    //* creates the recorder and immediately attaches it to the given target. Sets it to active as well.
     public ActionRecorder(AbstractComponent target, String toolURI, LOD2DemoState state){
         this.state=state;
-        this.attach(target, toolURI);
+        this.attachRecorder(target, toolURI);
         this.addComponent(target);
         target.setSizeFull();
+        this.setActive(true);
+    }
+
+    //* also detach recorder on detach
+    public void detach(){
+        this.detachRecorder();
+        super.detach();
     }
 
     /**
      * Attaches the action recorder to the given target with the given toolURI. If the recorder was already
-     * attached to some other target, it is detached first
+     * attached to some other target, it is detached first. Sets the recorder to active.
      * @param target the target to listen on
      * @param toolURI the URI to register an action for
      */
-    public void attach(AbstractComponent target, String toolURI){
+    public void attachRecorder(AbstractComponent target, String toolURI){
         if(this.target==null){
-            this.detach();
+            this.detachRecorder();
         }
 
         this.target=target;
         this.toolURI=toolURI;
 
-        this.addListener(new LayoutEvents.LayoutClickListener() {
+        LayoutEvents.LayoutClickListener listener= new LayoutEvents.LayoutClickListener() {
             public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
                 logAction(layoutClickEvent);
             }
-        });
+        };
+        this.addListener(listener);
+        this.clickListener=listener;
     }
 
-    private void logAction(Component.Event event){
+    /**
+     * Detaches the action recorder from the current target, removing all listeners from the recorder.
+     * Sets the recorder to inactive as well.
+     */
+    public void detachRecorder(){
+        if(this.target!=null){
+            this.removeListener(this.clickListener);
+            this.clickListener=null;
+            this.target=null;
+            this.setActive(false);
+        }
+    }
+
+    /**
+     * Logs the given user event to the provenance graph. Currently, the user event is not used to provide more detail.
+     * However, the parameter is still supplied to allow for more detail in a more specialized version of the
+     * ActionRecorder.
+     *
+     * Does nothing if the recorder is not active
+     */
+    private void logAction(@SuppressWarnings("unused")
+                           Component.Event event){
+
+        if(!this.isActive()){
+            return;
+        }
 
         WebIDUser user=state.getUser();
         String userURI;
         if(user!=null){
             userURI = user.getURI().toString();
         }else{
-            userURI = "http://lod2.eu/provenance/anonymous";
+            userURI = anonymousUser;
         }
         try {
 
@@ -79,17 +121,19 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
 
             URI action=this.generateActionURI();
             HashSet<Statement> statements=new HashSet<Statement>();
-            statements.add(valueFact.createStatement(action, new URIImpl("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), new URIImpl(actionType)));
+            statements.add(valueFact.createStatement(action,
+                    new URIImpl("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), new URIImpl(actionType)));
             GregorianCalendar cal=new GregorianCalendar();
             cal.setTime(new Date());
-            statements.add(valueFact.createStatement(action,new URIImpl("http://lod2.eu/provenance/ref#executionTime"),
+            statements.add(valueFact.createStatement(action,new URIImpl(executionTimeStart),
                     valueFact.createLiteral(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal))));
-            statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/provenance/ref#usesTool"), new URIImpl(this.toolURI)));
-            statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/provenance/ref#actor"), new URIImpl(userURI)));
+            statements.add(valueFact.createStatement(action, new URIImpl(toolUse), new URIImpl(this.toolURI)));
+            statements.add(valueFact.createStatement(action, new URIImpl(toolActor), new URIImpl(userURI)));
             String target=state.getCurrentGraph();
             if(target!=null){
-                //TODO note: we cannot be entirely sure about the target of the action. User might cheat and use the tool on some other graph
-                statements.add(valueFact.createStatement(action, new URIImpl("http://lod2.eu/provenance/ref#target"), new URIImpl(target)));
+                //note: we cannot be entirely sure about the target of the action. User might cheat and use the tool
+                //on some other graph
+                statements.add(valueFact.createStatement(new URIImpl(target), new URIImpl(targetPredicate), action));
             }
             for(Statement statement: statements){
                 connection.add(statement,new URIImpl(state.getProvenanceGraph()));
@@ -98,7 +142,8 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
                 // cannot happen
             throw new RuntimeException(e);
         } catch (RepositoryException e) {
-            throw new RuntimeException("Sorry, we could not add the provenance information for your action to the store, please contact the development team: "+e.getMessage());
+            throw new RuntimeException("Sorry, we could not add the provenance information for your action " +
+                    "to the store, please contact the development team: "+e.getMessage());
         }
 
     }
@@ -112,7 +157,9 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
         String uniquenessBestEffort= format.format(new Date())+"-"+Math.random();
         try {
             // assuming no collisions on uri. If collision -> tough luck.
-            return new URIImpl(uriBase+new BigInteger(1,MessageDigest.getInstance("MD5").digest(uniquenessBestEffort.getBytes("UTF-8"))).toString(16));
+            return new URIImpl(uriBase+new BigInteger(1,
+                    MessageDigest.getInstance("bMD5").digest(
+                            uniquenessBestEffort.getBytes("UTF-8"))).toString(16));
         } catch (Exception e){
             // cannot happen
             throw new RuntimeException(e);
@@ -125,5 +172,13 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
         }else{
             return target;
         }
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

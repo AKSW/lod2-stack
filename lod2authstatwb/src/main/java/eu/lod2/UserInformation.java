@@ -133,7 +133,7 @@ public class UserInformation extends VerticalLayout {
          */
         private Field ensureSingleUserField(String predicate, String fieldName, boolean readonly){
             Set<Field> fields=tryForUserFields(predicate, fieldName, readonly);
-            Field theField=null;
+            Field theField;
             if(fields.size()==0){
                 System.out.println("The user profile for "+user.getURI()+ " held no value for the predicate "+predicate);
                 theField=new TextField(fieldName);

@@ -208,7 +208,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         };
         MenuBar.Command userinfoCommand = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
-                showInWorkspace(new Authenticator(new UserInformation(state), state));
+                showInWorkspace(new Authenticator(new UserInformation(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
             }
         };
 
@@ -216,7 +216,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
             public void menuSelected(MenuItem selectedItem){
                 // publishing should be protected with an authenticator, otherwise a store could be published
                 // without provenance information!
-                showInWorkspace(new Authenticator(new CKANPublisherPanel(state), state));
+                showInWorkspace(new Authenticator(new CKANPublisherPanel(state), new HashSet<String>(Arrays.asList(state.adminRole)), state));
             }
         };
 

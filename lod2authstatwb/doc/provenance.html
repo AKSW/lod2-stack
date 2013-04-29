@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>Provenance in LOD2 stat workbench</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-04-29 10:40:08 CEST"/>
+<meta name="author" content="Karel Kremer"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<style type="text/css">body{ width: 720px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">Provenance in LOD2 stat workbench</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction </a></li>
+<li><a href="#sec-2">2 Making use of user information </a></li>
+<li><a href="#sec-3">3 Obtaining the actions taken by the user </a></li>
+<li><a href="#sec-4">4 Representing user actions </a></li>
+<li><a href="#sec-5">5 Obtaining detailed information </a>
+<ul>
+<li><a href="#sec-5.1">5.1 From the integration layer </a></li>
+<li><a href="#sec-5.2">5.2 From the individual components </a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction </h2>
+<div class="outline-text-2" id="text-1">
+
+<p>This document describes how we can record provenance information in the LOD2 demonstrator application. It describes the approach that has currently been implemented in the LOD2 statistical office and it has some suggestions on how provenance information can be extended in the future.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Making use of user information </h2>
+<div class="outline-text-2" id="text-2">
+
+<p>Because of the work that has been done regarding the authentication of a user with a WebID, see <a href="#sec-2">TODO</a>, one can determine which user has logged in at run-time. The application has access to the user's unique URI and WebID information. This means that, when the user performs any meaningful action on a graph, it would theoretically be possible to record the actions that were taken by the user.
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Obtaining the actions taken by the user </h2>
+<div class="outline-text-2" id="text-3">
+
+<p>The current implementation of the demonstrator for the LOD2 workbench makes heavy use of iframes to integrate components. This means that the application does not have any control on the internal behavior of the application. In such cases, it is not possible to know the exact actions that were performed by the user. Because such fine-grained provenance information is not possible, the current implementation of the provenance information in the lod2 statistical workbench only registers 'tool usage'.
+</p>
+<p>
+In the case of the lod2 statistical office, the simplification was made that a user 'uses' a component when he clicks on the user interface panel of the tool. All further information is blocked by the iframes that are used for integrating the component.
+</p>
+<p>
+The information that is registered when a user makes use of a tool is:
+</p><ul>
+<li>
+The ID of the user if it is known (a user may user the tool before he has identified himself)
+</li>
+<li>
+The time that the user makes use of the tool
+</li>
+<li>
+The tool that is used
+</li>
+<li>
+The current graph that was selected at that time
+
+</li>
+</ul>
+
+<p>There are a number of assumptions being made here. The first is that every click on a component user interface involves a meaningful action of the user. This not the case and is even unlikely for a single workflow. A second assumption is that using the tool (only) has implications on the current graph. It is very well possible that, once inside the iframe that holds the tool, the user navigates to a different graph in the rdf store. This is beyond our control however. 
+</p>
+<p>
+In the demonstrator, the user interaction is recorded by decorating the normal tool component with an object of the ActionRecorder class. This allows the programmer a lot of flexibility in specifying which actions need to be recorded. If desired, a configuration interface can be set up to toggle the logging of specific actions on and off.
+</p></div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Representing user actions </h2>
+<div class="outline-text-2" id="text-4">
+
+<p>The user actions that are recorded as described in the previous section will be stored in the provenance graph of the demonstrator application (in the default case, <a href="http://lod2.eu/provenance">http://lod2.eu/provenance</a>). To represent actions, the W3C Provenance ontology is used (see <a href="http://www.w3.org/TR/prov-o/">http://www.w3.org/TR/prov-o/</a>). The following parts of the ontology are used:
+</p>
+<dl>
+<dt><a href="http://www.w3.org/ns/prov#Activity">http://www.w3.org/ns/prov#Activity</a></dt><dd>
+URI that identifies the action class, used to record user actions. Because we cannot know the details of how the tool influences a graph, no specialization of the Activity class was chosen.
+</dd>
+<dt><a href="http://www.w3.org/ns/prov#startedAtTime">http://www.w3.org/ns/prov#startedAtTime</a></dt><dd>
+predicate that specifies the exact time at which an action was executed in the XML Schema date/time datatype. Because we do not know what exactly the user did with the tool, the endedAtTime property is left unspecified.
+</dd>
+<dt><a href="http://www.w3.org/ns/prov#used">http://www.w3.org/ns/prov#used</a></dt><dd>
+predicate that indicates the tool that was used during the action.
+</dd>
+<dt><a href="http://www.w3.org/ns/prov#wasInfluencedBy">http://www.w3.org/ns/prov#wasInfluencedBy</a></dt><dd>
+predicate that links the (presumably) modified graph to the action that gets created.
+</dd>
+<dt><a href="http://www.w3.org/ns/prov#wasStartedBy">http://www.w3.org/ns/prov#wasStartedBy</a></dt><dd>
+predicate that refers to the URI of the actor that executed the action.
+</dd>
+<dt><a href="http://lod2.eu/provenance/anonymous">http://lod2.eu/provenance/anonymous</a></dt><dd>
+URI that identifies the 'anonymous' user in case the user has not signed in but was allowed to perform an action nonetheless.
+
+</dd>
+</dl>
+
+<p>The detailed information on the user, like name or email address, is not stored explicitly to save on disk space. This information can be obtained from the user's WebId when required. If it is critical that the user who performed a certain action is recorded (for auditing for instance), the application can be extended to record this information directly in a straightforward way.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Obtaining detailed information </h2>
+<div class="outline-text-2" id="text-5">
+
+<p>There are two ways to extend the provenance information with more detailed actions. Either the actions can be recorded in more detail from the integration layer, or the actions are recorded by the individual components that are used in the application.
+</p>
+
+</div>
+
+<div id="outline-container-5.1" class="outline-3">
+<h3 id="sec-5.1"><span class="section-number-3">5.1</span> From the integration layer </h3>
+<div class="outline-text-3" id="text-5.1">
+
+<p>If the level of detail has to be increased from the integration layer, the integration layer needs to have more fine-grained control on the actions taken by the components. This means that the current integration method of iframes will no longer suffice. A full-fledged API will be required for every component, be it a Web-API or a simple source API. Some components already support such APIs, however, many do not. It would require a great deal of effort from these component owners to set up these APIs.
+</p>
+<p>
+Not only will this strategy affect the time-tables component owners significantly, the integration component will have to be completely rewritten as well. Where the integration layer used to be able to reuse most of the user interface that was already provided by the individual components, it now needs to supply one of its own for every component (and possibly for every close combination of components). The integration layer will also have to be rewritten to make use of these new APIs. This creates a significant overhead, as the workflows that were provided in the component's user interface are typically broken down into multiple API calls, which have to be 'glued' back together.
+</p></div>
+
+</div>
+
+<div id="outline-container-5.2" class="outline-3">
+<h3 id="sec-5.2"><span class="section-number-3">5.2</span> From the individual components </h3>
+<div class="outline-text-3" id="text-5.2">
+
+<p>Another strategy is to have the component owners use the provenance vocabulary that was proposed above. This actually does not require a lot of work for both the integration layer and the component owner. However, the component owners themselves may not have any direct gain by implementing the prov-o ontology and as such may be hard to convince.
+</p></div>
+</div>
+</div>
+<div id="postamble">
+<p class="author"> Author: Karel Kremer
+<a href="mailto:karel@ubuntu">&lt;karel@ubuntu&gt;</a>
+</p>
+<p class="date"> Date: 2013-04-29 10:40:08 CEST</p>
+<p class="creator">HTML generated by org-mode 6.33x in emacs 23</p>
+</div>
+</div>
+</body>
+</html>

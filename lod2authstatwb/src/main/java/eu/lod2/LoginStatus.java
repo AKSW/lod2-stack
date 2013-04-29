@@ -1,7 +1,11 @@
 package eu.lod2;
 
 import com.turnguard.webid.tomcat.security.WebIDUser;
-import com.vaadin.ui.*;
+import com.vaadin.ui.AbstractLayout;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import org.openrdf.model.impl.URIImpl;
 
 /**
  * The LoginStatus class is a component that shows the username of the currently
@@ -44,7 +48,16 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
      * pre: user is not null
      */
     protected void createUserInfo(WebIDUser user){
-        Label name=new Label("Logged in as: "+user.getURI());
+        String username=null;
+        try{
+            username=user.get(new URIImpl("http://xmlns.com/foaf/0.1/name")).iterator().next().stringValue();
+        }catch (Exception e){
+            //assume username is empty
+        }
+        if(username==null || username.length()==0){
+            username=user.getURI().toString();
+        }
+        Label name=new Label("Logged in as: "+username);
         name.setContentMode(Label.CONTENT_TEXT);
         Button logout= new Button("Log out");
 
