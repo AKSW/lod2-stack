@@ -59,14 +59,25 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
         }
         Label name=new Label("Logged in as: "+username);
         name.setContentMode(Label.CONTENT_TEXT);
-        Button logout= new Button("Log out");
+        Button logout= new Button("Change user");
 
         logout.setStyleName("currentgraphlabel");
-        logout.setDescription("Click here to log out");
+        logout.setDescription("Click here to change the user");
+
         logout.addListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                // log out user
-                state.setUser(null);
+                getWindow().executeJavaScript("(function logout() {\n" +
+                        "     if (document.all == null || (window.crypto && window.crypto.logout)) // FF, Opera, etc\n" +
+                        "        {      \n" +
+                        "           if (window.crypto && window.crypto.logout){ window.crypto.logout();\n" +
+                        "           }else{ alert('Sorry, your browser does not support logout for WebID. Close the browser and restart it to log out...')}\n" +
+                        "        }      \n" +
+                        "      else // MSIE 6+\n" +
+                        "        {      \n" +
+                        "           document.execCommand('ClearAuthenticationCache');\n" +
+                        "        };     \n" +
+                        "      window.location.href=\""+getApplication().getURL()+"logout\";\n"+
+                        "     })()");
             }
         });
         this.addComponent(name);

@@ -28,6 +28,14 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
 
     //* the component that is protected by this authenticator.
     protected final AbstractComponent protectedComponent;
+
+    /**
+     * the component that is shown if the user does not have the required access rights.
+     * By default, this component is null, meaning that a simple authentication refused message is shown explaining
+     * to the user why he does not have access.
+     */
+    protected AbstractComponent accessDeniedComponent=null;
+
     //* the application state
     protected final LOD2DemoState state;
     //* the roles that are allowed to access the protected component
@@ -50,12 +58,14 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
      * authenticated in a correct way.
      *
      * Only users that have a role in the accepted roles list can access this component
+     * Sets the backup component to the default component
      */
     public Authenticator(AbstractComponent protectedComponent, Set<String> acceptedRoles, LOD2DemoState state){
         this.acceptedRoles=acceptedRoles;
         this.state=state;
         this.protectedComponent=protectedComponent;
         this.state.addLoginListener(this);
+        this.setAccessDeniedComponent(null);
         // when a login listener gets added, a notification is provided immediately. No need to check for login
         // explicitly
     }
@@ -143,8 +153,14 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
         this.removeAllComponents();
 
         //TODO check logout functionality?
-        this.addComponent(new Label("We are sorry, you are not authorized to view this page. The reason that " +
-                "access was denied is: "+reason));
+        AbstractComponent backup=this.getAccessDeniedComponent();
+        if(backup==null){
+            this.addComponent(new Label("We are sorry, you are not authorized to view this page. The reason that " +
+                    "access was denied is: "+reason));
+        }else{
+            this.addComponent(backup);
+            backup.setSizeFull();
+        }
     }
 
     /**
@@ -171,4 +187,13 @@ public class Authenticator extends VerticalLayout implements LOD2DemoState.Login
             return protectedComponent;
         }
     }
+
+    public AbstractComponent getAccessDeniedComponent() {
+        return accessDeniedComponent;
+    }
+
+    public void setAccessDeniedComponent(AbstractComponent accessDeniedComponent) {
+        this.accessDeniedComponent = accessDeniedComponent;
+    }
+
 }

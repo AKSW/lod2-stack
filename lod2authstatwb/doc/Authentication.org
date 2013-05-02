@@ -1,0 +1,124 @@
+#+STYLE:<style type="text/css">body{ width: 800px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+Authentication in the LOD2 stack
+
+* Introduction
+This document describes how authentication is handled in the LOD2 stack. The lod2 statistical office demonstrator has been secured with the WebID protocol as described in the W3C draft of December 12, 2011 (http://www.w3.org/2005/Incubator/webid/spec/drafts/ED-webid-20111212). While this document is currently in a draft format, implementations of this protocol do exist already. For information on how the lod2 statistical office has been configured for WebID authentication on a technical level, please see the technical documentation [[TODO link]].
+* Technologies used
+** Tomcat Security
+Security in tomcat can be achieved through the use of the built-in feature called [[http://tomcat.apache.org/tomcat-6.0-doc/realm-howto.html][security realms]]. This entails the definition of a set of Roles to restrict access to certain parts of the application. Access rights to a restricted parts of the application are granted on a role basis, in stead of to individual users. This is comparable to groups in a Unix-like operating system. The way these roles are obtained depends on the implementation of the 'org.apache.catalina.Realm' interface. The statistical workbench makes use of the 'com.turnguard.webid.tomcat.realm.WebIDRealm' (WebIDRealm) library that implements this interface. This library allows the roles to be created and matched to usernames in virtuoso (among others).
+** WebID
+The more important part of the WebIDRealm library is of course its implementation of WebIDs for authentication. The WebID protocol, [[http://www.w3.org/2005/Incubator/webid/spec/][currently in draft mode at the W3C]], is a decentralized secure authentication protocol that combines the FOAF ontology with the SSL security layer. It does not rely on central key signing parties, but instead exploits the FOAF protocol to create a web of security that makes it hard to forge the identity of a user.
+
+The WebID itself is a URI that is associated with a profile page for the associated user, giving meaning to the URI. This profile holds basic information on the user like his or her name, email and connections as specified by the [[http://xmlns.com/foaf/spec/][FOAF ontology]]. This WebID URI is embedded in the user's certificate, so the verification authority can check the profile of the user to see whether it matches the certificate that is presented. To this end, the public key of the certificate on his or her profile.
+
+When a User issues a request for a protected resource (this should happen through a TLS enabled protocol in the case of WebID authentication), the TLS-Light service requests the user's certificate. This certificate is then examined for validity and authorization by the 'guard', the WebIDRealm in our case. This guard dereferences the profile for the user, so it can examine both the roles and the other properties in the profile to determine whether or not to give the user access.
+* Using the WebID to secure an application
+Once the server is configured to use the WebID protocol, there are a number of ways to exploit the information in a WebID to secure the applications on the server. This section details how this has been done for the statistical workbench.
+** Defining Roles
+Before the application can be secured, roles need to be defined and allocated to users. As stated before, the WebIDRealm library allows us to use Virtuoso itself to define roles. This allows for great flexibility in the way roles are specified. An application can even grant or revoke access on the fly.
+
+A role should be defined according to some ontology, which in itself can be specified in Virtuoso itself. An rdf file holding the roles for the statistical workbench is given below. This rdf file has been extrapolated from the example that is given in the WebIDRealm documentation. In this example, a single user with WebID https://my-profile.eu/people/karel.kremer/card#me is awarded the roles of User and Administrator. Please refer to the [[http://webid.turnguard.com/WebIDTestServer/docs/installation][WebIDRealm documentation]] or the technical configuration procedure for securing the statistical workbench [[TODO link]] for precise information on how to configure your tomcat instance to use these roles.
+
+In this example it is interesting to note the default role that gets awarded to any user that presents a valid certificate (http://demo.lod2.eu/Role/Void). This role is not configurable but can be used to secure parts of the application.
+
+#+begin_src xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <rdf:RDF 
+    xml:base="http://schema.turnguard.com/webid/2.0/core"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:webid="http://schema.turnguard.com/webid/2.0/core#"
+  >
+  
+      <owl:Ontology rdf:about="http://schema.turnguard.com/webid/2.0/core">
+          <dc:title>WebID UserDatabase Realm</dc:title>        
+          <dc:creator rdf:resource="https://my-profile.eu/people/karel.kremer/card#me"/>
+          <dc:format>application/rdf+xml</dc:format>
+          <dc:rights>Copyright © 2011 www.turnguard.com</dc:rights>                 
+      </owl:Ontology>
+  
+  
+      <rdfs:Class rdf:about="#User">
+          <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+          <rdfs:label xml:lang="en">A user</rdfs:label>   
+      </rdfs:Class>
+  
+      <rdfs:Class rdf:about="#Role">
+          <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+          <rdfs:label xml:lang="en">A role</rdfs:label>   
+      </rdfs:Class>
+  
+      <rdfs:Class rdf:about="#Group">
+          <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>   
+          <rdfs:label xml:lang="en">A group</rdfs:label>   
+      </rdfs:Class>
+  
+      <!-- Properties -->
+      <rdf:Property rdf:about="#hasUser">
+          <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+          <rdfs:label xml:lang="en">A resource has a certain user</rdfs:label>
+          <rdfs:range rdf:resource="#User" />        
+      </rdf:Property>
+  
+      <rdf:Property rdf:about="#hasRole">
+          <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+          <rdfs:label xml:lang="en">A resource has a certain role</rdfs:label>
+          <rdfs:range rdf:resource="#Role" />        
+      </rdf:Property>
+  
+      <rdf:Property rdf:about="#hasGroup">
+          <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+          <rdfs:label xml:lang="en">A resource has a certain group</rdfs:label>
+          <rdfs:range rdf:resource="#Group" />        
+      </rdf:Property>
+  
+  
+      <!-- Roles -->
+      <rdf:Description rdf:about="http://demo.lod2.eu/Role/User">
+          <rdf:type rdf:resource="#Role"/>
+          <rdfs:label xml:lang="en">User</rdfs:label>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://demo.lod2.eu/Role/Administrator">
+          <rdf:type rdf:resource="#Role"/>
+          <rdfs:label xml:lang="en">Administrator</rdfs:label>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://demo.lod2.eu/Role/Logout">
+          <rdf:type rdf:resource="#Role"/>
+          <rdfs:label xml:lang="en">Logout</rdfs:label>
+      </rdf:Description>
+      <rdf:Description rdf:about="http://data.turnguard.com/webid/2.0/Void">
+          <rdf:type rdf:resource="#Role"/>
+          <rdfs:label xml:lang="en">Default role</rdfs:label>
+      </rdf:Description>
+  
+     
+      <!-- Users -->
+      <rdf:Description rdf:about="https://my-profile.eu/people/karel.kremer/card#me">
+          <rdf:type rdf:resource="#User"/>
+          <rdfs:label xml:lang="en">Karel</rdfs:label>
+          <webid:hasRole rdf:resource="http://demo.lod2.eu/Role/Administrator"/>
+          <webid:hasRole rdf:resource="http://demo.lod2.eu/Role/User"/>
+     </rdf:Description>
+  </rdf:RDF>
+#+end_src
+** Securing URLs
+The standard way of securing applications in tomcat is to define a security-constraint that simply restricts access to the urls matching a given pattern. This way of securing the application is useful when access to a resource needs to be completely cut off for users that should not have access. However, it does not allow the same url to be used in different ways, according to the roles of the user. For that kind of behavior, please see the next section.
+** Securing application
+More fine grained control is also available. Once a user has been authenticated through the user of his or her WebID certificate, the application has access to the full FOAF user profile that is retrieved from the WebID, as well as any additional information available in the virtuoso store on the user (his roles, the actions taken by the user on the application, ...). This way of securing the application allows the developer a much more fine grained control no the actions the user may or may not perform. 
+
+In the case of the statistical workbench, an Authenticator component was introduced that can decorate any existing component with security requirements. If the user has one of the required roles, access is granted, otherwise, access is denied with a useful error message. The component can even be configured to show some other component when authentication fails. It is straight forward to extend this Authentication component to show a different Component for every user role.
+* Technical limitations
+There are still some minor technical limitations that arise when using WebID authentication. This section describes these problems.
+** Logging out
+It is currently not possible to log out of the application once the user is signed in with some certificate. This is a problem when two different users want to use the same machine. The user needs to close his browser and log in with a new certificate.
+
+A javascript approach exists that allows the user to log out on some browsers, but this is not supported in all browsers (Google Chrome is not supported at the moment). This javascript approach has been applied in the lod2 statistical workbench.
+** Application dependencies
+The second limitation is related to the configuration of the tomcat instance. If the application that is secured with WebID needs to access the information in the user's WebID profile, the WebIDRealm libraries need to be /shared/ between the tomcat instance an the application itself. They cannot be loaded by both, as this will result in java class loader issues: the loaded classes will be seen as different. This means that the application now depends on the correct configuration of the libraries on the tomcat instance. Required libraries can no longer be automatically be retrieved and bundled in a war file for easy deployment.
+
+Then again, because the server needs some configuration regarding the use of WebIDRealm anyway, we can probably assume that the server administrator can handle this. Again, specific details on setup are provided in the technical documentation [[TODO link]].

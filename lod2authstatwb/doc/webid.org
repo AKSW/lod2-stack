@@ -3,7 +3,7 @@
 Setting up WEBID authentication for the lod2 stat workbench
 
 * Script
-The steps that are taken in this file are combined in a script that is run when one installs the lod2statworkbench debian package. The script is located under src/main/tomcatscript. It is good to give it a quick look to see the full workflow. The steps concerning [[Handling invalid certificates]] are optional and are as such not included in the script.
+The steps that are taken in this file are combined in a script [[TODO link]]  that is run when one installs the lod2statworkbench debian package. The script is also located in the svn under src/main/tomcatscript. It is good to give it a quick look to see the full workflow. The steps concerning [[Handling invalid certificates]] are optional and are as such not included in the script.
 * Server configuration
 ** Required libraries
 In order to secure the tomcat server, we will need a number of additional libraries. The [[http://webid.turnguard.com/WebIDTestServer/docs/installation][webid realm page]] holds a list of the required libraries:
@@ -71,10 +71,6 @@ In case a truststore is used, the connector would need the following properties 
     truststorePass="password"
     truststoreType="PKCS12"/>
 #+end_src
-
-
-In case a truststore is used and configured as described above, do not forget the turstoreType property. We are not using the default for the truststore.
-
 ** Using Virtuoso to store access rules
 The lod2 stat workbench uses Virtuoso to store the information we have on user rights. This means we need to add a Resource element to the server.xml file as well:
 #+begin_src xml

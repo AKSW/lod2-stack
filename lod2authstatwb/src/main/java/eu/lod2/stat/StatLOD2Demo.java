@@ -816,7 +816,9 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
      */
     public void onRequestStart(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         LOD2DemoState state=ensureState();
+
         Principal user=httpServletRequest.getUserPrincipal();
+
         if(user instanceof WebIDUser){
             state.setUser((WebIDUser)user);
         }

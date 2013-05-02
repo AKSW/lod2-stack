@@ -158,7 +158,7 @@ public class ActionRecorder extends VerticalLayout implements DecoratorComponent
         try {
             // assuming no collisions on uri. If collision -> tough luck.
             return new URIImpl(uriBase+new BigInteger(1,
-                    MessageDigest.getInstance("bMD5").digest(
+                    MessageDigest.getInstance("MD5").digest(
                             uniquenessBestEffort.getBytes("UTF-8"))).toString(16));
         } catch (Exception e){
             // cannot happen
