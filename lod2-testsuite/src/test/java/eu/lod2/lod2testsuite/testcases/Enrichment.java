@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
+import eu.lod2.lod2testsuite.configuration.TestCase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;

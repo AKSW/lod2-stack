@@ -1,0 +1,30 @@
+#+STYLE:<style type="text/css">body{ width: 720px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray; border-width: 0 1px;  text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+Functional tests for the LOD2 statistical workbench
+
+Functional testing for the LOD2 statistical workbench has been approached in the same way as [[https://grips.semantic-web.at/display/LOD2/Functional+Tests+for+LOD2Stack][functional testing for the LOD2 stack]] in general. The general selenium test suite for the LOD2 stack has been reused and extended.
+
+* Extending the existing LOD2 test suite
+The approach that was taken for testing the lod2 statistical workbench is slightly different from the one taken in the general test suite. Where the general test suite tests the individual components, the statistical office test suite tests a number of integration scenarios that can be performed using the LOD2 Statistical office. As a result, some minor extensions had to be provided on top of the original test suite functionality. All of these extensions can be found in the new package, called 'eu.lod2.lod2testsuite.statTestcases'. 
+
+To have every test scenario start with a fresh slate, the original 'eu.lod2.lod2testsuite.configuration.TestCase.java' class has been extended in the StatTestcase.java class. This class removes the graph that was selected as the testGraph from the database before executing the test scenario.
+
+The other change that was made concerns the configuration of the new test cases. In order to have the new test scenarios co-exists independently of the old test cases, a new configuration file has been provided that configures the statistical office test suite. This configuration file can be found in the 'resources' folder by the name 'teststat.xml'. To run the new statistical office test suite, a new profile has been provided in the project's pom.xml file. One can now run the statistical office test suite using the following command:
+
+#+begin_src bash
+  maven clean install -Ptest-stat
+#+end_src
+
+By keeping the default profile as it was, the old way of starting the test suite for the LOD2 stack has not been changed.
+
+Note that because a test case for the statistical office actually represents a scenario, the order of the test procedures in the test case is very important. Each of the procedures have pre- and post-conditions that will be depended upon in the scenario work flow.
+
+* LOD2 statistical test scenarios
+All scenarios are provided as a separate class that extends the new StatTestcase class. Currently there is only one test scenario that is being provided in the statistical test cases package, called StatisticalDemoScenario. 
+
+** Depth of test scenarios
+It is the goal of the LOD2 statistical office test suite to test the integration of the different components in a statistical setting. It should not verify that the individual tools work correctly internally -- the suite assumes these components have been tested individually already. However, because the suite should be able to perform a full test scenario for every test case, it cannot be avoided that certain test procedures descend more deeply into a component that is used in the corresponding step of the scenario.
+** StatisticalDemoScenario
+This section explains the test procedures that make up the statistical demo scenario. The name of the scenario is derived from the fact that the steps in the scenario are the ones usually taken when the capabilities of the statistical office are demonstrated. 
+*TODO insert table here*
+** Adding new scenarios
+During the development of the statistical office workbench, a number of new scenarios will be developed. For every scenario, a new test case should be created. The procedure for creating a test scenario is rather straight forward: one creates a new java test case that extends the StatTestcase. Once one has defined some test procedures, one can edit the teststat.xml file to provide a new 'test' element that represents the test scenario. Following the pattern of the StatisticalDemoScenario, one then points to the created java class and includes the procedures that should be tested.

@@ -1,6 +1,8 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import java.util.ArrayList;
+
+import eu.lod2.lod2testsuite.configuration.TestCase;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;

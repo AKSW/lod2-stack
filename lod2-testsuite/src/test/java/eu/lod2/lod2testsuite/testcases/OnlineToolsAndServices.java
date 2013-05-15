@@ -1,5 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
+import eu.lod2.lod2testsuite.configuration.TestCase;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
@@ -12,7 +13,7 @@ import org.testng.annotations.Test;
  * @author Stefan Schurischuster
  * @email s.schurischuster@semantic-web.at
  */
-public class OnlineToolsAndServices extends TestCase  {
+public class OnlineToolsAndServices extends TestCase {
     /**
      * TC 001.
      */

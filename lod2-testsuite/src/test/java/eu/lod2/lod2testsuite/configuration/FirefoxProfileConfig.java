@@ -1,9 +1,10 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import java.io.File;
-import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.firefox.FirefoxProfile;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class provides a FirefoxProfile which can be used to personalise
@@ -23,13 +24,18 @@ public class FirefoxProfileConfig {
      *          The path of the Firefox download directory.
      */
     public FirefoxProfileConfig(String downloadDir) {
-        this.profile = new FirefoxProfile();
+        //TODO change and keep profile over here
+        this.profile = new FirefoxProfile(new File("/home/karel/.mozilla/firefox/1xtgionb.auto-tester"));
         this.downloadDir = downloadDir;
         setPreferences();
         // Sets native events to true: Can cause problems under Linux
         // @TODO: Monitor and keep in mind.
         boolean nativeEvents = true;
         profile.setEnableNativeEvents(nativeEvents);
+        profile.setAcceptUntrustedCertificates(true);
+        profile.setPreference("security.default_personal_cert", "Select Automatically");
+        profile.setAssumeUntrustedCertificateIssuer(true);
+
         logger.info("Using native events: " +nativeEvents);
     }
     

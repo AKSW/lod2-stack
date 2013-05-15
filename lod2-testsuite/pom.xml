@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>2.24.1</version>
+            <version>2.32.0</version>
         </dependency>
         <dependency>
             <groupId>org.uncommons</groupId>
@@ -65,7 +65,50 @@
             <type>jar</type>
         </dependency>
     </dependencies>
-
+    <profiles>
+      <profile>
+	<id>test-stat</id>
+	<build>
+	  <plugins>
+            <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-surefire-plugin</artifactId>
+	      <version>2.12.4</version>
+	      <configuration>
+		<systemProperties>
+		  <property>
+		    <name>org.uncommons.reportng.escape-output</name>
+		    <value>false</value>
+		  </property>
+		</systemProperties>
+		<skip>true</skip>
+		<suiteXmlFiles>
+		  <suiteXmlFile>src/test/resources/teststat.xml</suiteXmlFile>
+		</suiteXmlFiles>
+	      </configuration>
+	      
+	      <executions>
+		<execution>
+		  <phase>integration-test</phase>
+		  <goals>
+		    <goal>test</goal>
+		  </goals>
+		  <configuration>
+		    <skip>false</skip>
+		    <excludes>
+		      <exclude>none</exclude>
+		    </excludes>
+		    <includes>
+		      <include>**/*TestCase.java</include>
+		    </includes>
+		  </configuration>
+		</execution>
+	      </executions>
+            </plugin>
+	  </plugins>
+	</build> 
+      </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>

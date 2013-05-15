@@ -1,7 +1,5 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import eu.lod2.lod2testsuite.testcases.TestCase;
-import java.util.List;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -9,7 +7,10 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import static org.testng.AssertJUnit.*;
+
+import java.util.List;
+
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * This class handles navigation through the main link menu 
@@ -91,11 +92,11 @@ public class Navigator {
             
             // And then move to the desired link
             driverActions.moveToElement(link).build().perform();
-            
+
             // If it does not clicking does the job.
             link.click();
             index ++;
-            TestCase.bf.bePatient();  
+            TestCase.bf.bePatient();
         } 
         logger.info("Finished navigating to: " + pp);
     }

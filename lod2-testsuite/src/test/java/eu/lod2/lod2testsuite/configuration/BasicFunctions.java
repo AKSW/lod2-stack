@@ -13,6 +13,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -529,5 +530,12 @@ public class BasicFunctions {
      */
     public void waitUntilElementDisappears(By locator)  {
         waitUntilElementDisappears("", locator, MAX_PATIENCE_SECONDS);
+    }
+
+    public void hoverOverElement(WebElement element) {
+        // hack for 'hover'
+        Actions actions= new Actions(driver);
+        actions.clickAndHold(element).perform();
+        actions.moveByOffset(5, 5).perform();
     }
 }

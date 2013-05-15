@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:dcterms="http://purl.org/dc/terms/"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:sdmx="http://purl.org/linked-data/sdmx/2009/">
+     
+     
+<rdf:Description rdf:about="http://localhost:8890/def/code/locations">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+  <rdf:type rdf:resource="http://purl.org/linked-data/sdmx/2009/CodeList"/>
+  <dcterms:title xml:lang="en"> Geographic Regions Code list</dcterms:title> 
+  <rdfs:label xml:lang="en">Geographic Regions Code list</rdfs:label> 
+  <dcterms:subject xml:lang="en">This is the class of Regions code list </dcterms:subject>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/EURASIA"/>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/AFRICA"/>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/AMERICAS"/>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/SOUTH+AMERICA"/>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/EUROPE"/>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/ASIA"/>
+<skos:hasTopConcept  rdf:resource="http://localhost:8890/id/locations/AUSTRALIA"/>
+</rdf:Description>
+
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/diseases">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+  <rdf:type rdf:resource="sdmx:CodeList"/>
+  <dcterms:title xml:lang="en">Diseases Code list</dcterms:title> 
+  <rdfs:label xml:lang="en">Diseases Code list</rdfs:label> 
+  <dcterms:subject xml:lang="en">This is the class of Diseases code list </dcterms:subject>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/EURASIA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel xml:lang="en">EURASIA</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/AFRICA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel xml:lang="en">AFRICA</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/AMERICAS">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel xml:lang="en">AMERICAS</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/SOUTH+AMERICA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel xml:lang="en">SOUTH AMERICA</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/EUROPE">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel xml:lang="en">EUROPE</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/ASIA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel>ASIA</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/id/locations/AUSTRALIA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<skos:prefLabel xml:lang="en">AUSTRALIA</skos:prefLabel>
+	<skos:TopConceptOf rdf:resource="http://localhost:8890/def/code/locations"/>
+</rdf:Description>
+
+
+</rdf:RDF>
+

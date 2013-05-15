@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/EURASIA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>EURASIA</skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/AFRICA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>AFRICA</skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/AMERICAS">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>AMERICAS</skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/SOUTH+AMERICA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>SOUTH AMERICA</skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/EUROPE">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>EUROPE</skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/ASIA">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>ASIA</skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost:8890/def/code/AUSTRALIA+">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	<rdf:type rdf:resource="http://localhost:8890/def/code/locations"/>
+	<skos:prefLabel>AUSTRALIA </skos:prefLabel>
+	<skos:topConceptOf>http://localhost:8890/def/code/Geolocations</skos:topConceptOf>
+</rdf:Description>
+
+</rdf:RDF>

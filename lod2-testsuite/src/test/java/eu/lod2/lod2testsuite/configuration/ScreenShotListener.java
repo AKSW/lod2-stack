@@ -1,6 +1,5 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import eu.lod2.lod2testsuite.testcases.TestCase;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;

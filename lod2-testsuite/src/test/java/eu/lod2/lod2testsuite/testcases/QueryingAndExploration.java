@@ -1,6 +1,8 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import java.util.List;
+
+import eu.lod2.lod2testsuite.configuration.TestCase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import static org.testng.AssertJUnit.*;
@@ -16,7 +18,7 @@ import org.testng.annotations.Test;
  * @author Stefan Schurischuster
  * @email s.schurischuster@semantic-web.at
  */
-public class QueryingAndExploration extends TestCase{
+public class QueryingAndExploration extends TestCase {
     
     /**
      * TC 001.

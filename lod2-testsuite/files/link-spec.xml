@@ -1,0 +1,60 @@
+<Silk>
+  <Prefixes>
+    <Prefix namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" id="rdf"></Prefix>
+    <Prefix namespace="http://localhost/Geo/e363e000e0841b4384564935e6457b94/" id="csv"></Prefix>
+    <Prefix namespace="http://www.w3.org/2002/07/owl#" id="owl"></Prefix>
+    <Prefix namespace="http://www.w3.org/2004/02/skos/core#" id="skos"></Prefix>
+    <Prefix namespace="http://www.w3.org/2000/01/rdf-schema#" id="rdfs"></Prefix>
+  </Prefixes>
+  <DataSources>
+    <DataSource type="sparqlEndpoint" id="codelists">
+      <Param name="pageSize" value="1000"></Param>
+      <Param name="pauseTime" value="0"></Param>
+      <Param name="retryCount" value="3"></Param>
+      <Param name="endpointURI" value="http://localhost:8890/sparql"></Param>
+      <Param name="retryPause" value="1000"></Param>
+      <Param name="graph" value="http://localhost/Geo"></Param>
+      <Param name="login" value=""></Param>
+      <Param name="entityList" value=""></Param>
+      <Param name="password" value=""></Param>
+      <Param name="additionalParameters" value=""></Param>
+    </DataSource>
+    <DataSource type="sparqlEndpoint" id="csvfile">
+      <Param name="pageSize" value="1000"></Param>
+      <Param name="pauseTime" value="0"></Param>
+      <Param name="retryCount" value="3"></Param>
+      <Param name="endpointURI" value="http://localhost:8890/sparql"></Param>
+      <Param name="retryPause" value="1000"></Param>
+      <Param name="graph" value="http://localhost/Geo"></Param>
+      <Param name="login" value=""></Param>
+      <Param name="entityList" value=""></Param>
+      <Param name="password" value=""></Param>
+      <Param name="additionalParameters" value=""></Param>
+    </DataSource>
+  </DataSources>
+  <Interlinks>
+    <Interlink id="link">
+      <LinkType>owl:sameAs</LinkType>
+      <SourceDataset dataSource="codelists" var="a">
+        <RestrictTo> ?a &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/2004/02/skos/core#Concept&gt; . </RestrictTo>
+      </SourceDataset>
+      <TargetDataset dataSource="csvfile" var="b">
+        <RestrictTo>
+          ?b &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://localhost/Geo/e363e000e0841b4384564935e6457b94/location&gt; .
+        </RestrictTo>
+      </TargetDataset>
+      <LinkageRule>
+        <Compare weight="1" threshold="0.0" required="false" metric="jaroWinkler" id="unnamed_6">
+          <TransformInput function="lowerCase" id="unnamed_5">
+            <Input path="?a/skos:prefLabel" id="unnamed_1"></Input>
+          </TransformInput>
+          <TransformInput function="lowerCase" id="unnamed_4">
+            <Input path="?b/rdfs:label" id="unnamed_3"></Input>
+          </TransformInput>
+        </Compare>
+      </LinkageRule>
+      <Filter></Filter>
+      <Outputs> </Outputs>
+    </Interlink>
+  </Interlinks>
+</Silk>

@@ -1,20 +1,13 @@
-package eu.lod2.lod2testsuite.testcases;
+package eu.lod2.lod2testsuite.configuration;
 
 import com.thoughtworks.selenium.Selenium;
-import eu.lod2.lod2testsuite.configuration.BasicFunctions;
-import eu.lod2.lod2testsuite.configuration.FirefoxProfileConfig;
-import eu.lod2.lod2testsuite.configuration.MyWebDriverEventListener;
-import eu.lod2.lod2testsuite.configuration.Navigator;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -25,6 +18,11 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Represents a base class for all test cases.
@@ -32,7 +30,7 @@ import org.testng.annotations.BeforeSuite;
  * @author Stefan Schurischuster
  */
 public abstract class TestCase {
-    private String url;
+    protected String url;
 
     public static WebDriver driver; 
     public static Selenium selenium;
@@ -40,7 +38,7 @@ public abstract class TestCase {
     public static Navigator navigator;
     public static BasicFunctions bf;
     public static WebDriverEventListener eventListener;
-    private static final Logger logger = Logger.getLogger(TestCase.class);
+    protected static final Logger logger = Logger.getLogger(TestCase.class);
     
     /**
      * Initialises browser and opens the web page.
@@ -74,10 +72,14 @@ public abstract class TestCase {
             Assert.fail("Something went wrong trying to register "
                     + "plugins at firefox profile.: " + ex.getMessage());
         }
+        // use the custom firefox binary (version 1.8 to be compatible with selenium
+        //FirefoxBinary binary=new FirefoxBinary(new File(filesDir+File.separator+"firefox-18"));
+        //TODO
+        FirefoxBinary binary=new FirefoxBinary(new File("/home/karel/firefox-18/firefox-bin"));
         // Create WebDriver instance.
         eventListener = new MyWebDriverEventListener();
         driver = new EventFiringWebDriver(
-                new FirefoxDriver(config.getConfiguredProfile()))
+                new FirefoxDriver(binary,config.getConfiguredProfile()))
                 .register(eventListener);
         // Set implicit waitingtime when a field is not available
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
@@ -117,7 +119,7 @@ public abstract class TestCase {
         logger.debug("Switching to default frame.");
                 
         WebElement toMove = bf.getVisibleElement(By.xpath(
-                "//img[@src='/lod2demo/VAADIN/themes/lod2/app_images/logo-lod2-small.png']"));
+                "//img[contains(@src,'logo-lod2-small.png')]"));
         //driverActions.moveToElement(toMove).build().perform();
         // Reposition the browser view to be at the top.
         bf.scrollIntoView(toMove);

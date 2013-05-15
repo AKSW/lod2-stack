@@ -1,0 +1,44 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="LOD2TestSuite">
+    
+    <parameter name="selenium.url" value="https://lod2.tenforce.be/lod2statworkbench/stat" />
+    <parameter name="graphName" value="http://localhost/Geo" />
+    <parameter name="virtUser" value="dba" />
+    <parameter name="virtPwd" value="dba" />
+
+    <!-- <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />-->
+    
+    <listeners>
+        <listener class-name="eu.lod2.lod2testsuite.configuration.TestCaseListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.ScreenShotListener" />
+        <listener class-name="org.uncommons.reportng.HTMLReporter" />
+    </listeners>
+    
+    <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
+    no correct method ordering -->
+
+    <test name="StatisticalDemoScenario" preserve-order="true">
+        <classes>
+            <class name="eu.lod2.lod2testsuite.statTestcases.StatisticalDemoScenario">
+                <methods>
+                    <include name="openOntowiki" />
+
+                    <parameter name="graphFilePath" value="files/locations.rdf" />
+                    <include name="newKnowledgeBase" />
+                    <include name="setCurrentGraph" />
+                    <parameter name="csvFilePath" value="files/locations.csv" />
+                    <include name="doCsvImport" />
+                    <parameter name="pptFilePath" value="files/PoolPartLocations.rdf" />
+                    <include name="uploadPoolpartyLocations" />
+                    <include name="validateCube" />
+                    <parameter name="silkProjectName" value="autotestproject" />
+                    <parameter name="silkLinkSpec" value="files/link-spec.xml" />
+                    <include name="linkPoolPartyLocations" />
+                    <include name="visualizeGraph"/>
+                    <include name="removeGraph" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

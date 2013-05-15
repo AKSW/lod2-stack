@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>Functional tests for the LOD2 statistical workbench</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-05-13 12:58:14 CEST"/>
+<meta name="author" content="Karel Kremer"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<style type="text/css">body{ width: 720px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray; border-width: 0 1px;  text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">Functional tests for the LOD2 statistical workbench</h1>
+
+<p>Functional testing for the LOD2 statistical workbench has been approached in the same way as <a href="https://grips.semantic-web.at/display/LOD2/Functional+Tests+for+LOD2Stack">functional testing for the LOD2 stack</a> in general. The general selenium test suite for the LOD2 stack has been reused and extended.
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Extending the existing LOD2 test suite </a></li>
+<li><a href="#sec-2">2 LOD2 statistical test scenarios </a>
+<ul>
+<li><a href="#sec-2.1">2.1 Depth of test scenarios </a></li>
+<li><a href="#sec-2.2">2.2 StatisticalDemoScenario </a></li>
+<li><a href="#sec-2.3">2.3 Adding new scenarios </a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Extending the existing LOD2 test suite </h2>
+<div class="outline-text-2" id="text-1">
+
+<p>The approach that was taken for testing the lod2 statistical workbench is slightly different from the one taken in the general test suite. Where the general test suite tests the individual components, the statistical office test suite tests a number of integration scenarios that can be performed using the LOD2 Statistical office. As a result, some minor extensions had to be provided on top of the original test suite functionality. All of these extensions can be found in the new package, called 'eu.lod2.lod2testsuite.statTestcases'. 
+</p>
+<p>
+To have every test scenario start with a fresh slate, the original 'eu.lod2.lod2testsuite.configuration.TestCase.java' class has been extended in the StatTestcase.java class. This class removes the graph that was selected as the testGraph from the database before executing the test scenario.
+</p>
+<p>
+The other change that was made concerns the configuration of the new test cases. In order to have the new test scenarios co-exists independently of the old test cases, a new configuration file has been provided that configures the statistical office test suite. This configuration file can be found in the 'resources' folder by the name 'teststat.xml'. To run the new statistical office test suite, a new profile has been provided in the project's pom.xml file. One can now run the statistical office test suite using the following command:
+</p>
+
+
+
+<pre class="src src-bash">maven clean install -Ptest-stat
+</pre>
+
+
+
+
+<p>
+By keeping the default profile as it was, the old way of starting the test suite for the LOD2 stack has not been changed.
+</p>
+<p>
+Note that because a test case for the statistical office actually represents a scenario, the order of the test procedures in the test case is very important. Each of the procedures have pre- and post-conditions that will be depended upon in the scenario work flow.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> LOD2 statistical test scenarios </h2>
+<div class="outline-text-2" id="text-2">
+
+<p>All scenarios are provided as a separate class that extends the new StatTestcase class. Currently there is only one test scenario that is being provided in the statistical test cases package, called StatisticalDemoScenario. 
+</p>
+
+</div>
+
+<div id="outline-container-2.1" class="outline-3">
+<h3 id="sec-2.1"><span class="section-number-3">2.1</span> Depth of test scenarios </h3>
+<div class="outline-text-3" id="text-2.1">
+
+<p>It is the goal of the LOD2 statistical office test suite to test the integration of the different components in a statistical setting. It should not verify that the individual tools work correctly internally &ndash; the suite assumes these components have been tested individually already. However, because the suite should be able to perform a full test scenario for every test case, it cannot be avoided that certain test procedures descend more deeply into a component that is used in the corresponding step of the scenario.
+</p></div>
+
+</div>
+
+<div id="outline-container-2.2" class="outline-3">
+<h3 id="sec-2.2"><span class="section-number-3">2.2</span> StatisticalDemoScenario </h3>
+<div class="outline-text-3" id="text-2.2">
+
+<p>This section explains the test procedures that make up the statistical demo scenario. The name of the scenario is derived from the fact that the steps in the scenario are the ones usually taken when the capabilities of the statistical office are demonstrated. 
+<b>TODO insert table here</b>
+</p></div>
+
+</div>
+
+<div id="outline-container-2.3" class="outline-3">
+<h3 id="sec-2.3"><span class="section-number-3">2.3</span> Adding new scenarios </h3>
+<div class="outline-text-3" id="text-2.3">
+
+<p>During the development of the statistical office workbench, a number of new scenarios will be developed. For every scenario, a new test case should be created. The procedure for creating a test scenario is rather straight forward: one creates a new java test case that extends the StatTestcase. Once one has defined some test procedures, one can edit the teststat.xml file to provide a new 'test' element that represents the test scenario. Following the pattern of the StatisticalDemoScenario, one then points to the created java class and includes the procedures that should be tested.
+</p></div>
+</div>
+</div>
+<div id="postamble">
+<p class="author"> Author: Karel Kremer
+<a href="mailto:karel@ubuntu">&lt;karel@ubuntu&gt;</a>
+</p>
+<p class="date"> Date: 2013-05-13 12:58:14 CEST</p>
+<p class="creator">HTML generated by org-mode 6.33x in emacs 23</p>
+</div>
+</div>
+</body>
+</html>
