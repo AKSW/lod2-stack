@@ -109,10 +109,10 @@ public class LOD2Demo extends Application
             welcomeContainer.setComponentAlignment(currentgraphlabel, Alignment.TOP_RIGHT);
 
             //create login/logout component that shows currently logged in user
-            LoginStatus login = new LoginStatus(state,this);
-            welcomeContainer.addComponent(login);
-            welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
-            welcomeContainer.setWidth("100%");
+            //LoginStatus login = new LoginStatus(state,this);
+            //welcomeContainer.addComponent(login);
+            //welcomeContainer.setComponentAlignment(login, Alignment.TOP_RIGHT);
+            //welcomeContainer.setWidth("100%");
 
             final VerticalLayout welcome = new VerticalLayout();
             welcome.addComponent(welcomeContainer);
@@ -120,9 +120,12 @@ public class LOD2Demo extends Application
             // this initialization function and the welcome component needs to be
             // resized properly afterward
             this.welcome=welcome;
+            welcome.setWidth("100%");
+            welcomeContainer.setWidth("100%");
 
             mainContainer.addComponent(welcome);
 
+            mainContainer.setComponentAlignment(welcome,Alignment.TOP_RIGHT);
 
             //************************************************************************
             //  menu bar style
@@ -634,18 +637,18 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
-
+            /*
             MenuBar.Command userinfoCommand = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     showInWorkspace(new Authenticator(new UserInformation(state), state));
                 }
             };
-
+            */
             MenuBar.Command publishCommand = new Command() {
                 public void menuSelected(MenuItem selectedItem){
                     // publishing should be protected with an authenticator, otherwise a store could be published
                     // without provenance information!
-                    showInWorkspace(new Authenticator(new CKANPublisherPanel(state), state));
+                    showInWorkspace(new CKANPublisherPanel(state));
                 }
             };
 
@@ -726,7 +729,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mondecalist     = sparqlonline.addItem("Mondeca SPARQL endpoint Collection", null, mo7c);
 
             MenuBar.MenuItem conf  = configuration.addItem("Demonstrator configuration", null, mconfiguration);
-            MenuBar.MenuItem userconf = configuration.addItem("UserConfiguration", null, userinfoCommand);
+            //MenuBar.MenuItem userconf = configuration.addItem("UserConfiguration", null, userinfoCommand);
             MenuBar.MenuItem about = configuration.addItem("About", null, mabout);
 
 
