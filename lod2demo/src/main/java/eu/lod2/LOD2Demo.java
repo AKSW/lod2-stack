@@ -15,23 +15,24 @@
  */
 package eu.lod2;
 
+import com.vaadin.Application;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.terminal.ExternalResource;
+import com.vaadin.terminal.Terminal;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.gwt.server.UploadException;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.MenuBar.Command;
+import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.Window.Notification;
+import com.vaadin.ui.themes.BaseTheme;
+import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
-
-import com.vaadin.Application;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.terminal.*;
-import com.vaadin.terminal.gwt.server.UploadException;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.MenuBar.*;
-import com.vaadin.ui.Window.Notification;
-import com.vaadin.ui.themes.BaseTheme;
-import org.vaadin.googleanalytics.tracking.*;
 
 /**
  * The Application's "main" class
@@ -648,7 +649,23 @@ public class LOD2Demo extends Application
                 }
             };
 
-            // Secondly define menu layout
+            MenuBar.Command weblinkagecmd = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    WebLinkageValidator content = new WebLinkageValidator(state);
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+
+
+        // Secondly define menu layout
             // root menu's
             MenuBar.MenuItem extraction    = menubar.addItem("Extraction & Loading", null, null);
             MenuBar.MenuItem querying      = menubar.addItem("Querying & Exploration", null, null);
@@ -698,6 +715,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
             MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
             MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
+            MenuBar.MenuItem weblinkageOnline  = onlinetools.addItem("Sindice Web Linkage Validator", null, weblinkagecmd);
             MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
             MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);
             MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);
