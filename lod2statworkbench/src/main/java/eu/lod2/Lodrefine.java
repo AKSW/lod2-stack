@@ -16,36 +16,17 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
-import java.io.*;
-
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
-
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
+import org.openrdf.model.Value;
 import org.openrdf.model.impl.LiteralImpl;
 import org.openrdf.query.*;
-import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.model.*;
 
-import org.restlet.resource.ClientResource;
-import org.restlet.data.MediaType;
-
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Ontology Repair and Enrichment tool

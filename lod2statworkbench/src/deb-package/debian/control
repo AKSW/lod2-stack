@@ -8,8 +8,8 @@ Homepage: http://lod2.eu
 
 Package: lod2statworkbench
 Architecture: all
-Depends: tomcat6, virtuoso-opensource (>= 6.1.5), apache2, default-jdk, default-jre, ontowiki-virtuoso, virtuoso-vad-isparql, silk, lod2webapi, sparqled
-Suggests: d2r-cordis, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut, lodrefine
+Depends: tomcat6, virtuoso-opensource (>= 6.1.5), apache2, default-jdk, default-jre, ontowiki-virtuoso, virtuoso-vad-isparql, silk, lod2webapi, sparqled, xsltproc
+Suggests: d2r-cordis, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut, lod2-refine
 Description: The lod2 statistical workbench application
  This package is a web application which allows one to explore 
  the power of the lod2 stack in the context of a statistical

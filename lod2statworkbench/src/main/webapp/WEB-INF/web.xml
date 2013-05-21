@@ -35,17 +35,54 @@
 	</init-param>
         </servlet>
         <servlet-mapping>
-                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
-                <url-pattern>/stat/*</url-pattern>
+            <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
+            <url-pattern>/secured/*</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-                <servlet-name>LOD2 Demo Servlet</servlet-name>
+                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
                 <url-pattern>/*</url-pattern>
         </servlet-mapping>
         <servlet-mapping>
-                <servlet-name>LOD2 Demo Servlet</servlet-name>
+                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
 		<url-pattern>/VAADIN/*</url-pattern>
         </servlet-mapping>
-
-
+    <security-constraint>
+        <display-name>Secured</display-name>
+        <web-resource-collection>
+            <web-resource-name>secured</web-resource-name>
+            <url-pattern>/secured/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>http://data.turnguard.com/webid/2.0/Void</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>logout</display-name>
+        <web-resource-collection>
+            <web-resource-name>logout</web-resource-name>
+            <url-pattern>/logout/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>http://demo.lod2.eu/Role/Logout</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-role>
+        <role-name>http://demo.lod2.eu/Role/User</role-name>
+    </security-role>
+    <security-role>
+        <role-name>http://demo.lod2.eu/Role/Administrator</role-name>
+    </security-role>
+    <security-role>
+        <role-name>http://demo.lod2.eu/Role/Logout</role-name>
+    </security-role>
+    <!-- default role-->
+    <security-role>
+        <role-name>http://data.turnguard.com/webid/2.0/Void</role-name>
+    </security-role>
 </web-app>

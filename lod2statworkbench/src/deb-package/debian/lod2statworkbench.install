@@ -17,3 +17,4 @@ configuration/storeconfig.rdf etc/lod2statworkbench
 proxy.conf /var/lib/lod2statworkbench
 create_user_sparql.sql /var/lib/lod2statworkbench
 sparqled_config.xml /var/lib/lod2statworkbench
+tomcatscript /var/lib/lod2statworkbench

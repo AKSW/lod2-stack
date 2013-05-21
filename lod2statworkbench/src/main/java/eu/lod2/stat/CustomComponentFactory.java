@@ -1,28 +1,7 @@
 package eu.lod2.stat;
 
-import com.vaadin.ui.CustomComponent;
-
-import eu.lod2.CKAN;
-import eu.lod2.D2RCordis;
-import eu.lod2.DBpedia;
-import eu.lod2.ELoadRDFFile;
-import eu.lod2.EXML;
-import eu.lod2.EXMLExtended;
-import eu.lod2.GeoSpatial;
-import eu.lod2.LOD2DemoState;
-import eu.lod2.LODCloud;
-import eu.lod2.Limes;
-import eu.lod2.LinkingTab;
-import eu.lod2.Lodrefine;
-import eu.lod2.MondecaSPARQLList;
-import eu.lod2.OnlinePoolParty;
-import eu.lod2.OntoWikiQuery;
-import eu.lod2.SPARQLPoolParty;
-import eu.lod2.SameAsLinking;
-import eu.lod2.Sparqled;
-import eu.lod2.SparqledManager;
-import eu.lod2.VirtuosoISPARQL;
-import eu.lod2.VirtuosoSPARQL;
+import com.vaadin.ui.AbstractComponent;
+import eu.lod2.*;
 
 public class CustomComponentFactory {
 	
@@ -54,7 +33,8 @@ public class CustomComponentFactory {
 		DBPedia,
 		SPARQLPoolParty,
         EditDatasetOW, EditStructureDefOW, EditComponentPropOW, MondecaSPARQLList,
-        VisualizeCubeviz
+        VisualizeCubeviz,
+        MergeDatasets
 	}
 	
 	private LOD2DemoState state;
@@ -63,7 +43,7 @@ public class CustomComponentFactory {
 		this.state = state;
 	}
 	
-	public CustomComponent create(CompType type){
+	public AbstractComponent create(CompType type){
 		switch (type) {
 			case CreateKB: return new OntoWikiPathExtended(state,"/model/create",false); 
 			case ImportCSV: return new OntoWikiPathExtended(state,"/csvimport",true); 
@@ -89,6 +69,7 @@ public class CustomComponentFactory {
 			case SPARQLPoolParty: return new SPARQLPoolParty(state);
 			case MondecaSPARQLList: return new MondecaSPARQLList(state);
 			case VisualizeCubeviz: return new OntoWikiPathExtended(state, "/cubeviz", true);
+            case MergeDatasets: return new MergeDatasets(state);
 			default: return null;
 		}
 	}

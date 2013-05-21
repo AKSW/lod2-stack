@@ -1,0 +1,503 @@
+#+STYLE:<style type="text/css">body{ width: 720px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+
+Setting up WEBID authentication for the lod2 stat workbench
+
+* Script
+The steps that are taken in this file are combined in a script [[TODO link]]  that is run when one installs the lod2statworkbench debian package. The script is also located in the svn under src/main/tomcatscript. It is good to give it a quick look to see the full workflow. The steps concerning [[Handling invalid certificates]] are optional and are as such not included in the script.
+* Server configuration
+** Required libraries
+In order to secure the tomcat server, we will need a number of additional libraries. The [[http://webid.turnguard.com/WebIDTestServer/docs/installation][webid realm page]] holds a list of the required libraries:
+
+- com-turnguard-advanced-webid-tomcat-6.0.32.jar
+- jsslutils-1.0.5.jar
+- jsslutils-extra-apachetomcat6-1.0.5.jar
+- log4j-1.2.14.jar
+- sesame-onejar-2.3.1.jar
+- slf4j-api-1.5.3.jar
+- slf4j-log4j12-1.5.3.jar
+- sesame-rio-rdfa-3.0.0-SNAPSHOT.jar
+- xml-resolver-1.2.jar
+- catalogs.tar.gz
+
+These files should be added to the tomcat\_root/lib folder, so they can be shared between the tomcat server and the applications.
+** Keystore and Truststore
+We need to setup a keystore and a truststore for the tomcat server, as described on https://grips.semantic-web.at/display/LOD2/WebIDRealm+Installation+Protocol. I will repeat the information that I found there for convenience:
+
+creating a keystore
+#+begin_src bash
+  cd /var/lib/tomcat6/conf
+keytool -genkey -v -alias tomcat -keyalg RSA -validity 3650 -keystore /var/lib/tomcat6/conf/tomcat.keystore -dname "CN=demo.lod2.eu, OU=demo, O=lod2"
+#+end_src
+creating a truststore
+#+begin_src bash
+  cd /var/lib/tomcat6/conf
+keytool -genkey -v -alias demoKey -keyalg RSA -storetype PKCS12 -keystore demo.p12 -dname "CN=demoKey, OU=demo, O=DieOrg"
+#+end_src
+export demo.cer
+#+begin_src bash
+cd /var/lib/tomcat6/conf
+keytool -export -alias demoKey -keystore demo.p12 -storetype PKCS12 -rfc -file demo.cer
+#+end_src
+import demo.cer into keystore
+#+begin_src bash
+cd /var/lib/tomcat6/conf
+keytool -import -v -file demo.cer -keystore tomcat.keystore
+#+end_src
+Note: as noted in the following section, I had some problems when using the truststore. The truststore, however is optional
+
+** Setting up an SSL connection
+To run the server over SSL, we need to set up a new Connection element in the tomcat server.xml file. The connection should look like this:
+
+#+begin_src xml
+  <Connector
+      port="8443"      SSLImplementation="org.jsslutils.extra.apachetomcat6.JSSLutilsImplementation"
+      acceptAnyCert="true"
+      scheme="https"
+      maxThreads="150"
+      secure="true"
+      SSLEnabled="true"
+      sslProtocol="TLS"
+      clientAuth="true"
+      keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
+      keystorePass="password"/>
+#+end_src
+
+In this xml element, the location of the keystore File has been provided, together with its password. It is possible to provide a keystoreType field as well, but in my case, I used the default type: JKS. The guide on the grips page also mentions a truststore. However, I did not succeed in getting this to work. The use of the truststore gave me some java exceptions, I suspect the versions of the libraries that I have are not in sync with each other, even though I got them from the grips page. It would be too much effort to look for a matching set as for demonstration purposes, a truststore is not really necessary.
+
+In case a truststore is used, the connector would need the following properties as well:
+#+begin_src xml
+  <Connector
+    truststoreFile="/var/lib/tomcat6/conf/tomcat.truststore"
+    truststorePass="password"
+    truststoreType="PKCS12"/>
+#+end_src
+** Using Virtuoso to store access rules
+The lod2 stat workbench uses Virtuoso to store the information we have on user rights. This means we need to add a Resource element to the server.xml file as well:
+#+begin_src xml
+  <Resource
+      name="WebIDDatabase" auth="Container"
+      type="com.turnguard.webid.tomcat.database.WebIDDatabase"
+      description="Using virtuoso as roles sources"
+      factory="com.turnguard.webid.tomcat.database.impl.virtuoso.VirtuosoWebIDDatabaseFactoryImpl"            
+      roleGraph="http://webidrealm.localhost/rolegraph"
+      host="localhost"
+      port="1111"
+      user="dba"
+      pass="lod2"/>
+#+end_src
+
+Note the name of the role graph that is to be used for virtuoso.
+
+** Adding roles to the server
+The server will need to know which roles are available for which users. To that end, an rdf graph will have to be created at the virtuoso endpoint, holding the correct triples. An example of such a graph can be found in the [[Files][files section]].
+
+** Handling invalid certificates
+It is possible that the user does not present a valid certificate to the server. Because we have set clientAuth="true", the user will always be asked to present a certificate (we could have used "Want", but we didn't). To avoid the ugly 117 error page that will not mean anything to the user, we can set the custom error page for the 117 exception in the tomcat web.xml file. 
+
+#+begin_src xml
+<error-page>
+
+<error-code>117</error-code>
+
+<location>/invalidcertificate.html</location>
+
+</error-page>
+#+end_src
+
+The html page should be added to the tomcat ROOT folder in the webapps directory and it should give the user an explanation on what went wrong so he can solve it.
+
+* Configuring the web application
+** URL based security
+The web application can be secured on URL level. To specify the protected url patterns and the roles that can access them, the web.xml file needs to be edited. The following elements should be added:
+
+#+begin_src xml
+  <security-constraint>
+      <display-name>Stat</display-name>
+      <web-resource-collection>
+          <web-resource-name>stat</web-resource-name>
+          <url-pattern>/stat/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>http://demo.lod2.eu/Role/Administrator</role-name>
+      </auth-constraint>
+      <user-data-constraint>
+          <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+  </security-constraint>
+  <security-role>
+      <role-name>http://demo.lod2.eu/Role/Administrator</role-name>
+  </security-role>
+#+end_src
+Note that for every role-name that is used in the auth-constraints of a security-constraint, a security-role must be created.
+
+In order for the application to know which resource to use for discovering the roles, the context.xml file must be configured as well. The following elements should be added:
+
+#+begin_src xml
+<Valve className="org.apache.catalina.authenticator.SSLAuthenticator"/>
+<Realm className="com.turnguard.webid.tomcat.realm.WebIDRealm" resourceName="WebIDDatabase" validate="false"/>
+#+end_src
+** Application based security
+The user that is logged in can also be requested at runtime. This means that the application itself can present specific behavior based on the roles of the current user. To do this, the application can use for instance the following procedure: 
+#+begin_src java
+  String userName=((WebIDUser) user).getURI().toString();
+  RepositoryConnection connection=state.rdfStore.getConnection();
+  TupleQueryResult results=
+      connection.prepareTupleQuery(QueryLanguage.SPARQL, "SELECT ?role FROM <" +
+                                   state.getUserGraph() + "> " +
+                                   "WHERE { " +
+                                   "<" + userName + "> <http://schema.turnguard.com/webid/2.0/core#hasRole> ?role" +
+                                   "}").evaluate();
+  boolean allowed=false;
+  while(results.hasNext()){
+      BindingSet bindings=results.next();
+      String role=bindings.getBinding("role").getValue().stringValue();
+      if(role!=null && this.getAcceptedRoles().contains(role)){
+          allowed=true;
+          break;
+      }
+  } 
+  if(allowed){
+      // do the cool stuff
+  }else {
+      // do less cool stuff
+  }
+#+end_src
+** Application Dependencies
+Because both the virtuoso and the application need to make use of some libraries (for interacting with virtuoso and turnguard webid for instance), some application dependencies should be marked as *provided* in the pom file. If this is not configured like this, the libraries will be loaded twice, by different class loaders. This is a problem when using the application based security that is laid out above. The cast to WEBIDUser will fail, as the user was loaded by the library that is used in the tomcat6 server, while the cast is made to the version in the library used in the application. 
+
+This is important, as the application now assumes that the tomcat instance has been properly configured. To that end, a script was written that takes care of the configuration.
+* Files
+This section holds all the files that were used in this document. Passwords have been set to defaults.
+** server.xml
+#+begin_src xml
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ -->
+<Server port="8005" shutdown="SHUTDOWN">
+
+  <!--APR library loader. Documentation at /docs/apr.html -->
+  <!--
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  -->
+  <!--Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html -->
+  <Listener className="org.apache.catalina.core.JasperListener" />
+  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <!-- JMX Support for the Tomcat server. Documentation at /docs/non-existent.html -->
+  <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+
+  <!-- Global JNDI resources
+       Documentation at /docs/jndi-resources-howto.html
+  -->
+  <GlobalNamingResources>
+    <!-- Editable user database that can also be used by
+         UserDatabaseRealm to authenticate users
+    -->
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" /> 
+     <Resource
+              	name="WebIDDatabase" auth="Container"
+    	 	type="com.turnguard.webid.tomcat.database.WebIDDatabase"
+    		description="Using virtuoso as roles sources"
+    		factory="com.turnguard.webid.tomcat.database.impl.virtuoso.VirtuosoWebIDDatabaseFactoryImpl"            
+    		roleGraph="http://webidrealm.localhost/rolegraph"
+    		host="localhost"
+    		port="1111"
+    		user="dba"
+    		pass="dba"/>
+  </GlobalNamingResources>
+
+  <!-- A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container", 
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   -->
+  <Service name="Catalina">
+  
+    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+    <!--
+    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-" 
+        maxThreads="150" minSpareThreads="4"/>
+    -->
+    
+    
+    <!-- A "Connector" represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html (blocking & non-blocking)
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL HTTP/1.1 Connector on port 8080
+    -->
+    <Connector port="8080" protocol="HTTP/1.1" 
+               connectionTimeout="20000" 
+               URIEncoding="UTF-8"
+               redirectPort="8443" />
+    <!-- A "Connector" using the shared thread pool-->
+    <!--
+    <Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1" 
+               connectionTimeout="20000" 
+               redirectPort="8443" />
+    -->           
+    <!-- Define a SSL HTTP/1.1 Connector on port 8443
+         This connector uses the JSSE configuration, when using APR, the 
+         connector should be using the OpenSSL style configuration
+         described in the APR documentation -->
+    <!--
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
+               maxThreads="150" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" />
+    -->
+     <Connector
+    port="8443"
+    SSLImplementation="org.jsslutils.extra.apachetomcat6.JSSLutilsImplementation"
+    acceptAnyCert="true"
+    scheme="https"
+    maxThreads="150"
+    secure="true"
+    SSLEnabled="true"
+    sslProtocol="TLS"
+    clientAuth="true"
+    keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
+    keystorePass="password"/>
+
+    <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <!--
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+    -->
+
+
+    <!-- An Engine represents the entry point (within Catalina) that processes
+         every request.  The Engine implementation for Tomcat stand alone
+         analyzes the HTTP headers included with the request, and passes them
+         on to the appropriate Host (virtual host).
+         Documentation at /docs/config/engine.html -->
+
+    <!-- You should set jvmRoute to support load-balancing via AJP ie :
+    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">         
+    --> 
+    <Engine name="Catalina" defaultHost="localhost">
+
+      <!--For clustering, please take a look at documentation at:
+          /docs/cluster-howto.html  (simple how to)
+          /docs/config/cluster.html (reference documentation) -->
+      <!--
+      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+      -->        
+
+      <!-- The request dumper valve dumps useful debugging information about
+           the request and response data received and sent by Tomcat.
+           Documentation at: /docs/config/valve.html -->
+      <!--
+      <Valve className="org.apache.catalina.valves.RequestDumperValve"/>
+      -->
+
+      <!-- This Realm uses the UserDatabase configured in the global JNDI
+           resources under the key "UserDatabase".  Any edits
+           that are performed against this UserDatabase are immediately
+           available for use by the Realm.  -->
+      <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+             resourceName="UserDatabase"/>
+
+      <!-- Define the default virtual host
+           Note: XML Schema validation will not work with Xerces 2.2.
+       -->
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+
+        <!-- SingleSignOn valve, share authentication between web applications
+             Documentation at: /docs/config/valve.html -->
+        <!--
+        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+        -->
+
+        <!-- Access log processes all example.
+             Documentation at: /docs/config/valve.html -->
+        <!--
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"  
+               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
+        -->
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
+#+end_src
+** web.xml
+#+begin_src xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+        <display-name>LOD2 stack demonstrator</display-name>
+        <context-param>
+                <description>Vaadin production mode</description>
+                <param-name>productionMode</param-name>
+                <param-value>false</param-value>
+        </context-param>
+        <servlet>
+                <servlet-name>LOD2 Demo Servlet</servlet-name>
+                <!--<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class> -->
+                <servlet-class>eu.lod2.LOD2DemoServlet</servlet-class> 
+                <init-param>
+                        <description>Vaadin application class to start</description>
+                        <param-name>application</param-name>
+                        <param-value>eu.lod2.LOD2Demo</param-value>
+		</init-param>
+        <init-param>
+    	<param-name>widgetset</param-name>
+    	<param-value>eu.lod2.widgetset.LOD2Demo</param-value>
+	</init-param>
+        </servlet>
+        <servlet>
+                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
+                <!--<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class> -->
+                <servlet-class>eu.lod2.stat.StatLOD2DemoServlet</servlet-class> 
+                <init-param>
+                        <description>Vaadin application class to start</description>
+                        <param-name>application</param-name>
+                        <param-value>eu.lod2.stat.StatLOD2Demo</param-value>
+		</init-param>
+        <init-param>
+    	<param-name>widgetset</param-name>
+    	<param-value>eu.lod2.widgetset.LOD2Demo</param-value>
+	</init-param>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>LOD2 Demo Stat Servlet</servlet-name>
+                <url-pattern>/stat/*</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+                <servlet-name>LOD2 Demo Servlet</servlet-name>
+                <url-pattern>/*</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+                <servlet-name>LOD2 Demo Servlet</servlet-name>
+		<url-pattern>/VAADIN/*</url-pattern>
+        </servlet-mapping>
+    <security-constraint>
+        <display-name>Stat</display-name>
+        <web-resource-collection>
+            <web-resource-name>stat</web-resource-name>
+            <url-pattern>/stat/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>http://demo.lod2.eu/Role/Administrator</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-role>
+	<role-name>http://demo.lod2.eu/Role/Administrator</role-name>
+    </security-role>
+</web-app>
+#+end_src
+** context.xml
+#+begin_src xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/lod2statworkbench">
+    <Valve className="org.apache.catalina.authenticator.SSLAuthenticator"/>
+    <Realm className="com.turnguard.webid.tomcat.realm.WebIDRealm" resourceName="WebIDDatabase" validate="false"/>
+</Context>
+#+end_src
+
+** tomcat-users.rdf
+#+begin_src xml
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF 
+  xml:base="http://schema.turnguard.com/webid/2.0/core"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:void="http://rdfs.org/ns/void#"
+  xmlns:webid="http://schema.turnguard.com/webid/2.0/core#"
+>
+
+    <owl:Ontology rdf:about="http://schema.turnguard.com/webid/2.0/core">
+        <dc:title>WebID UserDatabase Realm</dc:title>        
+        <dc:creator rdf:resource="https://my-profile.eu/people/karel.kremer/card#me"/>
+        <dc:format>application/rdf+xml</dc:format>
+        <dc:rights>Copyright © 2011 www.turnguard.com</dc:rights>		  
+    </owl:Ontology>
+
+
+    <rdfs:Class rdf:about="#User">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        <rdfs:label xml:lang="en">A user</rdfs:label>   
+    </rdfs:Class>
+
+    <rdfs:Class rdf:about="#Role">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        <rdfs:label xml:lang="en">A role</rdfs:label>   
+    </rdfs:Class>
+
+    <rdfs:Class rdf:about="#Group">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>   
+        <rdfs:label xml:lang="en">A group</rdfs:label>   
+    </rdfs:Class>
+
+    <!-- Properties -->
+    <rdf:Property rdf:about="#hasUser">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdfs:label xml:lang="en">A resource has a certain user</rdfs:label>
+        <rdfs:range rdf:resource="#User" />        
+    </rdf:Property>
+
+    <rdf:Property rdf:about="#hasRole">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdfs:label xml:lang="en">A resource has a certain role</rdfs:label>
+        <rdfs:range rdf:resource="#Role" />        
+    </rdf:Property>
+
+    <rdf:Property rdf:about="#hasGroup">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdfs:label xml:lang="en">A resource has a certain group</rdfs:label>
+        <rdfs:range rdf:resource="#Group" />        
+    </rdf:Property>
+
+
+    <!-- Roles -->
+    <rdf:Description rdf:about="http://demo.lod2.eu/Role/Administrator">
+        <rdf:type rdf:resource="#Role"/>
+        <rdfs:label xml:lang="en">Administrator</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://demo.lod2.eu/Role/User">
+        <rdf:type rdf:resource="#Role"/>
+        <rdfs:label xml:lang="en">User</rdfs:label>
+    </rdf:Description>
+
+    <!-- Users -->
+    <rdf:Description rdf:about="https://my-profile.eu/people/karel.kremer/card#me">
+        <rdf:type rdf:resource="#User"/>
+        <rdfs:label xml:lang="en">Karel</rdfs:label>
+	<webid:hasRole rdf:resource="http://demo.lod2.eu/Role/Administrator"/>
+   </rdf:Description>
+</rdf:RDF>
+#+end_src
+* Sources
+I followed guide from lod2 grips page https://grips.semantic-web.at/display/LOD2/WebIDRealm+Installation+Protocol and filled some gaps with the information from webid realm's own site: http://webid.turnguard.com/WebIDTestServer/docs/installation.

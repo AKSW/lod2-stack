@@ -147,6 +147,9 @@ case "$1" in
 	chown tomcat6:tomcat6 /tmp/uploads 
 	chmod 741 /tmp/uploads 
 
+	# make tomcat ready for authentication
+	bash /var/lib/lod2statworkbench/tomcatscript/prepareTomcat.sh
+
 #	# sparql editor configuration
 #	sparqlpwd=`date  +"%H.S.%M.P.%S.QL"`
 #	sparqlsubst="s/PWDSPARQL/$sparqlpwd/"

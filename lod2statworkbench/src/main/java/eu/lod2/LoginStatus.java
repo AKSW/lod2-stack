@@ -1,6 +1,9 @@
 package eu.lod2;
 
+import com.turnguard.webid.tomcat.security.WebIDUser;
+import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
+import org.openrdf.model.impl.URIImpl;
 
 /**
  * The LoginStatus class is a component that shows the username of the currently
@@ -27,7 +30,7 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
 
     //* re-renders this component based on the user that is currently logged in
     public void render(){
-        LOD2DemoState.User user = this.state.getUser();
+        WebIDUser user = this.state.getUser();
 
         this.removeAllComponents();
 
@@ -42,17 +45,37 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
      * shows the user that is currently logged in and allows him to log out
      * pre: user is not null
      */
-    protected void createUserInfo(LOD2DemoState.User user){
-        Label name=new Label("Logged in as: "+user.getUsername());
+    protected void createUserInfo(WebIDUser user){
+        String username=null;
+        try{
+            username=user.get(new URIImpl("http://xmlns.com/foaf/0.1/name")).iterator().next().stringValue();
+        }catch (Exception e){
+            //assume username is empty
+        }
+        if(username==null || username.length()==0){
+            username=user.getURI().toString();
+        }
+        Label name=new Label("Logged in as: "+username);
         name.setContentMode(Label.CONTENT_TEXT);
-        Button logout= new Button("Log out");
+        Button logout= new Button("Change user");
 
         logout.setStyleName("currentgraphlabel");
-        logout.setDescription("Click here to log out");
+        logout.setDescription("Click here to change the user");
+
         logout.addListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                // log out user
-                state.setUser(null);
+                getWindow().executeJavaScript("(function logout() {\n" +
+                        "     if (document.all == null || (window.crypto && window.crypto.logout)) // FF, Opera, etc\n" +
+                        "        {      \n" +
+                        "           if (window.crypto && window.crypto.logout){ window.crypto.logout();\n" +
+                        "           }else{ alert('Sorry, your browser does not support logout for WebID. Close the browser and restart it to log out...')}\n" +
+                        "        }      \n" +
+                        "      else // MSIE 6+\n" +
+                        "        {      \n" +
+                        "           document.execCommand('ClearAuthenticationCache');\n" +
+                        "        };     \n" +
+                        "      window.location.href=\""+getApplication().getURL()+"logout\";\n"+
+                        "     })()");
             }
         });
         this.addComponent(name);
@@ -69,9 +92,15 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
         login.setDescription("Click here to log in");
         login.addListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
+                Window window=getWindow();
+                String url=window.getApplication().getURL().toString();
+                if(!url.contains("secured")){
+                    window.open(new ExternalResource(url+"secured"));
+                }
+
                 // move application to the user information page
-                targetComponent.removeAllComponents();
-                targetComponent.addComponent(new Authenticator(new UserInformation(state), state));
+                //targetComponent.removeAllComponents();
+                //targetComponent.addComponent(new Authenticator(new UserInformation(state), state));
             }
         });
 
@@ -85,7 +114,7 @@ public class LoginStatus extends HorizontalLayout implements LOD2DemoState.Login
     }
 
     //* when the logged in user changes, the component should re-render
-    public void notifyLogin(LOD2DemoState.User user) {
+    public void notifyLogin(WebIDUser user) {
         // user can be obtained using state,
         this.render();
     }

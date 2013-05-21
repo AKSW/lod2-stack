@@ -22,6 +22,8 @@ cp ../../src/main/html/*html ../../target/deb-pkg/
 mkdir ../../target/deb-pkg/configuration
 cp -r ../../src/main/configuration/* ../../target/deb-pkg/configuration
 cp -r ../../src/main/configuration/lod2statworkbench.conf ../../target/deb-pkg/
+mkdir ../../target/deb-pkg/tomcatscript
+cp -r ../../src/main/tomcatscript/* ../../target/deb-pkg/tomcatscript
 # Add the Debian control files
 cp -r debian ../../target/deb-pkg
 cp    Makefile ../../target/deb-pkg
