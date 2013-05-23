@@ -1,3 +1,9 @@
+lod2repository (1.25) lod2; urgency=low
+
+  * add Bernard Buris Keys
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Thu, 23 May 2013 17:03:33 +0200
+
 lod2repository (1.21) lod2; urgency=low
 
   * add mateja to the list
