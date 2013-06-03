@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>ECB demo scenario</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-06-03 15:28:31 CEST"/>
+<meta name="author" content="Karel Kremer"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<style type="text/css">body{ width: 800px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">ECB demo scenario</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction </a></li>
+<li><a href="#sec-2">2 Description of the original data </a></li>
+<li><a href="#sec-3">3 Transformation to RDF </a></li>
+<li><a href="#sec-4">4 Merging the data cubes </a></li>
+<li><a href="#sec-5">5 Visualizing the data </a></li>
+<li><a href="#sec-6">6 Fetch some dbpedia background information </a></li>
+<li><a href="#sec-7">7 Final result </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction </h2>
+<div class="outline-text-2" id="text-1">
+
+<p>This file documents the steps that are taken in the demonstration scenario given to the national bank of Belgium and the ECB. The scenario shows how two csv files holding statistics on the GDP of different countries can be  transformed to rdf with the <a href="http://www.w3.org/TR/vocab-data-cube/">Data Cube vocabulary</a>, merged into a single data cube and linked to context information from <a href="http://dbpedia.org">dbpedia</a>.
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Description of the original data </h2>
+<div class="outline-text-2" id="text-2">
+
+<p>The original data comes in a csv format. There are two csv files, both holding the information on the gdp of different countries for different years. The files are extracts of a <a href="http://ec.europa.eu/eurostat/product?code=nama_gdp_c&amp;language=en&amp;mode=view">larger file that comes directly from eurostat</a>. The first extract holds the information on the Benelux countries:
+</p>
+
+
+<pre class="src src-csv">geo\time<span style="color: #ff0000;">,</span>2003<span style="color: #ff0000;">,</span>2004<span style="color: #ff0000;">,</span>2005<span style="color: #ff0000;">,</span>2006<span style="color: #ff0000;">,</span>2007<span style="color: #ff0000;">,</span>2008<span style="color: #ff0000;">,</span>2009<span style="color: #ff0000;">,</span>2010<span style="color: #ff0000;">,</span>2011<span style="color: #ff0000;">,</span>2012<span style="color: #ff0000;">,</span>2013<span style="color: #ff0000;">,</span>2014
+Belgium<span style="color: #ff0000;">,</span>276157<span style="color: #ff0000;">,</span>291287<span style="color: #ff0000;">,</span>303435<span style="color: #ff0000;">,</span>318829<span style="color: #ff0000;">,</span>335815<span style="color: #ff0000;">,</span>346375<span style="color: #ff0000;">,</span>340739<span style="color: #ff0000;">,</span>356069<span style="color: #ff0000;">,</span>369981<span style="color: #ff0000;">,</span>376229<span style="color: #ff0000;">,</span>382451<span style="color: #ff0000;">,</span>393443.6
+Luxembourg<span style="color: #ff0000;">,</span>25822.1<span style="color: #ff0000;">,</span>27444.5<span style="color: #ff0000;">,</span>30269.5<span style="color: #ff0000;">,</span>33914.1<span style="color: #ff0000;">,</span>37496.8<span style="color: #ff0000;">,</span>37371.5<span style="color: #ff0000;">,</span>36026.5<span style="color: #ff0000;">,</span>39905.5<span style="color: #ff0000;">,</span>42624.6<span style="color: #ff0000;">,</span>44425.7<span style="color: #ff0000;">,</span>45936.5<span style="color: #ff0000;">,</span>47925.2
+Netherlands<span style="color: #ff0000;">,</span>476945<span style="color: #ff0000;">,</span>491184<span style="color: #ff0000;">,</span>513407<span style="color: #ff0000;">,</span>540216<span style="color: #ff0000;">,</span>571773<span style="color: #ff0000;">,</span>594481<span style="color: #ff0000;">,</span>573235<span style="color: #ff0000;">,</span>588740<span style="color: #ff0000;">,</span>601973<span style="color: #ff0000;">,</span>600638<span style="color: #ff0000;">,</span>604459.1<span style="color: #ff0000;">,</span>619961.4
+</pre>
+
+
+
+<p>
+The second file holds the information on Germany and France:
+</p>
+
+
+<pre class="src src-csv">geo\time<span style="color: #ff0000;">,</span>2003<span style="color: #ff0000;">,</span>2004<span style="color: #ff0000;">,</span>2005<span style="color: #ff0000;">,</span>2006<span style="color: #ff0000;">,</span>2007<span style="color: #ff0000;">,</span>2008<span style="color: #ff0000;">,</span>2009<span style="color: #ff0000;">,</span>2010<span style="color: #ff0000;">,</span>2011<span style="color: #ff0000;">,</span>2012<span style="color: #ff0000;">,</span>2013<span style="color: #ff0000;">,</span>2014
+Germany<span style="color: #ff0000;">,</span>2147500<span style="color: #ff0000;">,</span>2195700<span style="color: #ff0000;">,</span>2224400<span style="color: #ff0000;">,</span>2313900<span style="color: #ff0000;">,</span>2428500<span style="color: #ff0000;">,</span>2473800<span style="color: #ff0000;">,</span>2374500<span style="color: #ff0000;">,</span>2496200<span style="color: #ff0000;">,</span>2592600<span style="color: #ff0000;">,</span>2644200<span style="color: #ff0000;">,</span>2694498.9<span style="color: #ff0000;">,</span>2788995.6
+France<span style="color: #ff0000;">,</span>1587901.8<span style="color: #ff0000;">,</span>1655571.8<span style="color: #ff0000;">,</span>1718047<span style="color: #ff0000;">,</span>1798115.3<span style="color: #ff0000;">,</span>1886792.1<span style="color: #ff0000;">,</span>1933195<span style="color: #ff0000;">,</span>1885761.9<span style="color: #ff0000;">,</span>1936719.7<span style="color: #ff0000;">,</span>2001398<span style="color: #ff0000;">,</span>2032296.8<span style="color: #ff0000;">,</span>2059358.1<span style="color: #ff0000;">,</span>2116943.4
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Transformation to RDF </h2>
+<div class="outline-text-2" id="text-3">
+
+<p>To transform the data sets into rdf, the <a href="https://github.com/AKSW/csvimport.ontowiki">CSVimport extension</a> for <a href="https://github.com/AKSW/OntoWiki">OntoWiki</a> was used. First a new and empty graph is created, e.g. <a href="http://localhost/gpdinfo">http://localhost/gpdinfo</a>. Both csv files are then transformed to a data cube and added to this graph, each cube with a different uri (<a href="http://localhost/merged-cube/">http://localhost/merged-cube/</a> and <a href="http://localhost/merged-cube/cube2">http://localhost/merged-cube/cube2</a>). 
+</p>
+<p>
+The CSV import application currently does not use all items from the data cube vocabulary. The extension does not allow the selection of an attribute, the definition of a code list or the creation of slices in the data. Apart from the fact that the dimensions do not have a range defined, the created cubes are valid with respect to <a href="http://www.w3.org/TR/vocab-data-cube/#wf-rules">the rules defined by the W3C</a>.
+</p></div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Merging the data cubes </h2>
+<div class="outline-text-2" id="text-4">
+
+<p>The two data cubes can now be merged into one single cube using the merging component that has been defined for the statistical workbench. This component allows the user to select a number of cubes and merge them together into a new cube. He must name the cube and the graph he wants to insert it into.
+One of the cubes is selected to be the reference cube, defining the names to be used in the resulting cube (for dimensions and such). The user must then map all different data cube components from the cubes to be merged to a component in the reference component.
+</p>
+<p>
+The merging can be done with or without a basic fusion approach, where dimension values with the same label are taken to be equal. For the purpose of this demo the basic fusion approach was enabled. If fusion is disabled, no attempt will be made to merge the values of the dimensions in the cubes. In that case, or in case some other fusion is required (for instance if there are observations with duplicate values), a post-processing fusion step must be performed. This can be done with <a href="http://sieve.wbsg.de/">SIEVE</a> for instance. More information on the decisions that were taken in the merge component can be found in <a href="#sec-4">TODO</a>.
+</p>
+<p>
+The result of the simple merging is an entirely new cube with a new DSD, new data set, new component specifications and new components. The URIs for the observations will be reused however. The new URIs use user provided URI for the data set as a base and add a suffix that describe what they represent.
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Visualizing the data </h2>
+<div class="outline-text-2" id="text-5">
+
+<p>To visualize data cubes in RDF, the <a href="https://github.com/AKSW/cubeviz.ontowiki">CubeViz</a> component can be used. This component allows the user to select a data set in the selected graph and to display and filter this data set. The user can select different values of the dimensions in the data set and explore the values that are returned with OntoWiki. User can select different slices from the data cube if any are present. Currently, the CubeViz component can only visualize two dimensions at once, the values of all other dimensions should be fixed to a single value. In the future, drill-down and roll-up operations should be supported too.
+</p></div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Fetch some dbpedia background information </h2>
+<div class="outline-text-2" id="text-6">
+
+<p>The information from the cubes themselves is very interesting, but apart from from merging them in an intelligent fashion, everything that we have seen up to now could be done with basic excel. The information in the linked data cube only gets really interesting when it is connected to context information within or outside of the company. In this case, a simple linkage with <a href="http://dbpedia.org/About">DBpedia</a> context information is created. To accomplish such an interlinking, the <a href="http://www4.wiwiss.fu-berlin.de/bizer/silk/">SILK</a> component is applied to the data.
+</p>
+<p>
+SILK allows the user to create links between different concepts in a graph. In this case, the values of the Location dimension will be linked to Countries as defined by DBpedia. The relevant triples are extracted from DBpedia and inserted into the local endpoint for convenience. The triples were extracted using the following query:
+</p>
+
+
+<pre class="src src-sparql"><span style="color: #a020f0;">CONSTRUCT</span> {<span style="color: #b8860b;">?s</span> <span style="color: #b8860b;">?p</span> <span style="color: #b8860b;">?o</span>} <span style="color: #a020f0;">WHERE</span> {
+       <span style="color: #b8860b;">?s</span> a <span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/ontology/Country">http://dbpedia.org/ontology/Country</a>&gt;</span>.
+       <span style="color: #b8860b;">?s</span> <span style="color: #b8860b;">?p</span> <span style="color: #b8860b;">?o</span>.
+       <span style="color: #a020f0;">FILTER</span> ( <span style="color: #a020f0;">data</span>type(<span style="color: #b8860b;">?o</span>) != xsd:str<span style="color: #a020f0;">in</span>g ||  
+                lang(<span style="color: #b8860b;">?o</span>)=<span style="color: #bc8f8f;">"en"</span> )
+       <span style="color: #a020f0;">FILTER</span> (<span style="color: #b8860b;">?s</span> <span style="color: #a020f0;">IN</span> (<span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/resource/Germany">http://dbpedia.org/resource/Germany</a>&gt;</span>,
+                      <span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/resource/Belgium">http://dbpedia.org/resource/Belgium</a>&gt;</span>,    
+                      <span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/resource/Luxembourg">http://dbpedia.org/resource/Luxembourg</a>&gt;</span>, 
+                      <span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/resource/United_Kingdom">http://dbpedia.org/resource/United_Kingdom</a>&gt;</span>,
+                      <span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/resource/France">http://dbpedia.org/resource/France</a>&gt;</span>,
+                      <span style="color: #5f9ea0;">&lt;<a href="http://dbpedia.org/resource/Netherlands">http://dbpedia.org/resource/Netherlands</a>&gt;</span>)) 
+}
+</pre>
+
+
+
+
+<p>
+There are a number of different ways that SILK can be used to create links between the dimension values and the countries. In the first scenario, the user can specify the linking rules entirely by himself. This allows the user the most control over the linkage rule that will be used, but the user may not know the exact way the dimensions correspond to the countries in DBpedia. In the second scenario, the user can use the active learning capabilities of SILK to generate a linkage rule. He will identify positive and negative matches from the set of most discerning items that are provided by the learner. This can involve quite a bit of manual work though. The final approach is to provide a set of identified examples in batch and then run the active learner. After this process completes, the user can still tweak the linkage rule, should he want to.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Final result </h2>
+<div class="outline-text-2" id="text-7">
+
+<p>The final result shows us the combined information from the two data sets, inside a single cube with harmonized dimensions. The values in the dimension are linked to DBpedia concepts, providing them with context information. This context information can be visualized directly in CubeViz by tweaking the content information query somewhat <a href="#sec-7">TODO elaborate</a>.
+</p></div>
+</div>
+<div id="postamble">
+<p class="date"> Date: 2013-06-03 15:28:31 CEST</p>
+<p class="creator">HTML generated by org-mode 6.33x in emacs 23</p>
+</div>
+</div>
+</body>
+</html>

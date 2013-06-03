@@ -1,0 +1,56 @@
+#+STYLE:<style type="text/css">body{ width: 800px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); }</style>
+ECB demo scenario
+* Introduction
+This file documents the steps that are taken in the demonstration scenario given to the national bank of Belgium and the ECB. The scenario shows how two csv files holding statistics on the GDP of different countries can be  transformed to rdf with the [[http://www.w3.org/TR/vocab-data-cube/][Data Cube vocabulary]], merged into a single data cube and linked to context information from [[http://dbpedia.org][dbpedia]].
+* Description of the original data
+The original data comes in a csv format. There are two csv files, both holding the information on the gdp of different countries for different years. The files are extracts of a [[http://ec.europa.eu/eurostat/product?code=nama_gdp_c&language=en&mode=view][larger file that comes directly from eurostat]]. The first extract holds the information on the Benelux countries:
+#+name:benelux.csv
+#+begin_src csv
+  geo\time,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014
+  Belgium,276157,291287,303435,318829,335815,346375,340739,356069,369981,376229,382451,393443.6
+  Luxembourg,25822.1,27444.5,30269.5,33914.1,37496.8,37371.5,36026.5,39905.5,42624.6,44425.7,45936.5,47925.2
+  Netherlands,476945,491184,513407,540216,571773,594481,573235,588740,601973,600638,604459.1,619961.4
+#+end_src
+The second file holds the information on Germany and France:
+#+name:frager.csv
+#+begin_src csv
+geo\time,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014
+Germany,2147500,2195700,2224400,2313900,2428500,2473800,2374500,2496200,2592600,2644200,2694498.9,2788995.6
+France,1587901.8,1655571.8,1718047,1798115.3,1886792.1,1933195,1885761.9,1936719.7,2001398,2032296.8,2059358.1,2116943.4
+#+end_src
+* Transformation to RDF
+To transform the data sets into rdf, the [[https://github.com/AKSW/csvimport.ontowiki][CSVimport extension]] for [[https://github.com/AKSW/OntoWiki][OntoWiki]] was used. First a new and empty graph is created, e.g. http://localhost/gpdinfo. Both csv files are then transformed to a data cube and added to this graph, each cube with a different uri (http://localhost/merged-cube/ and http://localhost/merged-cube/cube2). 
+
+The CSV import application currently does not use all items from the data cube vocabulary. The extension does not allow the selection of an attribute, the definition of a code list or the creation of slices in the data. Apart from the fact that the dimensions do not have a range defined, the created cubes are valid with respect to [[http://www.w3.org/TR/vocab-data-cube/#wf-rules][the rules defined by the W3C]].
+* Merging the data cubes
+The two data cubes can now be merged into one single cube using the merging component that has been defined for the statistical workbench. This component allows the user to select a number of cubes and merge them together into a new cube. He must name the cube and the graph he wants to insert it into.
+One of the cubes is selected to be the reference cube, defining the names to be used in the resulting cube (for dimensions and such). The user must then map all different data cube components from the cubes to be merged to a component in the reference component.
+
+The merging can be done with or without a basic fusion approach, where dimension values with the same label are taken to be equal. For the purpose of this demo the basic fusion approach was enabled. If fusion is disabled, no attempt will be made to merge the values of the dimensions in the cubes. In that case, or in case some other fusion is required (for instance if there are observations with duplicate values), a post-processing fusion step must be performed. This can be done with [[http://sieve.wbsg.de/][SIEVE]] for instance. More information on the decisions that were taken in the merge component can be found in [[TODO]].
+
+The result of the simple merging is an entirely new cube with a new DSD, new data set, new component specifications and new components. The URIs for the observations will be reused however. The new URIs use user provided URI for the data set as a base and add a suffix that describe what they represent.
+* Visualizing the data
+To visualize data cubes in RDF, the [[https://github.com/AKSW/cubeviz.ontowiki][CubeViz]] component can be used. This component allows the user to select a data set in the selected graph and to display and filter this data set. The user can select different values of the dimensions in the data set and explore the values that are returned with OntoWiki. User can select different slices from the data cube if any are present. Currently, the CubeViz component can only visualize two dimensions at once, the values of all other dimensions should be fixed to a single value. In the future, drill-down and roll-up operations should be supported too.
+* Fetch some dbpedia background information
+The information from the cubes themselves is very interesting, but apart from from merging them in an intelligent fashion, everything that we have seen up to now could be done with basic excel. The information in the linked data cube only gets really interesting when it is connected to context information within or outside of the company. In this case, a simple linkage with [[http://dbpedia.org/About][DBpedia]] context information is created. To accomplish such an interlinking, the [[http://www4.wiwiss.fu-berlin.de/bizer/silk/][SILK]] component is applied to the data.
+
+SILK allows the user to create links between different concepts in a graph. In this case, the values of the Location dimension will be linked to Countries as defined by DBpedia. The relevant triples are extracted from DBpedia and inserted into the local endpoint for convenience. The triples were extracted using the following query:
+#+begin_src sparql
+  CONSTRUCT {?s ?p ?o} WHERE {
+         ?s a <http://dbpedia.org/ontology/Country>.
+         ?s ?p ?o.
+         FILTER ( datatype(?o) != xsd:string ||  
+                  lang(?o)="en" )
+         FILTER (?s IN (<http://dbpedia.org/resource/Germany>,
+                        <http://dbpedia.org/resource/Belgium>,    
+                        <http://dbpedia.org/resource/Luxembourg>, 
+                        <http://dbpedia.org/resource/United_Kingdom>,
+                        <http://dbpedia.org/resource/France>,
+                        <http://dbpedia.org/resource/Netherlands>)) 
+  }
+#+end_src
+
+There are a number of different ways that SILK can be used to create links between the dimension values and the countries. In the first scenario, the user can specify the linking rules entirely by himself. This allows the user the most control over the linkage rule that will be used, but the user may not know the exact way the dimensions correspond to the countries in DBpedia. In the second scenario, the user can use the active learning capabilities of SILK to generate a linkage rule. He will identify positive and negative matches from the set of most discerning items that are provided by the learner. This can involve quite a bit of manual work though. The final approach is to provide a set of identified examples in batch and then run the active learner. After this process completes, the user can still tweak the linkage rule, should he want to.
+
+* Final result
+The final result shows us the combined information from the two data sets, inside a single cube with harmonized dimensions. The values in the dimension are linked to DBpedia concepts, providing them with context information. This context information can be visualized directly in CubeViz by tweaking the content information query somewhat [[TODO elaborate]].

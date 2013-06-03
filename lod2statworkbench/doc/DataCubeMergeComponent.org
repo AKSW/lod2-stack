@@ -1,0 +1,6 @@
+Data Cube Merge Component
+
+* Introduction
+This document describes the Data Cube Merge Component (DCMC). It explores the reason that this component exists, how it should be used and the decisions that were taken when developing this component.
+
+TODO document the DCMC

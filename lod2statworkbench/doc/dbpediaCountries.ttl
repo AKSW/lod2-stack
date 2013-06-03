@@ -1,0 +1,698 @@
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dbpedia:	<http://dbpedia.org/resource/> .
+@prefix dbpedia-owl:	<http://dbpedia.org/ontology/> .
+dbpedia:Luxembourg	rdf:type	dbpedia-owl:Country .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+dbpedia:Luxembourg	rdfs:label	"Luxembourg"@en ;
+	rdfs:comment	"Luxembourg, officially the Grand Duchy of Luxembourg, is a landlocked country in western Europe, bordered by Belgium, France, and Germany. It has two principal regions: the Oesling in the North as part of the Ardennes massif, and the Gutland (\"good country\") in the south. Luxembourg has a population of over half a million people in an area of approximately 2,586 square kilometres (998\u00A0sq\u00A0mi). A representative democracy with a constitutional monarch, it is ruled by a grand duke."@en .
+@prefix foaf:	<http://xmlns.com/foaf/0.1/> .
+dbpedia:Luxembourg	foaf:name	"Luxembourg"@en .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix geo:	<http://www.w3.org/2003/01/geo/wgs84_pos#> .
+dbpedia:Luxembourg	geo:lat	"49.6"^^xsd:float ;
+	geo:long	"6.11667"^^xsd:float .
+@prefix dbpprop:	<http://dbpedia.org/property/> .
+dbpedia:Luxembourg	dbpprop:conventionalLongName	"Grand Duchy of Luxembourg"@en ;
+	dbpprop:largestCity	"capital"@en ;
+	dbpprop:governmentType	"Unitary parliamentary democracy and constitutional monarchy"@en .
+@prefix ns8:	<http://dbpedia.org/datatype/> .
+dbpedia:Luxembourg	dbpprop:establishedEvent	"1.0"^^ns8:second ,
+		"End of personal union"@en ,
+		"From French empire"@en ,
+		"2"^^xsd:int ;
+	dbpprop:populationCensusYear	"2001"^^xsd:int ;
+	dbpprop:gdpNominalRank	"69"^^xsd:int ;
+	dbpprop:gdpNominalYear	"2011"^^xsd:int ;
+	dbpprop:gdpNominalPerCapitaRank	"1st"@en ;
+	dbpprop:hdiYear	"2011"^^xsd:int ;
+	dbpprop:hdiRank	"25"^^xsd:int ;
+	dbpprop:hdiCategory	"very high"@en ;
+	dbpedia-owl:abstract	"Luxembourg, officially the Grand Duchy of Luxembourg, is a landlocked country in western Europe, bordered by Belgium, France, and Germany. It has two principal regions: the Oesling in the North as part of the Ardennes massif, and the Gutland (\"good country\") in the south. Luxembourg has a population of over half a million people in an area of approximately 2,586 square kilometres (998\u00A0sq\u00A0mi). A representative democracy with a constitutional monarch, it is ruled by a grand duke. It is now the world's only remaining sovereign grand duchy. The country has a highly developed economy, with the world's highest GDP (nominal) per capita according to the IMF. Its historic and strategic importance dates back to its founding as a Roman era fortress site and Frankish count's castle site in the Early Middle Ages. It was an important bastion along the Spanish Road when Spain was the principal European power influencing the whole western hemisphere and beyond in the 16th\u201317th centuries. Luxembourg is a member of the European Union, NATO, OECD, the United Nations, and Benelux, reflecting the political consensus in favour of economic, political, and military integration. The city of Luxembourg, the largest and capital city, is the seat of several institutions and agencies of the EU. Luxembourg culture is a mix of Romance Europe and Germanic Europe, borrowing customs from each of the distinct traditions. Luxembourg is a trilingual country; German, French and Luxembourgish are official languages. Although a secular state, Luxembourg is predominantly Roman Catholic."@en .
+@prefix georss:	<http://www.georss.org/georss/> .
+dbpedia:Luxembourg	georss:point	"49.6 6.116666666666666"@en ;
+	dbpprop:nationalMotto	"\"We want to remain what we are\""@en ,
+		"\"Mir w\u00EBlle bleiwe wat mir sinn\""@en ;
+	dbpprop:imageMap	"EU-Luxembourg.svg"@en ;
+	dbpprop:longew	"E"@en ;
+	dbpprop:areaRank	"179"^^xsd:int ;
+	dbpprop:areaKm	"2586"^^xsd:int ;
+	dbpprop:populationEstimate	"509074"^^xsd:int ;
+	dbpprop:populationDensityKm	"194"^^xsd:int ;
+	dbpprop:populationDensitySqMi	"501"^^xsd:int ;
+	dbpprop:populationDensityRank	"67"^^xsd:int ;
+	dbpprop:gdpPpp	"4.1221E10"^^ns8:usDollar ;
+	dbpprop:gdpNominalPerCapita	"113533.0"^^ns8:usDollar ;
+	dbpprop:currency	"Euro"@en ;
+	dbpprop:currencyCode	"EUR"@en ;
+	dbpprop:drivesOn	"right"@en ;
+	dbpprop:areaSqMi	"999"^^xsd:int ;
+	dbpprop:footnote	"Before 1999: Luxembourgish franc."@en ,
+		"Not the same as the Het Wilhelmus of the Netherlands."@en ,
+		"The .eu domain is also used, as it is shared with other European Union member states."@en ;
+	dbpprop:latd	"49"^^xsd:int ;
+	dbpprop:latm	"36"^^xsd:int ;
+	dbpprop:areaMagnitude	"1000000000"^^xsd:int ;
+	dbpprop:percentWater	"1"^^xsd:int ;
+	dbpprop:populationEstimateYear	"2012"^^xsd:int ;
+	dbpprop:populationCensus	"439539"^^xsd:int ;
+	dbpprop:gdpPppPerCapitaRank	"2"^^xsd:int ;
+	dbpprop:hdi	"1"^^xsd:int ;
+	dbpprop:populationEstimateRank	"173.0"^^ns8:rod ;
+	dbpprop:utcOffsetDst	"+2"@en ;
+	dbpprop:royalAnthem	"De Wilhelmus"@en ;
+	dbpprop:title	"Articles related to Luxembourg"@en ;
+	dbpprop:commonName	"Luxembourg"@en ;
+	dbpprop:nationalAnthem	"\"Our Homeland\""@en ,
+		"http://www.luxembourg.public.lu/fr/politique/symboles/hymne/multimedia/Instrumental.mp3"@en ,
+		"Ons Heemecht"@en ;
+	dbpprop:imageFlag	"Flag_of_Luxembourg.svg"@en ;
+	dbpprop:imageCoat	"Coat of Arms of Luxembourg.svg"@en ;
+	dbpprop:latns	"N"@en ;
+	dbpprop:longd	"6"^^xsd:int ;
+	dbpprop:longm	"7"^^xsd:int ;
+	dbpprop:leaderName	"Jean-Claude Juncker"@en ,
+		"Henri"@en ;
+	dbpprop:establishedDate	"9"^^xsd:int ,
+		"11"^^xsd:int ,
+		"19"^^xsd:int ,
+		"23"^^xsd:int ;
+	dbpprop:gdpPppYear	"2011"^^xsd:int ;
+	dbpprop:gdpPppRank	"94"^^xsd:int ;
+	dbpprop:gdpPppPerCapita	"80119.0"^^ns8:usDollar ;
+	dbpprop:gdpNominal	"5.8412E10"^^ns8:usDollar ;
+	dbpprop:cctld	".lu"@en ;
+	dbpprop:callingCode	"352"^^xsd:int ;
+	dbpprop:utcOffset	"+1"@en ;
+	dbpprop:countryCode	"LUX"@en ;
+	dbpprop:accessioneudate	"25"^^xsd:int ;
+	dbpedia-owl:motto	"\"Mir w\u00EBlle bleiwe wat mir sinn\"(Luxembourgish)"@en ,
+		"\"We want to remain what we are\""@en ;
+	dbpedia-owl:leaderTitle	"Prime Minister"@en ,
+		"Grand Duke"@en ;
+	dbpedia-owl:foundingDate	"1839-04-19"^^xsd:date ,
+		"1815-06-09"^^xsd:date ;
+	dbpedia-owl:areaTotal	2.58636e+09 ,
+		2.5864e+09 ;
+	dbpedia-owl:populationDensity	193.553 ,
+		194.1 ;
+	dbpedia-owl:percentageOfAreaWater	"0.6"^^xsd:float ;
+	dbpedia-owl:demonym	"Luxembourgers"@en ;
+	dbpedia-owl:longName	"Grand Duchy of Luxembourg"@en .
+@prefix ns10:	<http://dbpedia.org/ontology/PopulatedPlace/> .
+dbpedia:Luxembourg	ns10:areaTotal	"2586.4"^^ns8:squareKilometre ,
+		"2586.36212698153"^^ns8:squareKilometre ;
+	ns10:populationDensity	"194.1"^^ns8:inhabitantsPerSquareKilometre ,
+		"193.55301207732813"^^ns8:inhabitantsPerSquareKilometre .
+@prefix virtrdf:	<http://www.openlinksw.com/schemas/virtrdf#> .
+dbpedia:Luxembourg	geo:geometry	"POINT(6.11667 49.6)"^^virtrdf:Geometry .
+dbpedia:United_Kingdom	rdf:type	dbpedia-owl:Country ;
+	rdfs:label	"United Kingdom"@en ;
+	rdfs:comment	"The United Kingdom of Great Britain and Northern Ireland (commonly known as the United Kingdom, the UK, or Britain) is a sovereign state located off the north-western coast of continental Europe. The country includes the island of Great Britain, the north-eastern part of the island of Ireland and many smaller islands. Northern Ireland is the only part of the UK that shares a land border with another sovereign state\u2014the Republic of Ireland."@en ;
+	foaf:name	"the United Kingdom"@en ;
+	geo:lat	"51.5"^^xsd:float ;
+	geo:long	"-0.116667"^^xsd:float ;
+	dbpprop:demonym	"British or Briton"@en ;
+	dbpprop:conventionalLongName	"United Kingdom of Great Britain and Northern Ireland"@en ;
+	dbpprop:largestCity	"London"@en ;
+	dbpprop:populationCensusYear	"2001"^^xsd:int ;
+	dbpprop:gdpNominalYear	"2011"^^xsd:int ;
+	dbpprop:hdiYear	"2011"^^xsd:int ;
+	dbpprop:hdiRank	"28"^^xsd:int ;
+	dbpprop:hdiCategory	"very high"@en ;
+	dbpprop:ethnicGroupsYear	"See: UK ethnic groups list"@en ,
+		"2001"^^xsd:int ;
+	dbpprop:euseats	"78"^^xsd:int ;
+	dbpprop:altFlag	"A flag featuring both cross and saltire in red, white and blue"@en ;
+	dbpprop:altCoat	"Coat of arms containing shield and crown in centre, flanked by lion and unicorn"@en ;
+	dbpedia-owl:abstract	"The United Kingdom of Great Britain and Northern Ireland (commonly known as the United Kingdom, the UK, or Britain) is a sovereign state located off the north-western coast of continental Europe. The country includes the island of Great Britain, the north-eastern part of the island of Ireland and many smaller islands. Northern Ireland is the only part of the UK that shares a land border with another sovereign state\u2014the Republic of Ireland. Apart from this land border the UK is surrounded by the Atlantic Ocean, the North Sea, the English Channel and the Irish Sea. The United Kingdom is a unitary state governed under a constitutional monarchy and a parliamentary system, with its seat of government in the capital city of London. It is a country in its own right and consists of four countries: England, Northern Ireland, Scotland and Wales. There are three devolved administrations, each with varying powers, based in Belfast, Edinburgh and Cardiff, the capitals of Northern Ireland, Scotland, and Wales. Associated with the UK, but not constitutionally part of it, are three Crown Dependencies. The United Kingdom has fourteen overseas territories. These are remnants of the British Empire which, at its height in 1922, encompassed almost a quarter of the world's land surface and was the largest empire in history. British influence can still be observed in the language, culture and legal systems of many of its former territories. The UK is a developed country and has the world's seventh-largest economy by nominal GDP and eighth-largest economy by purchasing power parity. It was the world's first industrialised country and the world's foremost power during the 19th and early 20th centuries. The UK remains a great power with leading economic, cultural, military, scientific and political influence. It is a recognised nuclear weapons state and its military expenditure ranks fourth in the world. The UK has been a permanent member of the United Nations Security Council since its first session in 1946. It has been a member of the European Union and its predecessor the European Economic Community since 1973. It is also a member of the Commonwealth of Nations, the Council of Europe, the G7, the G8, the G20, NATO, the Organization for Economic Co-operation and Development (OECD) and the World Trade Organization."@en ;
+	georss:point	"51.5 -0.11666666666666667"@en ;
+	dbpprop:imageMap	"EU-United Kingdom.svg"@en ;
+	dbpprop:longew	"W"@en ;
+	dbpprop:areaRank	"80"^^xsd:int ;
+	dbpprop:areaKm	"243610"^^xsd:int ;
+	dbpprop:populationEstimate	"62262000"^^xsd:int ;
+	dbpprop:populationDensityKm	"256"^^xsd:int ;
+	dbpprop:populationDensitySqMi	"662"^^xsd:int ;
+	dbpprop:populationDensityRank	"51st"@en ;
+	dbpprop:gdpPpp	"2.26E12"^^ns8:usDollar ;
+	dbpprop:gdpNominalPerCapita	"38592.0"^^ns8:usDollar ;
+	dbpprop:giniYear	"2008"^^xsd:int ;
+	dbpprop:currencyCode	"GBP"@en ;
+	dbpprop:drivesOn	"left"@en ;
+	dbpprop:footnote	"A second coat of arms is used in Scotland"@en ;
+	dbpprop:ethnicGroups	"4"^^xsd:int ,
+		"0"^^xsd:int ,
+		"1"^^xsd:int ,
+		"2"^^xsd:int ,
+		"92"^^xsd:int ;
+	dbpprop:latd	"51"^^xsd:int ;
+	dbpprop:latm	"30"^^xsd:int ;
+	dbpprop:areaMagnitude	"100000000000"^^xsd:int ;
+	dbpprop:percentWater	"1"^^xsd:int ;
+	dbpprop:populationEstimateYear	"Mid-2010"@en ;
+	dbpprop:populationCensus	"58789194"^^xsd:int ;
+	dbpprop:gini	"41"^^xsd:int ;
+	dbpprop:hdi	"1"^^xsd:int ;
+	dbpprop:populationEstimateRank	"22"^^xsd:int ;
+	dbpprop:utcOffsetDst	"+1"@en ;
+	dbpprop:list	"Lat. and Long."@en ;
+	dbpprop:altMap	"Two islands to the north-west of continental Europe. Highlighted are the larger island and the north-eastern fifth of the smaller island to the west."@en ;
+	dbpprop:title	"International organisations"@en ,
+		"25"^^xsd:int ;
+	dbpprop:commonName	"the United Kingdom"@en ;
+	dbpprop:nationalAnthem	"File:United States Navy Band - God Save the Queen.ogg"@en ,
+		"\"God Save the Queen\""@en ;
+	dbpprop:imageFlag	"Flag of the United Kingdom.svg"@en ;
+	dbpprop:imageCoat	"Royal_Coat_of_Arms_of_the_United_Kingdom.svg"@en ;
+	dbpprop:symbolType	"Royal coat of arms"@en ;
+	dbpprop:latns	"N"@en ;
+	dbpprop:longd	"0"^^xsd:int ;
+	dbpprop:longm	"7"^^xsd:int ;
+	dbpprop:establishedDate	"1"^^xsd:int ,
+		"12"^^xsd:int ;
+	dbpprop:gdpPppYear	"2011"^^xsd:int ;
+	dbpprop:gdpPppPerCapita	"36089.0"^^ns8:usDollar ;
+	dbpprop:gdpNominal	"2.417E12"^^ns8:usDollar ;
+	dbpprop:cctld	".uk"@en ;
+	dbpprop:callingCode	"44"^^xsd:int ;
+	dbpprop:utcOffset	"+0"@en ;
+	dbpprop:countryCode	"GBR"@en ;
+	dbpprop:accessioneudate	"1"^^xsd:int ;
+	dbpprop:dateFormat	"dd/mm/yyyy"@en ;
+	dbpprop:regionalLanguages	"Irish, Scottish Gaelic, Scots and Ulster Scots, Welsh, Cornishref|Under the Council of Europe's European Charter for Regional or Minority Languages, the Welsh, Scottish Gaelic, Cornish, Irish, Scots and its regional variant Ulster Scots are officially recognised as regional or minority languages by the UK Government for the purposes of the Charter. See also Languages of the United Kingdom.|group=\"nb\""@en ;
+	dbpedia-owl:leaderTitle	"Prime Minister"@en ,
+		"Monarch"@en ;
+	dbpedia-owl:foundingDate	"1801-01-01"^^xsd:date ,
+		"1707-05-01"^^xsd:date ;
+	dbpedia-owl:areaTotal	2.4361e+11 ;
+	dbpedia-owl:populationDensity	255.561 ,
+		255.6 ;
+	dbpedia-owl:percentageOfAreaWater	"1.34"^^xsd:float ;
+	dbpedia-owl:ethnicGroupsInYear	"2001-01-01T00:00:00+02:00"^^xsd:gYear ;
+	dbpedia-owl:demonym	"British or Briton"@en ;
+	dbpedia-owl:longName	"United Kingdom of Great Britain and Northern Ireland"@en ;
+	ns10:areaTotal	"243610.0"^^ns8:squareKilometre ;
+	ns10:populationDensity	"255.56101873924493"^^ns8:inhabitantsPerSquareKilometre ,
+		"255.6"^^ns8:inhabitantsPerSquareKilometre ;
+	geo:geometry	"POINT(-0.116667 51.5)"^^virtrdf:Geometry .
+dbpedia:Germany	rdf:type	dbpedia-owl:Country ;
+	rdfs:label	"Germany"@en ;
+	rdfs:comment	"Germany, officially the Federal Republic of Germany, is a federal parliamentary republic in Europe. The country consists of 16 states while the capital and largest city is Berlin. Germany covers an area of 357,021\u00A0km and has a largely temperate seasonal climate. With 81.8\u00A0million inhabitants, it is the most populous member state and the largest economy in the European Union. It is one of the major political powers of the European continent and a technological leader in many fields."@en ;
+	foaf:name	"Germany"@en ;
+	geo:lat	"52.5167"^^xsd:float ;
+	geo:long	"13.3833"^^xsd:float ;
+	dbpprop:vehicleCode	"D"@en ;
+	dbpprop:altSportCode	"GER"@en ;
+	dbpprop:conventionalLongName	"Federal Republic of Germany"@en ;
+	dbpprop:largestCity	"capital"@en ;
+	dbpprop:gdpNominalRank	"4"^^xsd:int ;
+	dbpprop:gdpNominalYear	"2011"^^xsd:int ;
+	dbpprop:hdiYear	"2011"^^xsd:int ;
+	dbpprop:hdiRank	"9"^^xsd:int ;
+	dbpprop:hdiCategory	"very high"@en ;
+	dbpprop:timeZoneDst	"CEST"@en ;
+	dbpprop:euseats	"99"^^xsd:int ;
+	dbpedia-owl:abstract	"Germany, officially the Federal Republic of Germany, is a federal parliamentary republic in Europe. The country consists of 16 states while the capital and largest city is Berlin. Germany covers an area of 357,021\u00A0km and has a largely temperate seasonal climate. With 81.8\u00A0million inhabitants, it is the most populous member state and the largest economy in the European Union. It is one of the major political powers of the European continent and a technological leader in many fields. A region named Germania, inhabited by several Germanic peoples, was documented before AD\u00A0100. During the Migration Period, the Germanic tribes expanded southward, and established successor kingdoms throughout much of Europe. Beginning in the 10th century, German territories formed a central part of the Holy Roman Empire. During the 16th century, northern German regions became the centre of the Protestant Reformation while southern and western parts remained dominated by Roman Catholic denominations, with the two factions clashing in the Thirty Years' War, marking the beginning of the Catholic\u2013Protestant divide that has characterized German society ever since. Occupied during the Napoleonic Wars, the rise of Pan-Germanism inside the German Confederation resulted in the unification of most of the German states into the German Empire in 1871 which was Prussian dominated. After the German Revolution of 1918\u20131919 and the subsequent military surrender in World War I, the Empire was replaced by the Weimar Republic in 1918, and partitioned in the Treaty of Versailles. Amidst the Great Depression, the Third Reich was proclaimed in 1933. The latter period was marked by Fascism and World War II. After 1945, Germany was divided by allied occupation, and evolved into two states, East Germany and West Germany. In 1990 Germany was reunified. Germany was a founding member of the European Community in 1957, which became the EU in 1993. It is part of the Schengen Area and since 1999 a member of the eurozone. Germany is a Great Power and member of the United Nations, NATO, the G8, the G20, the OECD and the Council of Europe, and took a non-permanent seat on the UN Security Council for the 2011\u20132012 term. It has the world's fourth largest economy by nominal GDP and the fifth largest by purchasing power parity. It is the second largest exporter and third largest importer of goods. The country has developed a very high standard of living and a comprehensive system of social security. Germany has been the home of many influential scientists and inventors, and is known for its cultural and political history."@en ;
+	georss:point	"52.516666666666666 13.383333333333333"@en ;
+	dbpprop:imageMap	"EU-Germany.svg"@en ;
+	dbpprop:longew	"E"@en ;
+	dbpprop:areaRank	"63.0"^^ns8:rod ;
+	dbpprop:areaKm	"357021"^^xsd:int ;
+	dbpprop:populationEstimate	"81799600"^^xsd:int ;
+	dbpprop:populationDensityKm	"229"^^xsd:int ;
+	dbpprop:populationDensitySqMi	"593"^^xsd:int ;
+	dbpprop:populationDensityRank	"55"^^xsd:int ;
+	dbpprop:gdpPpp	"3.099E12"^^ns8:usDollar ;
+	dbpprop:gdpNominalPerCapita	"43741.0"^^ns8:usDollar ;
+	dbpprop:giniYear	"2006"^^xsd:int ;
+	dbpprop:giniCategory	"low"@en ;
+	dbpprop:currency	"Swiss franc"@en ,
+		"Euro"@en ;
+	dbpprop:currencyCode	"EUR, CHF"@en ;
+	dbpprop:timeZone	"CET"@en ;
+	dbpprop:drivesOn	"right"@en ;
+	dbpprop:areaSqMi	"137847"^^xsd:int ;
+	dbpprop:footnote	"Also .eu, shared with European Union member states."@en ,
+		"Danish, Low German, Sorbian, Romany and Frisian are officially recognised by the ECRML."@en ,
+		"Before 2002: Deutsche Mark ."@en ;
+	dbpprop:ethnicGroups	"Germans 91.5%, Turks 2.4%, other 6.1%"@en ;
+	dbpprop:latd	"52"^^xsd:int ;
+	dbpprop:latm	"31"^^xsd:int ;
+	dbpprop:areaMagnitude	"100000000000"^^xsd:int ;
+	dbpprop:percentWater	"2"^^xsd:int ;
+	dbpprop:populationEstimateYear	"2010"^^xsd:int ;
+	dbpprop:gdpPppPerCapitaRank	"18"^^xsd:int ;
+	dbpprop:gini	"27"^^xsd:int ;
+	dbpprop:hdi	"1"^^xsd:int ;
+	dbpprop:populationEstimateRank	"16"^^xsd:int ;
+	dbpprop:utcOffsetDst	"+2"@en ;
+	dbpprop:iso31661Alpha	"DE"@en ,
+		"DEU"@en ;
+	dbpprop:title	"Articles related to Germany"@en ;
+	dbpprop:commonName	"Germany"@en ;
+	dbpprop:nationalAnthem	"The Song of the Germans"@en ,
+		"The third stanza of"@en ,
+		"1.0"^^ns8:second ;
+	dbpprop:imageFlag	"Flag of Germany.svg"@en ;
+	dbpprop:imageCoat	"Coat of Arms of Germany.svg"@en ;
+	dbpprop:officialLanguages	"German"@en ;
+	dbpprop:latns	"N"@en ;
+	dbpprop:longd	"13"^^xsd:int ;
+	dbpprop:longm	"23"^^xsd:int ;
+	dbpprop:establishedDate	"3"^^xsd:int ,
+		"2"^^xsd:int ,
+		"18"^^xsd:int ,
+		"23"^^xsd:int ;
+	dbpprop:gdpPppYear	"2011"^^xsd:int ;
+	dbpprop:gdpPppRank	"5"^^xsd:int ;
+	dbpprop:gdpPppPerCapita	"37896.0"^^ns8:usDollar ;
+	dbpprop:gdpNominal	"3.577E12"^^ns8:usDollar ;
+	dbpprop:cctld	".de"@en ;
+	dbpprop:callingCode	"49"^^xsd:int ;
+	dbpprop:utcOffset	"+1"@en ;
+	dbpprop:accessioneudate	"25"^^xsd:int ;
+	dbpprop:aircraftCode	"D"@en ;
+	dbpprop:iso31661Numeric	"?"@en ;
+	dbpedia-owl:leaderTitle	"President of the Bundestag"@en ,
+		"President of the Bundesrat"@en ,
+		"Chancellor"@en ,
+		"President"@en ;
+	dbpedia-owl:foundingDate	"1871-01-18"^^xsd:date ,
+		"0962-02-02"^^xsd:date ;
+	dbpedia-owl:areaTotal	3.57021e+11 ,
+		3.57022e+11 ;
+	dbpedia-owl:populationDensity	229.0 ,
+		228.959 ;
+	dbpedia-owl:percentageOfAreaWater	"2.416"^^xsd:float ;
+	dbpedia-owl:demonym	"German"@en ;
+	dbpedia-owl:longName	"Federal Republic of Germany"@en ;
+	ns10:areaTotal	"357022.0910454866"^^ns8:squareKilometre ,
+		"357021.0"^^ns8:squareKilometre ;
+	ns10:populationDensity	"229.0"^^ns8:inhabitantsPerSquareKilometre ,
+		"228.9585800156704"^^ns8:inhabitantsPerSquareKilometre ;
+	geo:geometry	"POINT(13.3833 52.5167)"^^virtrdf:Geometry .
+dbpedia:Belgium	rdf:type	dbpedia-owl:Country ;
+	rdfs:label	"Belgium"@en ;
+	rdfs:comment	"Belgium, officially the Kingdom of Belgium, is a federal state in Western Europe. It is a founding member of the European Union and hosts the EU's headquarters, and those of several other major international organisations such as NATO. Belgium covers an area of 30,528 square kilometres (11,787\u00A0sq\u00A0mi), and it has a population of about 11\u00A0million people."@en ;
+	foaf:name	"Belgium"@en ;
+	geo:lat	"50.85"^^xsd:float ;
+	geo:long	"4.35"^^xsd:float ;
+	dbpprop:conventionalLongName	"Kingdom of Belgium"@en ;
+	dbpprop:establishedEvent	"Declared"@en ;
+	dbpprop:populationCensusYear	"2001"^^xsd:int ;
+	dbpprop:gdpNominalRank	"21st"@en ;
+	dbpprop:gdpNominalYear	"2011"^^xsd:int ;
+	dbpprop:gdpNominalPerCapitaRank	"16"^^xsd:int ;
+	dbpprop:hdiYear	"2011"^^xsd:int ;
+	dbpprop:hdiRank	"18"^^xsd:int ;
+	dbpprop:hdiCategory	"very high"@en ;
+	dbpprop:largestSettlementType	"metropolitan area"@en ;
+	dbpprop:euseats	"24"^^xsd:int ;
+	dbpedia-owl:abstract	"Belgium, officially the Kingdom of Belgium, is a federal state in Western Europe. It is a founding member of the European Union and hosts the EU's headquarters, and those of several other major international organisations such as NATO. Belgium covers an area of 30,528 square kilometres (11,787\u00A0sq\u00A0mi), and it has a population of about 11\u00A0million people. Straddling the cultural boundary between Germanic and Latin Europe, Belgium is home to two main linguistic groups, the Dutch-speakers, mostly Flemish (about 60%), and the French-speakers, mostly Walloons (about 40%), plus a small group of German-speakers. Belgium's two largest regions are the Dutch-speaking region of Flanders in the north and the French-speaking southern region of Wallonia. The Brussels-Capital Region, officially bilingual, is a mostly French-speaking enclave within the Flemish Region. A German-speaking Community exists in eastern Wallonia. Belgium's linguistic diversity and related political conflicts are reflected in the political history and a complex system of government. Historically, Belgium, the Netherlands and Luxembourg were known as the Low Countries, which used to cover a somewhat larger area than the current Benelux group of states. The region was called Belgica in Latin because of the Roman province Gallia Belgica which covered more or less the same area. From the end of the Middle Ages until the 17th century, it was a prosperous centre of commerce and culture. From the 16th century until the Belgian Revolution in 1830, when Belgium seceded from the Netherlands, many battles between European powers were fought in the area of Belgium, causing it to be dubbed the battleground of Europe, a reputation strengthened by both World Wars. Upon its independence, Belgium participated in the Industrial Revolution and, during the course of the 20th century, possessed a number of colonies in Africa. The second half of the 20th century was marked by the rise of contrasts between the Flemish and the Francophones fuelled by differences of language and the unequal economic development of Flanders and Wallonia. This ongoing antagonism has caused far-reaching reforms, changing the formerly unitary Belgian state into a federal state, and a long period of political instability."@en ;
+	georss:point	"50.85 4.35"@en ;
+	dbpprop:expiry	"2012"^^xsd:int ;
+	dbpprop:nationalMotto	"L'union fait la force"@en ,
+		"\"Strength through Unity\""@en ,
+		"Eendracht maakt macht"@en ,
+		"Einigkeit macht Stark"@en ;
+	dbpprop:imageMap	"EU-Belgium.svg"@en ;
+	dbpprop:longew	"E"@en ;
+	dbpprop:areaRank	"139"^^xsd:int ;
+	dbpprop:areaKm	"30528"^^xsd:int ;
+	dbpprop:populationEstimate	"11007020"^^xsd:int ;
+	dbpprop:populationDensityKm	"355"^^xsd:int ;
+	dbpprop:populationDensitySqMi	"919"^^xsd:int ;
+	dbpprop:populationDensityRank	"33.0"^^ns8:rod ;
+	dbpprop:gdpPpp	"4.13281E11"^^ns8:usDollar ;
+	dbpprop:gdpNominalPerCapita	"46878.0"^^ns8:usDollar ;
+	dbpprop:giniYear	"2005"^^xsd:int ;
+	dbpprop:giniCategory	"low"@en ;
+	dbpprop:currency	"1.0"^^ns8:euro ;
+	dbpprop:currencyCode	"EUR"@en ;
+	dbpprop:drivesOn	"right"@en ;
+	dbpprop:areaSqMi	"11787"^^xsd:int ;
+	dbpprop:footnote	"The .eu domain is also used, as it is shared with other European Union member states."@en ,
+		"Before 1999: Belgian franc ."@en ;
+	dbpprop:ethnicGroups	"see [[#Demographics"@en ;
+	dbpprop:latd	"50"^^xsd:int ;
+	dbpprop:latm	"51"^^xsd:int ;
+	dbpprop:areaMagnitude	"10000000000"^^xsd:int ;
+	dbpprop:percentWater	"6"^^xsd:int ;
+	dbpprop:populationEstimateYear	"2011"^^xsd:int ;
+	dbpprop:populationCensus	"10296350"^^xsd:int ;
+	dbpprop:gdpPppPerCapitaRank	"20"^^xsd:int ;
+	dbpprop:gini	"28"^^xsd:int ;
+	dbpprop:hdi	"1"^^xsd:int ;
+	dbpprop:populationEstimateRank	"76"^^xsd:int ;
+	dbpprop:utcOffsetDst	"+2"@en ;
+	dbpprop:small	"yes"@en ;
+	dbpprop:commonName	"Belgium"@en ;
+	dbpprop:nationalAnthem	"instrumental version:"@en ,
+		"File:The Brabanconne.ogg"@en ,
+		"The \"Braban\u00E7onne\""@en ;
+	dbpprop:imageFlag	"Flag of Belgium.svg"@en ;
+	dbpprop:imageCoat	"Greater Coat of Arms of Belgium.svg"@en ;
+	dbpprop:symbolType	"Coat of arms"@en ;
+	dbpprop:latns	"N"@en ;
+	dbpprop:longd	"4"^^xsd:int ;
+	dbpprop:longm	"21"^^xsd:int ;
+	dbpprop:establishedDate	"19"^^xsd:int ,
+		"4"^^xsd:int ;
+	dbpprop:gdpPppYear	"2011"^^xsd:int ;
+	dbpprop:gdpPppRank	"30"^^xsd:int ;
+	dbpprop:gdpPppPerCapita	"37736.0"^^ns8:usDollar ;
+	dbpprop:gdpNominal	"5.13396E11"^^ns8:usDollar ;
+	dbpprop:cctld	".be2"@en ;
+	dbpprop:callingCode	"32"^^xsd:int ;
+	dbpprop:utcOffset	"+1"@en ;
+	dbpprop:accessioneudate	"25"^^xsd:int ;
+	dbpedia-owl:motto	"Eendracht maakt macht(Dutch)"@en ,
+		"L'union fait la force(French)"@en ,
+		"Einigkeit macht Stark(German)"@en ,
+		"\"Strength through Unity\" (lit. \"Unity makes strength\")"@en ;
+	dbpedia-owl:leaderTitle	"King"@en ,
+		"Prime Minister"@en ;
+	dbpedia-owl:foundingDate	"1839-04-19"^^xsd:date ,
+		"1830-10-04"^^xsd:date ;
+	dbpedia-owl:areaTotal	3.0528e+10 ,
+		3.05282e+10 ;
+	dbpedia-owl:populationDensity	354.7 ,
+		354.673 ;
+	dbpedia-owl:percentageOfAreaWater	"6.4"^^xsd:float ;
+	dbpedia-owl:demonym	"Belgian"@en ;
+	dbpedia-owl:longName	"Kingdom of Belgium"@en ;
+	ns10:areaTotal	"30528.0"^^ns8:squareKilometre ,
+		"30528.189856530433"^^ns8:squareKilometre ;
+	ns10:populationDensity	"354.6734428370908"^^ns8:inhabitantsPerSquareKilometre ,
+		"354.7"^^ns8:inhabitantsPerSquareKilometre ;
+	geo:geometry	"POINT(4.35 50.85)"^^virtrdf:Geometry .
+dbpedia:France	rdf:type	dbpedia-owl:Country ;
+	rdfs:label	"France"@en ;
+	rdfs:comment	"France, officially the French Republic, is a unitary semi-presidential republic in Western Europe with several overseas territories and islands located on other continents and in the Indian, Pacific, and Atlantic oceans. Metropolitan France extends from the Mediterranean Sea to the English Channel and the North Sea, and from the Rhine to the Atlantic Ocean. It is often referred to as l\u2019Hexagone because of the geometric shape of its territory."@en ;
+	foaf:name	"France"@en ;
+	geo:lat	"47.0"^^xsd:float ,
+		"48.8567"^^xsd:float ;
+	geo:long	"2.0"^^xsd:float ,
+		"2.35083"^^xsd:float ;
+	dbpprop:vehicleCode	"F"@en ;
+	dbpprop:demonym	"French"@en ;
+	dbpprop:conventionalLongName	"French Republic"@en ;
+	dbpprop:largestCity	"capital"@en ;
+	dbpprop:gdpNominalRank	"5"^^xsd:int ;
+	dbpprop:gdpNominalYear	"2011"^^xsd:int ;
+	dbpprop:gdpNominalPerCapitaRank	"20"^^xsd:int ;
+	dbpprop:hdiYear	"2011"^^xsd:int ;
+	dbpprop:hdiRank	"20"^^xsd:int ;
+	dbpprop:hdiCategory	"very high"@en ;
+	dbpprop:timeZoneDst	"CEST"@en ;
+	dbpprop:euseats	"78"^^xsd:int ;
+	dbpedia-owl:abstract	"France, officially the French Republic, is a unitary semi-presidential republic in Western Europe with several overseas territories and islands located on other continents and in the Indian, Pacific, and Atlantic oceans. Metropolitan France extends from the Mediterranean Sea to the English Channel and the North Sea, and from the Rhine to the Atlantic Ocean. It is often referred to as l\u2019Hexagone because of the geometric shape of its territory. It is the largest western European country and it possesses the second-largest exclusive economic zone in the world, covering 11,035,000\u00A0km (4,260,000\u00A0sq\u00A0mi), just behind that of the United States (11,351,000\u00A0km / 4,383,000\u00A0sq\u00A0mi). Over the past 500 years, France has been a major power with strong cultural, economic, military and political influence in Europe and around the world. During the 17th and 18th centuries, France colonised great parts of North America and Southeast Asia; during the 19th and early 20th centuries, France built the second largest colonial empire of the time, including large portions of North, West and Central Africa, Southeast Asia, and many Caribbean and Pacific Islands. France has its main ideals expressed in the Declaration of the Rights of Man and of the Citizen. The French Republic is defined as indivisible, secular, democratic and social by its constitution. France is one of the world's most developed countries, it possesses the world's fifth largest economy measured by GDP, the ninth-largest economy measured by purchasing power parity and is Europe's second largest economy by nominal GDP. France is the wealthiest nation in Europe \u2013 and the fourth wealthiest in the world \u2013 in aggregate household wealth. France enjoys a high standard of living as well as a high public education level, and has also one of the world's longest life expectancies. France has been listed as the world's \"best overall health care\" provider by the World Health Organization. It is the most visited country in the world, receiving 82\u00A0million foreign tourists annually. France has the world's fourth largest nominal military budget, the third largest military in NATO and EU's largest army. France also possesses the third largest nuclear weapons stockpile in the world \u2013 with around 300 active warheads as of 25 May 2010\u00A0(2010 -05-25) \u2013 and the world's second largest diplomatic corps (second only to that of the United States). France is a founding member of the United Nations, one of the five permanent members of the UN Security Council, and a member of the Francophonie, the G8, G20, NATO, OECD, WTO, and the Latin Union. It is also a founding and leading member state of the European Union and the largest EU state by area. In 2011, France was listed 20th on the Human Development Index and 24th on the Corruption Perceptions Index (2010)."@en ;
+	georss:point	"48.85666666666667 2.350833333333333"@en ,
+		"47.0 2.0"@en ;
+	dbpprop:imageMap	"EU-France.svg"@en ,
+		"Outre-mer en sans Terre Adelie.png"@en ;
+	dbpprop:longew	"E"@en ;
+	dbpprop:areaRank	"41st"@en ;
+	dbpprop:areaKm	"674843"^^xsd:int ;
+	dbpprop:populationDensityKm	"116"^^xsd:int ;
+	dbpprop:populationDensitySqMi	"301"^^xsd:int ;
+	dbpprop:populationDensityRank	"89"^^xsd:int ;
+	dbpprop:gdpPpp	"2.218E12"^^ns8:usDollar ;
+	dbpprop:gdpNominalPerCapita	"44008.0"^^ns8:usDollar ;
+	dbpprop:giniYear	"2008"^^xsd:int ;
+	dbpprop:currency	"Euro, CFP franc"@en ;
+	dbpprop:currencyCode	"EUR,XPF"@en ;
+	dbpprop:timeZone	"CET"@en ;
+	dbpprop:drivesOn	"right"@en ;
+	dbpprop:areaSqMi	"260558"^^xsd:int ;
+	dbpprop:footnote	"Excluding Ad\u00E9lie Land in Antarctica, where sovereignty is suspended."@en ;
+	dbpprop:latd	"48"^^xsd:int ;
+	dbpprop:latm	"51"^^xsd:int ;
+	dbpprop:areaMagnitude	"100000000000"^^xsd:int ;
+	dbpprop:gdpPppPerCapitaRank	"24"^^xsd:int ;
+	dbpprop:gini	"29"^^xsd:int ;
+	dbpprop:hdi	"1"^^xsd:int ;
+	dbpprop:utcOffsetDst	"+2"@en ;
+	dbpprop:iso31661Alpha	"FRA"@en ;
+	dbpprop:title	"Articles related to France"@en ;
+	dbpprop:commonName	"France"@en ;
+	dbpprop:nationalAnthem	"\"La Marseillaise\""@en ,
+		"File:La Marseillaise.ogg"@en ;
+	dbpprop:imageFlag	"Flag of France.svg"@en ;
+	dbpprop:imageCoat	"Armoiries r\u00E9publique fran\u00E7aise.svg"@en ;
+	dbpprop:symbolType	"National Emblem"@en ;
+	dbpprop:officialLanguages	"French"@en ;
+	dbpprop:latns	"N"@en ;
+	dbpprop:longd	"2"^^xsd:int ;
+	dbpprop:longm	"21"^^xsd:int ;
+	dbpprop:establishedDate	"486"^^xsd:int ,
+		"4"^^xsd:int ,
+		"843"^^xsd:int ;
+	dbpprop:gdpPppYear	"2011"^^xsd:int ;
+	dbpprop:gdpPppRank	"9"^^xsd:int ;
+	dbpprop:gdpPppPerCapita	"35156.0"^^ns8:usDollar ;
+	dbpprop:gdpNominal	"2.776E12"^^ns8:usDollar ;
+	dbpprop:cctld	".fr"@en ;
+	dbpprop:callingCode	"33"^^xsd:int ;
+	dbpprop:utcOffset	"+1"@en ;
+	dbpprop:mapCaption	"Territory of the French Republic in the world1"@en ;
+	dbpprop:accessioneudate	"25"^^xsd:int ;
+	dbpprop:sportCode	"FRA"@en ;
+	dbpedia-owl:motto	"(Liberty, Equality, Fraternity)"@en ;
+	dbpedia-owl:leaderTitle	"Prime Minister"@en ,
+		"President"@en ;
+	dbpprop:frIgnAreaKm	"551695"^^xsd:int ;
+	dbpprop:frCadastreAreaKm	"543965"^^xsd:int ;
+	dbpprop:frTotalPopulationEstimate	"65350000"^^xsd:int ;
+	dbpprop:frMetropolePopulationEstimateRank	"22"^^xsd:int ;
+	dbpedia-owl:areaTotal	6.74843e+11 ,
+		6.74842e+11 ;
+	dbpedia-owl:populationDensity	116.217 ,
+		116.0 ;
+	dbpprop:frIgnAreaMagnitude	"100000000000"^^xsd:int ;
+	dbpprop:frTotalPopulationEstimateYear	"2012"^^xsd:int ;
+	dbpprop:frTotalPopulationEstimateRank	"20"^^xsd:int ;
+	dbpprop:frMetropolePopulation	"63460000"^^xsd:int ;
+	dbpedia-owl:demonym	"French"@en ;
+	dbpedia-owl:longName	"French Republic"@en ;
+	dbpprop:frIgnAreaRank	"47"^^xsd:int ;
+	dbpprop:frCadastreAreaMagnitude	"100000000000"^^xsd:int ;
+	dbpprop:frIgnAreaSqMi	"213010"^^xsd:int ;
+	dbpprop:frCadastreAreaRank	"47"^^xsd:int ;
+	dbpprop:frCadastreAreaSqMi	"210026"^^xsd:int ;
+	ns10:areaTotal	"674843.0"^^ns8:squareKilometre ,
+		"674842.1220529275"^^ns8:squareKilometre ;
+	ns10:populationDensity	"116.0"^^ns8:inhabitantsPerSquareKilometre ,
+		"116.21674972127622"^^ns8:inhabitantsPerSquareKilometre ;
+	geo:geometry	"POINT(2.35083 47)"^^virtrdf:Geometry ,
+		"POINT(2 47)"^^virtrdf:Geometry ,
+		"POINT(2.35083 48.8567)"^^virtrdf:Geometry ,
+		"POINT(2 48.8567)"^^virtrdf:Geometry .
+dbpedia:Netherlands	rdf:type	dbpedia-owl:Country ;
+	rdfs:label	"Netherlands"@en ;
+	rdfs:comment	"The Netherlands is a constituent country of the Kingdom of the Netherlands, located mainly in North-West Europe and with some islands in the Caribbean. Mainland Netherlands borders the North Sea to the north and west, Belgium to the south, and Germany to the east, and shares maritime borders with Belgium, Germany and the United Kingdom. It is a parliamentary democracy organised as a unitary state. The country capital is Amsterdam and the seat of government is The Hague."@en ;
+	foaf:name	"the Netherlands"@en ;
+	geo:lat	"52.3167"^^xsd:float ;
+	geo:long	"5.55"^^xsd:float ;
+	dbpprop:demonym	"Dutch"@en ;
+	dbpprop:capital	"Amsterdam"@en ;
+	dbpprop:conventionalLongName	"Netherlands"@en ;
+	dbpprop:largestCity	"capital"@en ;
+	dbpprop:leaderTitle	"Prime Minister"@en ,
+		"Current coalition"@en ,
+		"Deputy Prime Minister"@en ;
+	dbpprop:establishedEvent	"Recognised"@en ,
+		"Declared"@en ;
+	dbpprop:gdpNominalYear	"2011"^^xsd:int ;
+	dbpprop:hdiYear	"2011"^^xsd:int ;
+	dbpprop:hdiRank	"3.0"^^ns8:rod ;
+	dbpprop:hdiCategory	"very high"@en ;
+	dbpprop:timeZoneDst	"CEST and AST"@en ;
+	dbpprop:ethnicGroupsYear	"2008"^^xsd:int ;
+	dbpprop:aprRecordHighC	"32"^^xsd:int ;
+	dbpprop:mayRecordHighC	"36"^^xsd:int ;
+	dbpprop:julRecordHighC	"37"^^xsd:int ;
+	dbpprop:novRecordHighC	"21"^^xsd:int ;
+	dbpprop:janLowC	"0"^^xsd:int ;
+	dbpprop:febLowC	"0"^^xsd:int ;
+	dbpprop:marLowC	"2"^^xsd:int ;
+	dbpprop:aprLowC	"4"^^xsd:int ;
+	dbpprop:mayLowC	"8"^^xsd:int ;
+	dbpprop:junLowC	"11"^^xsd:int ;
+	dbpprop:julLowC	"13"^^xsd:int ;
+	dbpprop:augLowC	"12"^^xsd:int ;
+	dbpprop:sepLowC	"10"^^xsd:int ;
+	dbpprop:octLowC	"7"^^xsd:int ;
+	dbpprop:novLowC	"4"^^xsd:int ;
+	dbpprop:decLowC	"1"^^xsd:int ;
+	dbpprop:octRecordLowC	"-8"^^xsd:int ;
+	dbpprop:yearRecordLowC	"-27"^^xsd:int ;
+	dbpprop:octPrecipitationMm	"83"^^xsd:int ;
+	dbpprop:yearPrecipitationMm	"833"^^xsd:int ;
+	dbpprop:yearSun	"1602"^^xsd:int ;
+	dbpedia-owl:abstract	"The Netherlands is a constituent country of the Kingdom of the Netherlands, located mainly in North-West Europe and with some islands in the Caribbean. Mainland Netherlands borders the North Sea to the north and west, Belgium to the south, and Germany to the east, and shares maritime borders with Belgium, Germany and the United Kingdom. It is a parliamentary democracy organised as a unitary state. The country capital is Amsterdam and the seat of government is The Hague. The Netherlands in its entirety is often referred to as Holland, although North and South Holland are actually only two of its twelve provinces. The Netherlands is a geographically low-lying country, with about 25% of its area and 21% of its population located below sea level, and 50% of its land lying less than one metre above sea level. This distinct feature contributes to the country's name: in Dutch (Nederland), English, and in many other European languages, its name literally means \"(The) Low Countries\" or \"Low Country\". Most of the areas below sea level are man-made, caused by centuries of extensive and poorly controlled peat extraction, lowering the surface by several meters. Even in flooded areas peat extraction continued through turf dredging. As from the late 16th century land reclamation started and large polder areas are now preserved through elaborate drainage systems with dikes, canals and pumping stations. Much of the Netherlands is formed by the estuary of three important European rivers, which together with their distributaries form the Rhine-Meuse-Scheldt delta. Most of the country is very flat, with the exception of foothills in the far southeast and several low-hill ranges in the central parts. The Netherlands was one of the first countries to have an elected parliament. Among other affiliations, the country is a founding member of the EU, NATO, OECD and WTO. Netherlands has the ninth-highest per capita income in the world. With Belgium and Luxembourg it forms the Benelux economic union. The country is host to the Organization for the Prohibition of Chemical Weapons and five international courts: the Permanent Court of Arbitration, the International Court of Justice, the International Criminal Tribunal for the Former Yugoslavia, the International Criminal Court and the Special Tribunal for Lebanon. The first four are situated in The Hague as is the EU's criminal intelligence agency Europol and judicial co-operation agency Eurojust. This has led to the city being dubbed \"the world's legal capital\". The Netherlands has a capitalist market-based economy, ranking 13th of 157 countries according to the Index of Economic Freedom. In May 2011, the Netherlands was ranked as the \"happiest\" country according to results published by the Organisation for Economic Co-operation and Development."@en ;
+	georss:point	"52.31666666666667 5.55"@en ;
+	dbpprop:nationalMotto	"Je maintiendrai"@en ;
+	dbpprop:imageMap	"EU-Netherlands.svg"@en ,
+		"Dutch Empire35.PNG"@en ,
+		"BES islands location map.svg"@en ;
+	dbpprop:longew	"E"@en ;
+	dbpprop:areaRank	"135"^^xsd:int ;
+	dbpprop:areaKm	"41543"^^xsd:int ;
+	dbpprop:populationEstimate	"16847007"^^xsd:int ;
+	dbpprop:populationDensityKm	"/ 41526 round 1"@en ;
+	dbpprop:populationDensitySqMi	"/ 16033 round 1"@en ;
+	dbpprop:populationDensityRank	"28"^^xsd:int ;
+	dbpprop:gdpPpp	"7.04034E11"^^ns8:usDollar ;
+	dbpprop:gdpNominalPerCapita	"50355.0"^^ns8:usDollar ;
+	dbpprop:giniYear	"2006"^^xsd:int ;
+	dbpprop:giniCategory	"medium"@en ;
+	dbpprop:currency	"Euro : Netherlands, United States dollar : Caribbean Netherlands"@en ;
+	dbpprop:timeZone	"CET and AST"@en ;
+	dbpprop:drivesOn	"right"@en ;
+	dbpprop:areaSqMi	"16039"^^xsd:int ;
+	dbpprop:footnote	"Before 2002: Dutch guilder."@en ,
+		"Frisian , Papiamento  and English  have a formal status in certain parts of the country. Yiddish and the Romani language are recognised as non-territorial languages. Dutch Low Saxon and Limburgish are recognised as regional languages by the European Charter for Regional or Minority Languages."@en ,
+		"The .eu domain is also used, as it is shared with other European Union member states."@en ,
+		"The official motto is French; the literal translation to English is \"I will maintain\""@en ,
+		"599"^^xsd:int ,
+		"Peace of Westphalia"@en ,
+		"The United States dollar is the sole legal tender within the Caribbean Netherlands. Before 2011: Netherlands Antillean guilder."@en ,
+		"While Amsterdam is the constitutional capital, The Hague is the seat of the government."@en ;
+	dbpprop:location	"De Bilt , all KNMI locations ."@en ;
+	dbpprop:metricFirst	"Yes"@en ;
+	dbpprop:source	"Knmi.nl"@en ;
+	dbpprop:marRecordHighC	"26"^^xsd:int ;
+	dbpprop:sepRecordHighC	"35"^^xsd:int ;
+	dbpprop:decRecordHighC	"18"^^xsd:int ;
+	dbpprop:janHighC	"6"^^xsd:int ;
+	dbpprop:febHighC	"6"^^xsd:int ;
+	dbpprop:marHighC	"10"^^xsd:int ;
+	dbpprop:aprHighC	"14"^^xsd:int ;
+	dbpprop:mayHighC	"18"^^xsd:int ;
+	dbpprop:junHighC	"20"^^xsd:int ;
+	dbpprop:julHighC	"23"^^xsd:int ;
+	dbpprop:augHighC	"23"^^xsd:int ;
+	dbpprop:sepHighC	"19"^^xsd:int ;
+	dbpprop:octHighC	"15"^^xsd:int ;
+	dbpprop:novHighC	"10"^^xsd:int ;
+	dbpprop:decHighC	"6"^^xsd:int ;
+	dbpprop:aprRecordLowC	"-9"^^xsd:int ;
+	dbpprop:mayRecordLowC	"-5"^^xsd:int ;
+	dbpprop:julRecordLowC	"1"^^xsd:int ;
+	dbpprop:novRecordLowC	"-14"^^xsd:int ;
+	dbpprop:aprPrecipitationMm	"42"^^xsd:int ;
+	dbpprop:mayPrecipitationMm	"62"^^xsd:int ;
+	dbpprop:julPrecipitationMm	"81"^^xsd:int ;
+	dbpprop:novPrecipitationMm	"80"^^xsd:int ;
+	dbpprop:janSun	"62"^^xsd:int ;
+	dbpprop:febSun	"86"^^xsd:int ;
+	dbpprop:marSun	"122"^^xsd:int ;
+	dbpprop:aprSun	"174"^^xsd:int ;
+	dbpprop:maySun	"207"^^xsd:int ;
+	dbpprop:junSun	"194"^^xsd:int ;
+	dbpprop:julSun	"206"^^xsd:int ;
+	dbpprop:augSun	"188"^^xsd:int ;
+	dbpprop:sepSun	"138"^^xsd:int ;
+	dbpprop:octSun	"113"^^xsd:int ;
+	dbpprop:novSun	"63"^^xsd:int ;
+	dbpprop:decSun	"49"^^xsd:int ;
+	dbpprop:janMeanC	"3"^^xsd:int ;
+	dbpprop:febMeanC	"3"^^xsd:int ;
+	dbpprop:marMeanC	"6"^^xsd:int ;
+	dbpprop:aprMeanC	"9"^^xsd:int ;
+	dbpprop:mayMeanC	"13"^^xsd:int ;
+	dbpprop:junMeanC	"16"^^xsd:int ;
+	dbpprop:julMeanC	"18"^^xsd:int ;
+	dbpprop:augMeanC	"18"^^xsd:int ;
+	dbpprop:sepMeanC	"15"^^xsd:int ;
+	dbpprop:octMeanC	"11"^^xsd:int ;
+	dbpprop:novMeanC	"7"^^xsd:int ;
+	dbpprop:decMeanC	"4"^^xsd:int ;
+	dbpprop:yearLowC	"6"^^xsd:int ;
+	dbpprop:date	"December 2011"@en ;
+	dbpprop:ethnicGroups	"5"^^xsd:int ,
+		"1"^^xsd:int ,
+		"2"^^xsd:int ,
+		"81"^^xsd:int ;
+	dbpprop:latd	"52"^^xsd:int ;
+	dbpprop:latm	"19"^^xsd:int ;
+	dbpprop:areaMagnitude	"10000000000"^^xsd:int ;
+	dbpprop:percentWater	"18"^^xsd:int ;
+	dbpprop:gini	"31"^^xsd:int ;
+	dbpprop:hdi	"1"^^xsd:int ;
+	dbpprop:populationEstimateRank	"61st"@en ;
+	dbpprop:utcOffsetDst	"+2 and \u22124"@en ;
+	dbpprop:janRecordHighC	"17"^^xsd:int ;
+	dbpprop:febRecordHighC	"20"^^xsd:int ;
+	dbpprop:junRecordHighC	"38"^^xsd:int ;
+	dbpprop:augRecordHighC	"39"^^xsd:int ;
+	dbpprop:marRecordLowC	"-21"^^xsd:int ;
+	dbpprop:sepRecordLowC	"-4"^^xsd:int ;
+	dbpprop:decRecordLowC	"-22"^^xsd:int ;
+	dbpprop:marPrecipitationMm	"67"^^xsd:int ;
+	dbpprop:sepPrecipitationMm	"78"^^xsd:int ;
+	dbpprop:decPrecipitationMm	"76"^^xsd:int ;
+	dbpprop:precipitationColour	"green"@en ;
+	dbpprop:mapWidth	"250"^^xsd:int ;
+	dbpprop:title	"Provinces of Netherlands"@en ,
+		"Articles related to the Netherlands"@en ;
+	dbpprop:id	"unl"@en ;
+	dbpprop:commonName	"the Netherlands"@en ;
+	dbpprop:nationalAnthem	"Het Wilhelmus"@en ;
+	dbpprop:imageFlag	"Flag of the Netherlands.svg"@en ;
+	dbpprop:imageCoat	"2.0"^^ns8:second ;
+	dbpprop:latns	"N"@en ;
+	dbpprop:longd	"5"^^xsd:int ;
+	dbpprop:longm	"33"^^xsd:int ;
+	dbpprop:leaderName	"VVD\u2013CDA coalition, a minority cabinet"@en ,
+		"Mark Rutte"@en ,
+		"Maxime Verhagen"@en ;
+	dbpprop:establishedDate	"26"^^xsd:int ,
+		"30"^^xsd:int ;
+	dbpprop:sovereigntyNote	"As result of the Eighty Years' War from the Habsburg Empire"@en ;
+	dbpprop:gdpPppYear	"2011"^^xsd:int ;
+	dbpprop:gdpPppPerCapita	"42183.0"^^ns8:usDollar ;
+	dbpprop:gdpNominal	"8.40433E11"^^ns8:usDollar ;
+	dbpprop:cctld	".nl"@en ;
+	dbpprop:callingCode	"+31, +599"@en ;
+	dbpprop:utcOffset	"+1 and \u22124"@en ;
+	dbpprop:mapCaption	"An anachronous map of the Dutch colonial Empire.  Light green: territories administered by or originating from territories administered by the Dutch East India Company; dark green: the Dutch West India Company."@en ;
+	dbpprop:singleLine	"Yes"@en ;
+	dbpprop:octRecordHighC	"30"^^xsd:int ;
+	dbpprop:yearRecordHighC	"39"^^xsd:int ;
+	dbpprop:janRecordLowC	"-27"^^xsd:int ;
+	dbpprop:febRecordLowC	"-27"^^xsd:int ;
+	dbpprop:junRecordLowC	"-1"^^xsd:int ;
+	dbpprop:augRecordLowC	"1"^^xsd:int ;
+	dbpprop:janPrecipitationMm	"70"^^xsd:int ;
+	dbpprop:febPrecipitationMm	"56"^^xsd:int ;
+	dbpprop:junPrecipitationMm	"66"^^xsd:int ;
+	dbpprop:augPrecipitationMm	"73"^^xsd:int ;
+	dbpprop:yearHighC	"14"^^xsd:int ;
+	dbpprop:yearMeanC	"10"^^xsd:int ;
+	dbpprop:accessioneudate	"25"^^xsd:int ;
+	dbpprop:regionalLanguages	"Frisian , Papiamento , English"@en ;
+	dbpprop:map2Width	"250"^^xsd:int ;
+	dbpedia-owl:motto	"(Ik zal handhaven)(Dutch)"@en ,
+		"(I will maintain)(English)"@en ,
+		"Je maintiendrai(French)"@en ;
+	dbpedia-owl:leaderTitle	"Prime Minister (Demissionary)"@en ,
+		"Current coalition (Demissionary)"@en ,
+		"Monarch"@en ,
+		"Deputy Prime Minister (Demissionary)"@en ;
+	dbpedia-owl:foundingDate	"1648-01-30"^^xsd:date ,
+		"1581-07-26"^^xsd:date ;
+	dbpedia-owl:areaTotal	4.15408e+10 ,
+		4.1543e+10 ;
+	dbpedia-owl:populationDensity	6190.38 ,
+		41526.0 ;
+	dbpedia-owl:percentageOfAreaWater	"18.41"^^xsd:float ;
+	dbpedia-owl:ethnicGroupsInYear	"2008-01-01T00:00:00+02:00"^^xsd:gYear ;
+	dbpedia-owl:demonym	"Dutch"@en ;
+	dbpedia-owl:longName	"Netherlands"@en ;
+	ns10:areaTotal	"41540.81930167911"^^ns8:squareKilometre ,
+		"41543.0"^^ns8:squareKilometre ;
+	ns10:populationDensity	"6190.375907911035"^^ns8:inhabitantsPerSquareKilometre ,
+		"41526.0"^^ns8:inhabitantsPerSquareKilometre ;
+	geo:geometry	"POINT(5.55 52.3167)"^^virtrdf:Geometry .

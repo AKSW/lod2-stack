@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>LOD2 stack demo scenario</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-05-27 12:29:01 CEST"/>
+<meta name="author" content="Karel Kremer"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<style type="text/css">body{ width: 800px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); } img { width:100%; position: relative; }</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">LOD2 stack demo scenario</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction </a></li>
+<li><a href="#sec-2">2 Scenario Description </a></li>
+<li><a href="#sec-3">3 Transforming the data to rdf </a>
+<ul>
+<li><a href="#sec-3.1">3.1 Creating a new graph </a></li>
+<li><a href="#sec-3.2">3.2 Transforming the csv data </a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4 Controlled vocabularies </a></li>
+<li><a href="#sec-5">5 Linking to the code lists </a></li>
+<li><a href="#sec-6">6 Adding context information </a></li>
+<li><a href="#sec-7">7 Visualizing the datacube </a></li>
+<li><a href="#sec-8">8 Publishing the results </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction </h2>
+<div class="outline-text-2" id="text-1">
+
+<p>This page holds a description of the basic demonstration scenario for the lod2 statistical workbench, as it was presented at the Amsterdam plenary. The goal of the scenario is to elevate the statistical information available in a simple csv file to linked data, allowing it to make use of controlled vocabularies, context information, and later on multiple dimensions. The scenario can be seen as a tutorial of how to transform information in a csv to a fully linked rdf data cube.
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Scenario Description </h2>
+<div class="outline-text-2" id="text-2">
+
+<p>This scenario assumes there is a statistician who has the noble goal of documenting the entire world, using statistics. He has already collected a large amount of data, but there are number of problems with the data:
+</p><ul>
+<li>
+the data consists of a large number of loose files
+</li>
+<li>
+the data can be somewhat diverse, using different terms to refer to the same object
+</li>
+<li>
+there are no relations defined between the datasets and the real world
+</li>
+<li>
+because the files are in csv, they are not very attractive to a human user
+</li>
+<li>
+&hellip;
+</li>
+</ul>
+
+<p>To resolve the issues of his dataset, the statistician is now turning to the brave new world of linked open data. This scenario shows how one file of such observations can be converted to linked open data. This file is an example file taken from <a href="https://github.com/AKSW/csvimport.ontowiki">the CSVImport component</a>.
+</p></div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Transforming the data to rdf </h2>
+<div class="outline-text-2" id="text-3">
+
+<p>The first action taken by the statistician could be to transform one of his csv datasets to linked data. This is pretty straight forward, and can be accomplished by following the steps below
+</p>
+</div>
+
+<div id="outline-container-3.1" class="outline-3">
+<h3 id="sec-3.1"><span class="section-number-3">3.1</span> Creating a new graph </h3>
+<div class="outline-text-3" id="text-3.1">
+
+<p>The statistician decides to store each of his datasets as a separate graph in the triple store. He selects the 'Manage Graph' topic from the menu and clicks the 'Create Graph' item. He then uses the ontowiki interface that is provided to him to create a new graph (or knowledge base in ontowiki terms). The statistician enters a new URI for the graph and clicks the create button.
+</p></div>
+
+</div>
+
+<div id="outline-container-3.2" class="outline-3">
+<h3 id="sec-3.2"><span class="section-number-3">3.2</span> Transforming the csv data </h3>
+<div class="outline-text-3" id="text-3.2">
+
+<p>The statistician then needs to transform his existing data to rdf and upload it to the graph. This can be done using the csvimport extension of ontowiki (which can be found in the menu under Manage Graph &gt; Import &gt; Import from CSV).
+</p>
+<p>
+The user is asked to select the graph to insert the CSV file into and clicks on the graph he created in the last step. He selects that he wants to upload a file holding statistical data and he selects the available CSV file for upload. He then clicks the Import CSV button.
+</p>
+<p>
+The csvimport plugin then takes the statistician to a screen where he can configure how his csv file should be translated to <a href="http://www.w3.org/TR/vocab-data-cube/">the datacube vocabulary</a>. The statistician provides a uri to name the DSD, the dataset and the measure that gets created.
+</p>
+<p>
+Then, the dimensions of the new datacube are created, in this case the Location dimension and the Disease dimension. The user clicks on the 'Add dimension' button, fills in the name of the dimension and then clicks the cells that hold the possible values for this dimension in the csv. The cells should be colored in the same color as the dimension that pops up in the user interface.
+</p>
+<p>
+Once the dimensions are defined, the statistician must select the cells holding the observations to add to the datacube. He clicks on the 'Select data range' button and then selects the top-left cell and the bottom-right cell with the relevant data in the csv.
+</p>
+<p>
+<img src="/mnt/hgfs/Sharing/csvimport.png"  alt="/mnt/hgfs/Sharing/csvimport.png" />
+</p>
+<p>
+The csvimport extension now has the relevant data and the user can click 'Extract Triples'. After a few seconds, he receives the message that his data has been transformed into rdf.
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Controlled vocabularies </h2>
+<div class="outline-text-2" id="text-4">
+
+<p>Many of the statistician's datasets use different terms to refer to the same instances. He needs to define some common ground between them. This is where controlled vocabularies come in to play. A 'controlled vocabulary' or 'code list' in the case of linked data defines <i>one</i> set of URIs to refer to a real world object. Whenever a reference is made to that object, this URI should be used. This allows easy identification of all datasets that mention this item and it avoids confusion on which item is actually referred.
+</p>
+<p>
+One way of defining such code lists is to create <a href="http://www.w3.org/TR/skos-reference/">a skos taxonomy</a>. One can for instance use the poolparty thesaurus manager to create such a taxonomy. The screenshot below shows a very simple taxonomy that simply holds the different continents as skos:Concepts.
+</p>
+<p>
+<img src="/home/karel/Pictures/codelist.png"  alt="/home/karel/Pictures/codelist.png" />
+</p>
+<p>
+Once such a code list has been created, the code list can be exported from poolparty as rdf and can directly be inserted into the SPARQL endpoint.
+</p></div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Linking to the code lists </h2>
+<div class="outline-text-2" id="text-5">
+
+<p>Now that the code lists are available in the SPARQL endpoint, any new datacube can link the values in its dimensions to the values from the code list. This way it is easy to retrieve the datacubes that have information about a certain concept, even if the datacube uses a different name for the concept or even if it is written in a different language. To create this link, the statistician can for instance use the SILK linking framework. 
+</p>
+<p>
+The user first creates a new project and creates two new inputs, one for the graph with the new datacube and one for the graph with the code lists. The user also creates an output, which he can for example set to the graph with the datacube triples. The statistician must then create a new linking rule. 
+</p>
+<p>
+In this simple scenario, the locations are continents, which can be linked to the items in the controlled vocabulary based on their name only. The user selects the 'skos:prefLabel' values for the concepts from the vocabulary and the 'rdfs:label' values for the locations from the csv file. Both can be transformed using a lowercase operator and then fed through a Jaro-Winkler distance string comparator. This linkage rule can be seen in the screenshot below. After clicking on the 'Generate Links' tab, the user can generate the links by clicking on the 'Start' button and selecting the output graph he entered before. Because the simplicity of the scenario, this linkage rule will find 100% matches between each of the values in the datacube dimension and the location elements in the controlled vocabulary. 
+</p>
+<p>
+<img src="/mnt/hgfs/Sharing/lod2screens/linktocodelist.png"  alt="/mnt/hgfs/Sharing/lod2screens/linktocodelist.png" />
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Adding context information </h2>
+<div class="outline-text-2" id="text-6">
+
+<p>The statistician may want to connect the items inside his datacubes to other information that is already available. Such context information can come from local sources, holding information he has gathered before, but it can also come from other places on the web, for instance from dbPedia. In this demo scenario, we will take a dump from some relevant items from the dbpedia sparql endpoint to a local graph, using the query (the limit is just for safety):
+</p>
+
+
+
+<pre class="src src-text">construct {
+  ?s ?p ?o. 
+  ?s a &lt;<a href="http://dbpedia.org/ontology/Continent">http://dbpedia.org/ontology/Continent</a>&gt;.
+} where {
+  ?s a &lt;<a href="http://dbpedia.org/ontology/Continent">http://dbpedia.org/ontology/Continent</a>&gt;. 
+  ?s ?p ?o. 
+  FILTER ( lang(?o) = "EN" || lang(?o) = "en" || lang(?o) = "")
+} LIMIT 10000
+</pre>
+
+
+
+
+<p>
+While having code lists is already interesting to avoid ambiguity in data cube dimension values, it is also a big advantage when adding context information to the data cubes. Where one would normally have to link all of this context information to each dataset, the statistician can now link context information to the code lists to make it available to every data cube that uses the code list. Greatly reducing the effort required in linking the linking step. Furthermore, the context information is now located only in one place which makes it very easy to make changes or extensions later on.
+</p>
+<p>
+Linking the code list to the dbpedia context information is done in exactly the same way as linking the information in the data cube to the code list.
+</p></div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Visualizing the datacube </h2>
+<div class="outline-text-2" id="text-7">
+
+<p>Once the data has been transformed to a datacube and linked to a code list that contains some interesting context information, it is time to show some results from our dataset. The CubeViz component allows the statistician to extract meaningful graphs from the datacube. CubeViz has a menu that allows the statistician to select the values from a dimension that he is interested in. The screen below shows a stacked bar chart with disease counts for a number of regions.
+</p>
+<p>
+<img src="/mnt/hgfs/Sharing/lod2screens/visualization.png"  alt="/mnt/hgfs/Sharing/lod2screens/visualization.png" />
+</p></div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Publishing the results </h2>
+<div class="outline-text-2" id="text-8">
+
+<p>In a final step, the statistician can make the work that he has done available to the community. Currently the only way of doing this through the statistical workbench is by uploading the current graph to a CKAN instance, but the workbench can easily be extended with other possibilities (e.g. uploading to a WebDAV). 
+</p>
+<p>
+In the case of a CKAN upload, the statistician must enter the location of the CKAN and his or her credentials on this CKAN instance. He should also select a package name on the CKAN and give a name to the resource he will create in this package. If the dataset already exist, the resource will be added to the dataset without changing the other resources of the dataset. The resource that will be created will consist of an xml/rdf file with the contents of the current graph.
+</p>
+<p>
+The current user interface for uploading to a CKAN instance can be seen in the image below:
+</p>
+<p>
+<img src="/mnt/hgfs/Sharing/lod2screens/ckanexportfull.png"  alt="/mnt/hgfs/Sharing/lod2screens/ckanexportfull.png" />
+</p>
+<p>
+The CKAN export only supports one custom CKAN store at the moment. There are many different types of custom CKAN stores. The CKAN publishing component should be extended so that it parses the error message that is sent back by the CKAN and allows the user to correct for custom CKAN properties.
+</p></div>
+</div>
+<div id="postamble">
+<p class="date"> Date: 2013-05-27 12:29:01 CEST</p>
+<p class="creator">HTML generated by org-mode 6.33x in emacs 23</p>
+</div>
+</div>
+</body>
+</html>

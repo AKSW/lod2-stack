@@ -221,6 +221,45 @@ public class LOD2DemoState
 
     }
 
+    private String lod2webapiService=null;
+    public String getLod2WebApiService(){
+        if(lod2webapiService!=null){
+            return lod2webapiService;
+        }
+        try{
+            RepositoryConnection con = getRdfStore().getConnection();
+
+            // initialize the hostname and portnumber
+            String query = "select ?s from <" + getConfigurationRDFgraph() + "> where " +
+                    "{<" + getConfigurationRDFgraph() + "> " +
+                    "<http://lod2.eu/lod2statworkbench/configures> <http://localhost/lod2webapi>. " +
+                    "<http://localhost/lod2webapi> <http://lod2.eu/lod2statworkbench/service> ?s.} LIMIT 1";
+            TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
+            TupleQueryResult result = tupleQuery.evaluate();
+            while (result.hasNext()) {
+                BindingSet bindingSet=result.next();
+                Value valueOfS = bindingSet.getValue("s");
+                if (valueOfS instanceof LiteralImpl) {
+                    LiteralImpl literalS = (LiteralImpl) valueOfS;
+                    String service = literalS.getLabel();
+                    if (service == null | service.equals("")) {
+                        lod2webapiService = "http://localhost:8080/lod2webapi";
+                    } else {
+                        lod2webapiService = service;
+                    };
+                };
+            }
+        }catch(Exception e){
+            throw new IllegalStateException("Could not find the location of the lod2webapi service in " +
+                    "the configuration graph.");
+        }
+        if(lod2webapiService==null){
+            lod2webapiService = "http://localhost:8080/lod2webapi";
+        }
+        return lod2webapiService;
+    }
+
+
     /**
      * updates the current graph to the given graphname. Also updates any currentgraph listeners
      * @param graphname the new current graph

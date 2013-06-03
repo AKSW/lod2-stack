@@ -56,8 +56,6 @@ public class DeleteGraphs extends CustomComponent
     private Table table;
     private VerticalLayout panel;
 
-    public static final String WEBAPIURL="http://localhost:8080/lod2webapi/";
-
     public DeleteGraphs(LOD2DemoState st) {
 
         // The internal state 
@@ -308,7 +306,7 @@ public class DeleteGraphs extends CustomComponent
         HttpClient httpclient = new DefaultHttpClient();
         try {
 
-            String prefixurl = WEBAPIURL+ "graphsregex?regex=.*&all=true";
+            String prefixurl = state.getLod2WebApiService()+ "/graphsregex?regex=.*&all=true";
 
             HttpGet httpget = new HttpGet(prefixurl);
             httpget.addHeader("accept", "application/json");
@@ -454,7 +452,7 @@ public class DeleteGraphs extends CustomComponent
         HttpClient httpclient = new DefaultHttpClient();
         try {
 
-            String prefixurl = WEBAPIURL+"remove_graphs";
+            String prefixurl = state.getLod2WebApiService()+"/remove_graphs";
 
             HttpPost post = new HttpPost(prefixurl);
 

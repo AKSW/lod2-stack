@@ -15,56 +15,21 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
-import java.io.*;
-import java.lang.*;
-
-import org.apache.http.*;
-import org.apache.http.client.*;
-import org.apache.http.impl.client.*;
-import org.apache.http.protocol.*;
-import org.apache.http.client.methods.*;
-
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.codehaus.jackson.*;
-import org.codehaus.jackson.map.*;
-import org.codehaus.jackson.type.TypeReference;
-
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
 import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
-import org.openrdf.model.*;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.model.impl.*;
-
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The configuration tab which collects information about 
@@ -188,7 +153,7 @@ public class ConfigurationTab extends CustomComponent
 
 				List<String> graphs = null;
 				try {
-						graphs = request_graphs();
+						graphs = request_graphs(state);
 				} catch (Exception e) {
 						System.err.println(e.getMessage());
 				};
@@ -200,16 +165,16 @@ public class ConfigurationTab extends CustomComponent
 		};
 
 		// get the uri's for a list of abbreviations
-		public static List<String> request_graphs() throws Exception {
+		public static List<String> request_graphs(LOD2DemoState state) throws Exception {
 
 				List<String> result = null;
 
 				HttpClient httpclient = new DefaultHttpClient();
 				try {
 
-						String prefixurl = "http://localhost:8080/lod2webapi/graphs";
+						String prefixurl = state.getLod2WebApiService();
 
-						HttpGet httpget = new HttpGet(prefixurl);
+						HttpGet httpget = new HttpGet(prefixurl+"/graphs");
 						httpget.addHeader("accept", "application/json");
 
 
