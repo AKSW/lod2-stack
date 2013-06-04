@@ -398,12 +398,11 @@ public class MergeDatasets extends VerticalLayout {
         private final static String componentSpecSuffix="/compspec";
         //* component types for reference components
         private Map<String,String> referenceTypes=null;
+        //* dimensions in this set will be fused
+        private Set<String> fuseDimensions=new HashSet<String>();
 
         //* whether or not to use uris to talk about components (otherwise labels will be used)
         private boolean displayURIs=false;
-
-        //* whether or not to consider dimension values with the same label as equal
-        private boolean fuseDimensions=false;
 
         //* mapping from component uri to the selected combobox holding the users mapping choice
         private Map<String,Map<String,ComboBox>> userMapping=null;
@@ -424,8 +423,12 @@ public class MergeDatasets extends VerticalLayout {
             this.displayURIs=value;
         }
 
-        public void setFuseDimensions(boolean fuse){
-            this.fuseDimensions=fuse;
+        public void setFuseDimension(String component,boolean fuse){
+            if(fuse){
+                this.fuseDimensions.add(component);
+            }else{
+                this.fuseDimensions.remove(component);
+            }
         }
 
         //* re-renders the window based on the current settings
@@ -449,21 +452,6 @@ public class MergeDatasets extends VerticalLayout {
                     }else{
                         setDisplayURIs(false);
                         render();
-                    }
-                }
-            });
-            final CheckBox fuseDimensions=new CheckBox("Consider component values with same label to be equal",
-                    this.fuseDimensions);
-            fuseDimensions.setImmediate(true);
-            options.addComponent(fuseDimensions);
-
-            fuseDimensions.addListener(new Property.ValueChangeListener() {
-                public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-                    String valueString=valueChangeEvent.getProperty().getValue().toString();
-                    if(valueString.equals("true")){
-                        setFuseDimensions(true);
-                    }else{
-                        setFuseDimensions(false);
                     }
                 }
             });
@@ -568,11 +556,8 @@ public class MergeDatasets extends VerticalLayout {
                 cubeComponentMapping.put(referenceCube,component);
             }
 
-            if(fuseDimensions){
-                this.buildObservationsWithFusion(componentMappingPerCube,componentTranslation);
-            }else{
-                this.buildObservationsWithoutFusion(componentMappingPerCube,componentTranslation);
-            }
+            this.buildObservationsWithFusion(componentMappingPerCube,componentTranslation);
+
         }
 
         /**
@@ -590,54 +575,12 @@ public class MergeDatasets extends VerticalLayout {
                 String type=referenceTypes.get(component);
                 for(String otherCube:componentMappingPerCube.get(component).keySet()){
                     String originalComponent=componentMappingPerCube.get(component).get(otherCube);
-                    StringBuilder builder=new StringBuilder();
 
-                    if(type.equals("dimension")){
+                    if(type.equals("dimension") && this.fuseDimensions.contains(component)){
                         // keep uri's of original observations but change their value to the correct dimension value
-                        builder.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
-                        builder.append("{ ?s ?p ?o. \n");
-                        builder.append("?s <").append(targetComponent).append("> ?value. \n");
-                        builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
-                        builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
-                                append(datacubeURI).append("> }\n");
-                        builder.append("WHERE { ").
-                                append("?s <http://purl.org/linked-data/cube#dataSet> <").append(otherCube).append(">. \n");
-                        builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
-                        builder.append("?s <").append(originalComponent).append("> ?originalvalue. \n");
-                        builder.append("?originalvalue rdfs:label ?label. \n");
-                        builder.append("GRAPH <").append(targetGraph).append("> {\n").
-                                append("?value a <").append(targetComponent).append(">.\n").
-                                append("?value rdfs:label ?label }.");
-                        builder.append("?s ?p ?o. \n");
-                        builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
-                                append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
-                                append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
-                                append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
-
-
+                        fuseNewObservations(targetComponent,originalComponent,otherCube);
                     }else{
-                        builder.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
-                        builder.append("{ ?s ?p ?o. \n");
-                        builder.append("?s <").append(targetComponent).append("> ?value. \n");
-                        builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
-                        builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
-                                append(datacubeURI).append("> }\n");
-                        builder.append("WHERE { ").
-                                append("?s <http://purl.org/linked-data/cube#dataSet> <").append(otherCube).append(">. \n");
-                        builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
-                        builder.append("?s <").append(originalComponent).append("> ?value. \n");
-                        builder.append("?s ?p ?o. \n");
-                        builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
-                                append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
-                                append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
-                                append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
-                    }
-
-                    try{
-                        connection.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
-                    }catch (Exception e){
-                        throw new IllegalStateException("Sorry, we could not update the target graph with the new observations. The " +
-                                "error message was: "+e.getMessage());
+                        generateNewObservations(targetComponent,originalComponent,otherCube);
                     }
                 }
             }
@@ -645,72 +588,92 @@ public class MergeDatasets extends VerticalLayout {
         }
 
         /**
-         * This function merges the datacube observations without regard for differences in the dimension values.
-         * This means that unless the exact same code lists have been used for dimension values in all cubes, dimension
+         * Creates new observations values for the observations found in the original cube, without regard for fusing the
+         * dimension values. This means that unless the exact same code lists have been used for dimension values in all cubes, dimension
          * values with the 'same' values will *not* be seen as equal.
-         *
-         * In that case, the user will have to apply a fusion strategy himself
          */
-        private void buildObservationsWithoutFusion(HashMap<String, HashMap<String, String>> componentMappingPerCube,
-                                                    HashMap<String, String> componentTranslation){
-            for(String component:componentMappingPerCube.keySet()){
-                String referenceComponent=componentTranslation.get(component);
-                String type=referenceTypes.get(referenceComponent);
-                for(String otherCube:componentMappingPerCube.get(component).keySet()){
-                    String targetComponent=componentMappingPerCube.get(component).get(otherCube);
+        private void generateNewObservations(String tComponent, String originalComponent, String originalCube){
 
-                    // TODO doing two queries per dimension per datacube... -> network. Make more efficient?
-                    // keep the uri's of the original observations as they are not being merged here!
-                    StringBuilder builder=new StringBuilder();
-                    builder.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
-                    builder.append("{ ?s ?p ?o. \n");
-                    builder.append("?s <").append(referenceComponent).append("> ?value. \n");
-                    builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
-                    builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
-                            append(datacubeURI).append("> }\n");
-                    builder.append("WHERE { ").
-                            append("?s <http://purl.org/linked-data/cube#dataSet> <").append(otherCube).append(">. \n");
-                    builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
-                    builder.append("?s <").append(targetComponent).append("> ?value. \n");
-                    builder.append("?s ?p ?o. \n");
-                    builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
-                            append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
-                            append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
-                            append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
+            // TODO doing two queries per dimension per datacube... -> network. Make more efficient?
+            // keep the uri's of the original observations as they are not being merged here!
+            StringBuilder builder=new StringBuilder();
+            builder.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
+            builder.append("{ ?s ?p ?o. \n");
+            builder.append("?s <").append(tComponent).append("> ?value. \n");
+            builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
+            builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
+                    append(datacubeURI).append("> }\n");
+            builder.append("WHERE { ").
+                    append("?s <http://purl.org/linked-data/cube#dataSet> <").append(originalCube).append(">. \n");
+            builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
+            builder.append("?s <").append(originalComponent).append("> ?value. \n");
+            builder.append("?s ?p ?o. \n");
+            builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
 
-                    try{
-                        connection.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
-                    }catch (Exception e){
-                        throw new IllegalStateException("Sorry, we could not update the target graph with the new observations. The " +
-                                "error message was: "+e.getMessage());
-                    }
-
-                    // keep the uri's of the original dimension/measure values as they are not being merged here!
-                    StringBuilder builder2=new StringBuilder();
-                    builder2.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
-                    builder2.append("{ ?s ?p ?o. \n");
-                    builder2.append("?s a <").append(referenceComponent).append(">. } \n");
-                    builder2.append("WHERE { ").
-                            append("?s a <").append(targetComponent).append(">. \n");
-                    builder2.append("?obs <").append(targetComponent).append("> ?s. \n");
-                    builder2.append("?obs <http://purl.org/linked-data/cube#dataSet> <").append(otherCube).append(">. \n");
-                    builder2.append("?s ?p ?o. \n");
-
-                    // only check the label here at the moment
-                    if(fuseDimensions){
-                        builder2.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")) } ");
-                    }
-
-                    builder2.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")) } ");
-
-                    try{
-                        connection.prepareGraphQuery(QueryLanguage.SPARQL, builder2.toString()).evaluate();
-                    }catch (Exception e){
-                        throw new IllegalStateException("Sorry, we could not update the target graph with the new observations. The " +
-                                "error message was: "+e.getMessage());
-                    }
-                }
+            try{
+                connection.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
+            }catch (Exception e){
+                throw new IllegalStateException("Sorry, we could not update the target graph with the new observations. The " +
+                        "error message was: "+e.getMessage());
             }
+
+            // keep the uri's of the original dimension/measure values as they are not being merged here!
+            StringBuilder builder2=new StringBuilder();
+            builder2.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
+            builder2.append("{ ?s ?p ?o. \n");
+            builder2.append("?s a <").append(tComponent).append(">. } \n");
+            builder2.append("WHERE { ").
+                    append("?s a <").append(originalComponent).append(">. \n");
+            builder2.append("?obs <").append(originalComponent).append("> ?s. \n");
+            builder2.append("?obs <http://purl.org/linked-data/cube#dataSet> <").append(originalCube).append(">. \n");
+            builder2.append("?s ?p ?o. \n");
+            builder2.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")) } ");
+
+            try{
+                connection.prepareGraphQuery(QueryLanguage.SPARQL, builder2.toString()).evaluate();
+            }catch (Exception e){
+                throw new IllegalStateException("Sorry, we could not update the target graph with the new observations. The " +
+                        "error message was: "+e.getMessage());
+            }
+        }
+
+        /**
+         * Creates new dimension values by fusing the original component values based on rdfs:label or skos:prefLabel.
+         * It uses the labels of the dimension values to decide whether the uri's in the values point to the same concept.
+         */
+        private void fuseNewObservations(String targetComponent, String originalComponent, String otherCube){
+            StringBuilder builder=new StringBuilder();
+
+            builder.append("INSERT INTO GRAPH <").append(targetGraph).append(">\n");
+            builder.append("{ ?s ?p ?o. \n");
+            builder.append("?s <").append(targetComponent).append("> ?value. \n");
+            builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
+            builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
+                    append(datacubeURI).append("> }\n");
+            builder.append("WHERE { ").
+                    append("?s <http://purl.org/linked-data/cube#dataSet> <").append(otherCube).append(">. \n");
+            builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
+            builder.append("?s <").append(originalComponent).append("> ?originalvalue. \n");
+            builder.append("{?originalvalue rdfs:label ?label. } UNION {?originalvalue skos:prefLabel ?label}. \n");
+            builder.append("GRAPH <").append(targetGraph).append("> {\n").
+                    append("?value a <").append(targetComponent).append(">.\n").
+                    append("{?value rdfs:label ?label. } UNION {?value skos:prefLabel ?label} }.");
+            builder.append("?s ?p ?o. \n");
+            builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
+
+            try{
+                connection.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
+            }catch (Exception e){
+                throw new IllegalStateException("Sorry, we could not update the target graph with the new observations. The " +
+                        "error message was: "+e.getMessage());
+            }
+
         }
 
         /**
@@ -843,10 +806,29 @@ public class MergeDatasets extends VerticalLayout {
          * Adds the panel to the window as a next component. Returns a reference map from othercube uri to
          * the comboboxwith the selected component uri
          */
-        private Map<String,ComboBox> buildComponentMappingPanel(String componentUri, String label, String type,
+        private Map<String,ComboBox> buildComponentMappingPanel(final String componentUri, String label, String type,
                                                  Map<String,Map<String,String>> labels,
                                                  Map<String,Map<String,String>> types){
             Panel panel=new Panel(this.displayURIs?componentUri:label + " ("+type+")");
+
+            if(type.equals("dimension")){
+                final CheckBox fuseDimensions=new CheckBox("Consider component values with same label to be equal",
+                        this.fuseDimensions.contains(componentUri));
+                fuseDimensions.setImmediate(true);
+                panel.addComponent(fuseDimensions);
+
+                fuseDimensions.addListener(new Property.ValueChangeListener() {
+                    public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                        String valueString=valueChangeEvent.getProperty().getValue().toString();
+                        if(valueString.equals("true")){
+                            setFuseDimension(componentUri,true);
+                        }else{
+                            setFuseDimension(componentUri,false);
+                        }
+                    }
+                });
+            }
+
             HashMap<String,ComboBox> comboBoxes=new HashMap<String, ComboBox>();
             for(String otherCube : labels.keySet()){
                 ComboBox options=new ComboBox(otherCube);
