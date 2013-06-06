@@ -42,6 +42,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private String testMeasuresInDSD;
 	private String testDimensionsHaveRange;
 	private AbstractLayout target;
+	private String testSliceKeysDeclared;
+	private String testSliceKeysConsistentWithDSD;
+	private String testSliceStructureUnique;
+	private String testSliceDimensionsComplete;
 	
 	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
@@ -115,6 +119,60 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] } ");
 		strBuilder.append("}");
 		testDimensionRange = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?sliceKey \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?dsd a qb:DataStructureDefinition . \n");
+		strBuilder.append("    ?dsd qb:sliceKey ?sliceKey . \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("}");
+		testSliceKeysDeclared = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?sliceKey \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
+		strBuilder.append("  ?sliceKey qb:componentProperty ?prop . \n");
+		strBuilder.append("  ?dsd qb:sliceKey ?sliceKey . \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?dsd qb:component ?cs . \n");
+		strBuilder.append("    ?cs qb:dimension ?prop . \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("}");
+		testSliceKeysConsistentWithDSD = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?slice \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  { \n");
+		strBuilder.append("    ?slice a qb:Slice . \n");
+		strBuilder.append("    FILTER NOT EXISTS { ?slice qb:sliceStructure ?key } \n");
+		strBuilder.append("  } UNION { \n");
+		strBuilder.append("    ?slice a qb:Slice . \n");
+		strBuilder.append("    ?slice qb:sliceStructure ?key1 . \n");
+		strBuilder.append("    ?slice qb:sliceStructure ?key2 . \n");
+		strBuilder.append("    FILTER (?key1 != ?key2) \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("}");
+		testSliceStructureUnique = strBuilder.toString();
+		
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?slice ?dim \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?slice qb:sliceStructure ?key . \n");
+		strBuilder.append("  ?key qb:componentProperty ?dim . \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?slice ?dim ?val . \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("} order by ?slice");
+		testSliceDimensionsComplete = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
@@ -239,6 +297,14 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		criteriaList.setItemCaption(itemDimensionsHaveRange, "Dimensions have range");
 		final Object itemDimDefined = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
+		final Object itemSliceKeysDeclared = criteriaList.addItem();
+		criteriaList.setItemCaption(itemSliceKeysDeclared, "Slice keys declared");
+		final Object itemSliceKeysConsistent = criteriaList.addItem();
+		criteriaList.setItemCaption(itemSliceKeysConsistent, "Slice keys consistent");
+		final Object itemSliceStructureUnique = criteriaList.addItem();
+		criteriaList.setItemCaption(itemSliceStructureUnique, "Slice structure unique");
+		final Object itemSliceDimensionsComplete = criteriaList.addItem();
+		criteriaList.setItemCaption(itemSliceDimensionsComplete, "Slice dimensions complete");
 		final Object itemDimReq = criteriaList.addItem();
 		criteriaList.setItemCaption(itemDimReq, "All dimensions required");
 		final Object itemObsUnique = criteriaList.addItem();
@@ -274,6 +340,14 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					measuresInDSD();
 				else if (selectedItem == itemDimensionsHaveRange)
 					dimensionsHaveRange();
+				else if (selectedItem == itemSliceKeysDeclared)
+					sliceKeysDeclared();
+				else if (selectedItem == itemSliceKeysConsistent)
+					sliceKeysConsistentWithDSD();
+				else if (selectedItem == itemSliceStructureUnique)
+					sliceStructureUnique();
+				else if (selectedItem == itemSliceDimensionsComplete)
+					sliceDimensionsComplete();
 				else if (selectedItem == itemDimDefined)
 					dimensionDefinitions();
 				else if (selectedItem == itemDimReq)
@@ -802,6 +876,320 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		fix.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)listDimensions.getValue());
+			}
+		});
+		
+		showContent();
+	}
+	
+	private void sliceKeysDeclared(){
+		validationTab.removeAllComponents();
+		
+		final TupleQueryResult res = executeTupleQuery(testSliceKeysDeclared);
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final ArrayList<String> listSliceKeys = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				listSliceKeys.add(set.getValue("sliceKey").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		if (listSliceKeys.size() == 0){
+			Label label = new Label();
+			label.setValue("Every slice key is associated with a DSD");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Following slice keys should be associated with a DSD");
+		validationTab.addComponent(label);
+		final ListSelect lsSliceKeys = new ListSelect("Slice keys", listSliceKeys);
+		lsSliceKeys.setImmediate(true);
+		lsSliceKeys.setNullSelectionAllowed(false);
+		validationTab.addComponent(lsSliceKeys);
+		
+		final Table detailsTable = new Table("Slice key details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		validationTab.addComponent(editInOW);
+		
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)lsSliceKeys.getValue());
+			}
+		});
+		lsSliceKeys.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
+				int i=1;
+				detailsTable.removeAllItems();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						detailsTable.addItem(new Object [] { set.getValue("p").stringValue(),
+								set.getValue("o").stringValue() }, new Integer(i++));
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		showContent();
+	}
+	
+	private void sliceKeysConsistentWithDSD(){
+		validationTab.removeAllComponents();
+		
+		final TupleQueryResult res = executeTupleQuery(testSliceKeysConsistentWithDSD);
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final ArrayList<String> listSliceKeys = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				listSliceKeys.add(set.getValue("sliceKey").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		if (listSliceKeys.size() == 0){
+			Label label = new Label();
+			label.setValue("All slice keys are consistent with associated DSD, i.e. for every slice key holds: " +
+					"every component property of the slice key is also declared as a component of the associated DSD");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("All slice keys should be consistent with thier associated DSDs, i.e. for every slice key following should hold: " +
+				"every component property of the slice key is also declared as a component of the associated DSD.");
+		validationTab.addComponent(label);
+		Label label2 = new Label();
+		label2.setValue("Following slice keys should be modified in order to be consistent with the associated DSD");
+		validationTab.addComponent(label2);
+		final ListSelect lsSliceKeys = new ListSelect("Slice keys", listSliceKeys);
+		lsSliceKeys.setImmediate(true);
+		lsSliceKeys.setNullSelectionAllowed(false);
+		validationTab.addComponent(lsSliceKeys);
+		
+		final Table detailsTable = new Table("Slice key details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		validationTab.addComponent(editInOW);
+		
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)lsSliceKeys.getValue());
+			}
+		});
+		lsSliceKeys.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
+				int i=1;
+				detailsTable.removeAllItems();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						detailsTable.addItem(new Object [] { set.getValue("p").stringValue(),
+								set.getValue("o").stringValue() }, new Integer(i++));
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		showContent();
+	}
+	
+	private void sliceStructureUnique(){
+		validationTab.removeAllComponents();
+		
+		final TupleQueryResult res = executeTupleQuery(testSliceStructureUnique);
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final ArrayList<String> listSlices = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				listSlices.add(set.getValue("slice").stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		if (listSlices.size() == 0){
+			Label label = new Label();
+			label.setValue("Every slice has a unique structure, i.e. exactly one associated slice key (via property qb:sliceStructure)");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Following slices have 0 or more than 1 associated slice keys (via property qb:sliceStructure)");
+		validationTab.addComponent(label);
+		final ListSelect lsSlices = new ListSelect("Slices", listSlices);
+		lsSlices.setImmediate(true);
+		lsSlices.setNullSelectionAllowed(false);
+		validationTab.addComponent(lsSlices);
+		
+		final Table detailsTable = new Table("Slice details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		validationTab.addComponent(editInOW);
+		
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)lsSlices.getValue());
+			}
+		});
+		lsSlices.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
+				int i=1;
+				detailsTable.removeAllItems();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						detailsTable.addItem(new Object [] { set.getValue("p").stringValue(),
+								set.getValue("o").stringValue() }, new Integer(i++));
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		showContent();
+	}
+	
+	private void sliceDimensionsComplete(){
+		validationTab.removeAllComponents();
+		
+		final TupleQueryResult res = executeTupleQuery(testSliceDimensionsComplete);
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+		String lastSlice = null;
+		ArrayList<String> lastDimensions = new ArrayList<String>();
+		try {
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				String s = set.getValue("slice").stringValue();
+				if (lastSlice == null) lastSlice = s;
+				String d = set.getValue("dim").stringValue();
+				if (!s.equals(lastSlice)) {
+					map.put(lastSlice, lastDimensions);
+					lastSlice = s;
+					lastDimensions = new ArrayList<String>();
+				}
+				lastDimensions.add(d);
+			}
+			if (lastSlice != null) map.put(lastSlice, lastDimensions);
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		if (map.size() == 0){
+			Label label = new Label();
+			label.setValue("Every slice has a value for every dimension declared in its associated slice key (via property qb:sliceStructure)");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Following slices do not have a value for every dimension declared in its associated slice key (via property qb:sliceStructure)");
+		validationTab.addComponent(label);
+		final ListSelect lsSlices = new ListSelect("Slices", map.keySet());
+		lsSlices.setImmediate(true);
+		lsSlices.setNullSelectionAllowed(false);
+		validationTab.addComponent(lsSlices);
+		
+		final Table detailsTable = new Table("Slice details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
+		
+		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
+		validationTab.addComponent(lblProblem);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		validationTab.addComponent(editInOW);
+		
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)lsSlices.getValue());
+			}
+		});
+		lsSlices.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				String slice = (String)event.getProperty().getValue();
+				TupleQueryResult res = getResourceProperties(slice);
+				int i=1;
+				detailsTable.removeAllItems();
+				try {
+					while (res.hasNext()){
+						BindingSet set = res.next();
+						detailsTable.addItem(new Object [] { set.getValue("p").stringValue(),
+								set.getValue("o").stringValue() }, new Integer(i++));
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+				StringBuilder sb = new StringBuilder();
+				sb.append("<b>Problem description: </b>Selected slice is missing a value for the following dimensions:");
+				for (String dim: map.get(slice))
+					sb.append(" ").append(dim).append(",");
+				sb.deleteCharAt(sb.length()-1);
+				lblProblem.setValue(sb.toString());
 			}
 		});
 		
