@@ -34,7 +34,8 @@ public class CustomComponentFactory {
 		SPARQLPoolParty,
         EditDatasetOW, EditStructureDefOW, EditComponentPropOW, MondecaSPARQLList,
         VisualizeCubeviz,
-        MergeDatasets
+        MergeDatasets,
+        SliceDatasets
 	}
 	
 	private LOD2DemoState state;
@@ -70,6 +71,7 @@ public class CustomComponentFactory {
 			case MondecaSPARQLList: return new MondecaSPARQLList(state);
 			case VisualizeCubeviz: return new OntoWikiPathExtended(state, "/cubeviz", true);
             case MergeDatasets: return new MergeDatasets(state);
+            case SliceDatasets: return new CreateSlices(state);
 			default: return null;
 		}
 	}

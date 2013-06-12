@@ -2,6 +2,8 @@ package eu.lod2.stat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -23,12 +25,16 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
+import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
+import eu.lod2.LOD2DemoState.CurrentGraphListener;
 
-public class CreateSlices extends VerticalLayout {
+public class CreateSlices extends VerticalLayout implements CurrentGraphListener{
 	
 	private LOD2DemoState state;
 	private String selectedDataSet;
@@ -38,9 +44,19 @@ public class CreateSlices extends VerticalLayout {
 	private ArrayList<ComboBox> listComboDim;
 	private ArrayList<ComboBox> listComboVal;
 	
+	private List<SliceKey> availableKeys;
+	private List<Slice> availableSlices;
+	private TextField txtSliceKeyURI;
+	private TextField txtSliceKeyLabel;
+	private TextField txtSliceURI;
+	private TextField txtSliceLabel;
+	private Button btnCreateSlice;
+	
 	public CreateSlices(LOD2DemoState state){
 		this.state = state;
 		this.selectedDataSet = null;
+		this.availableKeys = new LinkedList<CreateSlices.SliceKey>();
+		this.availableSlices = new LinkedList<CreateSlices.Slice>();
 		this.availableDimensions = new ArrayList<String>();
 		this.listComboDim = new ArrayList<ComboBox>();
 		this.listComboVal = new ArrayList<ComboBox>();
@@ -103,13 +119,127 @@ public class CreateSlices extends VerticalLayout {
 		return executeTupleQuery(queryBuilder.toString());
 	}
 	
+	public static class SliceDimension{
+		public Value dim=null, val=null;
+	}
+	
+	public static class Slice {
+		public Value slice=null;
+		public String label = null;
+		public List<SliceDimension> dimensions = null;
+	}
+	
+	private List<Slice> getSlices(){
+		LinkedList<Slice> slices = new LinkedList<CreateSlices.Slice>();
+		StringBuilder q = new StringBuilder();
+		q.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		q.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+		q.append("prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		q.append("select ?slice ?label ?dim ?val \n");
+		q.append("from <").append(state.getCurrentGraph()).append("> \n");
+		q.append("where { \n");
+		q.append("  <").append(selectedDataSet).append("> qb:slice ?slice . \n");
+		q.append("  ?slice a qb:Slice . \n");
+		q.append("  ?slice qb:sliceStructure ?key . \n");
+		q.append("  ?key qb:componentProperty ?dim . \n");
+		q.append("  ?slice ?dim ?val . \n");
+		q.append("  OPTIONAL { ?slice rdfs:label ?label } \n");
+		q.append("} order by ?slice");
+		
+		try {
+			RepositoryConnection conn = state.getRdfStore().getConnection();
+			TupleQueryResult res = conn.prepareTupleQuery(QueryLanguage.SPARQL, q.toString()).evaluate();
+			String lastSlice = null;
+			List<SliceDimension> lastDimensions = null;
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				Value sliceValue = set.getValue("slice");
+				String sliceString = sliceValue.stringValue();
+				if (!sliceString.equals(lastSlice)) {
+					lastSlice = sliceString;
+					lastDimensions = new LinkedList<CreateSlices.SliceDimension>();
+					Slice s = new Slice();
+					s.slice = sliceValue;
+					s.dimensions = lastDimensions;
+					Value labelValue = set.getValue("label");
+					s.label = (labelValue != null)?labelValue.stringValue():null;
+					slices.add(s);
+				}
+				SliceDimension sd = new SliceDimension();
+				sd.dim = set.getValue("dim");
+				sd.val = set.getValue("val");
+				lastDimensions.add(sd);
+			}
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
+		return slices;
+	}
+	
+	public static class SliceKey {
+		public Value key = null;
+		public String label = null;
+		public List<Value> dimensions = null;
+	}
+	
+	private List<SliceKey> getSliceKeys(){
+		LinkedList<SliceKey> keys = new LinkedList<SliceKey>();
+		StringBuilder q = new StringBuilder();
+		q.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		q.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+		q.append("prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		q.append("select ?key ?label ?dim \n");
+		q.append("from <").append(state.getCurrentGraph()).append("> \n");
+		q.append("where { \n");
+		q.append("  <").append(selectedDataSet).append("> qb:structure ?dsd . \n");
+		q.append("  ?dsd qb:sliceKey ?key . \n");
+		q.append("  ?key a qb:SliceKey . \n");
+		q.append("  ?key qb:componentProperty ?dim . \n");
+		q.append("  OPTIONAL { ?key rdfs:label ?label } \n");
+		q.append("} order by ?key");
+		
+		try {
+			RepositoryConnection conn = state.getRdfStore().getConnection();
+			TupleQueryResult res = conn.prepareTupleQuery(QueryLanguage.SPARQL, q.toString()).evaluate();
+			String lastKey = null;
+			LinkedList<Value> lastDimensions = null;
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				Value key = set.getValue("key");
+				String keyString = key.stringValue();
+				if (!keyString.equals(lastKey)){
+					lastKey = keyString;
+					lastDimensions = new LinkedList<Value>();
+					SliceKey sk = new SliceKey();
+					sk.key = key;
+					sk.dimensions = lastDimensions;
+					Value labelValue = set.getValue("label");
+					sk.label = (labelValue != null)?labelValue.stringValue():null;
+					keys.add(sk);
+				}
+				lastDimensions.add(set.getValue("dim"));
+			}
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
+		return keys;
+	}
+	
 	private void addDimension(){
 		final HorizontalLayout dimensionLayout = new HorizontalLayout();
 		dimensionLayout.setWidth("100%");
 		layoutDimensions.addComponent(dimensionLayout);
 		dimensionLayout.setSpacing(true);
 		final ComboBox comboDimensions = new ComboBox("Choose dimension", availableDimensions);
-		comboDimensions.setNullSelectionAllowed(false);
+		comboDimensions.setNullSelectionAllowed(true);
 		comboDimensions.setImmediate(true);
 		comboDimensions.setWidth("100%");
 		dimensionLayout.addComponent(comboDimensions);
@@ -131,6 +261,19 @@ public class CreateSlices extends VerticalLayout {
 			public void valueChange(ValueChangeEvent event) {
 				comboValues.removeAllItems();
 				String dim = (String)event.getProperty().getValue();
+				if (dim==null) {
+					comboValues.requestRepaint();
+					updateKeyInfo();
+					return;
+				}
+				for (ComboBox c: listComboDim){
+					if (c == comboDimensions || c.getValue() == null) continue;
+					if (dim.equals((String)c.getValue())){
+						comboDimensions.setValue(comboDimensions.getNullSelectionItemId());
+						getWindow().showNotification("Dimension already selected");
+						return;
+					}
+				}
 				String ds = selectedDataSet;
 				TupleQueryResult res = getValues(ds, dim);
 				try {
@@ -142,15 +285,139 @@ public class CreateSlices extends VerticalLayout {
 					e.printStackTrace();
 				}
 				comboValues.requestRepaint();
+				updateKeyInfo();
+			}
+		});
+		comboValues.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				updateSliceInfo();
 			}
 		});
 		btnRemove.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				listComboDim.remove(comboDimensions);
+				if (comboDimensions.getValue() != null) 
+					updateKeyInfo();
 				listComboVal.remove(comboValues);
+				if (comboValues.getValue() != null)
+					updateSliceInfo();
 				layoutDimensions.removeComponent(dimensionLayout);
 			}
 		});
+	}
+	
+	private void updateKeyInfo(){
+		// check if there already is an appropriate key
+		SliceKey key = null;
+		for (SliceKey k:availableKeys){
+			int n = 0;
+			boolean containsAll = true;
+			for (ComboBox combo: listComboDim){
+				if (combo.getValue() == null) continue;
+				n++;
+				boolean containsThis = false;
+				for (Value v: k.dimensions) {
+					if (v.stringValue().equals((String)combo.getValue())) {
+						containsThis = true;
+						break;
+					}
+				}
+				if (!containsThis){
+					containsAll = false;
+					break;
+				}
+			}
+			if (containsAll && n == k.dimensions.size()){
+				key = k;
+				break;
+			}
+		}
+		
+		if (key != null){
+			txtSliceKeyURI.setValue(key.key.stringValue());
+			txtSliceKeyURI.setEnabled(false);
+			txtSliceKeyLabel.setValue(key.label);
+			txtSliceKeyLabel.setEnabled(false);
+		} else {
+			txtSliceKeyURI.setValue("");
+			txtSliceKeyURI.setEnabled(true);
+			txtSliceKeyLabel.setValue("");
+			txtSliceKeyLabel.setEnabled(true);
+		}
+	}
+	
+	private void updateSliceInfo(){
+		Slice slice = null;
+		for (Slice sl: availableSlices){
+			int n = 0;
+			boolean containsAll = true;
+			for (int i=0; i<listComboDim.size(); i++){
+				String dimString = (String)listComboDim.get(i).getValue();
+				Value valValue = (Value)listComboVal.get(i).getValue();
+				if (dimString == null || valValue == null) continue;
+				n++;
+				boolean containsThis = false;
+				for (SliceDimension slDim: sl.dimensions){
+					if (slDim.dim.stringValue().equals(dimString) && slDim.val.stringValue().equals(valValue.stringValue())){
+						containsThis = true;
+						break;
+					}
+				}
+				if (!containsThis) {
+					containsAll = false;
+					break;
+				}
+			}
+			if (containsAll && n == sl.dimensions.size()){
+				slice = sl;
+				break;
+			}
+		}
+		
+		if (slice != null){
+			txtSliceURI.setValue(slice.slice.stringValue());
+			txtSliceURI.setEnabled(false);
+			txtSliceLabel.setValue(slice.label);
+			txtSliceLabel.setEnabled(false);
+			btnCreateSlice.setEnabled(false);
+		} else {
+			txtSliceURI.setValue("");
+			txtSliceURI.setEnabled(true);
+			txtSliceLabel.setValue("");
+			txtSliceLabel.setEnabled(true);
+			btnCreateSlice.setEnabled(true);
+		}
+	}
+	
+	private void refresh(){
+		this.removeAllComponents();
+		this.setSizeUndefined();
+		this.setWidth("100%");
+		
+		String currentGraph = state.getCurrentGraph();
+	    if (currentGraph == null || currentGraph.isEmpty()){
+	    	VerticalLayout l = new VerticalLayout();
+	    	l.setSizeFull();
+	    	this.addComponent(l);
+	        Label message=new Label("No graph is currently selected. You can select one below:");
+	        l.addComponent(message);
+	        l.setExpandRatio(message, 0.0f);
+	        ConfigurationTab config=new ConfigurationTab(this.state);
+	        l.addComponent(config);
+	        l.setExpandRatio(config, 2.0f);
+	        l.setComponentAlignment(message,Alignment.TOP_LEFT);
+	        l.setComponentAlignment(config,Alignment.TOP_LEFT);
+	
+	        return;
+	    }
+		
+		this.selectedDataSet = null;
+		this.availableKeys.clear();
+		this.availableSlices.clear();
+		this.availableDimensions.clear();
+		this.listComboDim.clear();
+		this.listComboVal.clear();
+		render();
 	}
 	
 	public void render(){
@@ -176,17 +443,35 @@ public class CreateSlices extends VerticalLayout {
 		this.addComponent(layoutDimensions);
 		
 		Button btnAddDimension = new Button("Add dimension");
-		Button btnCreateSlice = new Button("Create slice");
-		HorizontalLayout layoutCommands = new HorizontalLayout();
-		layoutCommands.setSpacing(true);
-		this.addComponent(layoutCommands);
-		layoutCommands.addComponent(btnAddDimension);
-		layoutCommands.addComponent(btnCreateSlice);
+		btnCreateSlice = new Button("Create slice");
+		this.addComponent(btnAddDimension);
+		
+		txtSliceKeyURI = new TextField("SliceKey URI");
+		txtSliceKeyURI.setWidth("100%");
+		this.addComponent(txtSliceKeyURI);
+		
+		txtSliceKeyLabel = new TextField("SliceKey Label");
+		txtSliceKeyLabel.setWidth("100%");
+		this.addComponent(txtSliceKeyLabel);
+		
+		txtSliceURI = new TextField("Slice URI");
+		txtSliceURI.setWidth("100%");
+		this.addComponent(txtSliceURI);
+		
+		txtSliceLabel = new TextField("Slice Label");
+		txtSliceLabel.setWidth("100%");
+		this.addComponent(txtSliceLabel);
+		
+		this.addComponent(btnCreateSlice);
 		
 		comboDataSets.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				selectedDataSet = (String)event.getProperty().getValue();
 				availableDimensions.clear();
+				availableKeys.clear();
+				availableKeys.addAll(getSliceKeys());
+				availableSlices.clear();
+				availableSlices.addAll(getSlices());
 				TupleQueryResult res = getDimensions(selectedDataSet);
 				try {
 					while (res.hasNext()){
@@ -236,8 +521,22 @@ public class CreateSlices extends VerticalLayout {
 				String qb = "http://purl.org/linked-data/cube#";
 				String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 				String rdfs = "http://www.w3.org/2000/01/rdf-schema#";
-				URI sliceURI = factory.createURI(strSliceURI.toString());
-				URI sliceKeyURI = factory.createURI(strSliceKeyURI.toString());
+				
+				String suri = (String)txtSliceURI.getValue();
+				String slab = (String)txtSliceLabel.getValue();
+				String kuri = (String)txtSliceKeyURI.getValue();
+				String klab = (String)txtSliceKeyLabel.getValue();
+				if (suri == null || suri.trim().equals("")){
+					getWindow().showNotification("Slice URI not defined", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				if (kuri == null || kuri.trim().equals("")){
+					getWindow().showNotification("SliceKey URI not defined", Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				
+				URI sliceURI = factory.createURI(suri.trim());
+				URI sliceKeyURI = factory.createURI(kuri.trim());
 				URI dsURI = factory.createURI(selectedDataSet);
 				
 				ArrayList<Statement> stmts = new ArrayList<Statement>();
@@ -247,18 +546,20 @@ public class CreateSlices extends VerticalLayout {
 				stmts.add(factory.createStatement(sliceURI, 
 						factory.createURI(rdf, "type"), 
 						factory.createURI(qb,"Slice")));
-				stmts.add(factory.createStatement(sliceURI, 
-						factory.createURI(rdfs, "label"), 
-						factory.createLiteral(strSliceLabel.toString())));
+				if (slab != null && !slab.trim().equals(""))
+					stmts.add(factory.createStatement(sliceURI, 
+							factory.createURI(rdfs, "label"), 
+							factory.createLiteral(strSliceLabel.toString())));
 				stmts.add(factory.createStatement(sliceURI, 
 						factory.createURI(qb, "sliceStructure"), 
 						sliceKeyURI));
 				stmts.add(factory.createStatement(sliceKeyURI, 
 						factory.createURI(rdf, "type"), 
 						factory.createURI(qb, "SliceKey")));
-				stmts.add(factory.createStatement(sliceKeyURI, 
-						factory.createURI(rdfs, "label"), 
-						factory.createLiteral(strSliceKeyLabel.toString())));
+				if (klab != null && !klab.trim().equals(""))
+					stmts.add(factory.createStatement(sliceKeyURI, 
+							factory.createURI(rdfs, "label"), 
+							factory.createLiteral(strSliceKeyLabel.toString())));
 				for (URI dimURI: mapDimensionValues.keySet()){
 					stmts.add(factory.createStatement(sliceKeyURI, 
 							factory.createURI(qb, "componentProperty"), 
@@ -307,10 +608,29 @@ public class CreateSlices extends VerticalLayout {
 				}
 				
 				getWindow().showNotification("All done!");
-				
+				availableSlices.clear();
+				availableKeys.clear();
+				availableSlices.addAll(getSlices());
+				availableKeys.addAll(getSliceKeys());
+				updateSliceInfo();
+				updateKeyInfo();
 			}
 		});
-		
+	}
+
+	public void notifyCurrentGraphChange(String graph) {
+		refresh();
+	}
+	
+	@Override
+	public void attach() {
+		state.addCurrentGraphListener(this);
+		refresh();
+	}
+
+	@Override
+	public void detach() {
+		state.removeCurrentGraphListener(this);
 	}
 
 }

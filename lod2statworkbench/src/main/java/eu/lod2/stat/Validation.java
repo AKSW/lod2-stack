@@ -309,8 +309,6 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		criteriaList.setItemCaption(itemDimReq, "All dimensions required");
 		final Object itemObsUnique = criteriaList.addItem();
 		criteriaList.setItemCaption(itemObsUnique, "No duplicate observations");
-		final Object itemCreateSlices = criteriaList.addItem();
-		criteriaList.setItemCaption(itemCreateSlices, "Create slices");
 		
 		validationTab = new VerticalLayout();
 		validationTab.setMargin(false);
@@ -354,8 +352,6 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					dimensionsRequired();
 				else if (selectedItem == itemObsUnique)
 					noDuplicateObs();
-				else if (selectedItem == itemCreateSlices)
-					slice();
 				else {
 					summary();
 				}
