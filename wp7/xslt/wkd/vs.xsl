@@ -26,6 +26,7 @@
  -->
 
 <xsl:import href="content.xsl"/>
+<xsl:import href="wkdsc-textextraktor.xsl"/>
 
 <xsl:output encoding="UTF-8"/>
 
@@ -46,6 +47,9 @@
 	</xsl:if>
 	<!-- build the list of all containd parts, the list is flat, not hierarchical -->
 	<xsl:apply-templates select="*"/>
+	<rdf:value rdf:parseType="Literal">
+		<xsl:apply-templates mode="in-extract-text"/>
+	</rdf:value>
 	<xsl:call-template name="doc-parts-vs"/>
 </xsl:template>
 
@@ -119,7 +123,13 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:variable name="uri" select="fun:getPartId(.,$r-uri)" as="xs:string"/>
-					<metalex:fragment rdf:resource="{$uri}"/>
+					<metalex:fragment>
+						<metalex:Fragment rdf:about="{$uri}">
+							<rdf:value rdf:parseType="Literal">
+								<xsl:apply-templates mode="in-extract-text"/>
+							</rdf:value>
+						</metalex:Fragment>
+					</metalex:fragment>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>

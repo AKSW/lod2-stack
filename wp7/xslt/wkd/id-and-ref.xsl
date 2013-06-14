@@ -317,7 +317,7 @@
 			                if (string-length($id) = 0) then '' else $id)"/>
 		</xsl:when>
 		<xsl:when test="name($element)='vs-absatz'">
-			<xsl:value-of select="concat($b-uri,'/par/',fun:percentEncode($element/../@par),'/section/',fun:percentEncode(string($element/@nr)))"/>
+			<xsl:value-of select="concat($b-uri,'/section/',fun:percentEncode(string($element/@nr)))"/>
 		</xsl:when>
 		<xsl:otherwise>
 			<!--
@@ -782,7 +782,8 @@ produkt + vsk + art + abs
 	</xsl:choose>
 </xsl:function>
 
-</xsl:stylesheet><!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
+</xsl:stylesheet>
+<!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
