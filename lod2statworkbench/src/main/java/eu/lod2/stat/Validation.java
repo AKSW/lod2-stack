@@ -283,6 +283,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void createGUI(){
 		criteriaList = new ListSelect("Validation criteria");
 		criteriaList.setNullSelectionAllowed(false);
+		criteriaList.setHeight("400px");
 		final Object itemSummary = criteriaList.addItem();
 		criteriaList.setItemCaption(itemSummary, "Summary");
 		final Object itemProvenance = criteriaList.addItem();
@@ -901,7 +902,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		if (listSliceKeys.size() == 0){
 			Label label = new Label();
-			label.setValue("Every slice key is associated with a DSD");
+			label.setValue("No problems were detected - either there are no slice keys or every slice key is associated with a DSD");
 			validationTab.addComponent(label);
 			showContent();
 			return;
@@ -973,7 +974,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		if (listSliceKeys.size() == 0){
 			Label label = new Label();
-			label.setValue("All slice keys are consistent with associated DSD, i.e. for every slice key holds: " +
+			label.setValue("No problems were detected - either there are no slice keys or all slice keys are consistent with associated DSD, i.e. for every slice key holds: " +
 					"every component property of the slice key is also declared as a component of the associated DSD");
 			validationTab.addComponent(label);
 			showContent();
@@ -1050,7 +1051,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		if (listSlices.size() == 0){
 			Label label = new Label();
-			label.setValue("Every slice has a unique structure, i.e. exactly one associated slice key (via property qb:sliceStructure)");
+			label.setValue("No problems were detected - either there are no slices or every slice has a unique structure, i.e. exactly one associated slice key (via property qb:sliceStructure)");
 			validationTab.addComponent(label);
 			showContent();
 			return;
@@ -1133,7 +1134,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		if (map.size() == 0){
 			Label label = new Label();
-			label.setValue("Every slice has a value for every dimension declared in its associated slice key (via property qb:sliceStructure)");
+			label.setValue("No problems were detected - either there are no slices or every slice has a value for every dimension declared in its associated slice key (via property qb:sliceStructure)");
 			validationTab.addComponent(label);
 			showContent();
 			return;

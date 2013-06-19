@@ -467,6 +467,8 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 		comboDataSets.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				selectedDataSet = (String)event.getProperty().getValue();
+				listComboDim.clear();
+				listComboVal.clear();
 				availableDimensions.clear();
 				availableKeys.clear();
 				availableKeys.addAll(getSliceKeys());
@@ -483,6 +485,15 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				}
 				layoutDimensions.removeAllComponents();
 				addDimension();
+				txtSliceKeyURI.setValue("");
+				txtSliceKeyURI.setEnabled(true);
+				txtSliceKeyLabel.setValue("");
+				txtSliceKeyLabel.setEnabled(true);
+				txtSliceURI.setValue("");
+				txtSliceURI.setEnabled(true);
+				txtSliceLabel.setValue("");
+				txtSliceLabel.setEnabled(true);
+				btnCreateSlice.setEnabled(true);
 			}
 		});
 		btnAddDimension.addListener(new Button.ClickListener() {
@@ -597,14 +608,19 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				try {
 					RepositoryConnection connection = state.getRdfStore().getConnection();
 					connection.add(stmts, factory.createURI(state.getCurrentGraph()));
+					connection.commit();
 					connection.prepareGraphQuery(QueryLanguage.SPARQL, linkDSD.toString()).evaluate();
 					connection.prepareGraphQuery(QueryLanguage.SPARQL, linkObs.toString()).evaluate();
+					connection.commit();
 				} catch (RepositoryException e) {
 					e.printStackTrace();
+					getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 				} catch (QueryEvaluationException e) {
 					e.printStackTrace();
+					getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 				} catch (MalformedQueryException e) {
 					e.printStackTrace();
+					getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 				}
 				
 				getWindow().showNotification("All done!");
