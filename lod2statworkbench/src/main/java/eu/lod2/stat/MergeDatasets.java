@@ -197,21 +197,25 @@ public class MergeDatasets extends VerticalLayout {
     /**
      * returns whether or not it is possible to merge the given set of dataset uris according to the
      * current connection
+     *
+     * returns a reason why the components cannot be merged if they cannot be merged and returns null if they
+     * can be merged.
      */
-    public boolean canMergeDatasets(Set<String> datasets){
+    public String canMergeDatasets(Set<String> datasets){
         String previousDSD=null;
         for(String currentDSD : datasets){
             if(previousDSD==null){
                 previousDSD=currentDSD;
                 continue;
             }
-            if(!compatibleDSDComponents(previousDSD, currentDSD, connection)){
-                return false;
+            String incompatibilityReason=compatibleDSDComponents(previousDSD, currentDSD, connection);
+            if(incompatibilityReason!=null){
+                return incompatibilityReason;
             }
             previousDSD=currentDSD;
         }
 
-        return true;
+        return null;
     }
 
     /**
@@ -237,21 +241,30 @@ public class MergeDatasets extends VerticalLayout {
     /**
      * Checks whether the given dsds are compatible, meaning that they should have the same number of components per
      * type of component
+     * Returns a reason as a string if the components are not compatible, returns null if they are compatible
      */
-    public boolean compatibleDSDComponents(String dsdURI1, String dsdURI2, RepositoryConnection connection){
+    public String compatibleDSDComponents(String dsdURI1, String dsdURI2, RepositoryConnection connection){
         Map<String,Integer> counts1=getComponentCounts(dsdURI1,connection);
         Map<String,Integer> counts2=getComponentCounts(dsdURI2,connection);
 
         for(String s : counts1.keySet()){
             // both counts are guaranteed to have the exact same (equal) keys
             if(!counts1.get(s).equals(counts2.get(s))){
-                return false;
+                return "DSD <"+dsdURI1+"> and <"+dsdURI2+"> are incompatible because " +
+                        "they have different counts for the components of type "+s;
             }
         }
-        return true;
+        return null;
     }
 
-    //* returns the component counts for each of the datacube components
+    public static final String DIMENSION_HUMAN_NAME = "dimension";
+    public static final String MEASURE_HUMAN_NAME = "measure";
+    public static final String ATTRIBUTE_HUMAN_NAME = "attribute";
+
+    /**
+     * returns the component counts for each of the datacube components mapped from component type to a count
+     * of components for that type
+     */
     public Map<String,Integer> getComponentCounts(String dsdURI, RepositoryConnection connection){
         StringBuilder builder=new StringBuilder();
         builder.append("SELECT (count(distinct ?dim) as ?dimcount) ");
@@ -269,16 +282,16 @@ public class MergeDatasets extends VerticalLayout {
             if(result.hasNext()){
                 BindingSet bindings=result.next();
                 Map<String,Integer> results=new HashMap<String, Integer>();
-                results.put("dimcount",Integer.parseInt(bindings.getValue("dimcount").stringValue()));
-                results.put("mcount",Integer.parseInt(bindings.getValue("mcount").stringValue()));
-                results.put("acount",Integer.parseInt(bindings.getValue("acount").stringValue()));
+                results.put(DIMENSION_HUMAN_NAME,Integer.parseInt(bindings.getValue("dimcount").stringValue()));
+                results.put(MEASURE_HUMAN_NAME,Integer.parseInt(bindings.getValue("mcount").stringValue()));
+                results.put(ATTRIBUTE_HUMAN_NAME,Integer.parseInt(bindings.getValue("acount").stringValue()));
 
                 return results;
             }else{
                 Map<String,Integer> results=new HashMap<String, Integer>();
-                results.put("dimcount",0);
-                results.put("mcount",0);
-                results.put("acount",0);
+                results.put(DIMENSION_HUMAN_NAME,0);
+                results.put(MEASURE_HUMAN_NAME,0);
+                results.put(ATTRIBUTE_HUMAN_NAME,0);
 
                 return results;
             }
@@ -316,7 +329,8 @@ public class MergeDatasets extends VerticalLayout {
      * @param datasets the uris for the datasets, should be larger than one and filled with uris
      */
     private void mergeDatasets(String datacubeURI, String targetGraph, Set<String> datasets){
-        if(canMergeDatasets(datasets)){
+        String incompatibilityReason=canMergeDatasets(datasets);
+        if(incompatibilityReason==null){
             String referenceCubeUri=this.referenceSelector.getSelection();
             datasets.remove(referenceCubeUri);
             DataCubeMapper mapper=new DataCubeMapper("Select data cube component mappings",datasets,
@@ -329,8 +343,9 @@ public class MergeDatasets extends VerticalLayout {
         }else{
             Window window=new Window("Cannot map datasets");
             window.setModal(true);
-            // TODO improve by giving a reason?
-            window.addComponent(new Label("Sorry, we cannot map the datasets, their structure is too different."));
+            window.setWidth("50%");
+            window.addComponent(new Label("Sorry, we cannot map the datasets, their structure is too different. One reason why the datasets are incompatible is: "));
+            window.addComponent(new Label(incompatibilityReason));
             window.center();
 
             this.getWindow().addWindow(window);
