@@ -1,38 +1,25 @@
 package eu.lod2.stat;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
+import eu.lod2.ConfigurationTab;
+import eu.lod2.LOD2DemoState;
+import eu.lod2.LOD2DemoState.CurrentGraphListener;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.*;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window.Notification;
-
-import eu.lod2.ConfigurationTab;
-import eu.lod2.LOD2DemoState;
-import eu.lod2.LOD2DemoState.CurrentGraphListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CreateSlices extends VerticalLayout implements CurrentGraphListener{
 	
@@ -581,7 +568,8 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				}
 				
 				StringBuilder linkDSD = new StringBuilder();
-				linkDSD.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
+                linkDSD.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
+                linkDSD.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
 				linkDSD.append("  ?dsd qb:sliceKey <").append(strSliceKeyURI.toString()).append("> . \n");
 				linkDSD.append("} \n");
 				linkDSD.append("WHERE { GRAPH <").append(state.getCurrentGraph()).append("> { \n");
@@ -590,7 +578,8 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				linkDSD.append("} } ");
 				
 				StringBuilder linkObs = new StringBuilder();
-				linkObs.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
+                linkObs.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
+                linkObs.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
 				linkObs.append("  <").append(strSliceURI.toString()).append("> qb:observation ?obs . \n");
 				linkObs.append("} \n");
 				linkObs.append("WHERE { GRAPH <").append(state.getCurrentGraph()).append("> { \n");
