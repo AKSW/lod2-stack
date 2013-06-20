@@ -1,25 +1,38 @@
 package eu.lod2.stat;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window.Notification;
-import eu.lod2.ConfigurationTab;
-import eu.lod2.LOD2DemoState;
-import eu.lod2.LOD2DemoState.CurrentGraphListener;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.*;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.openrdf.model.Statement;
+import org.openrdf.model.URI;
+import org.openrdf.model.Value;
+import org.openrdf.model.ValueFactory;
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
+
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
+
+import eu.lod2.ConfigurationTab;
+import eu.lod2.LOD2DemoState;
+import eu.lod2.LOD2DemoState.CurrentGraphListener;
 
 public class CreateSlices extends VerticalLayout implements CurrentGraphListener{
 	
@@ -547,7 +560,7 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				if (slab != null && !slab.trim().equals(""))
 					stmts.add(factory.createStatement(sliceURI, 
 							factory.createURI(rdfs, "label"), 
-							factory.createLiteral(strSliceLabel.toString())));
+							factory.createLiteral(slab)));
 				stmts.add(factory.createStatement(sliceURI, 
 						factory.createURI(qb, "sliceStructure"), 
 						sliceKeyURI));
@@ -557,7 +570,7 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				if (klab != null && !klab.trim().equals(""))
 					stmts.add(factory.createStatement(sliceKeyURI, 
 							factory.createURI(rdfs, "label"), 
-							factory.createLiteral(strSliceKeyLabel.toString())));
+							factory.createLiteral(klab)));
 				for (URI dimURI: mapDimensionValues.keySet()){
 					stmts.add(factory.createStatement(sliceKeyURI, 
 							factory.createURI(qb, "componentProperty"), 
@@ -568,27 +581,25 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				}
 				
 				StringBuilder linkDSD = new StringBuilder();
-                linkDSD.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
-                linkDSD.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
-				linkDSD.append("  ?dsd qb:sliceKey <").append(strSliceKeyURI.toString()).append("> . \n");
+				linkDSD.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
+				linkDSD.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
+				linkDSD.append("  ?dsd qb:sliceKey <").append(kuri).append("> . \n");
 				linkDSD.append("} \n");
 				linkDSD.append("WHERE { GRAPH <").append(state.getCurrentGraph()).append("> { \n");
-				linkDSD.append("  ?ds qb:slice <").append(strSliceURI.toString()).append("> . \n");
-				linkDSD.append("  ?ds qb:structure ?dsd . \n");
+				linkDSD.append("  <").append(selectedDataSet).append("> qb:structure ?dsd . \n");
 				linkDSD.append("} } ");
 				
 				StringBuilder linkObs = new StringBuilder();
-                linkObs.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
-                linkObs.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
-				linkObs.append("  <").append(strSliceURI.toString()).append("> qb:observation ?obs . \n");
+				linkObs.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
+				linkObs.append("INSERT INTO GRAPH <").append(state.getCurrentGraph()).append("> { \n");
+				linkObs.append("  <").append(suri).append("> qb:observation ?obs . \n");
 				linkObs.append("} \n");
 				linkObs.append("WHERE { GRAPH <").append(state.getCurrentGraph()).append("> { \n");
 				linkObs.append("  ?obs a qb:Observation . \n");
-				linkObs.append("  ?obs qb:dataSet ?ds . \n");
-				linkObs.append("  ?ds qb:slice <").append(strSliceURI.toString()).append("> . \n");
+				linkObs.append("  ?obs qb:dataSet <").append(selectedDataSet).append("> . \n");
 				linkObs.append("  FILTER NOT EXISTS { \n");
-				linkObs.append("    <").append(strSliceKeyURI.toString()).append("> qb:componentProperty ?dim . \n");
-				linkObs.append("    <").append(strSliceURI.toString()).append("> ?dim ?val1 . \n");
+				linkObs.append("    <").append(kuri).append("> qb:componentProperty ?dim . \n");
+				linkObs.append("    <").append(suri).append("> ?dim ?val1 . \n");
 				linkObs.append("    ?obs ?dim ?val2 . \n");
 				linkObs.append("    FILTER (?val2 != ?val1) \n");
 				linkObs.append("  } \n");
