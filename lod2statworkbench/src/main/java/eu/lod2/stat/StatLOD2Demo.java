@@ -218,13 +218,14 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
             public void menuSelected(MenuItem selectedItem){
                 // publishing should be protected with an authenticator, otherwise a store could be published
                 // without provenance information!
-                showInWorkspace(new Authenticator(new CKANPublisherPanel(state), new HashSet<String>(Arrays.asList(state.adminRole)), state));
+                //showInWorkspace(new Authenticator(new CKANPublisherPanel(state), new HashSet<String>(Arrays.asList(state.adminRole)), state));
+                showInWorkspace(new CKANPublisherPanel(state));
             }
         };
 
         MenuBar.Command mDeleteGraphs = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
-                showInWorkspace(new Authenticator(new DeleteGraphs(state), new HashSet<String>(Arrays.asList(state.adminRole)),state));
+                showInWorkspace(new DeleteGraphs(state));
             }
         };
 

@@ -1,6 +1,39 @@
+#+STYLE:<style type="text/css">body{ width: 800px; margin: 0 auto; background-color: #FDFDFD; padding: 20px; border: solid gray 1px; text-align:justify; } h2 { border-style: solid; border-width: 0 0 2px 0; color: rgb(0, 0, 114); } img {width: 100%;} html {background-color: rgb(247, 243, 243);}</style>
 Data Cube Merge Component
 
 * Introduction
 This document describes the Data Cube Merge Component (DCMC). It explores the reason that this component exists, how it should be used and the decisions that were taken when developing this component.
 
-TODO document the DCMC
+* Supported merge scenarios
+The Data Cube Merge component can support different ways of combining multiple Data Cubes, where the cubes are defined by the W3C working draft for the [[http://www.w3.org/TR/vocab-data-cube/][RDF Data Cube vocabulary]]. This merging can be interpreted in different ways and this section will document the supported scenarios.
+
+** Same DSD, different observations
+When the data structure definition (DSD) of the cubes to be merged is exactly the same, and the observations are disjoint, the merge scenario is rather straight forward: the user selects a reference cube, the DSD of this cube is cloned, together with all component specifications and components. The decision was made for a clone in stead of a simple link to allow the user to customize the cube later on. The observations from all merged cubes are copied directly into the new cube. The final, merged set of observations is assumed to be disjoint, meaning there will be no multiple observations with the same dimension values. Otherwise the resulting cube would not be valid, see the mixed observation section.
+** Fusing cube component values
+Certain data cubes do not use code lists for their dimension values. In this case it is often necessary to perform an additional fusion step to harmonize the values in the components of the data cubes. The current algorithm allows the user to choose for a very basic fusion strategy that examines the labels for the dimension values and considers two values to be the same if their labels are an exact match. In that case, the first value that was encountered is entered in the cube and all observations using the dimension value with the same label will reuse the original value.
+
+This 'fusion' step is optional. The user can choose to perform a post-merging fusion step himself, using for example SIEVE, R2R or indeed direct SPARQL update queries.
+** Similar DSD, different observations
+The fusion component allows the user to merge data cubes with similar DSD's as well. The only requirement is that all cubes have the same number of dimensions, measures and attributes. The user can then select a mapping from all components of the reference cube to the components of the cubes to be merged. Currently, the merging algorithm has no further requirements on the DSDs of the components to be merged, e.g. the format of the dimension values can be different and the merging can still be performed. The user is assumed to have sufficient knowledge of his data cubes to know which cubes and which components should be matched.
+** Similar DSD, mixed observations
+In the case that the cubes that are being merged have an overlap in their observations a post processing fusion step is required. Overlapping dimensions in this sense means that when one takes the union of all observations in both cubes, there will be observations that have the same value for all dimension components. A cube with overlapping observations is not considered to be a well-formed cube according to [[http://www.w3.org/TR/vocab-data-cube/#wf-rules][the rules in the specification]]. This case can therefore be detected using the [[https://grips.semantic-web.at/display/LOD2/LOD2+Tool+for+Validating+RDF+Data+Cube+Models][LOD2 Data Cube validation component]]. The validation component allows a simple resolving scenario that removes duplicate observations. If a more advanced fusion strategy is desired (e.g. aggregating the values of the overlapping observations), specialized tools like SIEVE and R2R can be used again.
+* User interface
+** Data cube selection
+The user can select data cubes from within is current graph or from anywhere in the database. To simplify the handling of data cube information, the SPARQL operations in this component assume that URIs are used consequently, meaning that one URI always points to a single entity in the real world. When information is gathered about an entity related to a data cube (e.g. the DSD of the cube), the graph that this information resides in is considered to be of no importance. This can be further improved by remembering the graph that the cube was selected from and by gathering information on entities related to this cube only from that graph. The graph that contains the data cube will have to be specified in some way, e.g. as the graph that holds the type information of the data cube.
+
+[[file:./merge1.png]]
+** Labels versus URIs
+Sometimes a human readable label can make it easier to understand what a cube is about than his URI. On the other hand, it can happen that two data cube components have the same label. To that end, the user is allowed to select whether he wants to view the information on the data cubes as URIs or as Labels.
+** Merging multiple data cubes
+The user can add any number of data cubes to merge. The first cube in the interface is marked as the reference cube. The user must specify a graph to enter the new cube in and he must specify a base uri that will be used for creating the new entities in the data cube.
+
+Once the user is done adding new cubes to the list of cubes to be merged, he can click the 'merge data cubes' button. The algorithm then examines whether the cubes are fit for merging. Currently, the requirement for merging is that all cubes have the same number of attributes, dimensions and measures. These counts are displayed in the data cube selection boxes. If all cubes are considered fit for merging, the user will have to specify a link from the components of the reference data cube to the components in all other cubes to be merged.
+** Copying information to the new cube
+Even though the user specifies a reference cube, this does not mean that only the additional information from the reference cube is copied into the new cube. Because RDF allows a URI to have any number of values for a given property, all additional information for data cube elements is copied into the new cube. However, only the first degree additional information is copied into the new cube, meaning only the values that are linked by a single predicate to elements from the Data Cube Vocabulary. This is because the algorithm has no way of knowing how far this web of information is stretched out, in the extreme case, it would have to link the entire database into the new graph.
+* Future Work
+** Direct integration of R2R component
+In case a more advanced fusion operation has to be performed on the data cube, we cannot take the fusion decisions for the user. In this case the user will need full control on how to merge the data cubes together, and can for instance use the R2R component. This component should shortly be integrated as a component in the stack.
+** Merge component in cooperation with other data cube features
+In the previous section, the interaction of the DCMC with the Data Cube validation component has been specified already. While the merge component is currently set up as a stand alone Widget in the statistical workbench, it is straight forward to provide a general cube management component that bundles Validation, Split and Merge capabilities in a panel with different tabs. This allows the user a quick overview of all ways that he can edit his cube.
+** Split component
+Sometimes the cube contains too much information (too many dimensions, too many measures, unwanted values for the dimensions, ...). In that case, a way to split the data cube must be provided.
