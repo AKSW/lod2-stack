@@ -12,12 +12,14 @@
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/ontowiki>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/ssb>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/virtuoso>.
+<http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/configures> <http://localhost/dbpedia-spotlight-ui>.
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/hostname> "localhost:8080"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/lod2democonfiguration> <http://lod2.eu/lod2demo/SystemGraphFor> <http://localhost/lod2democonfiguration>.
 <http://localhost/lod2democonfiguration>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2demo/SystemGraph>.
 <http://localhost/lodrefine> <http://lod2.eu/lod2demo/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/lodrefine> <http://lod2.eu/lod2demo/service> "http://localhost/lodrefine/"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/lodrefine> <http://lod2.eu/lod2demo/username> ""^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/dbpedia-spotlight-ui> <http://lod2.eu/lod2demo/service> "http://localhost/dbpedia-spotlight-ui/"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/OntoWiki/Config/>  <http://lod2.eu/lod2demo/SystemGraphFor> <http://localhost/lod2democonfiguration>.
 <http://localhost/OntoWiki/Config/>  <http://www.w3.org/TR/rdf-schema/type> <http://lod2.eu/lod2demo/SystemGraph>.
 <http://localhost/ontowiki> <http://lod2.eu/lod2demo/password> ""^^<http://www.w3.org/2001/XMLSchema#string> .

@@ -1,3 +1,17 @@
+lod2demo (1.2.10) lod2; urgency=low
+
+  * integrate lod2-refine via depends
+  * integrate missing dependency for sparqled
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Fri, 21 Jun 2013 13:03:31 +0100
+
+lod2demo (1.2.9) lod2; urgency=low
+
+  * integrate dbpedia spotlight
+  * adapt dependency structure to make lod-refine recommended
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Fri, 21 Jun 2013 12:47:44 +0100
+
 lod2demo (1.2.8) lod2; urgency=low
 
   * integrate Vuk's changes: lists of CKAN RDF resources
@@ -21,7 +35,7 @@ lod2demo (1.2.6) lod2; urgency=low
 
 lod2demo (1.2.5) lod2; urgency=low
 
-  * fix configuration mistake 
+  * fix configuration mistake
 
  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Fri, 30 Nov 2012 13:51:30 +0100
 
@@ -59,7 +73,7 @@ lod2demo (1.2.0) lod2; urgency=low
   * sparqled integrated
   * lodrefine integrated
   * proxy settings integrated
-  * configuration.nt in the system configuration 
+  * configuration.nt in the system configuration
 
  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Sat, 17 Nov 2012 11:03:30 +0100
 
@@ -109,7 +123,7 @@ lod2demo (1.1.28) lod2; urgency=low
 
 lod2demo (1.1.27) lod2; urgency=low
 
-  * add pages for limes and spatial semantic browser 
+  * add pages for limes and spatial semantic browser
 
  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 21 Feb 2012 08:10:19 -0800
 
@@ -121,7 +135,7 @@ lod2demo (1.1.26) lod2; urgency=low
 
 lod2demo (1.1.25) lod2; urgency=low
 
-  * improve postinst script 
+  * improve postinst script
 
  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Mon, 23 Jan 2012 01:14:35 -0800
 
@@ -151,7 +165,7 @@ lod2demo (1.1.22) lod2; urgency=low
 lod2demo (1.1.21) lod2; urgency=low
 
   * ontowiki query page works
-  * rdf upload via virtuoso conductor now depends on credential info 
+  * rdf upload via virtuoso conductor now depends on credential info
 
  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Wed, 09 Nov 2011 07:24:30 -0800
 
