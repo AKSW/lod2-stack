@@ -335,7 +335,9 @@ The license under which the tool is distributed.
 <rdf:type rdf:resource="&lod2;Tool"/>
 <rdfs:label xml:lang="en">DBpedia</rdfs:label>
 <tool_homepage rdf:datatype="&xsd;string">http://dbpedia.org/</tool_homepage>
-<tool_description>DBpedia is a community effort to extract structured information from Wikipedia and to make this information available on the Web. It currently already contains a tremendous amount of valuable knowledge extracted from Wikipedia. The DBpedia knowledge base will be used for evaluation LOD2's interlinking, fusing, aggregation and visualization components. The DBpedia multi-domain ontology will be used as background-knowledge for the LOD2 applications (WP7, WP8 and WP9), and as an alignment and annotation ontology for LOD in general.</tool_description>
+<tool_description>The DBpedia project leverages this gigantic source of knowledge by extracting structured information from Wikipedia and by making this information accessible on the Web under the terms of the Creative Commons.</tool_description>
+<license rdf:resource="&lod2;CC_BY_SA_3.0"/>
+<license rdf:resource="&lod2;GnuFreeDoc"/>
 <contributed_by_partner rdf:resource="&Partner;ulei"/>
 <contributed_by_partner rdf:resource="&Partner;fub"/>
 </owl:NamedIndividual>
@@ -401,6 +403,8 @@ The license under which the tool is distributed.
 <tool_homepage rdf:datatype="&xsd;string">http://sindice.com/</tool_homepage>
 <tool_description>Sindice is a state of the art infrastructure to process, consolidate and query the Web of Data. Sindice collates these billions of pieces of metadata into an coherent umbrella of functionalities and services.</tool_description>
 <contributed_by_partner rdf:resource="&Partner;nuig"/>
+<responsible rdf:resource="&lod2;GiovanniTummarello"/>
+<license rdf:resource="&lod2;Apache_2.0"/>
 </owl:NamedIndividual>
 
 
@@ -772,6 +776,12 @@ It is very easy to implement new custom data source (e.g. for your relational or
 	<license_url rdf:datatype="&xsd;string">http://creativecommons.org/licenses/by/3.0/</license_url>
 	</owl:NamedIndividual>
 
+	<!-- http://lod2.eu/tools.owl#CC_BYSA_3.0 -->
+	<owl:NamedIndividual rdf:about="&lod2;CC_BY_SA_3.0">
+	<rdf:type rdf:resource="&lod2;OpenSource"/>
+	<license_url rdf:datatype="&xsd;string">http://creativecommons.org/licenses/by-sa/3.0/</license_url>
+	</owl:NamedIndividual>
+
 	<!-- http://lod2.eu/tools.owl#CommercialLicense -->
 
 	<owl:NamedIndividual rdf:about="&lod2;CommercialLicense">
@@ -810,6 +820,14 @@ It is very easy to implement new custom data source (e.g. for your relational or
 	<rdf:type rdf:resource="&lod2;OpenSource"/>
 	<license_url rdf:datatype="&xsd;string">http://www.fsf.org/licensing/licenses/agpl-3.0.html</license_url>
 	</owl:NamedIndividual>
+
+	<!-- http://lod2.eu/tools.owl#GnuFreeDoc -->
+
+	<owl:NamedIndividual rdf:about="&lod2;GnuFreeDoc">
+	<rdf:type rdf:resource="&lod2;OpenSource"/>
+	<license_url rdf:datatype="&xsd;string">http://www.gnu.org/copyleft/fdl.html</license_url>
+	</owl:NamedIndividual>
+
 
 	<!-- http://lod2.eu/tools.owl#Mozilla_1.1 -->
 
@@ -892,6 +910,15 @@ It is very easy to implement new custom data source (e.g. for your relational or
 	<person_name rdf:datatype="&xsd;string">Andreas Blumauer</person_name>
 	<person_email rdf:datatype="&xsd;string">a.blumauer@semantic-web.at</person_email>
 	</owl:NamedIndividual>
+
+	<!-- http://lod2.eu/tools.owl#Giovanni Tummarello-->
+
+	<owl:NamedIndividual rdf:about="&lod2;GiovanniTummarello">
+	<rdf:type rdf:resource="&lod2;ToolResponsible"/>
+	<person_name rdf:datatype="&xsd;string">Giovanni Tummarello</person_name>
+	<person_email rdf:datatype="&xsd;string">giovanni.tummarello@deri.org</person_email>
+	</owl:NamedIndividual>
+
 
 
 	<owl:NamedIndividual rdf:about="&localhost;ORE">
