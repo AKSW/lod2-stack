@@ -293,6 +293,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         menuEdit.addItem("Merge datasets", null, cmdMergeDatasets);
         menuEdit.addItem("Slice datasets", null, cmdSliceDatasets);
         menuEdit.addItem("Transform and Update Graph (SPARQL Update Endpoint)", null, cmdSparqlUpdateVirtuoso);
+        menuEdit.addItem("Transform and Update Graph (R2R rules)", null, getCustomComponentCommand(CompType.R2R));
         
         // extraction menus
         //menuExtraction.addItem("Upload RDF File or RDF from URL", null, cmdUploadRDF);

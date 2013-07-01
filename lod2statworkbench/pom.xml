@@ -242,15 +242,18 @@
       <id>maven-general</id>
       <url>http://repo2.maven.org/maven2/</url>
     </repository>
+      <!--
     <repository>
       <id>Jena</id>
       <url>http://openjena.org/repo</url>
         </repository>
-        <repository>  
-   <id>maven-restlet</id>  
-   <name>Public online Restlet repository</name>  
-   <url>http://maven.restlet.org</url>  
-</repository>  
+        -->
+
+      <repository>
+          <id>maven-restlet</id>
+          <name>Public online Restlet repository</name>
+          <url>http://maven.restlet.org</url>
+      </repository>
     <!--
     <repository>
       <id>The Buzz Media Maven Repository</id>

@@ -15,44 +15,20 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.io.*;
-import java.io.UnsupportedEncodingException;
-import java.lang.*;
-
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
-import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
-
-import org.openrdf.model.*;
 import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.repository.Repository;
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.query.*;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.model.impl.*;
 
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * The GeoSpatial allows to visualize geospatial data.
@@ -116,7 +92,8 @@ public class GeoSpatial extends CustomComponent
 			geobrowser = new Embedded("", new ExternalResource(url));
 			geobrowser.setType(Embedded.TYPE_BROWSER);
 			geospatiallayout.addComponent(geobrowser);
-			geobrowser.setHeight(-1, Sizeable.UNITS_PERCENTAGE);
+			//geobrowser.setHeight(-1, Sizeable.UNITS_PERCENTAGE);
+            geobrowser.setSizeFull();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		};
@@ -124,6 +101,7 @@ public class GeoSpatial extends CustomComponent
 
 		// The composition root MUST be set
 		setCompositionRoot(geospatiallayout);
+        geospatiallayout.setSizeFull();
 	}
 
 	private void storeConfiguration(ClickEvent event) {
