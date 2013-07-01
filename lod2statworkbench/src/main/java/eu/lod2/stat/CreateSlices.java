@@ -53,6 +53,11 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 	private TextField txtSliceLabel;
 	private Button btnCreateSlice;
 	
+	private String lastKeyURI="";
+	private String lastKeyLabel="";
+	private String lastSliceURI="";
+	private String lastSliceLabel="";
+	
 	public CreateSlices(LOD2DemoState state){
 		this.state = state;
 		this.selectedDataSet = null;
@@ -336,28 +341,21 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 		}
 		
 		if (key != null){
+			if (txtSliceKeyURI.isEnabled()){
+				lastKeyURI = (String)txtSliceKeyURI.getValue();
+				lastKeyLabel = (String)txtSliceKeyLabel.getValue();
+			}
 			txtSliceKeyURI.setValue(key.key.stringValue());
 			txtSliceKeyURI.setEnabled(false);
 			txtSliceKeyLabel.setValue(key.label);
 			txtSliceKeyLabel.setEnabled(false);
 		} else {
-			StringBuilder strKeyURI = new StringBuilder(selectedDataSet).append("_sliceKey");
-			StringBuilder strKeyLabel = new StringBuilder("Slice Key -");
-			for (ComboBox combo: listComboDim){
-				String dim = (String)combo.getValue();
-				if (dim == null) continue;
-				String dim1 = null;
-				if (dim.contains("#"))
-					dim1 = dim.substring(dim.lastIndexOf("#")+1);
-				else 
-					dim1 = dim.substring(dim.lastIndexOf("/")+1);
-				strKeyURI.append("_").append(dim1);
-				strKeyLabel.append(" ").append(dim1);
+			if (!txtSliceKeyURI.isEnabled()){
+				txtSliceKeyURI.setValue(lastKeyURI);
+				txtSliceKeyURI.setEnabled(true);
+				txtSliceKeyLabel.setValue(lastKeyLabel);
+				txtSliceKeyLabel.setEnabled(true);
 			}
-			txtSliceKeyURI.setValue(strKeyURI.toString());
-			txtSliceKeyURI.setEnabled(true);
-			txtSliceKeyLabel.setValue(strKeyLabel.toString());
-			txtSliceKeyLabel.setEnabled(true);
 		}
 	}
 	
@@ -390,35 +388,23 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 		}
 		
 		if (slice != null){
+			if (txtSliceURI.isEnabled()){
+				lastSliceURI = (String)txtSliceURI.getValue();
+				lastSliceLabel = (String)txtSliceLabel.getValue();
+			}
 			txtSliceURI.setValue(slice.slice.stringValue());
 			txtSliceURI.setEnabled(false);
 			txtSliceLabel.setValue(slice.label);
 			txtSliceLabel.setEnabled(false);
 			btnCreateSlice.setEnabled(false);
 		} else {
-			StringBuilder strSliceURI = new StringBuilder(selectedDataSet).append("_slice");
-			StringBuilder strSliceLabel = new StringBuilder("Slice -");
-			for (int i=0; i<listComboDim.size(); i++){
-				String dimString = (String)listComboDim.get(i).getValue();
-				Value valValue = (Value)listComboVal.get(i).getValue();
-				if (dimString == null || valValue == null) continue;
-				String dim1 = null, val1 = null, valS = valValue.stringValue();
-				if (dimString.contains("#"))
-					dim1 = dimString.substring(dimString.lastIndexOf("#")+1);
-				else 
-					dim1 = dimString.substring(dimString.lastIndexOf("/")+1);
-				if (valS.contains("#"))
-					val1 = valS.substring(valS.lastIndexOf("#")+1);
-				else 
-					val1 = valS.substring(valS.lastIndexOf("/")+1);
-				strSliceURI.append("_").append(dim1).append("-").append(val1);
-				strSliceLabel.append(" ").append(dim1).append("=").append(val1);
+			if (!txtSliceURI.isEnabled()){
+				txtSliceURI.setValue(lastSliceURI);
+				txtSliceURI.setEnabled(true);
+				txtSliceLabel.setValue(lastSliceLabel);
+				txtSliceLabel.setEnabled(true);
+				btnCreateSlice.setEnabled(true);
 			}
-			txtSliceURI.setValue(strSliceURI.toString());
-			txtSliceURI.setEnabled(true);
-			txtSliceLabel.setValue(strSliceLabel.toString());
-			txtSliceLabel.setEnabled(true);
-			btnCreateSlice.setEnabled(true);
 		}
 	}
 	
@@ -481,21 +467,30 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 		
 		txtSliceKeyURI = new TextField("SliceKey URI");
 		txtSliceKeyURI.setWidth("100%");
+		txtSliceKeyURI.setValue("");
 		this.addComponent(txtSliceKeyURI);
 		
 		txtSliceKeyLabel = new TextField("SliceKey Label");
 		txtSliceKeyLabel.setWidth("100%");
+		txtSliceKeyLabel.setValue("");
 		this.addComponent(txtSliceKeyLabel);
 		
 		txtSliceURI = new TextField("Slice URI");
 		txtSliceURI.setWidth("100%");
+		txtSliceURI.setValue("");
 		this.addComponent(txtSliceURI);
 		
 		txtSliceLabel = new TextField("Slice Label");
 		txtSliceLabel.setWidth("100%");
+		txtSliceLabel.setValue("");
 		this.addComponent(txtSliceLabel);
 		
-		this.addComponent(btnCreateSlice);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		btnLayout.addComponent(btnCreateSlice);
+		Button btnGenerate = new Button("Generate URI(s) and label(s)");
+		btnLayout.addComponent(btnGenerate);
+		this.addComponent(btnLayout);
 		
 		comboDataSets.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -518,15 +513,19 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				}
 				layoutDimensions.removeAllComponents();
 				addDimension();
-				txtSliceKeyURI.setValue("");
-				txtSliceKeyURI.setEnabled(true);
-				txtSliceKeyLabel.setValue("");
-				txtSliceKeyLabel.setEnabled(true);
-				txtSliceURI.setValue("");
-				txtSliceURI.setEnabled(true);
-				txtSliceLabel.setValue("");
-				txtSliceLabel.setEnabled(true);
-				btnCreateSlice.setEnabled(true);
+				if (!txtSliceKeyURI.isEnabled()){
+					txtSliceKeyURI.setValue(lastKeyURI);
+					txtSliceKeyURI.setEnabled(true);
+					txtSliceKeyLabel.setValue(lastKeyLabel);
+					txtSliceKeyLabel.setEnabled(true);
+				}
+				if (!txtSliceURI.isEnabled()){
+					txtSliceURI.setValue(lastSliceURI);
+					txtSliceURI.setEnabled(true);
+					txtSliceLabel.setValue(lastSliceLabel);
+					txtSliceLabel.setEnabled(true);
+					btnCreateSlice.setEnabled(true);
+				}
 			}
 		});
 		btnAddDimension.addListener(new Button.ClickListener() {
@@ -647,6 +646,49 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 				availableKeys.addAll(getSliceKeys());
 				updateSliceInfo();
 				updateKeyInfo();
+			}
+		});
+		btnGenerate.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				if (txtSliceKeyURI.isEnabled()){
+					StringBuilder strKeyURI = new StringBuilder(selectedDataSet).append("_sliceKey");
+					StringBuilder strKeyLabel = new StringBuilder("Slice Key -");
+					for (ComboBox combo: listComboDim){
+						String dim = (String)combo.getValue();
+						if (dim == null) continue;
+						String dim1 = null;
+						if (dim.contains("#"))
+							dim1 = dim.substring(dim.lastIndexOf("#")+1);
+						else 
+							dim1 = dim.substring(dim.lastIndexOf("/")+1);
+						strKeyURI.append("_").append(dim1);
+						strKeyLabel.append(" ").append(dim1);
+					}
+					txtSliceKeyURI.setValue(strKeyURI.toString());
+					txtSliceKeyLabel.setValue(strKeyLabel.toString());
+				}
+				if (txtSliceURI.isEnabled()){
+					StringBuilder strSliceURI = new StringBuilder(selectedDataSet).append("_slice");
+					StringBuilder strSliceLabel = new StringBuilder("Slice -");
+					for (int i=0; i<listComboDim.size(); i++){
+						String dimString = (String)listComboDim.get(i).getValue();
+						Value valValue = (Value)listComboVal.get(i).getValue();
+						if (dimString == null || valValue == null) continue;
+						String dim1 = null, val1 = null, valS = valValue.stringValue();
+						if (dimString.contains("#"))
+							dim1 = dimString.substring(dimString.lastIndexOf("#")+1);
+						else 
+							dim1 = dimString.substring(dimString.lastIndexOf("/")+1);
+						if (valS.contains("#"))
+							val1 = valS.substring(valS.lastIndexOf("#")+1);
+						else 
+							val1 = valS.substring(valS.lastIndexOf("/")+1);
+						strSliceURI.append("_").append(dim1).append("-").append(val1);
+						strSliceLabel.append(" ").append(dim1).append("=").append(val1);
+					}
+					txtSliceURI.setValue(strSliceURI.toString());
+					txtSliceLabel.setValue(strSliceLabel.toString());
+				}
 			}
 		});
 	}
