@@ -28,6 +28,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 
 import eu.lod2.ConfigurationTab;
@@ -139,7 +140,7 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 		q.append("from <").append(state.getCurrentGraph()).append("> \n");
 		q.append("where { \n");
 		q.append("  <").append(selectedDataSet).append("> qb:slice ?slice . \n");
-		q.append("  ?slice a qb:Slice . \n");
+//		q.append("  ?slice a qb:Slice . \n");
 		q.append("  ?slice qb:sliceStructure ?key . \n");
 		q.append("  ?key qb:componentProperty ?dim . \n");
 		q.append("  ?slice ?dim ?val . \n");
@@ -197,7 +198,7 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 		q.append("where { \n");
 		q.append("  <").append(selectedDataSet).append("> qb:structure ?dsd . \n");
 		q.append("  ?dsd qb:sliceKey ?key . \n");
-		q.append("  ?key a qb:SliceKey . \n");
+//		q.append("  ?key a qb:SliceKey . \n");
 		q.append("  ?key qb:componentProperty ?dim . \n");
 		q.append("  OPTIONAL { ?key rdfs:label ?label } \n");
 		q.append("} order by ?key");
@@ -313,11 +314,12 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 			int n = 0;
 			boolean containsAll = true;
 			for (ComboBox combo: listComboDim){
-				if (combo.getValue() == null) continue;
+				String dim = (String)combo.getValue();
+				if (dim == null) continue;
 				n++;
 				boolean containsThis = false;
 				for (Value v: k.dimensions) {
-					if (v.stringValue().equals((String)combo.getValue())) {
+					if (v.stringValue().equals(dim)) {
 						containsThis = true;
 						break;
 					}
@@ -339,9 +341,22 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 			txtSliceKeyLabel.setValue(key.label);
 			txtSliceKeyLabel.setEnabled(false);
 		} else {
-			txtSliceKeyURI.setValue("");
+			StringBuilder strKeyURI = new StringBuilder(selectedDataSet).append("_sliceKey");
+			StringBuilder strKeyLabel = new StringBuilder("Slice Key -");
+			for (ComboBox combo: listComboDim){
+				String dim = (String)combo.getValue();
+				if (dim == null) continue;
+				String dim1 = null;
+				if (dim.contains("#"))
+					dim1 = dim.substring(dim.lastIndexOf("#")+1);
+				else 
+					dim1 = dim.substring(dim.lastIndexOf("/")+1);
+				strKeyURI.append("_").append(dim1);
+				strKeyLabel.append(" ").append(dim1);
+			}
+			txtSliceKeyURI.setValue(strKeyURI.toString());
 			txtSliceKeyURI.setEnabled(true);
-			txtSliceKeyLabel.setValue("");
+			txtSliceKeyLabel.setValue(strKeyLabel.toString());
 			txtSliceKeyLabel.setEnabled(true);
 		}
 	}
@@ -381,9 +396,27 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 			txtSliceLabel.setEnabled(false);
 			btnCreateSlice.setEnabled(false);
 		} else {
-			txtSliceURI.setValue("");
+			StringBuilder strSliceURI = new StringBuilder(selectedDataSet).append("_slice");
+			StringBuilder strSliceLabel = new StringBuilder("Slice -");
+			for (int i=0; i<listComboDim.size(); i++){
+				String dimString = (String)listComboDim.get(i).getValue();
+				Value valValue = (Value)listComboVal.get(i).getValue();
+				if (dimString == null || valValue == null) continue;
+				String dim1 = null, val1 = null, valS = valValue.stringValue();
+				if (dimString.contains("#"))
+					dim1 = dimString.substring(dimString.lastIndexOf("#")+1);
+				else 
+					dim1 = dimString.substring(dimString.lastIndexOf("/")+1);
+				if (valS.contains("#"))
+					val1 = valS.substring(valS.lastIndexOf("#")+1);
+				else 
+					val1 = valS.substring(valS.lastIndexOf("/")+1);
+				strSliceURI.append("_").append(dim1).append("-").append(val1);
+				strSliceLabel.append(" ").append(dim1).append("=").append(val1);
+			}
+			txtSliceURI.setValue(strSliceURI.toString());
 			txtSliceURI.setEnabled(true);
-			txtSliceLabel.setValue("");
+			txtSliceLabel.setValue(strSliceLabel.toString());
 			txtSliceLabel.setEnabled(true);
 			btnCreateSlice.setEnabled(true);
 		}
@@ -505,30 +538,14 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 			public void buttonClick(ClickEvent event) {
 				HashMap<URI, Value> mapDimensionValues = new HashMap<URI, Value>();
 				ValueFactory factory = state.getRdfStore().getValueFactory();
-				StringBuilder strSliceURI = new StringBuilder(selectedDataSet).append("_slice");
-				StringBuilder strSliceKeyURI = new StringBuilder(selectedDataSet).append("_sliceKey");
-				StringBuilder strSliceLabel = new StringBuilder("Slice -");
-				StringBuilder strSliceKeyLabel = new StringBuilder("Slice Key -");
 				for (int i=0; i<listComboDim.size(); i++){
 					String dim = (String)listComboDim.get(i).getValue();
 					Value val = (Value)listComboVal.get(i).getValue();
 					if (dim == null || val == null || mapDimensionValues.containsKey(dim)) continue;
 					mapDimensionValues.put(factory.createURI(dim), val);
-					String dim1 = null, val1 = null, valS = val.stringValue();
-					if (dim.contains("#"))
-						dim1 = dim.substring(dim.lastIndexOf("#")+1);
-					else 
-						dim1 = dim.substring(dim.lastIndexOf("/")+1);
-					if (valS.contains("#"))
-						val1 = valS.substring(valS.lastIndexOf("#")+1);
-					else 
-						val1 = valS.substring(valS.lastIndexOf("/")+1);
-					strSliceURI.append("_").append(dim1).append("-").append(val1);
-					strSliceKeyURI.append("_").append(dim1);
-					strSliceLabel.append(" ").append(dim1).append("=").append(val1);
-					strSliceKeyLabel.append(" ").append(dim1);
 				}
 				if (mapDimensionValues.size() == 0) return;
+				
 				String qb = "http://purl.org/linked-data/cube#";
 				String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 				String rdfs = "http://www.w3.org/2000/01/rdf-schema#";
