@@ -17,16 +17,16 @@ package eu.lod2;
 
 import java.lang.Exception;
 
-class LOD2Exception extends Exception {
+public class LOD2Exception extends Exception {
 
-    LOD2Exception() {
+    public LOD2Exception() {
     };
 
 	public LOD2Exception(String msg){
 		super(msg);
 		}
 
-    LOD2Exception(String msg, Exception e) {
+    public LOD2Exception(String msg, Exception e) {
         super(msg + e.getMessage());
     };
 }

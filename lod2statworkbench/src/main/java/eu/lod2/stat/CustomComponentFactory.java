@@ -11,6 +11,7 @@ public class CustomComponentFactory {
 		UploadRDF,
 		ExtractFromXML,
 		ExtractFromXMLExtended,
+		ExtractFromSDMX,
 		D2R,
 		// local sparql
 		Sparqled,
@@ -51,6 +52,7 @@ public class CustomComponentFactory {
 			case UploadRDF: return new ELoadRDFFile(state);
 			case ExtractFromXML: return new EXML(state);
 			case ExtractFromXMLExtended: return new EXMLExtended(state);
+			case ExtractFromSDMX: return new LinkedSDMX(state);
 			case D2R: return new D2RCordis(state);
 			case Sparqled: return new Sparqled(state);
 			case SparqledManager: return new SparqledManager(state);

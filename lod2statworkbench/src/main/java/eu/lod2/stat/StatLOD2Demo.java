@@ -239,6 +239,11 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
                 showInWorkspace(new EXMLExtended(state));
             }
         };
+        MenuBar.Command extractSDMX = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new LinkedSDMX(state));
+            }
+        };
 
         MenuBar.Command importDirectly = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
@@ -276,6 +281,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         MenuBar.MenuItem directImport= menuImport.addItem("Import triples from file", null, importDirectly);
         excelImport.addItem("From Text", null, extractXML);
         excelImport.addItem("From File", null, extractXMLExtended);
+//        excelImport.addItem("From SDMX", null, extractSDMX);
         MenuBar.MenuItem menuExport= menuGraph.addItem("Export", null, null);
         menuExport.addItem("Export as RDF/XML", null, exportRDFXML);
         menuExport.addItem("Export as Turtle", null, exportTurtle);
