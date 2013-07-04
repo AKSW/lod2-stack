@@ -1,3 +1,9 @@
+lod2repository (1.27) lod2; urgency=low
+
+  * upgrade Claus Stadler gnupg key
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Thu, 04 Jul 2013 17:34:55 +0200
+
 lod2repository (1.26) lod2; urgency=low
 
   * add Vadim Zaslavski keys (Ontos)

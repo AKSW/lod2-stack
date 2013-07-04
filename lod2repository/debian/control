@@ -3,7 +3,7 @@ Section: misc
 Priority: extra
 Maintainer: Sebastian Tramp <tramp@informatik.uni-leipzig.de>
 Build-Depends: debhelper (>= 7.0.50~)
-Standards-Version: 3.8.4
+Standards-Version: 3.9.3
 Homepage: http://lod2.eu
 #Vcs-Git: git://git.debian.org/collab-maint/lod2repository.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/lod2repository.git;a=summary
@@ -11,7 +11,7 @@ Homepage: http://lod2.eu
 Package: lod2repository
 Architecture: all
 Depends: ${misc:Depends}
-Description: The LOD2 software stack repository as well as the LOD2 trusted keyring.
+Description: LOD2 software stack repository as well as the LOD2 trusted keyring
  This package adds the LOD2 debian package repository and the LOD2
  trusted keyring to your debian system.
  .
