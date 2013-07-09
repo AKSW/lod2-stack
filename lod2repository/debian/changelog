@@ -1,3 +1,9 @@
+lod2repository (1.28) lod2; urgency=low
+
+  * upgrade Sebastian Tramps gnupg key
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Tue, 09 Jul 2013 22:57:23 +0200
+
 lod2repository (1.27) lod2; urgency=low
 
   * upgrade Claus Stadler gnupg key
