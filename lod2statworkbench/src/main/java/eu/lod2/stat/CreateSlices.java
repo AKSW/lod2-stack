@@ -1,5 +1,7 @@
 package eu.lod2.stat;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -683,7 +685,11 @@ public class CreateSlices extends VerticalLayout implements CurrentGraphListener
 							val1 = valS.substring(valS.lastIndexOf("#")+1);
 						else 
 							val1 = valS.substring(valS.lastIndexOf("/")+1);
-						strSliceURI.append("_").append(dim1).append("-").append(val1);
+						String valEncoded = "couldNotEncode";
+						try {
+							valEncoded = URLEncoder.encode(val1, "UTF-8");
+						} catch (UnsupportedEncodingException e) {}
+						strSliceURI.append("_").append(dim1).append("-").append(valEncoded);
 						strSliceLabel.append(" ").append(dim1).append("=").append(val1);
 					}
 					txtSliceURI.setValue(strSliceURI.toString());
