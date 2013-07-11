@@ -3,11 +3,24 @@ package eu.lod2.stat;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -39,6 +52,7 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
 	private File  xmlFile;     // The SDMX-ML file to be transformed
     private File  rdfFile;     // The RDF file containing the triples derived via the XSLT
     private File  configFile; // The RDF configuration file 
+    private File  genericStructureFile; // The XML file containing generic structure
 
     //
     //private Button annotateButton;
@@ -64,12 +78,43 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
 
     private FileUpload uploadXMLFile = null;
     private FileUpload uploadConfigFile = null;
+    private FileUpload uploadGenericStructureFile = null;
+
+	private MyResolver myResolver;
+
+	private TransformerFactory factory;
+
+	private Transformer xsltTransformer;
     
     public LinkedSDMX() {}
+    
+    private void createTransformer(){
+    	System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+        //System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+        System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
+        
+    	this.myResolver = new MyResolver();
+        this.factory = TransformerFactory.newInstance();
+        this.factory.setURIResolver(myResolver);
+    	FileInputStream xsltStream;
+		try {
+			xsltStream = new FileInputStream(new File(LinkedSDMX.class.getResource("/linked-sdmx/scripts/generic.xsl").toURI()));
+			xsltTransformer = factory.newTransformer(new StreamSource(xsltStream));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		}
+    }
     
     public LinkedSDMX(LOD2DemoState state){
     	this();
         this.state = state;
+        
+        createTransformer();
 
         panel = new VerticalLayout();
         panel.setSpacing(true);
@@ -78,14 +123,19 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
                 "This page aids the creation of RDF Data Cubes out of SDMX-ML.<br/>" + 
                 "This is done by using XSLT transformation which transforms the XML document into a set of RDF triples conforming to RDF Data Cube vocabulary.<br/>" +
                 "This page is entirely based on the effort done in <a href=\"http://csarven.ca/linked-sdmx-data\">http://csarven.ca/linked-sdmx-data</a>. Therefore, additional information and instructions on using and configuring the tool can be found at <a href=\"https://github.com/csarven/linked-sdmx\"/>https://github.com/csarven/linked-sdmx</a>. <br/>" +		
-                "The resulting triples are uploaded in the share RDF store.",
+                "The resulting triples are uploaded in the shared RDF store.<br/>" +
+                "Only XML file is required.<br/>" + 
+                "If config file is not uploaded default will be used.<br/>" + 
+                "If generic structure file is not provided supplied XML file will be used.",
                 Label.CONTENT_XHTML
                 );
         
         uploadXMLFile = new FileUpload("Upload the XML file here", "The XML file ", xmlFile);
         uploadXMLFile.setDebugId(this.getClass().getSimpleName()+"_uploadXMLFile");
         uploadConfigFile = new FileUpload("Upload the RDF/XML Config file here", "The RDF/XML Config file ", configFile);
-        uploadConfigFile.setDebugId(this.getClass().getSimpleName()+"_uploadCatalogFile");
+        uploadConfigFile.setDebugId(this.getClass().getSimpleName()+"_uploadConfigFile");
+        uploadGenericStructureFile = new FileUpload("Upload the generic structure XML file here", "The generic structure ", genericStructureFile);
+        uploadGenericStructureFile.setDebugId(this.getClass().getSimpleName()+"_uploadGenericStructureFile");
 
         errorMsg = new Label("");
 
@@ -100,6 +150,7 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
         panel.addComponent(desc);
         panel.addComponent(uploadXMLFile);
         panel.addComponent(uploadConfigFile);
+        panel.addComponent(uploadGenericStructureFile);
         panel.addComponent(exportGraph);
         panel.addComponent(uploadButton);
         panel.addComponent(transformButton);
@@ -177,10 +228,10 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
             uploadXMLFile.setComponentError(new UserError("Upload a xml file."));
             valid = false;
         }
-        if (configFile == null) {
-            uploadConfigFile.setComponentError(new UserError("Upload a config file."));
-            valid = false;
-        };
+//        if (configFile == null) {
+//            uploadConfigFile.setComponentError(new UserError("Upload a config file."));
+//            valid = false;
+//        };
 
         return valid;
     }
@@ -198,6 +249,7 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
 
         xmlFile = uploadXMLFile.file;
         configFile = uploadConfigFile.file;
+        genericStructureFile = uploadGenericStructureFile.file;
 
         if (!validTransformInput()) {
             // break here
@@ -206,10 +258,17 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
 
         try {
             xmlStream = new FileInputStream(xmlFile); 
-            // TODO create xslt stream
-            xsltStream = new FileInputStream("TODO");
-            XsltTransformer xsltTransformer = new XsltTransformer(new StreamSource(xsltStream));
-            xsltTransformer.transform(xmlStream, sResult);
+            
+            xsltTransformer.clearParameters();
+            if (configFile != null) xsltTransformer.setParameter("pathToConfig", configFile.getAbsolutePath());
+            if (genericStructureFile != null) 
+            	xsltTransformer.setParameter("pathToGenericStructure", genericStructureFile.getAbsolutePath());
+            else
+            	xsltTransformer.setParameter("pathToGenericStructure", xmlFile.getAbsolutePath());
+            xsltTransformer.setParameter("xmlDocument", xmlFile.getAbsolutePath());
+            
+            xsltTransformer.transform(new StreamSource(xmlStream), sResult);
+            
             if(oStream.toString().isEmpty()){
                 textToAnnotateField.setValue("Transformation resulted in no triples; please check if you entered a valid xml and rdf configuration.");
             } else {
@@ -218,7 +277,6 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
                 downloadForm.setVisible(true);
             };
             xmlStream.close();
-            xsltTransformer.close();
         } catch (Exception e){
             e.printStackTrace();
             throw new LOD2Exception("Transformation failed:" , e);
@@ -346,6 +404,57 @@ public class LinkedSDMX extends CustomComponent implements Button.ClickListener 
 		}
 		
 		
+	}
+	
+	private static class MyResolver implements URIResolver {
+
+		public Source resolve(String href, String base)
+				throws TransformerException {
+			System.out.println("href: " + href + "\nbase: " + base);
+			if (href==null || href.isEmpty()) {
+				System.out.println("uri: null");
+				return null;
+			}
+			try {
+				URI uri = new URI(href);
+				if (uri.isAbsolute()) return new StreamSource(uri.toURL().openStream());
+				URI xslt = LinkedSDMX.class.getResource("/linked-sdmx/scripts/").toURI();
+				URI resolved = xslt.resolve(uri);
+				System.out.println("uri: " + resolved.toString());
+				return new StreamSource(new File(resolved));
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+	}
+	
+	public static void main (String [] args) throws URISyntaxException, UnsupportedEncodingException, TransformerException, FileNotFoundException{
+		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+        //System.setProperty("javax.xml.transform.TransformerFactory", "org.apache.xalan.processor.TransformerFactoryImpl");
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory" , "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+        System.setProperty("javax.xml.parsers.SAXParserFactory","org.apache.xerces.jaxp.SAXParserFactoryImpl");
+        
+        File xmlFile = new File(LinkedSDMX.class.getResource("/linked-sdmx/WB.KeyFamily.xml").toURI());
+        FileInputStream xmlStream = new FileInputStream(xmlFile); 
+        
+        TransformerFactory factory = TransformerFactory.newInstance();
+        factory.setURIResolver(new MyResolver());
+        FileInputStream xsltStream = new FileInputStream(new File(LinkedSDMX.class.getResource("/linked-sdmx/scripts/generic.xsl").toURI()));
+        Transformer xsltTransformer = factory.newTransformer(new StreamSource(xsltStream));
+//        xsltTransformer.setURIResolver(new MyResolver());
+//        Transformer xsltTrasformer = TransformerFactory.newInstance().newTransformer(new StreamSource(xsltStream)); 
+        
+//        if (configFile != null) xsltTrasformer.setParameter("pathToConfig", configFile.getAbsolutePath());
+        xsltTransformer.setParameter("xmlDocument", xmlFile.getAbsolutePath());
+        xsltTransformer.setParameter("pathToGenericStructure", xmlFile.getAbsolutePath());
+        StreamResult sResult = new StreamResult(new ByteArrayOutputStream());
+        xsltTransformer.transform(new StreamSource(xmlStream), sResult);
 	}
 	
 }

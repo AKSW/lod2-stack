@@ -281,7 +281,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         MenuBar.MenuItem directImport= menuImport.addItem("Import triples from file", null, importDirectly);
         excelImport.addItem("From Text", null, extractXML);
         excelImport.addItem("From File", null, extractXMLExtended);
-//        excelImport.addItem("From SDMX", null, extractSDMX);
+        excelImport.addItem("From SDMX", null, extractSDMX);
         MenuBar.MenuItem menuExport= menuGraph.addItem("Export", null, null);
         menuExport.addItem("Export as RDF/XML", null, exportRDFXML);
         menuExport.addItem("Export as Turtle", null, exportTurtle);

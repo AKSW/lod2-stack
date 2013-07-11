@@ -1,0 +1,33 @@
+#
+#    Author: Sarven Capadisli <info@csarven.ca>
+#    Author URI: http://csarven.ca/#i
+#
+#    SDMX Maintenance Agency data
+#
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://example.org/>
+    skos:notation "EXAMPLE" .
+
+<http://bis.270a.info/>
+    skos:notation "5B0" , "BIS" .
+<http://oecd.270a.info/>
+    skos:notation "5A0", "OECD" .
+<http://un.270a.info/>
+    skos:notation "1B0", "UN" , "UNDP-HDRO" .
+<http://ecb.270a.info/>
+    skos:notation "4F0" , "ECB" .
+<http://wb.270a.info/>
+    skos:notation "WB" .
+<http://iaeg.270a.info/>
+    skos:notation "IAEG" .
+<http://imf.270a.info/>
+    skos:notation "1C0", "IMF" .
+<http://fao.270a.info/>
+    skos:notation "1J0", "FAO" .
+<http://eurostat.270a.info/>
+    skos:notation "4D0", "ESTAT", "EUROSTAT" .
+<http://bfs.270a.info/>
+    skos:notation "CH1" , "FSO" , "BFS", "OFS" , "UST" .
+
