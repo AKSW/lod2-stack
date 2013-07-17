@@ -60,11 +60,7 @@ public class LOD2DemoInitApp {
                 if (valueOfS instanceof LiteralImpl) {
                     LiteralImpl literalS = (LiteralImpl) valueOfS;
                     String service0 = literalS.getLabel();
-                    if (service0 == null | service0.equals("")) {
-                        service = applicationname;
-                    } else {
-                        service = service0;
-                    };
+                    service= state.processService(service0, applicationname);
                 };
             }
 

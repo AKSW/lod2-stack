@@ -1,3 +1,25 @@
+lod2demo (1.2.13) lod2; urgency=low
+
+  * fix localhost being used in iframes
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Mon, 17 Jul 2013 12:39:37 +0100
+
+lod2demo (1.2.12) lod2; urgency=low
+
+  * integrate ontowiki-csvimport
+  * integrate sparlify
+  * update various ontowiki packages
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Mon, 15 Jul 2013 08:50:37 +0100
+
+lod2demo (1.2.11) lod2; urgency=low
+
+  * integrate rdf-dataset-integration
+  * integrate dl-learner
+  * integrate siren
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Fri, 05 Jul 2013 09:12:24 +0100
+
 lod2demo (1.2.10) lod2; urgency=low
 
   * integrate lod2-refine via depends

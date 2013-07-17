@@ -1,11 +1,8 @@
 package eu.lod2;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.vaadin.terminal.ExternalResource;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -16,9 +13,11 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.vaadin.terminal.ExternalResource;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Embedded;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Sparqled extends CustomComponent {
 	
@@ -32,7 +31,7 @@ public class Sparqled extends CustomComponent {
 		
 		Embedded browser = new Embedded();
 		try {
-			URL url = new URL(state.getHostName() + "/sparqled");
+			URL url = new URL(state.getHostName(false) + "/sparqled");
 			browser = new Embedded("", new ExternalResource(url));
 			browser.setType(Embedded.TYPE_BROWSER);
 			browser.setSizeFull();

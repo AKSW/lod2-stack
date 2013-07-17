@@ -156,6 +156,19 @@ public class LOD2DemoState
         return hostname;
     };
 
+    public String getHostName(boolean port){
+        String hostname=this.getHostName();
+        if(port){
+            return hostname;
+        }else{
+            if(hostname.lastIndexOf(":")>4){ // disregards http:
+                return hostname.substring(0,hostname.lastIndexOf(":"));
+            }else{
+                return hostname;
+            }
+        }
+    }
+
     public void setCurrentGraph(String graphname) {
         currentGraph = graphname;
         cGraph.setValue(graphname);
@@ -475,6 +488,17 @@ public class LOD2DemoState
     //* notifies the given listener that of the current user.
     protected void notifyListener(LoginListener listener){
         listener.notifyLogin(this.getUser());
+    }
+
+    //* processes the url provided as the service of a component (localhost is not allowed!!!)
+    public String processService(String service0, String defaultExtension) {
+        String service;
+        if (service0 == null | service0.equals("")) {
+            service = this.getHostName(false)+ "/" + defaultExtension;
+        } else {
+            service = service0.replace("http://localhost", this.getHostName(false));
+        };
+        return service;
     }
 
     //* inner class representing a user of the system

@@ -32,14 +32,8 @@ public class DBpediaSpotlightUI extends IframedUrl {
                 if (valueOfS instanceof LiteralImpl) {
                     LiteralImpl literalS = (LiteralImpl) valueOfS;
                     String service0 = literalS.getLabel();
-                    String service;
-                    if (service0 == null | service0.equals("")) {
-                        service = "http://localhost/lodrefine/";
-                    } else {
-                        service = service0;
-                    }
 
-                    this.updateUrl(service);
+                    this.updateUrl(state.processService(service0,"dbpedia-spotlight-ui"));
                 }
             }
             //TODO auto generated catch blocks

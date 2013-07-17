@@ -15,65 +15,32 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
-import java.io.*;
-
-import com.vaadin.Application;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.terminal.ExternalResource;
+import com.vaadin.data.Property;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
 import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window.*;
-import com.vaadin.ui.Layout.*;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.data.*;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.*;
-
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.openrdf.model.*;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.repository.Repository;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.model.impl.*;
-import org.openrdf.model.impl.LiteralImpl;
 
-
-import org.restlet.resource.ClientResource;
-import org.restlet.data.MediaType;
-
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
-
-import org.apache.http.*;
-import org.apache.http.client.*;
-import org.apache.http.impl.client.*;
-import org.apache.http.protocol.*;
-import org.apache.http.client.methods.*;
-
-import java.util.*;
-
-
-import org.codehaus.jackson.*;
-import org.codehaus.jackson.map.*;
-import org.codehaus.jackson.type.TypeReference;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 
 
@@ -199,7 +166,7 @@ implements AbstractSelect.NewItemHandler, Property.ValueChangeListener
             httpclient.getConnectionManager().shutdown();
         }
 
-	return result;
+	return result==null?new ArrayList<String>():result;
   } 
 
   private static List<String> parse_graph_api_result(String result) throws Exception {

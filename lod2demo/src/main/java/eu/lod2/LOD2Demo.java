@@ -653,13 +653,14 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
-            /*
-            MenuBar.Command userinfoCommand = new MenuBar.Command() {
-                public void menuSelected(MenuItem selectedItem) {
-                    showInWorkspace(new Authenticator(new UserInformation(state), state));
-                }
-            };
-            */
+
+        /*
+        MenuBar.Command userinfoCommand = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new Authenticator(new UserInformation(state), state));
+            }
+        };
+        */
             MenuBar.Command publishCommand = new Command() {
                 public void menuSelected(MenuItem selectedItem){
                     // publishing should be protected with an authenticator, otherwise a store could be published
@@ -680,6 +681,12 @@ public class LOD2Demo extends Application
                     workspace.setExpandRatio(content, 1.0f);
                     mainContainer.setExpandRatio(workspace, 2.0f);
                     mainWindow.getContent().setSizeFull();
+                }
+            };
+
+            MenuBar.Command sirenCommand = new Command() {
+                public void menuSelected(MenuItem menuItem) {
+                    showInWorkspace(new Siren(state));
                 }
             };
 
@@ -712,6 +719,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
             MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
             MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
+            MenuBar.MenuItem siren = querying.addItem("Siren", null, sirenCommand);
             // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
             MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq_s_6c);
             MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);

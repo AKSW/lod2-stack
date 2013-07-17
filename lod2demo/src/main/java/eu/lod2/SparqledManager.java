@@ -1,11 +1,11 @@
 package eu.lod2;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class SparqledManager extends CustomComponent {
 	
@@ -16,7 +16,7 @@ private LOD2DemoState state;
 		
 		Embedded browser = new Embedded();
 		try {
-			URL url = new URL(state.getHostName() + "/sparqled/manager/");
+			URL url = new URL(state.getHostName(false) + "/sparqled/manager/");
 			browser = new Embedded("", new ExternalResource(url));
 			browser.setType(Embedded.TYPE_BROWSER);
 			browser.setSizeFull();
