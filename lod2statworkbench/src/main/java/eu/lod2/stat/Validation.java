@@ -2,11 +2,16 @@ package eu.lod2.stat;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
+import com.vaadin.ui.themes.Reindeer;
+
 import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
+
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
@@ -17,23 +22,20 @@ import org.openrdf.repository.RepositoryException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class Validation extends CustomComponent implements LOD2DemoState.CurrentGraphListener {
 	
 	private LOD2DemoState state;
-	private String testDataCubeModel;
 	private String testProvenance;
 	private String testLinkToDSD;
-	private String testCodedProperties;
-	private String testCodeLists;
-	private String testDSDSpecified;
 	private String testLinkToDataSet;
 	private ListSelect criteriaList;
 	private VerticalLayout validationTab;
 	private HorizontalLayout mainContrainer;
-	private VerticalLayout criteriaLayout;
-	private String testDimensionRange;
 	private String testCodesFromCodeLists;
 	private String errorMsg;
 	private String testNoDuplicateObservations;
@@ -46,13 +48,101 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private String testSliceKeysConsistentWithDSD;
 	private String testSliceStructureUnique;
 	private String testSliceDimensionsComplete;
+	private ThemeResource iconOK;
+	private ThemeResource iconError;
+	private ThemeResource iconInfo;
+	private Tree criteriaTree;
+	private IntegrityConstraint icLinkToDSD;
+	private IntegrityConstraint icLinkToDataSet;
+	private IntegrityConstraint icMeasuresInDSD;
+	private IntegrityConstraint icDimensionsHaveRange;
+	private IntegrityConstraint icSliceKeysDeclared;
+	private IntegrityConstraint icSliceKeysConsistentWithDSD;
+	private IntegrityConstraint icSliceStructureUnique;
+	private IntegrityConstraint icSliceDimensionsComplete;
+	private IntegrityConstraint icCodesFromCodeLists;
+	private IntegrityConstraint icDimensionsRequired;
+	private IntegrityConstraint icNoDuplicateObservations;
+	private String testAttributesOptional;
+	private IntegrityConstraint icAttributesOptional;
+	private String testRequiredAttributes;
+	private IntegrityConstraint icRequiredAttributes;
+	private String testAllMeasuresPresent;
+	private IntegrityConstraint icAllMeasuresPresent;
+	private String testMeasureDimConsistent;
+	private IntegrityConstraint icMeasureDimConsistent;
+	private String testSingleMeasure;
+	private IntegrityConstraint icSingleMeasure;
+	private String testAllMeasuresPresentInMeasDimCube;
+	private IntegrityConstraint icAllMeasuresPresentInMeasDimCube;
+	private String testConsistentDataSetLinks;
+	private IntegrityConstraint icConsistentDataSetLinks;
+	private VerticalLayout criteriaTab;
+	private Panel criteriaPanel;
+	private String testDimsHaveCodeLists;
+	private IntegrityConstraint icDimsHaveCodeLists;
+	
+	private String helperGraph;
+	
+	private interface StatusFunction{
+		public Boolean getStatus(Iterator<BindingSet> queryResult);
+	}
+	
+	@SuppressWarnings("unused")
+	private class IntegrityConstraint{
+		private String query;
+		private TupleQueryResult res;
+		private List<BindingSet> resList = new LinkedList<BindingSet>();
+		private Boolean status = null;
+		private StatusFunction statusFunction;
+		
+		public IntegrityConstraint(String query){
+			this.query = query;
+			this.statusFunction = new StatusFunction() {
+				public Boolean getStatus(Iterator<BindingSet> queryResult) {
+					if (queryResult == null) return null;
+					if (queryResult.hasNext()) return false;
+					return true;
+				}
+			};
+		}
+		public IntegrityConstraint(String query, StatusFunction statusFunction){
+			this.query = query;
+			this.statusFunction = statusFunction;
+		}
+		
+		public void setQuery(String query){
+			this.query = query;
+		}
+		public void setStatusFunction(StatusFunction statusFunction){
+			this.statusFunction = statusFunction;
+		}
+		public void evaluate(){
+			try {
+				RepositoryConnection conn = state.getRdfStore().getConnection();
+				res = conn.prepareTupleQuery(QueryLanguage.SPARQL, query).evaluate();
+				resList.clear();
+				while (res.hasNext()) resList.add(res.next());
+				status = statusFunction.getStatus(resList.iterator());
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			} catch (MalformedQueryException e) {
+				e.printStackTrace();
+			} catch (QueryEvaluationException e) {
+				e.printStackTrace();
+			}
+			try { if (res!=null) res.close(); } catch (QueryEvaluationException e) {}
+		}
+		public Iterator<BindingSet> getResults(){ 
+			return resList.iterator();
+		}
+		public Boolean getStatus(){
+			return status;
+		}
+	}
 	
 	private void createTestQueries(){
 		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append("select ?o\nfrom <").append(state.getCurrentGraph()).append(">\n{\n");
-		strBuilder.append("  ?o a <http://purl.org/linked-data/cube#Observation>.\n");
-		strBuilder.append("}");
-		testDataCubeModel = strBuilder.toString();
 		
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
@@ -72,57 +162,81 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("}");
 		testProvenance = strBuilder.toString();
 		
+		// IC-2
 		strBuilder = new StringBuilder();
 		strBuilder.append("select ?dataSet (count(?struct) as ?dsdNum) \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dataSet a <http://purl.org/linked-data/cube#DataSet> . ");
 		strBuilder.append("  OPTIONAL { ");
 		strBuilder.append("    ?dataSet <http://purl.org/linked-data/cube#structure> ?struct . \n");
 		strBuilder.append("    ?struct a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n");
 		strBuilder.append("  } ");
-		strBuilder.append("} group by ?dataSet having (count(?struct) != 1)");
+		strBuilder.append("} group by ?dataSet having (count(distinct ?struct) != 1)");
 		testLinkToDSD = strBuilder.toString();
+		icLinkToDSD = new IntegrityConstraint(testLinkToDSD);
 		
+		// IC-1
 		strBuilder = new StringBuilder();
 		strBuilder.append("select ?obs (count(?dataSet) as ?dsNum) \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs a <http://purl.org/linked-data/cube#Observation> . ");
 		strBuilder.append("  OPTIONAL { ");
 		strBuilder.append("    ?obs <http://purl.org/linked-data/cube#dataSet> ?dataSet . \n");
 		strBuilder.append("    ?dataSet a <http://purl.org/linked-data/cube#DataSet> . \n");
 		strBuilder.append("  } ");
-		strBuilder.append("} group by ?obs having (count(?dataSet) != 1)");
+		strBuilder.append("} group by ?obs having (count(distinct ?dataSet) != 1)");
 		testLinkToDataSet = strBuilder.toString();
+		icLinkToDataSet = new IntegrityConstraint(testLinkToDataSet);
 		
+		// IC-3
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dsd \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsd a qb:DataStructureDefinition . \n");
-		strBuilder.append("  FILTER NOT EXISTS { ?dsd qb:component ?cs . ?cs qb:measure [] . } \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?dsd qb:component ?cs . \n");
+		strBuilder.append("    ?cs qb:componentProperty ?prop . \n");
+		strBuilder.append("    ?prop a qb:MeasureProperty . \n");
+		strBuilder.append("  } \n");
 		strBuilder.append("}");
 		testMeasuresInDSD = strBuilder.toString();
+		icMeasuresInDSD = new IntegrityConstraint(testMeasuresInDSD);
 		
+		// IC-4
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dim \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] . } \n");
 		strBuilder.append("}");
 		testDimensionsHaveRange = strBuilder.toString();
+		icDimensionsHaveRange = new IntegrityConstraint(testDimensionsHaveRange);
 		
+		// IC-6
 		strBuilder = new StringBuilder();
-		strBuilder.append("select ?dim \n");
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?componentSpec ?component \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  ?dim a <http://purl.org/linked-data/cube#DimensionProperty> . ");
-		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] } ");
+		strBuilder.append("  ?dsd qb:component ?componentSpec . \n");
+		strBuilder.append("  ?componentSpec qb:componentRequired \"false\"^^xsd:boolean . \n");
+		strBuilder.append("  ?componentSpec qb:componentProperty ?component . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?component a qb:AttributeProperty } \n");
 		strBuilder.append("}");
-		testDimensionRange = strBuilder.toString();
+		testAttributesOptional = strBuilder.toString();
+		icAttributesOptional = new IntegrityConstraint(testAttributesOptional);
 		
+		// IC-7
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?sliceKey \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
@@ -131,24 +245,30 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  } \n");
 		strBuilder.append("}");
 		testSliceKeysDeclared = strBuilder.toString();
+		icSliceKeysDeclared = new IntegrityConstraint(testSliceKeysDeclared);
 		
+		// IC-8
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?sliceKey \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
 		strBuilder.append("  ?sliceKey qb:componentProperty ?prop . \n");
 		strBuilder.append("  ?dsd qb:sliceKey ?sliceKey . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
 		strBuilder.append("    ?dsd qb:component ?cs . \n");
-		strBuilder.append("    ?cs qb:dimension ?prop . \n");
+		strBuilder.append("    ?cs qb:componentProperty ?prop . \n");
 		strBuilder.append("  } \n");
 		strBuilder.append("}");
 		testSliceKeysConsistentWithDSD = strBuilder.toString();
+		icSliceKeysConsistentWithDSD = new IntegrityConstraint(testSliceKeysConsistentWithDSD);
 		
+		// IC-9
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?slice \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  { \n");
 		strBuilder.append("    ?slice a qb:Slice . \n");
@@ -161,10 +281,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  } \n");
 		strBuilder.append("}");
 		testSliceStructureUnique = strBuilder.toString();
+		icSliceStructureUnique = new IntegrityConstraint(testSliceStructureUnique);
 		
+		// IC-10
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?slice ?dim \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?slice qb:sliceStructure ?key . \n");
 		strBuilder.append("  ?key qb:componentProperty ?dim . \n");
@@ -173,64 +296,63 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  } \n");
 		strBuilder.append("} order by ?slice");
 		testSliceDimensionsComplete = strBuilder.toString();
+		icSliceDimensionsComplete = new IntegrityConstraint(testSliceDimensionsComplete);
 		
+//		strBuilder = new StringBuilder();
+//		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+//		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+//		strBuilder.append("select ?dim ?val ?list \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+//		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+//		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+//		strBuilder.append("  ?dsd qb:component ?cs . \n");
+//		strBuilder.append("  ?cs qb:dimension ?dim . \n");
+//		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
+//		strBuilder.append("  ?dim qb:codeList ?list . \n");
+//		strBuilder.append("  ?list a <http://www.w3.org/2004/02/skos/core#ConceptScheme> . \n");
+//		strBuilder.append("  ?obs ?dim ?val . \n");
+//		strBuilder.append("  FILTER NOT EXISTS { ?val a skos:Concept . ?val skos:inScheme ?list . } ");
+//		strBuilder.append("}");
+//		testCodesFromCodeLists = strBuilder.toString();
+//		icCodesFromCodeLists = new IntegrityConstraint(testCodesFromCodeLists);
+		
+		// IC-5
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
-		strBuilder.append("select ?dim ?val ?list \n");
+		strBuilder.append("select distinct ?dim \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
-		strBuilder.append("  ?ds qb:structure ?dsd . \n");
-		strBuilder.append("  ?dsd qb:component ?cs . \n");
-		strBuilder.append("  ?cs qb:dimension ?dim . \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
-		strBuilder.append("  ?dim qb:codeList ?list . \n");
-		strBuilder.append("  ?list a <http://www.w3.org/2004/02/skos/core#ConceptScheme> . \n");
-		strBuilder.append("  ?obs ?dim ?val . \n");
-		strBuilder.append("  FILTER NOT EXISTS { ?val a skos:Concept . ?val skos:inScheme ?list . } ");
+		strBuilder.append("  ?dim rdfs:range skos:Concept . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?dim qb:codeList [] } \n");
 		strBuilder.append("}");
-		testCodesFromCodeLists = strBuilder.toString();
+		testDimsHaveCodeLists = strBuilder.toString();
+		icDimsHaveCodeLists = new IntegrityConstraint(testDimsHaveCodeLists);
 		
-		strBuilder = new StringBuilder();
-		strBuilder.append("select ?property \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  { ?property a  <http://purl.org/linked-data/cube#DimensionProperty> } union \n");
-		strBuilder.append("  { ?property a  <http://purl.org/linked-data/cube#ComponentProperty> } union \n");
-		strBuilder.append("  { ?property a  <http://purl.org/linked-data/cube#AttributeProperty> } union \n");
-		strBuilder.append("  { ?property a  <http://purl.org/linked-data/cube#MeasureProperty> } \n");
-		strBuilder.append("} limit 1");
-		testCodedProperties = strBuilder.toString();
-		
-		strBuilder = new StringBuilder();
-		strBuilder.append("select ?codeList \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  [] <http://purl.org/linked-data/cube#codeList> ?codeList . \n}");
-		testCodeLists = strBuilder.toString();
-		
-		strBuilder = new StringBuilder();
-		strBuilder.append("select ?dsdDefinition \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  ?dsdDefinition a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n}");
-		testDSDSpecified = strBuilder.toString();
-		
+		// IC-11
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?obs \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  ?dsd qb:component ?cs . \n");
-		strBuilder.append("  ?cs qb:dimension ?dim . \n");
+		strBuilder.append("  ?cs qb:componentProperty ?dim . \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  FILTER NOT EXISTS { ?obs ?dim [] } \n");
 		strBuilder.append("}");
 		testDimensionsRequired = strBuilder.toString();
+		icDimensionsRequired = new IntegrityConstraint(testDimensionsRequired);
 		
+		// IC-12
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?obs1 ?obs2 \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
 		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs1 qb:dataSet ?dataSet . \n");
 		strBuilder.append("  ?obs2 qb:dataSet ?dataSet . \n");
@@ -238,7 +360,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  FILTER NOT EXISTS { \n");
 		strBuilder.append("    ?dataSet qb:structure ?dsd . \n");
 		strBuilder.append("    ?dsd qb:component ?cs . \n");
-		strBuilder.append("    ?cs qb:dimension ?dim . \n");
+		strBuilder.append("    ?cs qb:componentProperty ?dim . \n");
 		strBuilder.append("    ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("    ?obs1 ?dim ?val1 . \n");
 		strBuilder.append("    ?obs2 ?dim ?val2 . \n");
@@ -246,12 +368,127 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("  } \n");
 		strBuilder.append("} order by ?obs1");
 		testNoDuplicateObservations = strBuilder.toString();
+		icNoDuplicateObservations = new IntegrityConstraint(testNoDuplicateObservations);
+		
+		// IC-13
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?obs ?attr \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?dsd qb:component ?component . \n");
+		strBuilder.append("  ?component qb:componentRequired \"true\"^^xsd:boolean . \n");
+		strBuilder.append("  ?component qb:componentProperty ?attr . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?obs ?attr [] } \n");
+		strBuilder.append("}");
+		testRequiredAttributes = strBuilder.toString();
+		icRequiredAttributes = new IntegrityConstraint(testRequiredAttributes);
+		
+		// IC-14
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?obs ?measure \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?dsd qb:component ?cs0 . \n");
+		strBuilder.append("    ?cs0 qb:componentProperty qb:measureType . \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("  ?dsd qb:component ?cs . \n");
+		strBuilder.append("  ?cs qb:componentProperty ?measure . \n");
+		strBuilder.append("  ?measure a qb:MeasureProperty . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?obs ?measure [] } \n");
+		strBuilder.append("}");
+		testAllMeasuresPresent = strBuilder.toString();
+		icAllMeasuresPresent = new IntegrityConstraint(testAllMeasuresPresent);
+		
+		// IC-15
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?obs ?measure \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?obs qb:measureType ?measure . \n");
+		strBuilder.append("  ?dsd qb:component ?cs . \n");
+		strBuilder.append("  ?component qb:componentProperty qb:measureType . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?obs ?measure [] } \n");
+		strBuilder.append("}");
+		testMeasureDimConsistent = strBuilder.toString();
+		icMeasureDimConsistent = new IntegrityConstraint(testMeasureDimConsistent);
+		
+		// IC-16
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?obs ?measure ?omeasure \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?obs qb:measureType ?measure . \n");
+		strBuilder.append("  ?obs ?omeasure [] . \n");
+		strBuilder.append("  ?dsd qb:component ?cs1 . \n");
+		strBuilder.append("  ?cs1 qb:componentProperty qb:measureType . \n");
+		strBuilder.append("  ?dsd qb:component ?cs2 . \n");
+		strBuilder.append("  ?cs2 qb:componentProperty ?omeasure . \n");
+		strBuilder.append("  ?omeasure a qb:MeasureProperty . \n");
+		strBuilder.append("  FILTER (?omeasure != ?measure) \n");
+		strBuilder.append("}");
+		testSingleMeasure = strBuilder.toString();
+		icSingleMeasure = new IntegrityConstraint(testSingleMeasure);
+		
+		// TODO IC-17
+		strBuilder = new StringBuilder();
+		testAllMeasuresPresentInMeasDimCube = strBuilder.toString();
+		icAllMeasuresPresentInMeasDimCube = new IntegrityConstraint(testAllMeasuresPresentInMeasDimCube);
+		
+		// IC-18
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?obs ?dataset ?slice \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?dataset qb:slice ?slice . \n");
+		strBuilder.append("  ?slice   qb:observation ?obs . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?obs qb:dataSet ?dataset . } \n");
+		strBuilder.append("}");
+		testConsistentDataSetLinks = strBuilder.toString();
+		icConsistentDataSetLinks = new IntegrityConstraint(testConsistentDataSetLinks);
+		
+		// IC-19
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+		strBuilder.append("select distinct ?dim ?v ?list \n");
+		strBuilder.append("from ").append(helperGraph).append(" \n");
+		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?dsd qb:component ?cs . \n");
+		strBuilder.append("  ?cs qb:componentProperty ?dim . \n");
+		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("  ?dim qb:codeList ?list . \n");
+		strBuilder.append("  ?list a skos:ConceptScheme . \n");
+		strBuilder.append("  ?obs ?dim ?v . \n");
+		strBuilder.append("  FILTER NOT EXISTS { ?v a skos:Concept . ?v skos:inScheme ?list . } \n");
+		strBuilder.append("}");
+		testCodesFromCodeLists = strBuilder.toString();
+		icCodesFromCodeLists = new IntegrityConstraint(testCodesFromCodeLists);
 	}
 	
 	public Validation(LOD2DemoState state, AbstractLayout target){
 		this.state = state;
 		this.target = target;
+		this.iconOK = new ThemeResource("icons/thumbs_up_color.png");
+		this.iconError = new ThemeResource("icons/thumbs_down_color.png");
+		this.iconInfo = new ThemeResource("icons/comments_color.png");
 		mainContrainer = new HorizontalLayout();
+//		mainContrainer = new HorizontalSplitPanel();
 		mainContrainer.setSizeUndefined();
 		mainContrainer.setSpacing(true);
 		setCompositionRoot(mainContrainer);
@@ -276,55 +513,170 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	        return;
 	    }
 	    
+	    createHelperGraph();
 	    createTestQueries();
 	    createGUI();
+	    removeHelperGraph();
+	}
+	
+	private void executeHelperInsertQuery(RepositoryConnection conn, String insertString, String whereString) 
+			throws RepositoryException, MalformedQueryException, QueryEvaluationException{
+		String curGraph = "<" + state.getCurrentGraph() + ">";
+		StringBuilder builder = new StringBuilder();
+		final String insertIntoPart = builder.append("INSERT INTO GRAPH ").append(helperGraph).append(" { \n").toString();
+		builder = new StringBuilder();
+		final String wherePart = builder.append("} WHERE { GRAPH ").append(curGraph).append(" { \n").toString();
+		final String endingPart = "}}";
+		
+		builder = new StringBuilder();
+		builder.append("PREFIX qb: <http://purl.org/linked-data/cube#> \n");
+		builder.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
+		builder.append(insertIntoPart);
+		builder.append(insertString);
+		builder.append(wherePart);
+		builder.append(whereString);
+		builder.append(endingPart);
+		
+		conn.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
+	}
+	
+	private void createHelperGraph(){
+		helperGraph = "<http://localhost:8080/lod2statworkbench/validationHelper/" + this.hashCode() + "/>";
+		try {
+			RepositoryConnection conn = state.getRdfStore().getConnection();
+			conn.prepareGraphQuery(QueryLanguage.SPARQL, "DROP SILENT GRAPH " + helperGraph).evaluate();
+			conn.prepareGraphQuery(QueryLanguage.SPARQL, "CREATE SILENT GRAPH " + helperGraph).evaluate();
+			
+			executeHelperInsertQuery(conn, "  ?o rdf:type qb:Observation . \n", 
+					"  [] qb:observation ?o . \n");
+			executeHelperInsertQuery(conn, "  ?o rdf:type qb:Observation . \n", 
+					"  ?o qb:dataSet [] . \n");
+			executeHelperInsertQuery(conn, "  ?s rdf:type qb:Slice . \n", 
+					"  [] qb:slice ?s. \n");
+			executeHelperInsertQuery(conn, "  ?cs qb:componentProperty ?p . \n  ?p  rdf:type qb:DimensionProperty . \n", 
+					"  ?cs qb:dimension ?p . \n");
+			executeHelperInsertQuery(conn, "  ?cs qb:componentProperty ?p . \n  ?p  rdf:type qb:MeasureProperty . \n", 
+					"  ?cs qb:measure ?p . \n");
+			executeHelperInsertQuery(conn, "  ?cs qb:componentProperty ?p . \n  ?p  rdf:type qb:AttributeProperty . \n", 
+					"  ?cs qb:attribute ?p . \n");
+			
+			final String insertString = "  ?obs  ?comp ?value . \n";
+			// Data set attachments
+			StringBuilder whereBuilder = new StringBuilder();
+			whereBuilder.append("  ?spec qb:componentProperty ?comp . \n");
+			whereBuilder.append("  ?spec qb:componentAttachment qb:DataSet . \n");
+			whereBuilder.append("  ?dataset qb:structure ?dsd . \n");
+			whereBuilder.append("  ?dsd qb:component ?spec . \n");
+			whereBuilder.append("  ?dataset ?comp ?value . \n");
+			whereBuilder.append("  ?obs qb:dataSet ?dataset . \n");
+			executeHelperInsertQuery(conn, insertString, whereBuilder.toString());
+			// Slice attachments
+			whereBuilder = new StringBuilder();
+			whereBuilder.append("  ?spec qb:componentProperty ?comp . \n");
+			whereBuilder.append("  ?spec qb:componentAttachment qb:Slice . \n");
+			whereBuilder.append("  ?dataset qb:structure ?dsd . \n");
+			whereBuilder.append("  ?dsd qb:component ?spec . \n");
+			whereBuilder.append("  ?dataset qb:slice ?slice . \n");
+			whereBuilder.append("  ?slice ?comp ?value . \n");
+			whereBuilder.append("  ?slice qb:observation ?obs . \n");
+			executeHelperInsertQuery(conn, insertString, whereBuilder.toString());
+			// Dimension values on slices
+			whereBuilder = new StringBuilder();
+			whereBuilder.append("  ?spec qb:componentProperty ?comp . \n");
+			whereBuilder.append("  ?comp a  qb:DimensionProperty . \n");
+			whereBuilder.append("  ?dataset qb:structure ?dsd . \n");
+			whereBuilder.append("  ?dsd qb:component ?spec . \n");
+			whereBuilder.append("  ?dataset qb:slice ?slice . \n");
+			whereBuilder.append("  ?slice ?comp ?value . \n");
+			whereBuilder.append("  ?slice qb:observation ?obs . \n");
+			executeHelperInsertQuery(conn, insertString, whereBuilder.toString());
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+			getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+			getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+		}
+	}
+	
+	private void removeHelperGraph(){
+		try {
+			RepositoryConnection conn = state.getRdfStore().getConnection();
+			conn.prepareGraphQuery(QueryLanguage.SPARQL, "DROP SILENT GRAPH " + helperGraph).evaluate();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void createGUI(){
 		criteriaList = new ListSelect("Validation criteria");
 		criteriaList.setNullSelectionAllowed(false);
 		criteriaList.setHeight("400px");
-		final Object itemSummary = criteriaList.addItem();
-		criteriaList.setItemCaption(itemSummary, "Summary");
-		final Object itemProvenance = criteriaList.addItem();
-		criteriaList.setItemCaption(itemProvenance, "Provenance information");
-		final Object itemObsLinks = criteriaList.addItem();
-		criteriaList.setItemCaption(itemObsLinks, "Observations linked to DataSets");
-		final Object itemDataSetLinks = criteriaList.addItem();
-		criteriaList.setItemCaption(itemDataSetLinks, "DataSets linked to DSDs");
-		final Object itemMeasuresInDSDs = criteriaList.addItem();
-		criteriaList.setItemCaption(itemMeasuresInDSDs, "Measures in DSDs");
-		final Object itemDimensionsHaveRange = criteriaList.addItem();
-		criteriaList.setItemCaption(itemDimensionsHaveRange, "Dimensions have range");
-		final Object itemDimDefined = criteriaList.addItem();
-		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
-		final Object itemSliceKeysDeclared = criteriaList.addItem();
-		criteriaList.setItemCaption(itemSliceKeysDeclared, "Slice keys declared");
-		final Object itemSliceKeysConsistent = criteriaList.addItem();
-		criteriaList.setItemCaption(itemSliceKeysConsistent, "Slice keys consistent");
-		final Object itemSliceStructureUnique = criteriaList.addItem();
-		criteriaList.setItemCaption(itemSliceStructureUnique, "Slice structure unique");
-		final Object itemSliceDimensionsComplete = criteriaList.addItem();
-		criteriaList.setItemCaption(itemSliceDimensionsComplete, "Slice dimensions complete");
-		final Object itemDimReq = criteriaList.addItem();
-		criteriaList.setItemCaption(itemDimReq, "All dimensions required");
-		final Object itemObsUnique = criteriaList.addItem();
-		criteriaList.setItemCaption(itemObsUnique, "No duplicate observations");
+//		final Object itemSummary = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemSummary, "Summary");
+//		final Object itemProvenance = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemProvenance, "Provenance information");
+//		final Object itemObsLinks = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemObsLinks, "Observations linked to DataSets");
+//		final Object itemDataSetLinks = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemDataSetLinks, "DataSets linked to DSDs");
+//		final Object itemMeasuresInDSDs = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemMeasuresInDSDs, "Measures in DSDs");
+//		final Object itemDimensionsHaveRange = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemDimensionsHaveRange, "Dimensions have range");
+//		final Object itemDimDefined = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemDimDefined, "Dimensions - codes from code lists");
+//		final Object itemSliceKeysDeclared = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemSliceKeysDeclared, "Slice keys declared");
+//		final Object itemSliceKeysConsistent = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemSliceKeysConsistent, "Slice keys consistent");
+//		final Object itemSliceStructureUnique = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemSliceStructureUnique, "Slice structure unique");
+//		final Object itemSliceDimensionsComplete = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemSliceDimensionsComplete, "Slice dimensions complete");
+//		final Object itemDimReq = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemDimReq, "All dimensions required");
+//		final Object itemObsUnique = criteriaList.addItem();
+//		criteriaList.setItemCaption(itemObsUnique, "No duplicate observations");
 		
-		validationTab = new VerticalLayout();
-		validationTab.setMargin(false);
-		validationTab.setSpacing(true);
-		validationPanel = new Panel(validationTab);
-		validationPanel.setSizeFull();
-		validationPanel.setScrollable(true);
+		criteriaTree = new Tree("Validation criteria");
+		criteriaTree.setNullSelectionAllowed(false);
+		criteriaTree.setImmediate(true);
+		final Object itemSummary = criteriaTree.addItem();
+		criteriaTree.setItemCaption(itemSummary, "Summary");
+		criteriaTree.setChildrenAllowed(itemSummary, false);
+		criteriaTree.setItemIcon(itemSummary, iconInfo);
+		final Object itemProvenance = criteriaTree.addItem();
+		criteriaTree.setItemCaption(itemProvenance, "Provenance information");
+		criteriaTree.setChildrenAllowed(itemProvenance, false);
+		criteriaTree.setItemIcon(itemProvenance, iconInfo);
+		final Object itemObsLinks = createTreeItem("IC-1 Unique DataSet", icLinkToDataSet);
+		final Object itemDataSetLinks = createTreeItem("IC-2 Unique DSD", icLinkToDSD);
+		final Object itemMeasuresInDSDs = createTreeItem("IC-3 DSD includes measure", icMeasuresInDSD);
+		final Object itemDimensionsHaveRange = createTreeItem("IC-4 Dimensions have range", icDimensionsHaveRange);
+		final Object itemDimDefined = createTreeItem("IC-5 Concept dimensions have code lists", icDimsHaveCodeLists);
+		final Object itemAttributesOptional = createTreeItem("IC-6 Only attributes may be optional", icAttributesOptional);
+		final Object itemSliceKeysDeclared = createTreeItem("IC-7 Slice Keys must be declared", icSliceKeysDeclared);
+		final Object itemSliceKeysConsistent = createTreeItem("IC-8 Slice Keys consistent with DSD", icSliceKeysConsistentWithDSD);
+		final Object itemSliceStructureUnique = createTreeItem("IC-9 Unique slice structure", icSliceStructureUnique);
+		final Object itemSliceDimensionsComplete = createTreeItem("IC-10 Slice dimensions complete", icSliceDimensionsComplete);
+		final Object itemDimReq = createTreeItem("IC-11 All dimensions required", icDimensionsRequired);
+		final Object itemObsUnique = createTreeItem("IC-12 No duplicate observations", icNoDuplicateObservations);
+		final Object itemRequiredAttributes = createTreeItem("IC-13 Required attributes", icRequiredAttributes);
+		final Object itemAllMeasuresPresent = createTreeItem("IC-14 All measures present", icAllMeasuresPresent);
+		final Object itemMeasureDimConsistent = createTreeItem("IC-15 Measure dimension consistent", icMeasureDimConsistent);
+		final Object itemSingleMeasure = createTreeItem("IC-16 Single measure", icSingleMeasure);
+		final Object itemConsistentDataSetLinks = createTreeItem("IC-18 Consistent data set links", icConsistentDataSetLinks);
+		final Object itemCodesFromCodeList = createTreeItem("IC-19 Codes from code list", icCodesFromCodeLists);
 		
-		mainContrainer.addComponent(criteriaList);
-		mainContrainer.setExpandRatio(criteriaList, 0.0f);
-		mainContrainer.addComponent(validationPanel);
-		mainContrainer.setExpandRatio(validationPanel, 2.0f);
-		
-		criteriaList.setImmediate(true);
-		criteriaList.addListener(new Property.ValueChangeListener() {
+		criteriaTree.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				Object selectedItem = event.getProperty().getValue();
 				if (selectedItem == itemSummary)
@@ -349,54 +701,110 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					sliceDimensionsComplete();
 				else if (selectedItem == itemDimDefined)
 					dimensionDefinitions();
+				else if (selectedItem == itemAttributesOptional)
+					attributesOptional();
 				else if (selectedItem == itemDimReq)
 					dimensionsRequired();
 				else if (selectedItem == itemObsUnique)
 					noDuplicateObs();
+				else if (selectedItem == itemRequiredAttributes)
+					requiredAttributes();
+				else if (selectedItem == itemAllMeasuresPresent)
+					allMeasuresPresent();
+				else if (selectedItem == itemMeasureDimConsistent)
+					measureDimConsistent();
+				else if (selectedItem == itemSingleMeasure)
+					singleMeasure();
+				else if (selectedItem == itemConsistentDataSetLinks)
+					consistentDataSetLinks();
+				else if (selectedItem == itemCodesFromCodeList)
+					codesFromCodeList();
 				else {
 					summary();
 				}
 			}
 		});
-	}
-	
-	private void showGraphChooser(){
-		final Window window = new Window("Choose graph");
-		window.setModal(true);
 		
-		VerticalLayout content = new VerticalLayout();
-		content.setSpacing(true);
-		content.addComponent(new Label("First you need to select a graph"));
-		List<String> graphs = null;
-		try {
-			graphs = ConfigurationTab.request_graphs(state);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		final ComboBox comboGraphs = new ComboBox("Select working graph: ", graphs);
-		content.addComponent(comboGraphs);
-		Button ok = new Button("OK");
-		ok.addListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				String theChosenOne = (String)comboGraphs.getValue();
-				if (theChosenOne != null && !theChosenOne.isEmpty()){
-					state.setCurrentGraph(theChosenOne);
-					state.cGraph.setValue(theChosenOne);
-				}
-				Validation.this.getWindow().removeWindow(window);
-			}
-		});
-		content.addComponent(ok);
-		state.cGraph.getWindow().addWindow(window);
+		HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
+		splitPanel.setImmediate(true);
+		splitPanel.setSizeFull();
+		
+		validationTab = new VerticalLayout();
+		validationTab.setMargin(false, false, false, true);
+		validationTab.setSpacing(true);
+		validationPanel = new Panel(validationTab);
+		validationPanel.setSizeFull();
+		validationPanel.setScrollable(true);
+		validationPanel.setStyleName(Reindeer.PANEL_LIGHT);
+		
+		criteriaTab = new VerticalLayout();
+		criteriaTab.setMargin(false);
+		criteriaTab.setSpacing(true);
+		criteriaTab.addComponent(criteriaTree);
+		criteriaPanel = new Panel(criteriaTab);
+		criteriaPanel.setSizeFull();
+		criteriaPanel.setScrollable(true);
+		criteriaPanel.setStyleName(Reindeer.PANEL_LIGHT);
+		
+//		mainContrainer.addComponent(criteriaPanel);
+//		mainContrainer.setExpandRatio(criteriaPanel, 0.0f);
+//		mainContrainer.addComponent(validationPanel);
+//		mainContrainer.setExpandRatio(validationPanel, 2.0f);
+		
+		splitPanel.setFirstComponent(criteriaPanel);
+		splitPanel.setSecondComponent(validationPanel);
+		splitPanel.setSplitPosition(320, Sizeable.UNITS_PIXELS);
+		mainContrainer.addComponent(splitPanel);
+		mainContrainer.setExpandRatio(splitPanel, 2.0f);
+		mainContrainer.setSizeFull();
+		
+//		criteriaList.setImmediate(true);
+//		criteriaList.addListener(new Property.ValueChangeListener() {
+//			public void valueChange(ValueChangeEvent event) {
+//				Object selectedItem = event.getProperty().getValue();
+//				if (selectedItem == itemSummary)
+//					summary();
+//				else if (selectedItem == itemProvenance)
+//					provenance();
+//				else if (selectedItem == itemObsLinks)
+//					observationLinks();
+//				else if (selectedItem == itemDataSetLinks)
+//					dataSetLinks();
+//				else if (selectedItem == itemMeasuresInDSDs)
+//					measuresInDSD();
+//				else if (selectedItem == itemDimensionsHaveRange)
+//					dimensionsHaveRange();
+//				else if (selectedItem == itemSliceKeysDeclared)
+//					sliceKeysDeclared();
+//				else if (selectedItem == itemSliceKeysConsistent)
+//					sliceKeysConsistentWithDSD();
+//				else if (selectedItem == itemSliceStructureUnique)
+//					sliceStructureUnique();
+//				else if (selectedItem == itemSliceDimensionsComplete)
+//					sliceDimensionsComplete();
+//				else if (selectedItem == itemDimDefined)
+//					dimensionDefinitions();
+//				else if (selectedItem == itemDimReq)
+//					dimensionsRequired();
+//				else if (selectedItem == itemObsUnique)
+//					noDuplicateObs();
+//				else {
+//					summary();
+//				}
+//			}
+//		});
 	}
 	
-	private void slice(){
-		validationTab.removeAllComponents();
-		CreateSlices cs = new CreateSlices(state);
-		validationTab.addComponent(cs);
-		cs.render();
-		validationTab.setExpandRatio(cs, 2.0f);
-		showContent();
+	private Object createTreeItem(String caption, IntegrityConstraint ic){
+		final Object itemObject = criteriaTree.addItem();
+		criteriaTree.setItemCaption(itemObject, caption);
+		criteriaTree.setChildrenAllowed(itemObject, false);
+		ic.evaluate();
+		if (ic.getStatus() != null && ic.getStatus().booleanValue())
+			criteriaTree.setItemIcon(itemObject, iconOK);
+		else 
+			criteriaTree.setItemIcon(itemObject, iconError);
+		return itemObject;
 	}
 	
 	private void summary(){
@@ -506,7 +914,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	private void observationLinks(){
 		validationTab.removeAllComponents();
-		TupleQueryResult res = executeTupleQuery(testLinkToDataSet);
+		Iterator<BindingSet> res = icLinkToDataSet.getResults();
 		
 		if (res == null) {
 			Label label = new Label();
@@ -517,13 +925,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final HashMap<String, String> map = new HashMap<String, String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				map.put(set.getValue("obs").stringValue(), set.getValue("dsNum").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			map.put(set.getValue("obs").stringValue(), set.getValue("dsNum").stringValue());
 		}
 		
 		if (map.size() == 0){
@@ -637,7 +1042,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	private void dataSetLinks(){
 		validationTab.removeAllComponents();
-		TupleQueryResult res = executeTupleQuery(testLinkToDSD);
+		Iterator<BindingSet> res = icLinkToDSD.getResults();
 		
 		if (res == null) {
 			Label label = new Label();
@@ -648,13 +1053,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final HashMap<String, String> map = new HashMap<String, String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				map.put(set.getValue("dataSet").stringValue(), set.getValue("dsdNum").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			map.put(set.getValue("dataSet").stringValue(), set.getValue("dsdNum").stringValue());
 		}
 		
 		if (map.size() == 0){
@@ -768,7 +1169,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	private void measuresInDSD(){
 		validationTab.removeAllComponents();
-		TupleQueryResult res = executeTupleQuery(testMeasuresInDSD);
+		Iterator<BindingSet> res = icMeasuresInDSD.getResults();
 		
 		if (res == null) {
 			Label label = new Label();
@@ -779,13 +1180,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final List<String> dsdList = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				dsdList.add(set.getValue("dsd").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			dsdList.add(set.getValue("dsd").stringValue());
 		}
 		
 		if (dsdList.size() == 0){
@@ -830,7 +1227,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	private void dimensionsHaveRange(){
 		validationTab.removeAllComponents();
-		TupleQueryResult res = executeTupleQuery(testDimensionsHaveRange);
+		Iterator<BindingSet> res = icDimensionsHaveRange.getResults();
 		
 		if (res == null) {
 			Label label = new Label();
@@ -841,13 +1238,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final List<String> dimList = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				dimList.add(set.getValue("dim").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			dimList.add(set.getValue("dim").stringValue());
 		}
 		
 		if (dimList.size() == 0){
@@ -879,10 +1272,59 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	private void attributesOptional(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icAttributesOptional.getResults();
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> compMap = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			compMap.put(set.getValue("componentSpec").stringValue(), set.getValue("component").stringValue());
+		}
+		
+		if (compMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - if there are any optional components, they are attributes");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following components are marked as optionakm, but they are not attributes");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listComponents = new ListSelect("Component Specifications", compMap.keySet());
+		listComponents.setNullSelectionAllowed(false);
+		validationTab.addComponent(listComponents);
+		
+		// TODO: add label that tells to which component this compSpec is linked and maybe details table
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listComponents.getValue());
+			}
+		});
+		
+		showContent();
+	}
+	
 	private void sliceKeysDeclared(){
 		validationTab.removeAllComponents();
 		
-		final TupleQueryResult res = executeTupleQuery(testSliceKeysDeclared);
+		final Iterator<BindingSet> res = icSliceKeysDeclared.getResults();
 		if (res == null) {
 			Label label = new Label();
 			label.setValue("ERROR - " + errorMsg);
@@ -892,13 +1334,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final ArrayList<String> listSliceKeys = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				listSliceKeys.add(set.getValue("sliceKey").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			listSliceKeys.add(set.getValue("sliceKey").stringValue());
 		}
 		if (listSliceKeys.size() == 0){
 			Label label = new Label();
@@ -954,7 +1392,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void sliceKeysConsistentWithDSD(){
 		validationTab.removeAllComponents();
 		
-		final TupleQueryResult res = executeTupleQuery(testSliceKeysConsistentWithDSD);
+		final Iterator<BindingSet> res = icSliceKeysConsistentWithDSD.getResults();
 		if (res == null) {
 			Label label = new Label();
 			label.setValue("ERROR - " + errorMsg);
@@ -964,13 +1402,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final ArrayList<String> listSliceKeys = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				listSliceKeys.add(set.getValue("sliceKey").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			listSliceKeys.add(set.getValue("sliceKey").stringValue());
 		}
 		if (listSliceKeys.size() == 0){
 			Label label = new Label();
@@ -1031,7 +1465,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void sliceStructureUnique(){
 		validationTab.removeAllComponents();
 		
-		final TupleQueryResult res = executeTupleQuery(testSliceStructureUnique);
+		final Iterator<BindingSet> res = icSliceStructureUnique.getResults();
 		if (res == null) {
 			Label label = new Label();
 			label.setValue("ERROR - " + errorMsg);
@@ -1041,13 +1475,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		final ArrayList<String> listSlices = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				listSlices.add(set.getValue("slice").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			listSlices.add(set.getValue("slice").stringValue());
 		}
 		if (listSlices.size() == 0){
 			Label label = new Label();
@@ -1103,7 +1533,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void sliceDimensionsComplete(){
 		validationTab.removeAllComponents();
 		
-		final TupleQueryResult res = executeTupleQuery(testSliceDimensionsComplete);
+		final Iterator<BindingSet> res = icSliceDimensionsComplete.getResults();
 		if (res == null) {
 			Label label = new Label();
 			label.setValue("ERROR - " + errorMsg);
@@ -1115,23 +1545,19 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		final HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
 		String lastSlice = null;
 		ArrayList<String> lastDimensions = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				String s = set.getValue("slice").stringValue();
-				if (lastSlice == null) lastSlice = s;
-				String d = set.getValue("dim").stringValue();
-				if (!s.equals(lastSlice)) {
-					map.put(lastSlice, lastDimensions);
-					lastSlice = s;
-					lastDimensions = new ArrayList<String>();
-				}
-				lastDimensions.add(d);
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			String s = set.getValue("slice").stringValue();
+			if (lastSlice == null) lastSlice = s;
+			String d = set.getValue("dim").stringValue();
+			if (!s.equals(lastSlice)) {
+				map.put(lastSlice, lastDimensions);
+				lastSlice = s;
+				lastDimensions = new ArrayList<String>();
 			}
-			if (lastSlice != null) map.put(lastSlice, lastDimensions);
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+			lastDimensions.add(d);
 		}
+		if (lastSlice != null) map.put(lastSlice, lastDimensions);
 		if (map.size() == 0){
 			Label label = new Label();
 			label.setValue("No problems were detected - either there are no slices or every slice has a value for every dimension declared in its associated slice key (via property qb:sliceStructure)");
@@ -1195,61 +1621,45 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	private void dimensionDefinitions(){
 		validationTab.removeAllComponents();
-		final TupleQueryResult res = executeTupleQuery(testCodesFromCodeLists);
+		Iterator<BindingSet> res = icDimsHaveCodeLists.getResults();
+		
 		if (res == null) {
 			Label label = new Label();
-			label.setValue("ERROR - " + errorMsg);
+			label.setValue("ERROR");
 			validationTab.addComponent(label);
 			showContent();
 			return;
 		}
 		
-		final HashMap<String, String> map = new HashMap<String, String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				map.put(set.getValue("val").stringValue(), set.getValue("list").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		final List<String> dimList = new ArrayList<String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			dimList.add(set.getValue("dim").stringValue());
 		}
 		
-		if (map.size() == 0){
+		if (dimList.size() == 0){
 			Label label = new Label();
-			label.setValue("All values of coded dimensions are linked to the code lists");
+			label.setValue("No problems were detected - every dimension with range skos:Concept has a code list");
 			validationTab.addComponent(label);
 			showContent();
 			return;
 		}
 		
-		Label label = new Label();
-		label.setValue("Following resources should be of type skos:Concept and linked to the appropriate code list");
-		validationTab.addComponent(label);
+		Label lbl = new Label();
+		lbl.setValue("Following dimensions with range skos:Concept do not have a code list");
+		validationTab.addComponent(lbl);
 		
-		final ListSelect listValues= new ListSelect("Resources", map.keySet());
-		listValues.setNullSelectionAllowed(false);
-		validationTab.addComponent(listValues);
+		final ListSelect listDimensions = new ListSelect("Dimensions", dimList);
+		listDimensions.setNullSelectionAllowed(false);
+		validationTab.addComponent(listDimensions);
 		
-		Button editInOW = new Button("Edit in OntoWiki");
-		editInOW.addListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				showInOntowiki((String)listValues.getValue());
-			}
-		});
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
 		
-		HorizontalLayout buttonsLayout = new HorizontalLayout();
-		buttonsLayout.setSpacing(true);
-		
-		Button fix = new Button("Quick Fix");
-		validationTab.addComponent(buttonsLayout);
-		validationTab.setExpandRatio(buttonsLayout, 2.0f);
-		buttonsLayout.addComponent(fix);
-		buttonsLayout.addComponent(editInOW);
 		fix.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				String resource = (String)listValues.getValue();
-				String codeList = map.get(resource);
-				getWindow().addWindow(new QuickFixCodesFromCodeLists(resource, codeList));
+				showInOntowiki((String)listDimensions.getValue());
 			}
 		});
 		
@@ -1259,15 +1669,11 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void dimensionsRequired(){
 		validationTab.removeAllComponents();
 		validationTab.addComponent(new Label("Following observation don't have a value for each dimension: "));
-		TupleQueryResult res = executeTupleQuery(testDimensionsRequired);
+		Iterator<BindingSet> res = icDimensionsRequired.getResults();
 		ArrayList<String> listObs = new ArrayList<String>();
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				listObs.add(set.getValue("obs").stringValue());
-			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			listObs.add(set.getValue("obs").stringValue());
 		}
 		ListSelect ls = new ListSelect("Observations", listObs);
 		ls.setNullSelectionAllowed(false);
@@ -1290,24 +1696,20 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		ls1.setWidth("100%");
 		validationTab.addComponent(ls1);
 		
-		TupleQueryResult res = executeTupleQuery(testNoDuplicateObservations);
+		Iterator<BindingSet> res = icNoDuplicateObservations.getResults();
 		final HashMap<String, List<String>> mapDuplicates = new HashMap<String, List<String>>();
 		String lastObs = "";
 		List<String> lastDuplicates = null;
-		try {
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				String obs1 = set.getValue("obs1").stringValue();
-				if (!obs1.equals(lastObs)){
-					lastObs = obs1;
-					lastDuplicates = new ArrayList<String>();
-					mapDuplicates.put(lastObs, lastDuplicates);
-					ls1.addItem(lastObs);
-				}
-				lastDuplicates.add(set.getValue("obs2").stringValue());
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			String obs1 = set.getValue("obs1").stringValue();
+			if (!obs1.equals(lastObs)){
+				lastObs = obs1;
+				lastDuplicates = new ArrayList<String>();
+				mapDuplicates.put(lastObs, lastDuplicates);
+				ls1.addItem(lastObs);
 			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
+			lastDuplicates.add(set.getValue("obs2").stringValue());
 		}
 		
 		final ListSelect ls2 = new ListSelect("Duplicates");
@@ -1373,10 +1775,338 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-13
+	private void requiredAttributes(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icRequiredAttributes.getResults();
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> obsMap = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			obsMap.put(set.getValue("obs").stringValue(), set.getValue("attr").stringValue());
+		}
+		
+		if (obsMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - Every qb:Observation has a value for each declared attribute that is marked as required");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following observations do not have a value for required attribute(s)");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+		listObservations.setNullSelectionAllowed(false);
+		validationTab.addComponent(listObservations);
+		
+		// TODO: add label that tells which attribute is missing
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObservations.getValue());
+			}
+		});
+		
+		showContent();
+	}
+	
+	// IC-14
+	private void allMeasuresPresent(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icAllMeasuresPresent.getResults();
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> obsMap = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			obsMap.put(set.getValue("obs").stringValue(), set.getValue("measure").stringValue());
+		}
+		
+		if (obsMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - In Data Sets that do not use a Measure dimension (if there are any) each Observation has a value for every declared measure");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following observations are missing a value for declared measure(s)");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+		listObservations.setNullSelectionAllowed(false);
+		validationTab.addComponent(listObservations);
+		
+		// TODO: add label that tells which measure is missing
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObservations.getValue());
+			}
+		});
+		
+		showContent();
+	}
+	
+	// IC-15
+	private void measureDimConsistent(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icMeasureDimConsistent.getResults();
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> obsMap = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			obsMap.put(set.getValue("obs").stringValue(), set.getValue("measure").stringValue());
+		}
+		
+		if (obsMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - In Data Sets that a Measure dimension (if there are any) each Observation has a value for the measure corresponding to its given qb:measureType");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following observations are missing a value for the measure corresponding to its given qb:measureType");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+		listObservations.setNullSelectionAllowed(false);
+		validationTab.addComponent(listObservations);
+		
+		// TODO: add label that tells which measure is missing
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObservations.getValue());
+			}
+		});
+		
+		showContent();
+	}
+	
+	// IC-16
+		private void singleMeasure(){
+			validationTab.removeAllComponents();
+			Iterator<BindingSet> res = icSingleMeasure.getResults();
+			
+			@SuppressWarnings("unused")
+			final class MeasureOmeasurePair{
+				String measure;
+				String omeasure;
+			}
+			
+			if (res == null) {
+				Label label = new Label();
+				label.setValue("ERROR");
+				validationTab.addComponent(label);
+				showContent();
+				return;
+			}
+			
+			final HashMap<String, MeasureOmeasurePair> obsMap = new HashMap<String, MeasureOmeasurePair>();
+			while (res.hasNext()){
+				BindingSet set = res.next();
+				MeasureOmeasurePair pair = new MeasureOmeasurePair();
+				pair.measure = set.getValue("measure").stringValue();
+				pair.omeasure = set.getValue("omeasure").stringValue();
+				obsMap.put(set.getValue("obs").stringValue(), pair);
+			}
+			
+			if (obsMap.size() == 0){
+				Label label = new Label();
+				label.setValue("No problems were detected - In Data Sets that use a Measure dimension (if there are any) each Observation only has a value for one measure");
+				validationTab.addComponent(label);
+				showContent();
+				return;
+			}
+			
+			Label lbl = new Label();
+			lbl.setValue("Following observations belong to data sets that use a Measure dimension and have a value for more than one measure");
+			validationTab.addComponent(lbl);
+			
+			final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+			listObservations.setNullSelectionAllowed(false);
+			validationTab.addComponent(listObservations);
+			
+			// TODO: add label that tells what is the measure dimension and mention the omeasure, perhaps details table
+			
+			Button fix = new Button("Edit in OntoWiki");
+			validationTab.addComponent(fix);
+			validationTab.setExpandRatio(fix, 2.0f);
+			
+			fix.addListener(new Button.ClickListener() {
+				public void buttonClick(ClickEvent event) {
+					showInOntowiki((String)listObservations.getValue());
+				}
+			});
+			
+			showContent();
+		}
+	
+	// IC-18
+	private void consistentDataSetLinks(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icConsistentDataSetLinks.getResults();
+		
+		@SuppressWarnings("unused")
+		final class DataSetSlicePair{
+			String dataset;
+			String slice;
+		}
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, DataSetSlicePair> obsMap = new HashMap<String, DataSetSlicePair>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			DataSetSlicePair pair = new DataSetSlicePair();
+			pair.dataset = set.getValue("dataset").stringValue();
+			pair.slice = set.getValue("slice").stringValue();
+			obsMap.put(set.getValue("obs").stringValue(), pair);
+		}
+		
+		if (obsMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - If a qb:DataSet D has a qb:slice S, and S has an qb:observation O, then the qb:dataSet corresponding to O must be D");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following observations are missing a link to the appropriate data set");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+		listObservations.setNullSelectionAllowed(false);
+		validationTab.addComponent(listObservations);
+		
+		// TODO: add label that tells which dataset and slice are in question, perhaps details table
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObservations.getValue());
+			}
+		});
+		
+		showContent();
+	}
+	
+	// IC-19
+	private void codesFromCodeList(){
+		validationTab.removeAllComponents();
+		final Iterator<BindingSet> res = icCodesFromCodeLists.getResults();
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> map = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			map.put(set.getValue("v").stringValue(), set.getValue("list").stringValue());
+		}
+		
+		if (map.size() == 0){
+			Label label = new Label();
+			label.setValue("All values of coded dimensions are linked to the code lists");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label label = new Label();
+		label.setValue("Following resources should be of type skos:Concept and linked to the appropriate code list");
+		validationTab.addComponent(label);
+		
+		final ListSelect listValues= new ListSelect("Resources", map.keySet());
+		listValues.setNullSelectionAllowed(false);
+		validationTab.addComponent(listValues);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listValues.getValue());
+			}
+		});
+		
+		HorizontalLayout buttonsLayout = new HorizontalLayout();
+		buttonsLayout.setSpacing(true);
+		
+		Button fix = new Button("Quick Fix");
+		validationTab.addComponent(buttonsLayout);
+		validationTab.setExpandRatio(buttonsLayout, 2.0f);
+		buttonsLayout.addComponent(fix);
+		buttonsLayout.addComponent(editInOW);
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				String resource = (String)listValues.getValue();
+				String codeList = map.get(resource);
+				getWindow().addWindow(new QuickFixCodesFromCodeLists(resource, codeList));
+			}
+		});
+		
+		showContent();
+	}
+	
 	private void showContent(){
-		mainContrainer.setExpandRatio(criteriaList, 0.0f);
-		mainContrainer.setExpandRatio(validationPanel, 2.0f);
-		mainContrainer.setSizeFull();
+//		mainContrainer.setExpandRatio(criteriaPanel, 0.0f);
+//		mainContrainer.setExpandRatio(validationPanel, 2.0f);
+//		mainContrainer.setSizeFull();
 	}
 	
 	private void showInOntowiki(String resource){
