@@ -91,6 +91,10 @@ public class ExtractionAndLoading extends TestCase {
         // Click upload
         bf.getVisibleElement("Could not find submit button.", By.name("bt1")).click();
         // Wait for upload to finish
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'conductor')]"),
+                By.id("MTB"));
         bf.waitUntilElementIsVisible("Upload did not finish",
                 By.xpath("//div[@class='message'][contains(.,'Upload finished')]"), 30);
     }
@@ -158,7 +162,7 @@ public class ExtractionAndLoading extends TestCase {
             complete += "\n";
             //xmlField.sendKeys(chars);   // To slow.
         }
-        bf.setValue(xmlField, complete);
+        bf.setValueViaJavaScript(xmlField, complete);
         xmlField.sendKeys(" ");
         
         transformButton.click();
@@ -172,7 +176,7 @@ public class ExtractionAndLoading extends TestCase {
             complete += "\n";
             //xsltField.sendKeys(chars);
         }
-        bf.setValue(xsltField, complete);
+        bf.setValueViaJavaScript(xsltField, complete);
         xsltField.sendKeys(" ");
         transformButton.click();
         // Wait for result to appear.

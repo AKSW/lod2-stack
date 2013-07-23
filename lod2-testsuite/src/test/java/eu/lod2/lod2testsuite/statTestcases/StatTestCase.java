@@ -1,7 +1,10 @@
 package eu.lod2.lod2testsuite.statTestcases;
 
 import eu.lod2.lod2testsuite.configuration.*;
-import junit.framework.Assert;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
@@ -9,13 +12,9 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeSuite;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -97,7 +96,7 @@ public abstract class StatTestCase extends TestCase {
                 By.id("login"));
 
         // enter default login details
-        bf.setValue(driver.findElement(By.xpath("//input[@id='username']")),"Admin");
+        bf.setValueViaJavaScript(driver.findElement(By.xpath("//input[@id='username']")),"Admin");
         driver.findElement(By.xpath("//a[@id='locallogin']")).click();
         bf.waitUntilElementIsVisible("Could not find the create model button after logging in to ontowiki...",
                 By.xpath("//a[@id='createmodel']"));

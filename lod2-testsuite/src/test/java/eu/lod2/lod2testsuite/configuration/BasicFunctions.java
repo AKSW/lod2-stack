@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -25,8 +27,13 @@ import static org.testng.AssertJUnit.*;
  * @author Stefan Schurischuster
  */
 public class BasicFunctions {
+    
     public static int PATIENCE_MILLI_SECONDS = 900;
-    public static int MAX_PATIENCE_SECONDS = 15;
+    public static int MAX_PATIENCE_SECONDS = 30;
+    public static int MAX_PATIENCE_SECONDS_EXTENDED = 45;
+    public static int MAX_PATIENCE_SECONDS_REDUCED = 5;
+    public static int REFRESH_WAIT_SECONDS = 5;
+    public static int MAX_ATTEMPTS = 5;
     private static final Logger logger = Logger.getLogger(BasicFunctions.class);
     private WebDriver driver;
     
@@ -74,61 +81,39 @@ public class BasicFunctions {
      * @Notice Maybe add collection for multiple content identifiers.
      */
     public void checkIFrame(By frameIdentifier, By contentIdentifier)  {
-        WebElement iframe = waitUntilElementIsVisible(frameIdentifier);
+        WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
         driver.switchTo().frame(iframe);
-        
-        WebElement contentElement = waitUntilElementIsVisible(
+        logger.info("Switched to different frame");
+        waitUntilElementIsVisible(
                 "Iframe content was not correctly displayed.",
                 contentIdentifier);
     }
-  
-    /**
-     * Tries to create a WebElement using the passed locator.
-     * 
-     * @param locator 
-     *          The locator of the element.
-     * @return 
-     *      If an exception is thrown it returns false, true otherwise.
-     */
-    public boolean isElementPresent(By locator)  {
-        try  {
-            WebElement element = driver.findElement(locator);
-        } catch(NoSuchElementException e)  {
-            return false;
-        } catch(Exception e)  {
-            Assert.fail(e.getMessage());
-        }
-        return true;
-    }
-    
-    /**
-     * Tries to create a WebElement using the passed locator and checks 
-     * whether it is visible and displayed on the web page.
-     * 
-     * @param locator 
-     *          The locator of the element.
-     * @return 
-     *      If an exception is thrown or element is hidden it returns false,
-     *      true otherwise.
-     */
-    public boolean isElementVisible(By locator)  {
-        WebElement element = null;
-        try  {
-           element = driver.findElement(locator);
-        } catch(NoSuchElementException e)  {
-            return false;
-        } catch(Exception e)  {
-            Assert.fail(e.getMessage());
-        }
-        return element.isDisplayed();
-    }
-    
+
     /**
      * @return 
      *       Returns the locator of a vaadin error message.
      */
     public By getErrorPopupLocator()  {
         return By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]");
+    }
+
+    /**
+     * Returns an existing WebElement from the webpage. Throws an assert.fail if
+     * the element is not present.
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * occurs.
+     * @param locator A By object locator.
+     * @return The existing WebElement.
+     */
+    public WebElement getExisitingElement(String failureMessage, By locator) {
+        WebElement element = null;
+        try {
+            element = driver.findElement(locator);
+        } catch (NoSuchElementException e) {
+            Assert.fail(failureMessage + " : " + e.getMessage());
+        }
+        return element;
     }
     
     /**
@@ -140,64 +125,118 @@ public class BasicFunctions {
     public By getInfoPopupLocator()  {
         return By.xpath("//div[@class='gwt-HTML']/../..[@class='v-Notification']");
     }
-    /**
-     * Returns an existing and visible WebElement from the web page.
-     * Throws an assert.fail if the element is not present or not visible.
-     * 
-     * @param locator
-     *          A By object locator.
-     * @return
-     *          The existing and visible WebElement.
-     */      
-    public WebElement getVisibleElement(By locator)  {
-        WebElement element = null;
-        try  {
-            element = driver.findElement(locator);
-        } catch(NoSuchElementException e)  {
-            Assert.fail(e.getMessage());
-        }
-        assertTrue("Element is not visible: " +element, element.isDisplayed());
-        return element;
-    }
     
     /**
-     * Returns an existing and visible WebElement from the web page.
-     * Throws an assert.fail if the element is not present or not visible.
-     * 
-     * @param locator
-     *          A By object locator.
-     * @return
-     *          The existing and visible WebElement.
-     */      
-    public WebElement getVisibleElement(String failureMessage, By locator)  {
-        WebElement element = null;
-        try  {
-            element = driver.findElement(locator);
-        } catch(NoSuchElementException e)  {
-            Assert.fail(failureMessage + " : " +e.getMessage());
-        }
-        assertTrue("Element is not visible: '" +element +"' : "+failureMessage, element.isDisplayed());
-        return element;
-    }
-    
-    /**
-     * Returns an existing WebElement from the web page.
-     * Throws an assert.fail if the element is not present.
-     * 
-     * @param locator
-     *          A By object locator.
-     * @return 
-     *          The existing WebElement
+     * Returns the value of a web element using javascript.
+     *
+     * @param element The Element to retrieve value from.
+     * @return The value of a field as String.
      */
-    public WebElement getExistingElement(By locator)  {
+    public String getValueViaJavaScript(WebElement element) {
+        return ((JavascriptExecutor) driver).
+                executeScript("return arguments[0].value", element).toString();
+    }    
+
+    /**
+     * Returns an existing and visible WebElement from the parent. Throws an
+     * assert.fail if the element is not present or not visible.
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * occurs.
+     * @param parent The parent WebElement from which a relativ search is
+     * started.
+     * @param locator A By object locator.
+     * @return The existing and visible child WebElement.
+     */
+    public WebElement getVisibleChildElement(String failureMessage, WebElement parent, By locator) {
         WebElement element = null;
-        try  {
-            element = driver.findElement(locator);
-        } catch(NoSuchElementException e)  {
-            Assert.fail(e.getMessage());
+        try {
+            element = parent.findElement(locator);
+        } catch (NoSuchElementException e) {
+            Assert.fail(failureMessage + " : " + e.getMessage());
         }
+        assertTrue("Element is not visible: '" + element + "' : " + failureMessage, element.isDisplayed());
         return element;
+    }    
+    
+        /**
+     * Returns a list of existing and visible WebElements of a parent
+     * WebElement.
+     *
+     * @param failureMessage The failure message to be displayed.
+     * @param parent A WebElement to start the relative search from.
+     * @param locator The locator of the child elements.
+     * @return List of visible child WebElements.
+     */
+    public List<WebElement> getVisibleChildElements(String failureMessage, WebElement parent, By locator) {
+        List<WebElement> children = null;
+        try {
+            children = parent.findElements(locator);
+        } catch (NoSuchElementException e) {
+            Assert.fail(failureMessage + " : " + e.getMessage());
+        }
+        for (WebElement element : children) {
+            // MAYBE THIS SHOULD NOT BE AN ASSERT...
+            assertTrue("Element is not visible: '" + element + "' : "
+                    + failureMessage, element.isDisplayed());
+        }
+        return children;
     }
+    
+        /**
+     * Returns an existing and visible WebElement from the webpage. Throws an
+     * assert.fail if the element is not present or not visible.
+     *
+     * @param locator A By object locator.
+     * @return The existing and visible WebElement.
+     */
+    public WebElement getVisibleElement(By locator) {
+        return getVisibleElement("", locator);
+    }
+
+    /**
+     * Returns an existing and visible WebElement from the webpage. Throws an
+     * assert.fail if the element is not present or not visible.
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * occurs.
+     * @param locator A By object locator.
+     * @return The existing and visible WebElement.
+     */
+    public WebElement getVisibleElement(String failureMessage, By locator) {
+        WebElement element = getExisitingElement(failureMessage, locator);
+        assertTrue("Element is not visible: '" + element + "' : " + failureMessage, element.isDisplayed());
+        return element;
+
+    }
+    
+    /**
+     * Returns a list of existing and visible WebElements from the web-page.
+     * Throws an assert.fail if an element is not present. Returns only present
+     * fields.
+     *
+     * @param locator A By object locator.
+     * @return List of visible WebElements.
+     */
+    public List<WebElement> getVisibleElements(String failureMessage, By locator) {
+        List<WebElement> elements = null;
+        List<WebElement> visibleElements = new ArrayList<WebElement>();
+        try {
+            elements = driver.findElements(locator);
+        } catch (NoSuchElementException e) {
+            Assert.fail(failureMessage + " : " + e.getMessage());
+        }
+        for (WebElement element : elements) {
+            logger.warn("Element is not visible although it should be!");
+            if (element.isDisplayed()) {
+                visibleElements.add(element);
+            }
+            /*assertTrue("Element is not visible: '" + element + "' : " 
+             + failureMessage, element.isDisplayed());
+             */
+        }
+        return visibleElements;
+    }    
 
     /**
      * Handles an vaadin file upload and checks whether the describing text
@@ -269,6 +308,112 @@ public class BasicFunctions {
              popUpElement.click();
              bePatient();
          }
+    }
+    
+    /**
+     * Tries to find a descendant element from a parent WebElement.
+     *
+     * @param parent The WebElement from which there is a relative search.
+     * @param locator The locator of the child element. Be careful when using
+     * xpath, you have to use a dot before the slashes (.//) to perform a
+     * relative search.
+     * @return
+     */
+    public boolean isChildElementVisible(WebElement parent, By locator) {
+        WebElement element = null;
+        try {
+            element = parent.findElement(locator);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+        return element.isDisplayed();
+    }
+    
+    /**
+     * Tries to create a WebElement using the passed locator and checks whether
+     * it exists on the web-page.
+     *
+     * @param locator The locator of the element.
+     * @return If an exception is thrown returns false, true otherwise.
+     */
+    public boolean isElementPresent(By locator) {
+        WebElement element = null;
+        try {
+            element = driver.findElement(locator);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+        return true;
+    }
+    
+
+    /**
+     * Tries to create a WebElement using the passed locator and checks whether
+     * it is visible and displayed on the web-page.
+     *
+     * @param locator The locator of the element.
+     * @return If an exception is thrown or element is hidden it returns false,
+     * true otherwise.
+     */
+    public boolean isElementVisible(By locator) {
+        WebElement element = null;
+        try {
+            element = driver.findElement(locator);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+        return element.isDisplayed();
+    }
+
+    /**
+     * Tries to create a WebElement using the passed locator and checks whether
+     * it is visible and displayed on the web-page. Standard waiting time is
+     * MAX_PACIENCE_SECONDS_REDUCED
+     *
+     * @param locator The locator of the element.
+     * @return If an exception is thrown or element is hidden it returns false,
+     * true otherwise.
+     */
+    public boolean isElementVisibleAfterWait(By locator) {
+        return isElementVisibleAfterWait(locator, MAX_PATIENCE_SECONDS_REDUCED);
+    }
+
+    
+    /**
+     * Tries to create a WebElement using the passed locator and checks whether
+     * it is visible and displayed on the web-page.
+     *
+     * @param locator The locator of the element.
+     * @param maxPatienceSeconds The maximum time to wait before throwing an
+     * exception.
+     * @return If an exception is thrown or element is hidden it returns false,
+     * true otherwise.
+     */
+    public boolean isElementVisibleAfterWait(By locator, int maxPatienceSeconds) {
+        WebElement element = null;
+        WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
+        int attempts = 0;
+        boolean rep = true;
+
+        while (attempts < MAX_ATTEMPTS && rep == true) {
+            attempts++;
+            rep = false;
+            try {
+                element = pageWait.until(
+                        ExpectedConditions.visibilityOfElementLocated(locator));
+            } catch (NoSuchElementException e) {
+                return false;
+            } catch (StaleElementReferenceException se) {
+                rep = true;
+                logger.error("isElementVisible failed and will be repeated for the  "
+                        + attempts + " time. " + se.getMessage());
+            } catch (TimeoutException te) {
+                return false;
+            }
+        }
+        assertFalse("To many stale reference exceptions during waiting"
+                + "for element to be visible.", attempts == MAX_ATTEMPTS);
+        return true;
     }
     
     /**
@@ -349,189 +494,210 @@ public class BasicFunctions {
     /**
      * Sets the value of a field using javascript. This may not trigger the same
      * events as sendKeys does!
-     * 
-     * @param element
-     *          The WebElement to be set.
+     *
+     * @param element 
+     *              The WebElement to be set.
      * @param value 
-     *          The value that is used.
+     *              The value that is used.
      */
-    public void setValue(WebElement element, String value) {
-        ((JavascriptExecutor)driver).executeScript("arguments[0].value = arguments[1]", element, value);
-    }    
+    public void setValueViaJavaScript(WebElement element, String value) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1]", element, value);
+    }
     
-    /**
+      /**
      * Sets the current browser session to sleep until an element is present.
      * This element must be identified over its xpath.
-     * 
-     * @param locator
-     *          The identifying By object.
-     * @return 
-     *          If the element was found before patience has ran out it is 
-     *          returned.
+     *
+     * @param locator The identifying By object.
+     * @return If the element was found before patience has ran out it is
+     * returned.
      */
-    public WebElement waitUntilElementIsVisible(By locator)  {
+    public WebElement waitUntilElementIsVisible(By locator) {
         return waitUntilElementIsVisible("", locator);
     }
-    
+
     /**
      * Sets the current browser session to sleep until an element is present.
      * This element must be identified over its xpath.
-     * 
-     * @param failureMessage 
-     *          The failure message to be displayed when an error appears.
-     * @param locator
-     *          The identifying By object.
-     * @return 
-     *          If the element was found before patience has ran out it is 
-     *          returned.
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * appears.
+     * @param locator The identifying By object.
+     * @return If the element was found before patience has ran out it is
+     * returned.
      */
-    public WebElement waitUntilElementIsVisible(String failureMessage, By locator)  {
+    public WebElement waitUntilElementIsVisible(String failureMessage, By locator) {
         return waitUntilElementIsVisible(failureMessage, locator, MAX_PATIENCE_SECONDS);
     }
+
+    /**
+     * Sets the current browser session to sleep until an element is present.
+     * This element must be identified over its xpath.
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * appears.
+     * @param locator The identifying By object.
+     * @param maxPatienceSeconds Maximum time to wait before throwing an error
+     * if the element is not visible.
+     * @return If the element was found before patience has ran out it is
+     * returned.
+     */
+    public WebElement waitUntilElementIsVisible(String failureMessage, By locator, int maxPatienceSeconds) {
+        WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
+        if (!failureMessage.isEmpty()) {
+            pageWait.withMessage("Time expired: " + failureMessage);
+        }
+        WebElement element = null;
+        int attempts = 0;
+        boolean rep = true;
+        while (attempts < MAX_ATTEMPTS && rep == true) {
+            attempts++;
+            rep = false;
+            try {
+                element = pageWait.until(
+                        ExpectedConditions.visibilityOfElementLocated(locator));
+            } catch (NoSuchElementException e) {
+                if (!failureMessage.isEmpty()) {
+                    Assert.fail("Element not found: " + failureMessage
+                            + " Stack trace: " + e.getMessage());
+                } else {
+                    Assert.fail(e.getMessage());
+                }
+            } catch (StaleElementReferenceException se) {
+                rep = true;
+                logger.error("Navigation failed and will be repeated for the "
+                        + attempts + " time. " + se.getMessage());
+            }
+        }
+        assertFalse("To many stale reference exceptions during waiting"
+                + "for element to be visible.", attempts == MAX_ATTEMPTS);
+
+        return element;
+    }
     
     /**
      * Sets the current browser session to sleep until an element is present.
      * This element must be identified over its xpath.
-     * 
-     * @param failureMessage 
-     *          The failure message to be displayed when an error appears.
-     * @param locator
-     *          The identifying By object.
-     * @param maxPatienceSeconds 
-     *          Maximum time to wait before throwing an error if the element is
-     *          not visible.
-     * @return 
-     *          If the element was found before patience has ran out it is 
-     *          returned.
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * appears.
+     * @param locator The identifying By object.
+     * @return If the element was found before patience has ran out it is
+     * returned.
      */
-    public WebElement waitUntilElementIsVisible(String failureMessage, By locator, int maxPatienceSeconds)  {
-        WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
-        if(!failureMessage.isEmpty()) {
-            pageWait.withMessage("Time expired: " +failureMessage);
-        }
-        WebElement element = null;
-        try  {
-            element = pageWait.until(
-                ExpectedConditions.visibilityOfElementLocated(locator));
-        } catch(NoSuchElementException e)  {
-            if(!failureMessage.isEmpty()) {
-                Assert.fail("Element not found: " +failureMessage 
-                    + " Stack trace: " +e.getMessage());
-            }
-            else {
-                Assert.fail(e.getMessage());
-            }
-        }
-        return element;
+    public WebElement waitUntilElementIsVisibleFast(String failureMessage, By locator) {
+        return waitUntilElementIsVisible(failureMessage, locator, MAX_PATIENCE_SECONDS_REDUCED);
     }
     
-     /**
+    /**
      * Sets the current browser session to sleep until an element is present.
      * This element must be identified over its xpath.
-     * 
-     * @param failureMessage 
-     *          The failure message to be displayed when an error appears.
-     * @param locator
-     *          The identifying By object.
-     * @return 
-     *          All elements of the locator
+     *
+     * @param failureMessage The failure message to be displayed when an error
+     * appears.
+     * @param locator The identifying By object.
+     * @return All elements of the locator
      */
-    public List<WebElement> waitUntilElementsAreVisible(String failureMessage, By locator)  {
+    public List<WebElement> waitUntilElementsAreVisible(String failureMessage, By locator) {
         WebDriverWait pageWait = new WebDriverWait(driver, MAX_PATIENCE_SECONDS);
-        if(!failureMessage.isEmpty()) {
-            pageWait.withMessage("Time expired: " +failureMessage);
+        if (!failureMessage.isEmpty()) {
+            pageWait.withMessage("Time expired: " + failureMessage);
         }
         List<WebElement> elements = null;
-        
         WebElement firstElement = null;
-        try  {
-            firstElement = pageWait.until(
-                ExpectedConditions.visibilityOfElementLocated(locator));
-            
-            // Get multiple WebElements
-            elements = driver.findElements(locator);
+        int attempts = 0;
+        boolean rep = true;
 
-        } catch(NoSuchElementException e)  {
-            if(!failureMessage.isEmpty()) {
-                Assert.fail("Element not found: " +failureMessage 
-                    + " Stack trace: " +e.getMessage());
-            }
-            else {
-                Assert.fail(e.getMessage());
+        while (attempts < MAX_ATTEMPTS && rep == true) {
+            attempts++;
+            rep = false;
+            try {
+                firstElement = pageWait.until(
+                        ExpectedConditions.visibilityOfElementLocated(locator));
+
+                // Get multiple WebElements
+                elements = driver.findElements(locator);
+
+            } catch (NoSuchElementException e) {
+                if (!failureMessage.isEmpty()) {
+                    Assert.fail("Element not found: " + failureMessage
+                            + " Stack trace: " + e.getMessage());
+                } else {
+                    Assert.fail(e.getMessage());
+                }
+            } catch (StaleElementReferenceException se) {
+                rep = true;
+                logger.error("Navigation failed and will be repeated for the "
+                        + attempts + " time. " + se.getMessage());
             }
         }
+        assertFalse("To many stale reference exceptions during waiting"
+                + "for elements to be visible.", attempts == MAX_ATTEMPTS);
+
         return elements;
-    }  
-    
-    
+    }
+
     /**
      * @param failureMessage
-     * @param locator 
-     *          The locator of the element to disappear.
-     * @return 
+     * @param locator The locator of the element to disappear.
+     * @return
      */
-    public WebElement waitUntilElementIsPresent(String failureMessage, By locator)  {
+    public WebElement waitUntilElementIsPresent(String failureMessage, By locator) {
         WebDriverWait pageWait = new WebDriverWait(driver, MAX_PATIENCE_SECONDS);
-        pageWait.withMessage("Time expired: " +failureMessage);
-        
+        pageWait.withMessage("Time expired: " + failureMessage);
+
         WebElement element = null;
-        try  {
+        try {
             element = pageWait.until(
-                ExpectedConditions.visibilityOfElementLocated(locator));
-        } catch(NoSuchElementException e)  {
-            Assert.fail("Element not found: " +failureMessage 
-                    + " Stack trace: " +e.getMessage());
+                    ExpectedConditions.presenceOfElementLocated(locator));
+        } catch (NoSuchElementException e) {
+            Assert.fail("Element not found: " + failureMessage
+                    + " Stack trace: " + e.getMessage());
         }
         return element;
     }
-    
+
     /**
      * Waits until a certain element disappears.
-     * 
-     * @param locator 
-     *          The locator of the element to disappear.
-     * @param failureMessage
-     *          The message to be displayed if an error occurs.
-     * @param maxPatienceSeconds   
-     *          The max time to wait before throwing an error.
+     *
+     * @param locator The locator of the element to disappear.
+     * @param failureMessage The message to be displayed if an error occurs.
+     * @param maxPatienceSeconds The max time to wait before throwing an error.
      */
-    public void waitUntilElementDisappears(String failureMessage, By locator, int maxPatienceSeconds)  {
+    public void waitUntilElementDisappears(String failureMessage, By locator, int maxPatienceSeconds) {
         WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
-        try  {
+        try {
             pageWait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-        } catch(NoSuchElementException e)  {
+        } catch (NoSuchElementException e) {
             Assert.fail(e.getMessage());
-        } catch(Exception e)  {
+        } catch (Exception e) {
             Assert.fail(failureMessage);
         }
     }
-    
+
     /**
-     * Waits until a certain element disappears.
-     * Maximum patience is predefined in BasicFunctions.class.
-     * 
-     * @param locator 
-     *          The locator of the element to disappear.
-     * @param failureMessage
-     *          The message to be displayed if an error occurs.
+     * Waits until a certain element disappears. Maximum patience is predefined
+     * in BasicFunctions.class.
+     *
+     * @param locator The locator of the element to disappear.
+     * @param failureMessage The message to be displayed if an error occurs.
      */
-    public void waitUntilElementDisappears(String failureMessage, By locator)  {
+    public void waitUntilElementDisappears(String failureMessage, By locator) {
         waitUntilElementDisappears(failureMessage, locator, MAX_PATIENCE_SECONDS);
     }
-    
+
     /**
-     * Waits until a certain element disappears.
-     * Maximum patience is predefined in BasicFunctions.class.
-     * No specific failure message will be displayed, only the message of the
-     * exception.
-     * 
-     * @param locator 
-     *          The locator of the element to disappear.
+     * Waits until a certain element disappears. Maximum patience is predefined
+     * in BasicFunctions.class. No specific failure message will be displayed,
+     * only the message of the exception.
+     *
+     * @param locator The locator of the element to disappear.
      */
-    public void waitUntilElementDisappears(By locator)  {
+    public void waitUntilElementDisappears(By locator) {
         waitUntilElementDisappears("", locator, MAX_PATIENCE_SECONDS);
     }
 
+    
     public void hoverOverElement(WebElement element) {
         // hack for 'hover'
         Actions actions= new Actions(driver);

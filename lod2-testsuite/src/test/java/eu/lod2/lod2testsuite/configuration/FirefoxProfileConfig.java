@@ -25,7 +25,8 @@ public class FirefoxProfileConfig {
      */
     public FirefoxProfileConfig(String downloadDir) {
         //TODO change and keep profile over here
-        this.profile = new FirefoxProfile(new File("/home/karel/.mozilla/firefox/1xtgionb.auto-tester"));
+        //this.profile = new FirefoxProfile(new File("/home/karel/.mozilla/firefox/1xtgionb.auto-tester"));
+        this.profile = new FirefoxProfile();
         this.downloadDir = downloadDir;
         setPreferences();
         // Sets native events to true: Can cause problems under Linux

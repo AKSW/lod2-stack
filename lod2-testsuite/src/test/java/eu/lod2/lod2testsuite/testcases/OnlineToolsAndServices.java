@@ -68,7 +68,7 @@ public class OnlineToolsAndServices extends TestCase {
         
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'ckan.net')]"), 
-                By.id("site-name"));
+                By.id("field-sitewide-search"));
     }     
     
             
