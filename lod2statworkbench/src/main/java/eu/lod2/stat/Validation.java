@@ -163,39 +163,67 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		testProvenance = strBuilder.toString();
 		
 		// IC-2
-		strBuilder = new StringBuilder();
-		strBuilder.append("select ?dataSet (count(?struct) as ?dsdNum) \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  ?dataSet a <http://purl.org/linked-data/cube#DataSet> . ");
-		strBuilder.append("  OPTIONAL { ");
-		strBuilder.append("    ?dataSet <http://purl.org/linked-data/cube#structure> ?struct . \n");
-		strBuilder.append("    ?struct a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n");
-		strBuilder.append("  } ");
-		strBuilder.append("} group by ?dataSet having (count(distinct ?struct) != 1)");
-		testLinkToDSD = strBuilder.toString();
-		icLinkToDSD = new IntegrityConstraint(testLinkToDSD);
+//		strBuilder = new StringBuilder();
+//		strBuilder.append("select ?dataSet (count(?struct) as ?dsdNum) \n");
+//		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+////		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+//		strBuilder.append("  ?dataSet a <http://purl.org/linked-data/cube#DataSet> . ");
+//		strBuilder.append("  OPTIONAL { ");
+//		strBuilder.append("    ?dataSet <http://purl.org/linked-data/cube#structure> ?struct . \n");
+//		strBuilder.append("    ?struct a <http://purl.org/linked-data/cube#DataStructureDefinition> . \n");
+//		strBuilder.append("  } ");
+//		strBuilder.append("} group by ?dataSet having (count(?struct) != 1)");
+//		testLinkToDSD = strBuilder.toString();
+//		icLinkToDSD = new IntegrityConstraint(testLinkToDSD);
 		
 		// IC-1
+//		strBuilder = new StringBuilder();
+//		strBuilder.append("select ?obs (count(?dataSet) as ?dsNum) \n");
+//		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+////		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+//		strBuilder.append("  ?obs a <http://purl.org/linked-data/cube#Observation> . ");
+//		strBuilder.append("  OPTIONAL { ");
+//		strBuilder.append("    ?obs <http://purl.org/linked-data/cube#dataSet> ?dataSet . \n");
+//		strBuilder.append("    ?dataSet a <http://purl.org/linked-data/cube#DataSet> . \n");
+//		strBuilder.append("  } ");
+//		strBuilder.append("} group by ?obs having (count(?dataSet) != 1)");
+//		testLinkToDataSet = strBuilder.toString();
+//		icLinkToDataSet = new IntegrityConstraint(testLinkToDataSet);
+		
+		// TODO sort out the problem with count(distinct)
+		// IC-1
 		strBuilder = new StringBuilder();
-		strBuilder.append("select ?obs (count(?dataSet) as ?dsNum) \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-		strBuilder.append("  ?obs a <http://purl.org/linked-data/cube#Observation> . ");
-		strBuilder.append("  OPTIONAL { ");
-		strBuilder.append("    ?obs <http://purl.org/linked-data/cube#dataSet> ?dataSet . \n");
-		strBuilder.append("    ?dataSet a <http://purl.org/linked-data/cube#DataSet> . \n");
-		strBuilder.append("  } ");
-		strBuilder.append("} group by ?obs having (count(distinct ?dataSet) != 1)");
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?obs ?dsNum \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  { SELECT DISTINCT ?obs (0 as ?dsNum) WHERE { ?obs a qb:Observation . FILTER NOT EXISTS { ?obs qb:dataSet ?ds . ?ds a qb:DataSet . } } } \n");
+		strBuilder.append("  UNION \n");
+		strBuilder.append("  { SELECT ?obs (count(distinct ?ds) as ?dsNum) { ?obs a qb:Observation . ?obs qb:dataSet ?ds . ?ds a qb:DataSet . } group by ?obs } \n");
+		strBuilder.append("  FILTER (?dsNum != 1) \n");
+		strBuilder.append("}");
 		testLinkToDataSet = strBuilder.toString();
 		icLinkToDataSet = new IntegrityConstraint(testLinkToDataSet);
+		// IC-2
+		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select ?dataSet ?dsdNum \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  { SELECT DISTINCT ?dataSet (0 as ?dsdNum) WHERE { ?dataSet a qb:DataSet . FILTER NOT EXISTS { ?dataSet qb:structure ?dsd . ?dsd a qb:DataStructureDefinition . } } } \n");
+		strBuilder.append("  UNION \n");
+		strBuilder.append("  { SELECT ?dataSet (count(distinct ?dsd) as ?dsdNum) { ?dataSet a qb:DataSet . ?dataSet qb:structure ?dsd . ?dsd a qb:DataStructureDefinition . } group by ?dataSet } \n");
+		strBuilder.append("  FILTER (?dsdNum != 1) \n");
+		strBuilder.append("}");
+		testLinkToDSD = strBuilder.toString();
+		icLinkToDSD = new IntegrityConstraint(testLinkToDSD);
 		
 		// IC-3
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dsd \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsd a qb:DataStructureDefinition . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
 		strBuilder.append("    ?dsd qb:component ?cs . \n");
@@ -210,8 +238,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dim \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] . } \n");
 		strBuilder.append("}");
@@ -222,8 +250,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?componentSpec ?component \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsd qb:component ?componentSpec . \n");
 		strBuilder.append("  ?componentSpec qb:componentRequired \"false\"^^xsd:boolean . \n");
 		strBuilder.append("  ?componentSpec qb:componentProperty ?component . \n");
@@ -236,8 +264,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?sliceKey \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
 		strBuilder.append("    ?dsd a qb:DataStructureDefinition . \n");
@@ -251,8 +279,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?sliceKey \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
 		strBuilder.append("  ?sliceKey qb:componentProperty ?prop . \n");
 		strBuilder.append("  ?dsd qb:sliceKey ?sliceKey . \n");
@@ -268,8 +296,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?slice \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  { \n");
 		strBuilder.append("    ?slice a qb:Slice . \n");
 		strBuilder.append("    FILTER NOT EXISTS { ?slice qb:sliceStructure ?key } \n");
@@ -287,8 +315,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?slice ?dim \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?slice qb:sliceStructure ?key . \n");
 		strBuilder.append("  ?key qb:componentProperty ?dim . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
@@ -298,31 +326,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		testSliceDimensionsComplete = strBuilder.toString();
 		icSliceDimensionsComplete = new IntegrityConstraint(testSliceDimensionsComplete);
 		
-//		strBuilder = new StringBuilder();
-//		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
-//		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
-//		strBuilder.append("select ?dim ?val ?list \n");
-//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
-//		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
-//		strBuilder.append("  ?ds qb:structure ?dsd . \n");
-//		strBuilder.append("  ?dsd qb:component ?cs . \n");
-//		strBuilder.append("  ?cs qb:dimension ?dim . \n");
-//		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
-//		strBuilder.append("  ?dim qb:codeList ?list . \n");
-//		strBuilder.append("  ?list a <http://www.w3.org/2004/02/skos/core#ConceptScheme> . \n");
-//		strBuilder.append("  ?obs ?dim ?val . \n");
-//		strBuilder.append("  FILTER NOT EXISTS { ?val a skos:Concept . ?val skos:inScheme ?list . } ");
-//		strBuilder.append("}");
-//		testCodesFromCodeLists = strBuilder.toString();
-//		icCodesFromCodeLists = new IntegrityConstraint(testCodesFromCodeLists);
-		
 		// IC-5
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?dim \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  ?dim rdfs:range skos:Concept . \n");
 		strBuilder.append("  FILTER NOT EXISTS { ?dim qb:codeList [] } \n");
@@ -335,8 +345,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?obs \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  ?dsd qb:component ?cs . \n");
@@ -352,8 +362,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?obs1 ?obs2 \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs1 qb:dataSet ?dataSet . \n");
 		strBuilder.append("  ?obs2 qb:dataSet ?dataSet . \n");
 		strBuilder.append("  FILTER (?obs1 != ?obs2) \n");
@@ -374,8 +384,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?attr \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  ?dsd qb:component ?component . \n");
@@ -390,8 +400,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?measure \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
@@ -410,8 +420,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?measure \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  ?obs qb:measureType ?measure . \n");
@@ -426,8 +436,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?measure ?omeasure \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  ?obs qb:measureType ?measure . \n");
@@ -442,8 +452,34 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		testSingleMeasure = strBuilder.toString();
 		icSingleMeasure = new IntegrityConstraint(testSingleMeasure);
 		
-		// TODO IC-17
+		// IC-17
 		strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("select distinct ?obs1 ?numMeasures (COUNT(?obs2) AS ?count) \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  { \n");
+		strBuilder.append("    SELECT ?dsd (COUNT(?m) AS ?numMeasures) WHERE { \n");
+		strBuilder.append("      ?dsd qb:component ?cs0 . \n");
+		strBuilder.append("      ?cs0 qb:componentProperty ?m . \n");
+		strBuilder.append("      ?m a qb:MeasureProperty . \n");
+		strBuilder.append("    } GROUP BY ?dsd \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("  ?obs1 qb:dataSet ?dataset . \n");
+		strBuilder.append("  ?dataset qb:structure ?dsd . \n");
+		strBuilder.append("  ?obs1 qb:measureType ?m1 . \n");
+		strBuilder.append("  ?obs2 qb:dataSet ?dataset . \n");
+		strBuilder.append("  ?obs2 qb:measureType ?m2 . \n");
+		strBuilder.append("  FILTER NOT EXISTS { \n");
+		strBuilder.append("    ?dsd qb:component ?cs1 . \n");
+		strBuilder.append("    ?cs1 qb:componentProperty ?dim . \n");
+		strBuilder.append("    FILTER (?dim != qb:measureType) \n");
+		strBuilder.append("    ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("    ?obs1 ?dim ?v1 . \n");
+		strBuilder.append("    ?obs2 ?dim ?v2 . \n");
+		strBuilder.append("    FILTER (?v1 != ?v2) \n");
+		strBuilder.append("  } \n");
+		strBuilder.append("} GROUP BY ?obs1 ?numMeasures \n  HAVING (COUNT(?obs2) != ?numMeasures)");
 		testAllMeasuresPresentInMeasDimCube = strBuilder.toString();
 		icAllMeasuresPresentInMeasDimCube = new IntegrityConstraint(testAllMeasuresPresentInMeasDimCube);
 		
@@ -451,8 +487,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?dataset ?slice \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dataset qb:slice ?slice . \n");
 		strBuilder.append("  ?slice   qb:observation ?obs . \n");
 		strBuilder.append("  FILTER NOT EXISTS { ?obs qb:dataSet ?dataset . } \n");
@@ -465,8 +501,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?dim ?v ?list \n");
-		strBuilder.append("from ").append(helperGraph).append(" \n");
-		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
 		strBuilder.append("  ?dsd qb:component ?cs . \n");
@@ -590,6 +626,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 			whereBuilder.append("  ?slice ?comp ?value . \n");
 			whereBuilder.append("  ?slice qb:observation ?obs . \n");
 			executeHelperInsertQuery(conn, insertString, whereBuilder.toString());
+			// Copy graph
+			whereBuilder = new StringBuilder();
+			whereBuilder.append("  ?obs  ?comp ?value . \n");
+			executeHelperInsertQuery(conn, insertString, whereBuilder.toString());
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			getWindow().showNotification(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
@@ -673,6 +713,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		final Object itemAllMeasuresPresent = createTreeItem("IC-14 All measures present", icAllMeasuresPresent);
 		final Object itemMeasureDimConsistent = createTreeItem("IC-15 Measure dimension consistent", icMeasureDimConsistent);
 		final Object itemSingleMeasure = createTreeItem("IC-16 Single measure", icSingleMeasure);
+		final Object itemAllMeasuresPresentInMeasDimCube = createTreeItem("IC-17 All measures present in meas. dim. cube ", icAllMeasuresPresentInMeasDimCube);
 		final Object itemConsistentDataSetLinks = createTreeItem("IC-18 Consistent data set links", icConsistentDataSetLinks);
 		final Object itemCodesFromCodeList = createTreeItem("IC-19 Codes from code list", icCodesFromCodeLists);
 		
@@ -715,6 +756,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					measureDimConsistent();
 				else if (selectedItem == itemSingleMeasure)
 					singleMeasure();
+				else if (selectedItem == itemAllMeasuresPresentInMeasDimCube)
+					allMeasuresPresentInMeasDimCube();
 				else if (selectedItem == itemConsistentDataSetLinks)
 					consistentDataSetLinks();
 				else if (selectedItem == itemCodesFromCodeList)
@@ -1926,63 +1969,126 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	}
 	
 	// IC-16
-		private void singleMeasure(){
-			validationTab.removeAllComponents();
-			Iterator<BindingSet> res = icSingleMeasure.getResults();
-			
-			@SuppressWarnings("unused")
-			final class MeasureOmeasurePair{
-				String measure;
-				String omeasure;
-			}
-			
-			if (res == null) {
-				Label label = new Label();
-				label.setValue("ERROR");
-				validationTab.addComponent(label);
-				showContent();
-				return;
-			}
-			
-			final HashMap<String, MeasureOmeasurePair> obsMap = new HashMap<String, MeasureOmeasurePair>();
-			while (res.hasNext()){
-				BindingSet set = res.next();
-				MeasureOmeasurePair pair = new MeasureOmeasurePair();
-				pair.measure = set.getValue("measure").stringValue();
-				pair.omeasure = set.getValue("omeasure").stringValue();
-				obsMap.put(set.getValue("obs").stringValue(), pair);
-			}
-			
-			if (obsMap.size() == 0){
-				Label label = new Label();
-				label.setValue("No problems were detected - In Data Sets that use a Measure dimension (if there are any) each Observation only has a value for one measure");
-				validationTab.addComponent(label);
-				showContent();
-				return;
-			}
-			
-			Label lbl = new Label();
-			lbl.setValue("Following observations belong to data sets that use a Measure dimension and have a value for more than one measure");
-			validationTab.addComponent(lbl);
-			
-			final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
-			listObservations.setNullSelectionAllowed(false);
-			validationTab.addComponent(listObservations);
-			
-			// TODO: add label that tells what is the measure dimension and mention the omeasure, perhaps details table
-			
-			Button fix = new Button("Edit in OntoWiki");
-			validationTab.addComponent(fix);
-			validationTab.setExpandRatio(fix, 2.0f);
-			
-			fix.addListener(new Button.ClickListener() {
-				public void buttonClick(ClickEvent event) {
-					showInOntowiki((String)listObservations.getValue());
-				}
-			});
-			
-			showContent();
+	private void singleMeasure(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icSingleMeasure.getResults();
+		
+		@SuppressWarnings("unused")
+		final class MeasureOmeasurePair{
+			String measure;
+			String omeasure;
 		}
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, MeasureOmeasurePair> obsMap = new HashMap<String, MeasureOmeasurePair>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			MeasureOmeasurePair pair = new MeasureOmeasurePair();
+			pair.measure = set.getValue("measure").stringValue();
+			pair.omeasure = set.getValue("omeasure").stringValue();
+			obsMap.put(set.getValue("obs").stringValue(), pair);
+		}
+		
+		if (obsMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - In Data Sets that use a Measure dimension (if there are any) each Observation only has a value for one measure");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following observations belong to data sets that use a Measure dimension and have a value for more than one measure");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+		listObservations.setNullSelectionAllowed(false);
+		validationTab.addComponent(listObservations);
+		
+		// TODO: add label that tells what is the measure dimension and mention the omeasure, perhaps details table
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObservations.getValue());
+			}
+		});
+		
+		showContent();
+	}
+		
+	// IC-17
+	private void allMeasuresPresentInMeasDimCube(){
+		validationTab.removeAllComponents();
+		Iterator<BindingSet> res = icAllMeasuresPresentInMeasDimCube.getResults();
+		
+		@SuppressWarnings("unused")
+		final class NumMeasuresCountPair{
+			String numMeasures;
+			String count;
+		}
+		
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, NumMeasuresCountPair> obsMap = new HashMap<String, NumMeasuresCountPair>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			NumMeasuresCountPair pair = new NumMeasuresCountPair();
+			pair.numMeasures = set.getValue("numMeasures").stringValue();
+			pair.count = set.getValue("count").stringValue();
+			obsMap.put(set.getValue("obs1").stringValue(), pair);
+		}
+		
+		if (obsMap.size() == 0){
+			Label label = new Label();
+			label.setValue("No problems were detected - In a data set which uses a measure dimension then " +
+					"if there is an Observation for some combination of non-measure dimensions then " +
+					"there must be other Observations with the same non-measure dimension values for each of the declared measures");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		Label lbl = new Label();
+		lbl.setValue("Following observations belong to data sets that use a Measure dimension and break a rule that " +
+				"if there is an Observation for some combination of non-measure dimensions then " +
+				"there must be other Observations with the same non-measure dimension values for each of the declared measures");
+		validationTab.addComponent(lbl);
+		
+		final ListSelect listObservations = new ListSelect("Observations", obsMap.keySet());
+		listObservations.setNullSelectionAllowed(false);
+		validationTab.addComponent(listObservations);
+		
+		// TODO: add label that tells what is the difference in counts, maybe even more, perhaps details table
+		
+		Button fix = new Button("Edit in OntoWiki");
+		validationTab.addComponent(fix);
+		validationTab.setExpandRatio(fix, 2.0f);
+		
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listObservations.getValue());
+			}
+		});
+		
+		showContent();
+	}
 	
 	// IC-18
 	private void consistentDataSetLinks(){
