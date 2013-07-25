@@ -1004,7 +1004,7 @@ Tunnel parameters used
 			<advancedProp name="iErrorHandling" value="0"/>
 		</scenario>
 		<scenario default="yes" name="ovg_be-br_2005-08-04_ovg-10-l-1-05_vt." userelativepaths="yes" externalpreview="no" url="..\Data\Jurisprudence\ovg_be-br_2005-08-04_ovg-10-l-1-05_vt.xml" htmlbaseurl=""
-		          outputurl="..\result\ovg_be-br_2005-08-04_ovg-10-l-1-05_vt..text.niels.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2"
+		          outputurl="..\result\ovg_be-br_2005-08-04_ovg-10-l-1-05_vt..text.rdf" processortype="saxon8" useresolver="yes" profilemode="0" profiledepth="" profilelength="" urlprofilexml="" commandline="net.sf.saxon.Transform -o %3 %1 %2"
 		          additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
