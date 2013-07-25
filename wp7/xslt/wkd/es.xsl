@@ -36,6 +36,9 @@
 		<skos:Concept rdf:about="{$v-base-uri}{fun:deu2eng('entscheidung/typ')}/{@es-typ}"/>
 	</wkd:jurisprudenceType>
 	<xsl:apply-templates select="*"/>
+	<rdf:value rdf:parseType="Literal">
+		<xsl:apply-templates mode="in-extract-text"/>
+	</rdf:value>
 </xsl:template>
 
 <xsl:template match="es-titel-kopf">

@@ -221,7 +221,7 @@
 <xsl:function name="fun:stwSegmentId" as="xs:string">
 	<!-- ÄäÜüÖööß -> Ae ae Ue ue Oe oe ss -->
 	<xsl:param name="segment" as="xs:string"/>
-	<!-- xsl:variable name="s" select="translate($segment,$poolpart-in,$poolpart-out)"/>
+	<!--xsl:variable name="s" select="translate($segment,$poolpart-in,$poolpart-out)"/>
 	<xsl:variable name="r" select="replace(replace(replace(replace(replace(replace(replace(replace($s,' ','_'),'ß','ss'),'ö','oe'),'Ö','Oe'),'Ä','Ae'),'ä','ae'),'Ü','Ue'),'ü','ue')"/>
 	<xsl:value-of select="fun:percentEncode($r)"/-->
 	<xsl:value-of select="substring-after(ppuri:createURIFromLabel('http://x/','x',$segment),'http://x/x/')"/>

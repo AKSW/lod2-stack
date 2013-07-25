@@ -18,8 +18,8 @@
  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
  exclude-result-prefixes="xsl xs fun data">
 
-<xsl:import href="functions.xsl"/>
-<xsl:import href="aliases.xsl"/>
+<!--xsl:import href="functions.xsl"/-->
+<!--xsl:import href="aliases.xsl"/-->
 
 <!--
  Project LOD2 - Project number 27943
