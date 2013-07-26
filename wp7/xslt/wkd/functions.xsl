@@ -212,7 +212,7 @@
 	 to do: @, !, $, &, ', ", (, ), *, +, ,, ;, =, \, <, >
 	 -->
 	<xsl:param name="in" as="xs:string"/>
-	<xsl:value-of select="replace(replace(replace(replace(replace(replace(replace(replace($in,'%','%25'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F'),'\[','%5B'),'\]','%5D'),':','%3A')"/>
+	<xsl:value-of select="replace(replace(replace(replace(replace(replace(replace(replace(replace($in,'%','%25'),'&#160;','%20'),'\s','%20'),'/','%2F'),'#','%23'),'\?','%3F'),'\[','%5B'),'\]','%5D'),':','%3A')"/>
 </xsl:function>
 
 <xsl:variable name="poolpart-in"  select="'ÀÁÂÃÅÆàáâãåæÈÉÊËèéêëÌÍÎÏìíîïÒÓÔÕòóôõÙÚÛùúûÇç'" as="xs:string"/>
