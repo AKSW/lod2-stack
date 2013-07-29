@@ -573,8 +573,8 @@ public class DeleteGraphs extends CustomComponent
 
             try {
 
-                //String prefixurl = state.getLod2WebApiService()+ "/graphsregex";
-                String prefixurl = "http://lod2.wolterskluwer.de/lod2webapi/graphsregex";
+                String prefixurl = state.getLod2WebApiService()+ "/graphsregex";
+                //String prefixurl = "http://lod2.wolterskluwer.de/lod2webapi/graphsregex";
 
                 WebAPIResult r;
 
@@ -594,7 +594,7 @@ public class DeleteGraphs extends CustomComponent
                     r= parse_graph_api_result(responseBody);
                     List<String> result = r.the_graphs;
 
-                    if (r.nextquery) {
+                    if (r.nextquery!=null && r.nextquery) {
                         fullParams=baseParams;
                         extraParams=r.nextquery_params;
                         if(extraParams!=null && !extraParams.isEmpty()){
@@ -607,7 +607,7 @@ public class DeleteGraphs extends CustomComponent
                     indicator.setEnabled(true);
 
                     sleep(interval);
-                }while (r.nextquery && !nevermind);
+                }while (r.nextquery!=null && r.nextquery && !nevermind);
 
             } catch (Exception e){
                 getWindow().showNotification("Error fetching data", "Could not fetch the data from the server " +

@@ -618,7 +618,9 @@ public class MergeDatasets extends VerticalLayout {
             builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
             builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
                     append(datacubeURI).append("> }\n");
-            builder.append("WHERE { ").
+            builder.append("WHERE { { SELECT ?p ?o ?value ").
+                    append("(IRI(xsd:string(concat(\"").append(datacubeURI).append("/obs/\",ENCODE_FOR_URI(STR(?s))))) AS ?s)").
+                    append("WHERE {").
                     append("?s <http://purl.org/linked-data/cube#dataSet> <").append(originalCube).append(">. \n");
             builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
             builder.append("?s <").append(originalComponent).append("> ?value. \n");
@@ -626,7 +628,7 @@ public class MergeDatasets extends VerticalLayout {
             builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
                     append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
                     append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
-                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }} }");
 
             try{
                 connection.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
@@ -668,7 +670,9 @@ public class MergeDatasets extends VerticalLayout {
             builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
             builder.append("?s <http://purl.org/linked-data/cube#dataSet> <").
                     append(datacubeURI).append("> }\n");
-            builder.append("WHERE { ").
+            builder.append("WHERE { { SELECT ?p ?o ?value ").
+                    append("(IRI(xsd:string(concat(\"").append(datacubeURI).append("/obs/\",ENCODE_FOR_URI(STR(?s))))) AS ?s)").
+                    append("WHERE {").
                     append("?s <http://purl.org/linked-data/cube#dataSet> <").append(otherCube).append(">. \n");
             builder.append("?s a <http://purl.org/linked-data/cube#Observation>. \n");
             builder.append("?s <").append(originalComponent).append("> ?originalvalue. \n");
@@ -680,7 +684,7 @@ public class MergeDatasets extends VerticalLayout {
             builder.append("FILTER fn:not(regex(?p, \"http://purl.org/linked-data/cube#\")).\n").
                     append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#MeasureProperty>.}. \n").
                     append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#DimensionProperty>.}. \n").
-                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }");
+                    append( "FILTER NOT EXISTS {?p a <http://purl.org/linked-data/cube#AttributeProperty>.} }} } ");
 
             try{
                 connection.prepareGraphQuery(QueryLanguage.SPARQL, builder.toString()).evaluate();
