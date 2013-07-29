@@ -117,13 +117,19 @@ public abstract class TestCase {
     @BeforeMethod(alwaysRun=true)
     public void prepareTestCase()  {
         driver.switchTo().defaultContent();
-        logger.debug("Switching to default frame.");
+        
+        logger.info("Switching to default frame.");
                 
         WebElement toMove = bf.getVisibleElement(By.xpath(
                 "//img[contains(@src,'logo-lod2-small.png')]"));
         //driverActions.moveToElement(toMove).build().perform();
         // Reposition the browser view to be at the top.
         bf.scrollIntoView(toMove);
+        //bf.getVisibleElement("Could not find home button. ", 
+        //        By.cssSelector("div#LOD2Demo_homeb")).click();
+        bf.getVisibleElement("Could not find graph label", 
+                By.cssSelector("div.v-label-currentgraphlabel")).click();
+        
     }
     
     /**
@@ -138,7 +144,7 @@ public abstract class TestCase {
             WebElement message =  bf.getVisibleElement(bf.getErrorPopupLocator());
             logger.fatal("Error message is visible with text: " + message.getText());
             message.click();
-            bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']"));   
+            bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']")); 
         }
     }
     
@@ -152,12 +158,4 @@ public abstract class TestCase {
         //driver.quit();
         selenium.stop();
     }   
-    
-    /**
-     * @return 
-     *      The WebDriver instance.
-     */
-    public WebDriver getDriver()  {
-        return this.driver;
-    }
 }

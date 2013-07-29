@@ -3,6 +3,7 @@
 <suite name="LOD2TestSuite">
     
     <parameter name="selenium.url" value="https://lod2.tenforce.be/lod2statworkbench/stat" />
+    <!--<parameter name="selenium.url" value="http://lod2-stack.semantic-web.at/lod2demo" />-->
     <parameter name="graphName" value="http://localhost/Geo" />
     <parameter name="virtUser" value="dba" />
     <parameter name="virtPwd" value="dba" />

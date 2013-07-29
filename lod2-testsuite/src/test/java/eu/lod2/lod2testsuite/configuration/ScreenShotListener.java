@@ -54,7 +54,7 @@ public class ScreenShotListener extends TestListenerAdapter {
         String filename = "";
         try  {
             TestCase tc = (TestCase)tr.getInstance();
-            WebDriver driver = tc.getDriver();
+            WebDriver driver = TestCase.driver;
             if(driver == null)  {
                 return "Could not take screenshot, WebDriver was not initiallized "
                         + "because beforeSuite() was not run.\n";

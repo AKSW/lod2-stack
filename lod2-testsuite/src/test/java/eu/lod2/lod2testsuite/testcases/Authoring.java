@@ -25,6 +25,20 @@ public class Authoring extends TestCase {
         
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'ontowiki')]"), 
-                By.id("Local"));
+                By.id("username"));
+    }
+    
+    /**
+     * TC 002.
+     */
+    @Test
+    public void publishToCkan()  {
+        navigator.navigateTo(new String[] {
+            "Authoring", 
+            "Publish to CKAN"});  
+
+        bf.waitUntilElementIsVisible("Could not find CKAN input fields.", 
+                By.cssSelector("input.v-textfield"));
+        //TODO: further testing
     }
 }

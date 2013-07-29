@@ -1,13 +1,11 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import java.util.ArrayList;
-
 import eu.lod2.lod2testsuite.configuration.TestCase;
-import junit.framework.Assert;
+import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import static org.testng.AssertJUnit.*;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -45,6 +43,13 @@ public class ExtractionAndLoading extends TestCase {
     @Test
     @Parameters({ "graphName", "graphFilePath"})
     public void uploadGraphInVirtuoso(String graphName, String graphFilePath)  {
+        navigator.navigateTo(new String[] {
+            "Extraction & Loading", 
+            "Upload RDF file or RDF from URL"});
+        // Check if Iframe is visible and shows Virtuoso.
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'conductor')]"), 
+                By.id("MTB"));
         // Get absolute paths.
         graphFilePath = getAbsolutePath(graphFilePath);
         // Check if required files exist
@@ -92,32 +97,43 @@ public class ExtractionAndLoading extends TestCase {
         bf.getVisibleElement("Could not find submit button.", By.name("bt1")).click();
         // Wait for upload to finish
         
-        bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'conductor')]"),
-                By.id("MTB"));
+        //bf.checkIFrame(
+        //        By.xpath("//iframe[contains(@src,'conductor')]"),
+        //        By.id("MTB"));
         bf.waitUntilElementIsVisible("Upload did not finish",
                 By.xpath("//div[@class='message'][contains(.,'Upload finished')]"), 30);
     }
     
     /**
-     * TC 002.
+     * TC 00y.
      */
     @Test
-    public void loadRDFdataFromCKAN()  {
+    public void loadRDFdataFromPublicDataEu()  {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
-            "Load RDF data from CKAN"});
+            "Load RDF data from publicdata.eu"});
         
-        WebElement link = bf.waitUntilElementIsVisible(
-                By.xpath("//a[starts-with(@href, 'apt:')]"));
-        // Check for link count.
-        try  {
-            assertTrue("Not all CKAN links are displayed.",
-                    9 == driver.findElements(
-                    By.xpath("//a[starts-with(@href, 'apt:')]")).size());
-        } catch(NoSuchElementException e)  {
-            Assert.fail(e.getMessage());
-        }
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'publicdata.eu')]"), 
+                By.id("dataset-search"));
+        
+        // TODO further testing
+    }
+    
+    /**
+     * TC 00x.
+     */
+    @Test
+    public void loadRDFdataFromDataHub()  {
+        navigator.navigateTo(new String[] {
+            "Extraction & Loading", 
+            "Load LOD cloud RDF data from the Data Hub"});
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'datahub.io')]"), 
+                By.id("dataset-search"));
+        
+        // TODO further testing
     }
     
     /**
@@ -138,7 +154,7 @@ public class ExtractionAndLoading extends TestCase {
                 bf.isLocalFileAvailable(xsltFile));
         
         navigator.navigateTo(new String[] {
-            "Extraction & Loading", 
+            "Extraction", 
             "Extract RDF from XML", 
             "Basic extraction"});
         
@@ -148,11 +164,11 @@ public class ExtractionAndLoading extends TestCase {
         // Wait for first element
         WebElement xmlField = bf.waitUntilElementIsVisible(
                 By.id("EXML_xmlText"));
-        WebElement xsltField = bf.getVisibleElement(
+        WebElement xsltField = bf.waitUntilElementIsVisible(
                 By.id("EXML_xsltText"));
-        WebElement transformButton = bf.getVisibleElement(
+        WebElement transformButton = bf.waitUntilElementIsVisible(
                 By.id("EXML_transformButton"));
-        WebElement uploadButton = bf.getVisibleElement(
+        WebElement uploadButton = bf.waitUntilElementIsVisible(
                 By.id("EXML_uploadButton"));
         
         // Type into input fields
@@ -339,6 +355,6 @@ public class ExtractionAndLoading extends TestCase {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Extract RDF from text w.r.t. a controlled vocabulary"});
-        Assert.fail();
+        // TODO continue test case
     }
 }

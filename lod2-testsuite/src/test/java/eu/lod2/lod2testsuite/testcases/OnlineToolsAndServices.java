@@ -20,7 +20,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void sameAs()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "SameAs"});  
         
         bf.checkIFrame(
@@ -34,7 +34,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void sindice()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "Sindice"});  
         
         bf.checkIFrame(
@@ -48,7 +48,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void sigma()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "Sigma"});  
         
         bf.checkIFrame(
@@ -63,12 +63,12 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void ckan()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "CKAN"});  
         
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'ckan.net')]"), 
-                By.id("field-sitewide-search"));
+                By.xpath("//input[@class='search']"));
     }     
     
             
@@ -78,7 +78,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void europesPublicData()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "s Public Data"});  
         
         bf.checkIFrame(
@@ -92,7 +92,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void poolParty()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "PoolParty"});  
         
         bf.checkIFrame(
@@ -106,7 +106,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void lodCloud()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "Online SPARQL endpoints",
             "LOD cloud"});
         
@@ -121,7 +121,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void dbpedia()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "Online SPARQL endpoints",
             "DBpedia"});
         
@@ -136,7 +136,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void poolPartySparqlEndpoint()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "Online SPARQL endpoints",
             "PoolParty SPARQL endpoint"});
         
@@ -151,7 +151,7 @@ public class OnlineToolsAndServices extends TestCase {
     @Test
     public void mondecaSparqlEndpointCollection()  {
         navigator.navigateTo(new String[] {
-            "Online Tools and Services", 
+            "Online Tools", 
             "Online SPARQL endpoints",
             "Mondeca SPARQL endpoint Collection"});
         
@@ -159,4 +159,19 @@ public class OnlineToolsAndServices extends TestCase {
                 By.xpath("//iframe[contains(@src,'mondeca.com')]"), 
                 By.id("endpoint_stats"));
     }      
+    
+    /**
+     * TC 011.
+     */
+    @Test
+    public void sindiceWebLinkageValidator()  {
+        
+        navigator.navigateTo(new String[] {
+            "Online Tools", 
+            "Sindice Web Linkage Validator"});
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'demo.sindice')]"), 
+                By.id("wrapper"));
+    }
 }
