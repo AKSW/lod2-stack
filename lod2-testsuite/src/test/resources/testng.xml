@@ -6,6 +6,8 @@
     <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />
     <parameter name="selenium.url" value="http://lod2-stack.semantic-web.at/lod2demo" />
     
+    <parameter name="browser.type" value="firefox" /> 
+    <parameter name="system.architecture" value="64" />
     <listeners>
         <listener class-name="eu.lod2.lod2testsuite.configuration.TestCaseListener" />
         <listener class-name="eu.lod2.lod2testsuite.configuration.ScreenShotListener" />
@@ -14,29 +16,32 @@
     
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
-   
+    
+    <!--
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
                     <parameter name="graphName" value="http://localhost/Geo" />
                     <parameter name="graphFilePath" value="files/geo.rdf" />
-                    <include name="uploadGraphInVirtuoso" />
+                    <exclude name="uploadGraphInVirtuoso" />
                    
-                    <include  name="loadRDFdataFromCKAN" />
+                    <exclude  name="loadRDFdataFromPublicDataEu" />
+                    
+                    <exclude  name="loadRDFdataFromDataHub" />
                     
                     <parameter name="xmlTextFile" value="files/ealXml.txt" />  
                     <parameter name="xsltTextFile" value="files/ealXslt.txt" />    
                     <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
                     
-                    <include name="basicExtraction" />  
+                    <exclude name="basicExtraction" />  
                     
                     <parameter name="xmlFile" value="files/eal.xml" />  
                     <parameter name="xsltFile" value="files/eal.xslt" />    
                     <parameter name="catalogFile" value="files/catalog.xml" />    
                     <parameter name="exportGraphExtendedExtraction" value="http://localhost/Geo" />  
                     
-                    <include name="extendedExtraction" />                     
+                    <exclude name="extendedExtraction" />                     
                     
                     <parameter name="downloadFileName" value="downloadedExtendedExtraction" />
                     <parameter name="downloadFilePath" value="files/" />
@@ -44,33 +49,35 @@
                     <exclude name="downloadExtendedExtraction" /> 
                     
                     <parameter name="textFile" value="files/text.txt" />  
-                    <include name="annotatePlainText" /> 
+                    <exclude name="annotatePlainText" /> 
                     
-                    <parameter name="exportGraphExtractor" value="" />  
-                    <parameter name="poolPartyProjectId" value="" />    
-                    <parameter name="language" value="" />    
+                    <parameter name="exportGraphExtractor" value="http://localhost/Geo" />  
+                    <parameter name="poolPartyProjectId" value="http://lod2.poolparty.biz/AirportEMThesaurus " />    
+                    <parameter name="language" value="en" />    
                     <parameter name="textFile" value="files/text.txt" />  
-                    
                     <include name="poolPartyExtractor" /> 
                 </methods>
             </class>
         </classes>
     </test>
+    -->
 
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
-                    <include name="ontoWikiSparql" />
-                    <include name="virtuosoSparql" />
-                    <include name="virtuosoInteractiveSparql" />
-                    <include name="sigmaEe" />
-                    <include name="geoSpatialExploration" />
+                    <exclude name="ontoWikiSparql" />
+                    <exclude name="virtuosoSparql" />
+                    <exclude name="virtuosoInteractiveSparql" />
+                    <exclude name="sigmaEe" />
+                    <exclude name="geoSpatialExploration" />
+                    <include name="assistedQueryingWithCurrentGraph" />
+                    <exclude name="assistedQueryingAndSummeryGraph" />
                 </methods>
             </class>
         </classes>
     </test>
-
+<!--
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
@@ -135,5 +142,5 @@
             </class>
         </classes>
     </test>
-    
+    -->
 </suite>

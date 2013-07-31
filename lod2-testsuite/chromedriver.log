@@ -1,0 +1,130 @@
+[0.000][INFO]:      ChromeDriver 26.0.1383.0 /home/revo/arbeit/svn/lod2-testsuite/files/chrome/chromedriver64
+[0.082][FINE]:      Initializing session with capabilities {
+   "browserName": "chrome",
+   "chrome.prefs": {
+      "profile.password_manager_enabled": false
+   },
+   "chrome.switches": [ "--no-default-browser-check" ],
+   "platform": "ANY",
+   "version": ""
+}
+
+[0.083][INFO]:      Launching chrome: /opt/google/chrome/google-chrome --disable-hang-monitor --disable-prompt-on-repost --dom-automation --full-memory-crash-report --no-default-browser-check --no-first-run --disable-background-networking --disable-sync --disable-translate --disable-web-resources --safebrowsing-disable-auto-update --safebrowsing-disable-download-protection --disable-client-side-phishing-detection --disable-component-update --disable-default-apps --enable-logging --log-level=1 --password-store=basic --ignore-certificate-errors --no-default-browser-check about:blank
+[0.632][INFO]:      Connected to Chrome successfully. Version: 28.0.1500.95
+[0.678][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886)
+[0.678][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": {
+      "acceptSslCerts": false,
+      "applicationCacheEnabled": false,
+      "browserConnectionEnabled": false,
+      "browserName": "chrome",
+      "chrome.chromedriverVersion": "26.0.1383.0",
+      "cssSelectorsEnabled": true,
+      "databaseEnabled": false,
+      "handlesAlerts": true,
+      "javascriptEnabled": true,
+      "locationContextEnabled": false,
+      "nativeEvents": true,
+      "platform": "linux",
+      "rotatable": false,
+      "takesScreenshot": true,
+      "version": "28.0.1500.95",
+      "webStorageEnabled": true
+   }
+}
+
+[0.719][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/timeouts/implicit_wait) with params {
+   "ms": 1000
+}
+
+[0.719][FINER]:     Waiting for all views to stop loading...
+[0.719][FINER]:     Done waiting for all views to stop loading
+[0.719][FINER]:     Waiting for all views to stop loading...
+[0.719][FINER]:     Done waiting for all views to stop loading
+[0.719][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/timeouts/implicit_wait) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": {
+
+   }
+}
+
+[0.738][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[0.738][FINER]:     Waiting for all views to stop loading...
+[0.738][FINER]:     Done waiting for all views to stop loading
+[0.790][FINER]:     Waiting for all views to stop loading...
+[0.790][FINER]:     Done waiting for all views to stop loading
+[0.790][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+
+[0.873][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[0.873][FINER]:     Waiting for all views to stop loading...
+[0.873][FINER]:     Done waiting for all views to stop loading
+[0.957][FINER]:     Waiting for all views to stop loading...
+[0.959][FINER]:     Done waiting for all views to stop loading
+[0.959][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+
+[1.010][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[1.010][FINER]:     Waiting for all views to stop loading...
+[1.010][FINER]:     Done waiting for all views to stop loading
+[1.066][FINER]:     Waiting for all views to stop loading...
+[1.067][FINER]:     Done waiting for all views to stop loading
+[1.067][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+
+[1.082][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[1.082][FINER]:     Waiting for all views to stop loading...
+[1.082][FINER]:     Done waiting for all views to stop loading
+[1.141][FINER]:     Waiting for all views to stop loading...
+[1.141][FINER]:     Done waiting for all views to stop loading
+[1.141][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+
+[1.156][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[1.156][FINER]:     Waiting for all views to stop loading...
+[1.157][FINER]:     Done waiting for all views to stop loading
+[1.210][FINER]:     Waiting for all views to stop loading...
+[1.210][FINER]:     Done waiting for all views to stop loading
+[1.210][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+
+[1.221][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[1.221][FINER]:     Waiting for all views to stop loading...
+[1.222][FINER]:     Done waiting for all views to stop loading
+[1.275][FINER]:     Waiting for all views to stop loading...
+[1.276][FINER]:     Done waiting for all views to stop loading
+[1.276][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+
+[1.309][FINE]:      Command received (/session/4846f4d12e76772ab5e813a57570d886/screenshot)
+[1.309][FINER]:     Waiting for all views to stop loading...
+[1.309][FINER]:     Done waiting for all views to stop loading
+[1.360][FINER]:     Waiting for all views to stop loading...
+[1.362][FINER]:     Done waiting for all views to stop loading
+[1.362][FINE]:      Command finished (/session/4846f4d12e76772ab5e813a57570d886/screenshot) with response {
+   "sessionId": "4846f4d12e76772ab5e813a57570d886",
+   "status": 0,
+   "value": "iVBORw0KGgoAAAANSUhEUgAABBIAAAODCAIAAACOp7X5AAARr0lEQVR4nO3XsRHAIBDAsJD9d34m4FxCIU3g1mtmPgAAgLP/d..."
+}
+

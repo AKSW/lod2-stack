@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import static org.testng.AssertJUnit.*;
 import org.testng.annotations.Parameters;
@@ -24,17 +25,18 @@ public class ExtractionAndLoading extends TestCase {
     
     /**
      * TC 001.
-     */
+     
     @Test
     public void openVirtuoso()  {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Upload RDF file or RDF from URL"});
         // Check if Iframe is visible and shows Virtuoso.
+        
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'conductor')]"), 
                 By.id("MTB"));
-    }
+    }*/
     
     /**
      * Uploads a graph to the lod2stack.
@@ -58,9 +60,9 @@ public class ExtractionAndLoading extends TestCase {
         
         // Virtuoso must be opened already.
         // But frames have been switched. so check 
-        bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'conductor')]"),
-                By.id("MTB"));
+        //bf.checkIFrame(
+        //        By.xpath("//iframe[contains(@src,'conductor')]"),
+        //        By.id("MTB"));
 
         // If not logged in: log into Virtuoso
         if (bf.isElementVisible(By.id("t_login_usr"))) {
@@ -80,11 +82,11 @@ public class ExtractionAndLoading extends TestCase {
                     By.id("login_btn")).click();
         }
         // Click on Linked Data tab
-        bf.waitUntilElementIsVisible("Could not find LinkedData tab",
-                By.linkText("Linked Data")).click();
+        //bf.waitUntilElementIsVisible("Could not find LinkedData tab",
+        //        By.linkText("Linked Data")).click();
         // Wait and click on Quad Store Upload
-        bf.waitUntilElementIsVisible("Could not find sub tab Quad Store Upload.",
-                By.linkText("Quad Store Upload")).click();
+        //bf.waitUntilElementIsVisible("Could not find sub tab Quad Store Upload.",
+        //        By.linkText("Quad Store Upload")).click();
         WebElement filePath = bf.waitUntilElementIsVisible("File upload not found",
                 By.xpath("//tr[@id='rd1']//input[@type='file']"));
         WebElement name = bf.waitUntilElementIsVisible("File upload not found",
@@ -351,10 +353,37 @@ public class ExtractionAndLoading extends TestCase {
     public void poolPartyExtractor(String exportGraph, String poolPartyProjectId, String language, String textFile)  {
         // Set absolute paths.
         textFile = getAbsolutePath(textFile);
+        ArrayList<String> text = bf.readFile(textFile, false);
         
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Extract RDF from text w.r.t. a controlled vocabulary"});
         // TODO continue test case
+        bf.getVisibleElement("Could not find poolparty project id input.", 
+                By.id("EPoolPartyExtractor_ppProjectId")).sendKeys(poolPartyProjectId);
+        bf.handleSelector(By.id("ExportSelector3_graphSelector"), exportGraph, false);
+        bf.handleSelector(By.id("EPoolPartyExtractor_textLanguage"), language, false);
+        
+        // Type into input fields
+        String complete = "";
+        for(String chars : text)  {
+            complete += chars;
+            complete += "\n";
+            //xmlField.sendKeys(chars);   // To slow.
+        }
+        
+        WebElement textField =  bf.getVisibleElement(
+                "Could not find text input field for poolparty concept extractor.",
+                By.id("EPoolPartyExtractor_textToAnnotateField"));
+        
+        bf.setValueViaJavaScript(textField, complete);
+        textField.sendKeys(" ");
+        
+        // Click extract
+        bf.getVisibleElement("Could not find extract concepts button. ", 
+                By.id("EPoolPartyExtractor_annotateButton")).click();
+        
+        bf.bePatient(1000);
+        // TODO: What is the expected output.
     }
 }

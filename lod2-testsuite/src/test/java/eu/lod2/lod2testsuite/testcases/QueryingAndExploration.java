@@ -194,4 +194,44 @@ public class QueryingAndExploration extends TestCase {
             "Querying & Exploration", 
             "Geo-spatial exploration"});
     }
+    
+    /**
+     * TC 007.
+     * @TODO create TC
+     */
+    @Test
+    public void assistedQueryingWithCurrentGraph() {
+        navigator.navigateTo(new String[]{
+                    "Querying & Exploration",
+                    "SPARQL querying",
+                    "SparQLed - Assisted Querying",
+                    "Use currently selected graph"});
+        
+        logger.info("finished navigation");
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'fasdfasdfasdf')]"), 
+                By.id("flint-test"));
+        bf.checkIFrame(
+                By.xpath("//iframe[@src='sindice-editor']"), 
+                By.id("flint-test"));
+        
+        //TODO
+    }
+
+    /**
+     * TC 008.
+     * @TODO create TC
+     */
+    @Test
+    public void assistedQueryingAndSummeryGraph() {
+        navigator.navigateTo(new String[]{
+                    "Querying & Exploration",
+                    "SPARQL querying",
+                    "SparQLed - Assisted Querying",
+                    "Use manager to calculate summary graph"});
+        
+        // TODO
+    }
+
 }

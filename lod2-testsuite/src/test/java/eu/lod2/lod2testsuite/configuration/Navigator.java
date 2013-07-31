@@ -88,13 +88,18 @@ public class Navigator {
                         + "//span[contains(@class,'v-menubar-menuitem')][1]"
                         + "[not(contains(@class,'caption'))]")));
                  
+            } else  {
+                link.click();
             }
+            
             
             // And then move to the desired link
             driverActions.moveToElement(link).build().perform();
 
-            // If it does not clicking does the job.
-            link.click();
+            if(index == path.length-1)  {
+                link.click();
+            }
+            
             index ++;
             TestCase.bf.bePatient();
         } 
