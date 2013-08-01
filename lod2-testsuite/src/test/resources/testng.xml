@@ -17,39 +17,40 @@
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
     
-    <!--
+    
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
+                    <parameter name="searchPhrase" value="museums" />
+                    <include  name="loadRDFdataFromPublicDataEu" />
+                    <include  name="loadRDFdataFromDataHub" />
+                    
                     <parameter name="graphName" value="http://localhost/Geo" />
                     <parameter name="graphFilePath" value="files/geo.rdf" />
-                    <exclude name="uploadGraphInVirtuoso" />
-                   
-                    <exclude  name="loadRDFdataFromPublicDataEu" />
+                    <include name="uploadGraphInVirtuoso" />
                     
-                    <exclude  name="loadRDFdataFromDataHub" />
+                    <parameter name="graphName2" value="http://localhost/locations" />
+                    <parameter name="graphFilePath2" value="files/locations.rdf" />
+                    <include name="uploadGraphInVirtuoso2" />
                     
                     <parameter name="xmlTextFile" value="files/ealXml.txt" />  
                     <parameter name="xsltTextFile" value="files/ealXslt.txt" />    
                     <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
-                    
-                    <exclude name="basicExtraction" />  
+                    <include name="basicExtraction" />  
                     
                     <parameter name="xmlFile" value="files/eal.xml" />  
                     <parameter name="xsltFile" value="files/eal.xslt" />    
                     <parameter name="catalogFile" value="files/catalog.xml" />    
                     <parameter name="exportGraphExtendedExtraction" value="http://localhost/Geo" />  
-                    
-                    <exclude name="extendedExtraction" />                     
+                    <include name="extendedExtraction" />                     
                     
                     <parameter name="downloadFileName" value="downloadedExtendedExtraction" />
                     <parameter name="downloadFilePath" value="files/" />
-                    
                     <exclude name="downloadExtendedExtraction" /> 
                     
                     <parameter name="textFile" value="files/text.txt" />  
-                    <exclude name="annotatePlainText" /> 
+                    <include name="annotatePlainText" /> 
                     
                     <parameter name="exportGraphExtractor" value="http://localhost/Geo" />  
                     <parameter name="poolPartyProjectId" value="http://lod2.poolparty.biz/AirportEMThesaurus " />    
@@ -60,24 +61,33 @@
             </class>
         </classes>
     </test>
-    -->
-
+    
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
-                    <exclude name="ontoWikiSparql" />
-                    <exclude name="virtuosoSparql" />
-                    <exclude name="virtuosoInteractiveSparql" />
-                    <exclude name="sigmaEe" />
-                    <exclude name="geoSpatialExploration" />
+                    <include name="ontoWikiSparql" />
+                    
+                    <parameter name="graph" value="http://localhost/locations" />  
+                    <parameter name="expectedResult" value="http://www.w3.org/2002/07/owl#Ontology" />  
+                    <include name="virtuosoSparql" />
+                    
+                    <parameter name="graph" value="http://localhost/Geo" />  
+                    <parameter name="expectedResult" value="http://rdfs.org/ns/void#Dataset" />  
+                    <include name="virtuosoInteractiveSparql" />
+
+                    <include name="sigmaEe" />
+                    <include name="geoSpatialExploration" />
+                    
+                    <parameter name="expectedResult" value="http://www.openlinksw.com/virtrdf-data-formats#default-iid" /> 
                     <include name="assistedQueryingWithCurrentGraph" />
-                    <exclude name="assistedQueryingAndSummeryGraph" />
+                    
+                    <include name="assistedQueryingAndSummeryGraph" />
                 </methods>
             </class>
         </classes>
     </test>
-<!--
+
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
@@ -142,5 +152,5 @@
             </class>
         </classes>
     </test>
-    -->
+
 </suite>

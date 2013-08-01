@@ -2,6 +2,7 @@ package eu.lod2.lod2testsuite.configuration;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
@@ -34,14 +35,21 @@ public class MyWebDriverEventListener implements WebDriverEventListener {
     }
  
     @Override
-    public void afterChangeValueOf(WebElement element, WebDriver driver){
-        String changedValue = element.getText();
+    public void afterChangeValueOf(WebElement element, WebDriver driver) {
+        String changedValue = "";
+        try {
+            changedValue = element.getText();
+        } catch (StaleElementReferenceException e) {
+            logger.error("Could not log change of element, because of a stale"
+                    + " element reference exception.");
+            return;
+        }
         // What if the element is not visible anymore?
-        if(changedValue.isEmpty())  {            
+        if (changedValue.isEmpty()) {
             changedValue = element.getAttribute("value");
         }
-        logger.debug("Changing value in element found " +lastFindBy
-                +" from '" +originalValue+ "' to '" +changedValue+ "'");
+        logger.debug("Changing value in element found " + lastFindBy
+                + " from '" + originalValue + "' to '" + changedValue + "'");
     }
  
     @Override

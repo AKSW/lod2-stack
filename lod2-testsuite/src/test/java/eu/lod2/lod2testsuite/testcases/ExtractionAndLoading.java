@@ -4,6 +4,7 @@ import eu.lod2.lod2testsuite.configuration.TestCase;
 import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -22,26 +23,10 @@ import org.testng.annotations.Test;
  */
 public class ExtractionAndLoading extends TestCase {
     private static final Logger logger = Logger.getLogger(ExtractionAndLoading.class);
-    
+   
     /**
-     * TC 001.
-     
-    @Test
-    public void openVirtuoso()  {
-        navigator.navigateTo(new String[] {
-            "Extraction & Loading", 
-            "Upload RDF file or RDF from URL"});
-        // Check if Iframe is visible and shows Virtuoso.
-        
-        bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'conductor')]"), 
-                By.id("MTB"));
-    }*/
-    
-    /**
-     * Uploads a graph to the lod2stack.
+     * TC 001x Uploads a graph to the lod2stack.
      */
-    //@Test(dependsOnMethods={"openVirtuoso"})
     @Test
     @Parameters({ "graphName", "graphFilePath"})
     public void uploadGraphInVirtuoso(String graphName, String graphFilePath)  {
@@ -56,13 +41,7 @@ public class ExtractionAndLoading extends TestCase {
         graphFilePath = getAbsolutePath(graphFilePath);
         // Check if required files exist
         assertTrue("Could not find graph file on local drive: " + graphFilePath, 
-                bf.isLocalFileAvailable(graphFilePath));
-        
-        // Virtuoso must be opened already.
-        // But frames have been switched. so check 
-        //bf.checkIFrame(
-        //        By.xpath("//iframe[contains(@src,'conductor')]"),
-        //        By.id("MTB"));
+                bf.isLocalFileAvailable(graphFilePath));        
 
         // If not logged in: log into Virtuoso
         if (bf.isElementVisible(By.id("t_login_usr"))) {
@@ -98,44 +77,54 @@ public class ExtractionAndLoading extends TestCase {
         // Click upload
         bf.getVisibleElement("Could not find submit button.", By.name("bt1")).click();
         // Wait for upload to finish
-        
-        //bf.checkIFrame(
-        //        By.xpath("//iframe[contains(@src,'conductor')]"),
-        //        By.id("MTB"));
         bf.waitUntilElementIsVisible("Upload did not finish",
                 By.xpath("//div[@class='message'][contains(.,'Upload finished')]"), 30);
     }
     
     /**
+     * This is a workaround, for testng limitation to only including a 
+     * method once in testng.xml
+     */
+    @Test
+    @Parameters({ "graphName2", "graphFilePath2"})
+    public void uploadGraphInVirtuoso2(String graphName, String graphFilePath)  {
+        uploadGraphInVirtuoso(graphName, graphFilePath);
+    }
+    
+    
+    /**
      * TC 00y.
      */
     @Test
-    public void loadRDFdataFromPublicDataEu()  {
+    @Parameters({ "searchPhrase"})
+    public void loadRDFdataFromPublicDataEu(String searchPhrase)  {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Load RDF data from publicdata.eu"});
-        
+
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'publicdata.eu')]"), 
                 By.id("dataset-search"));
         
-        // TODO further testing
+       loadData(searchPhrase);
     }
     
     /**
      * TC 00x.
      */
     @Test
-    public void loadRDFdataFromDataHub()  {
+    @Parameters({ "searchPhrase"})
+    public void loadRDFdataFromDataHub(String searchPhrase)  {
         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Load LOD cloud RDF data from the Data Hub"});
         
+        bf.bePatient(8000);
+        
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'datahub.io')]"), 
-                By.id("dataset-search"));
-        
-        // TODO further testing
+                By.id("dataset-search")); 
+       loadData(searchPhrase);
     }
     
     /**
@@ -385,5 +374,27 @@ public class ExtractionAndLoading extends TestCase {
         
         bf.bePatient(1000);
         // TODO: What is the expected output.
+    }
+    
+    
+    private void loadData(String searchPhrase)   {
+        // Search
+        By searchField = By.xpath("//form[@id='dataset-search']//input");
+        // Type
+        bf.waitUntilElementIsVisible("Could not find search field.", 
+                searchField).clear();
+        bf.waitUntilElementIsVisible("Could not find search field.", 
+                searchField).sendKeys(searchPhrase);
+        bf.getVisibleElement("Could not find search field.", 
+                searchField).sendKeys(Keys.ENTER);
+        // Click first result
+        bf.waitUntilElementIsVisible("No result was displayed for search phrase: " + searchPhrase, 
+                By.xpath("//li[@class='dataset-item']/descendant::a[1]"
+                + "[contains(@href,'dataset')]")).click();
+        // Click rdf
+        bf.waitUntilElementIsVisible("Could not find rdf link to selected source", 
+                By.xpath("//a[@class='heading']/span[@data-format='rdf']")).click();
+        
+        // TODO download data.
     }
 }

@@ -65,7 +65,7 @@ public class OnlineToolsAndServices extends TestCase {
         navigator.navigateTo(new String[] {
             "Online Tools", 
             "CKAN"});  
-        
+        bf.bePatient(8000);
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'ckan.net')]"), 
                 By.id("content"));

@@ -109,7 +109,8 @@ public class QueryingAndExploration extends TestCase {
      * TC 003.
      */
     @Test
-    public void virtuosoSparql()  {
+    @Parameters({ "graph", "expectedResult" })
+    public void virtuosoSparql(String graph, String expectedResult)  {
      
         navigator.navigateTo(new String[] {
             "Querying & Exploration", 
@@ -120,6 +121,11 @@ public class QueryingAndExploration extends TestCase {
          bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'sparql')]"), 
                 By.id("query"));
+                  
+         // Set graph
+         bf.waitUntilElementIsVisible("Could not find input field for graph.", 
+                 By.id("default-graph-uri")).sendKeys(graph);
+         
          
          // Hit play button with predefined query
          WebElement runButton = bf.getVisibleElement(
@@ -134,6 +140,10 @@ public class QueryingAndExploration extends TestCase {
          
          // Check if there are more then two results.
          assertTrue("Query does not return any data. (Not more then 2).", results.size() > 2);
+         
+         assertTrue("Result after submit was not found: "+expectedResult,
+                 bf.isElementVisible(By.xpath("//table[@class='sparql']//tr/td[contains(.,'" 
+                 +expectedResult+ "')]")));         
     }
     
     
@@ -141,7 +151,8 @@ public class QueryingAndExploration extends TestCase {
      * TC 004.
      */
     @Test
-    public void virtuosoInteractiveSparql() {
+    @Parameters({ "graph", "expectedResult" })
+    public void virtuosoInteractiveSparql(String graph, String expectedResult) {
  
          navigator.navigateTo(new String[] {
             "Querying & Exploration", 
@@ -152,6 +163,10 @@ public class QueryingAndExploration extends TestCase {
          bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'isparql')]"), 
                 By.id("page_query"));
+         
+         // Set graph
+         bf.waitUntilElementIsVisible("Could not find input field for graph.", 
+                 By.id("default-graph-uri")).sendKeys(graph);
          
          // Hit play button with predefined query
          WebElement playButton = bf.getVisibleElement(
@@ -165,7 +180,10 @@ public class QueryingAndExploration extends TestCase {
          
          // Check if there are more then two results.
          assertTrue("Query does not return any data. (Not more then 2).", results.size() > 2);
-         
+                  // Check for result
+         assertTrue("Result after submit was not found: "+expectedResult,
+                 bf.isElementVisible(By.xpath("//div[@id='res_tab_ctr']//tr/td[contains(.,'" 
+                 +expectedResult+ "')]")));
     }
     
     /**
@@ -200,7 +218,8 @@ public class QueryingAndExploration extends TestCase {
      * @TODO create TC
      */
     @Test
-    public void assistedQueryingWithCurrentGraph() {
+    @Parameters({ "expectedResult" })
+    public void assistedQueryingWithCurrentGraph(String expectedResult) {
         navigator.navigateTo(new String[]{
                     "Querying & Exploration",
                     "SPARQL querying",
@@ -210,13 +229,19 @@ public class QueryingAndExploration extends TestCase {
         logger.info("finished navigation");
         
         bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'fasdfasdfasdf')]"), 
-                By.id("flint-test"));
+                By.xpath("//iframe[contains(@src,'sparqled')]"), 
+                By.xpath("//iframe[@src='sindice-editor']"));
         bf.checkIFrame(
                 By.xpath("//iframe[@src='sindice-editor']"), 
                 By.id("flint-test"));
+        // Click submit
+        bf.getVisibleElement("Could not find submit button.", 
+                By.id("flint-endpoint-submit")).click();
+        // Check results
+        bf.waitUntilElementIsVisible("Query result: " + expectedResult
+                + " was not found after running query.", 
+                By.xpath("//div[@id='formatted-results']//font[contains(.,'" +expectedResult+ "')]"));
         
-        //TODO
     }
 
     /**
@@ -224,6 +249,7 @@ public class QueryingAndExploration extends TestCase {
      * @TODO create TC
      */
     @Test
+    
     public void assistedQueryingAndSummeryGraph() {
         navigator.navigateTo(new String[]{
                     "Querying & Exploration",

@@ -59,16 +59,10 @@ public class Navigator {
         logger.info("Navigating to: " + pp);
         
         while (index < path.length)  {
-            /*
-            // Prepare link if it contains " ' " a quote. For example: Europe's Public Data
-            if(path[index].contains("'"))  {
-                logger.info("------------contains! "+ path[index].split("'")[0] + " " + path[index].split("'")[1]);
-            }
-            */
             String identifier = "//span[contains(.,'" +path[index]+ "')]"
                     + "[not(contains(@class,'caption'))]";
             if(index > 0) {
-                identifier = "//div[@class = 'v-menubar-popup'][last()]" +identifier;
+                identifier = "//div[@class = 'v-menubar-popup']" +identifier;
             }
             try  {
                 link = driver.findElement(
@@ -80,23 +74,23 @@ public class Navigator {
             assertTrue("Could not find link: "+ link,link.isDisplayed());
             
             // This should pop up dropdowns.
-            if(index > 1)  {
+            if(index > 0)  {
                 // First move to the first avialiable popup item.
                 driverActions.moveToElement(
                         driver.findElement(
                         By.xpath("//div[@class = 'v-menubar-popup'][last()]"
                         + "//span[contains(@class,'v-menubar-menuitem')][1]"
-                        + "[not(contains(@class,'caption'))]")));
-                 
+                        + "[not(contains(@class,'caption'))]"))).build().perform();
             } else  {
                 link.click();
             }
             
-            
             // And then move to the desired link
-            driverActions.moveToElement(link).build().perform();
-
+            driverActions.moveToElement(TestCase.bf.waitUntilElementIsVisible(
+                    By.xpath(identifier))).build().perform();
+            
             if(index == path.length-1)  {
+                // Click last item
                 link.click();
             }
             
