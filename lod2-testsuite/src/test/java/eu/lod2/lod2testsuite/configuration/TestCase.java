@@ -126,11 +126,13 @@ public abstract class TestCase {
         driverActions = new Actions(driver);
         navigator = new Navigator(driver);
         bf = new BasicFunctions(driver);
+        // Set browserwindow to fullscreen.
+        driver.manage().window().maximize();
         
         logger.info("Opening url: "+ url);
         // Open Website
         driver.get(url);
-
+        
         //selenium.open(url);
         // Wait for page to be completely displayed.
         WebElement elem = bf.waitUntilElementIsVisible(

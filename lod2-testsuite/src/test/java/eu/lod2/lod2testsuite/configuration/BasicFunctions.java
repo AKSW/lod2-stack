@@ -704,4 +704,17 @@ public class BasicFunctions {
         actions.clickAndHold(element).perform();
         actions.moveByOffset(5, 5).perform();
     }
+    
+    /**
+     * Returns an xpath module which represents a ends-with method.
+     *
+     * @param element The element to end-with a certain value. Typically it is
+     * "." or "@id".
+     * @param value The value to end with.
+     * @return An xpath filter.
+     */
+    public String xpathEndsWith(String element, String value) {
+        return "substring(normalize-space(" + element + "), string-length(normalize-space("
+                + element + ")) - string-length('" + value + "') +1) = '" + value + "'";
+    }
 }
