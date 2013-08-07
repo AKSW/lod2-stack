@@ -40,12 +40,14 @@
 <!-- current document resource URI -->
 <xsl:function name="fun:rUri" as="xs:string">
 	<xsl:param name="doc" as="element()"/>
+	<xsl:param name="file-name" as="xs:string"/>
 	<xsl:variable name="doc-type" select="name($doc)" as="xs:string"/>
 	<xsl:variable name="base" select="concat($r-base-uri,fun:deu2eng($doc-type),'/')" as="xs:string"/>
 	<xsl:variable name="id" as="xs:string">
 		<xsl:choose>
 			<xsl:when test="$doc-type='vorschrift'">
-				<xsl:value-of select="fun:percentEncode($doc/@vsk)"/>
+				<xsl:variable name="vsk" select="if ($doc/@vsk = 'unbekannt') then $file-name else $doc/@vsk" as="xs:string"/>
+				<xsl:value-of select="fun:percentEncode($vsk)"/>
 			</xsl:when>
 			<xsl:when test="$doc-type='entscheidung'">
 				<xsl:variable name="court" select="fun:courtId(normalize-space($doc/es-metadaten/gericht))" as="xs:string"/>
