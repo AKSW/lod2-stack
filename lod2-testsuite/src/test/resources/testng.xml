@@ -17,7 +17,6 @@
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
     
-    
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
@@ -87,18 +86,26 @@
             </class>
         </classes>
     </test>
-
+   
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
                 <methods>
+                    <parameter name="username" value="Admin" />
+                    <parameter name="knowledgeBaseTitle" value="Test Knowledge Base" />
+                    <parameter name="knowledgeBaseUri" value="http://example.com/empty/" />
+                    <parameter name="importUri" value="http://sebastian.tramp.name" />
+                    <parameter name="resourceTitle" value="TestResource" />
+                    <parameter name="instanceTitle" value="TestInstance" />
+                    
                     <include name="ontoWiki" />
+                    <include name="deleteKnowledgeBase" />
                     <include name="publishToCkan" />
                 </methods>
             </class>
         </classes>
     </test>
-  
+
     <test name="Linking" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
@@ -130,7 +137,7 @@
                     <include name="sameAs" />
                     <include name="sindice" />
                     <include name="sigma" />
-                    <inlcude name="sindiceWebLinkageValidator" />
+                    <include name="sindiceWebLinkageValidator" />
                     <include name="ckan" />
                     <include name="poolParty" />
                     <include name="lodCloud" />

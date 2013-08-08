@@ -90,13 +90,18 @@ public abstract class TestCase {
                     + File.separator + "firebug-1.9.2.xpi";
             String firefinderPath = localFilesDirectory + File.separator + "firefox"
                     + File.separator + "firefinder_for_firebug-1.2.2.xpi";
+            String firepathPath = localFilesDirectory + File.separator + "firefox"
+                    + File.separator + "firepath-0.9.7-fx.xpi";
             // Create new FirefoxProfile:
             FirefoxProfileConfig config = new FirefoxProfileConfig(localFilesDirectory);
             try {
                 // Add firebug extension
                 config.addFireBugExtension(firebugPath);
+                
                 // Add firefinder extension
                 config.addExtension(firefinderPath);
+                config.addExtension(firepathPath);
+                
             } catch (FileNotFoundException ex) {
                 Assert.fail("Could not find firefox-plugin: " + ex.getMessage());
             } catch (IOException ex) {

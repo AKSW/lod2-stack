@@ -2,10 +2,9 @@ package eu.lod2.lod2testsuite.testcases;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import static org.testng.AssertJUnit.*;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*;
 
 /**
  * This class contains functional tests concerning authoring of
@@ -17,16 +16,14 @@ import static org.testng.AssertJUnit.*;
  * @email s.schurischuster@semantic-web.at
  */
 public class Authoring extends TestCase {
+    
+    private static int createCount = 0;
     /**
      * TC 001 - 006.
      */
     @Test
-    @Parameters({ "username"})
-    public void ontoWiki(String username)  {
-        String testTitle = "Test Knowledge Base";
-        String testUri = "http://example.com/empty/";
-        String dataUri  = "http://sebastian.tramp.name";
-        String resourceTitle  = "TestResource";
+    @Parameters({ "username", "knowledgeBaseTitle", "knowledgeBaseUri", "importUri", "resourceTitle", "inctanceTitle"})
+    public void ontoWiki(String username, String knowledgeBaseTitle, String knowledgeBaseUri, String importUri, String resourceTitle, String instanceTitle)  {
         
         navigator.navigateTo(new String[] {
             "Authoring", 
@@ -34,28 +31,53 @@ public class Authoring extends TestCase {
         
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'ontowiki')]"), 
-                By.id("username"));
+                By.id("application"));
         
         // Login into onto wiki
-        bf.waitUntilElementIsVisible("Could not find username input field for logging into onto wiki.",
-                By.id("username")).sendKeys(username);
-        // Skipping password input
-        bf.getVisibleElement("Could not find Login button.", By.id("locallogin")).click();
-        logger.info("Successfuly logged in.");
+        logIntoOntoWiki(username,"");
         
         // Create new Knowledge base
-        createNewKnowledgeBase(testTitle,testUri,"");
-        
+        createNewKnowledgeBase(knowledgeBaseTitle,knowledgeBaseUri,"");
         
         // Add data
-        addDataToKnowledgeBaseViaRDFFromWeb(testUri, dataUri);
-        
+        addDataToKnowledgeBaseViaRDFFromWeb(knowledgeBaseUri, importUri);
         
         //TODO: drop off sparql query?
         
+        // Add resource
         addResource(resourceTitle);
+        
+        //Add instance
+        addInstanceToResource(resourceTitle, instanceTitle);
     }
     
+    /**
+     * TC 007.
+     * pre: Knowledge base to delete exists
+     * post: Knowledge base is deleted.
+     */
+    @Test
+    @Parameters({ "username","knowledgeBaseUri" })
+    public void deleteKnowledgeBase(String username, String knowledgeBaseUri)  {
+        By frameIdentifier = By.xpath("//iframe[contains(@src,'ontowiki')]");
+        if(bf.isElementVisible(frameIdentifier))  {
+            logger.info("Already on correct page. Skipping navigation");
+        } else {
+            navigator.navigateTo(new String[] {
+            "Authoring", 
+            "OntoWiki"});  
+        }
+             
+        bf.checkIFrame(frameIdentifier, By.id("application"));
+        // Perform login if necessary
+        logIntoOntoWiki(username, "");
+        // Delete KB
+        navigateToContextMenuEntry(knowledgeBaseUri,"Delete Knowledge");
+        // Check for delted
+        By element = By.xpath("//div[@class='section-sidewindows']//a[" +bf.xpathEndsWith("@about", knowledgeBaseUri) +"]");
+        bf.waitUntilElementDisappears("Knowledgebase was not correctly deleted. It is still"
+                + "visible after delete.", element);        
+    }
     
     /**
      * TC 002.
@@ -85,6 +107,10 @@ public class Authoring extends TestCase {
      * 
      */
     private void createNewKnowledgeBase(String title, String uri, String optionID)  {
+        createCount++;
+        assertTrue("Could not create Knowledge Base. Delete and Create did not work.",
+                createCount < 3);
+        
         bf.waitUntilElementIsVisible("Could not find Edit Menu item.", By.xpath(
                 "//div[@id='modellist']//ul[@class='menu clickMenu']/li[contains(.,'Edit')]")).click();
         bf.waitUntilElementIsVisibleFast("Could not find menu Create Knowledge Base menu entry.", 
@@ -103,6 +129,19 @@ public class Authoring extends TestCase {
         // Submit
         bf.getVisibleElement("Could not find 'Create Knowledge Base' submit button.", 
                 By.id("createmodel")).click();
+        
+        if(bf.isElementVisibleAfterWait(By.xpath("//p[contains(@class,'error')]"),4)) {
+            // Perform delete
+            navigateToContextMenuEntry(uri,"Delete Knowledge");
+        
+            By element = By.xpath("//div[@class='section-sidewindows']//a[" 
+                    +bf.xpathEndsWith("@about", uri) +"]");
+            bf.waitUntilElementDisappears("Knowledgebase was not correctly deleted. It is still"
+                + "visible after delete.", element);        
+            // Restart test case:
+            createNewKnowledgeBase(title,uri,optionID);
+        }
+        
         bf.waitUntilElementIsVisible("Knwoledge Base "+ title+" was not correctly created. "
                 + "Success message was not displayed." , By.xpath("//p[contains(@class,'success')]"));
         assertTrue("New Knowledge Base with title: "+title +" was not added to existing Knowledge Bases.",
@@ -115,7 +154,7 @@ public class Authoring extends TestCase {
      * @param knowledgeBaseUri 
      *          identifies the knowledge base to use.
      */
-    private void addDataToKnowledgeBaseViaRDFFromWeb(String knowledgeBaseUri, String dataUri)  {
+    private void addDataToKnowledgeBaseViaRDFFromWeb(String knowledgeBaseUri, String importUri)  {
         //navigateToKBContextMenuEntry(knowledgeBaseUri, "Add");
         navigateToContextMenuEntry(knowledgeBaseUri, "Add");
         bf.waitUntilElementIsVisible("Could not find import form"
@@ -130,12 +169,12 @@ public class Authoring extends TestCase {
                 By.id("addmodel")).click();
         
         bf.waitUntilElementIsVisible("Could not find location input for import from web.", 
-                By.id("location-input")).sendKeys(dataUri);
+                By.id("location-input")).sendKeys(importUri);
         
         // Submit again
         bf.getVisibleElement("Can not find submit button.", 
                 By.id("importdata")).click();
-        bf.waitUntilElementIsVisible("Data form "+ dataUri+" was not correctly added."
+        bf.waitUntilElementIsVisible("Data form "+ importUri+" was not correctly added."
                 + "Success message was not displayed." , By.xpath("//p[contains(@class,'success')]"));
         logger.info("Successfully added data to knowledge base.");
     }
@@ -188,19 +227,13 @@ public class Authoring extends TestCase {
                 By.xpath("//div[@class='innercontent']//a[" +bf.xpathEndsWith("@about", resource) +"]"));       
     }
     
-        /**
+    /**
      * Navigates to a knowledge base context menu entry.
      * 
-     * @param kbUri
-     *          The uri of the Knowledge Base.
-     * @param entry 
-     *          Complete link text or unique parts of it of the context 
-     *          menu entry.
-     */
-    /**
-     * 
      * @param ident
+     *          Identifying text from the @about field of the html element.
      * @param entry 
+     *          The entry to click from the context menu.
      */
     private void navigateToContextMenuEntry(String ident, String entry)  {
         By element = By.xpath("//div[@class='section-sidewindows']//a[" +bf.xpathEndsWith("@about", ident) +"]");
@@ -221,4 +254,29 @@ public class Authoring extends TestCase {
                 By.xpath("//div[@class='contextmenu-enhanced']//a[contains(.,'"+entry+"')]")).click();
         bf.bePatient(1000);
      }
+    
+    /**
+     * Logs into ontoWiki. 
+     * pre: ontoWiki frontend must be visible.
+     * post: logged in with username.
+     * 
+     * @param username
+     * @param password 
+     */
+    private void logIntoOntoWiki(String username, String password)  {
+        // Check if already logged in
+        if(!bf.isElementVisibleAfterWait(By.id("login"),2))  {
+            logger.info("Already logged into ontoWiki. Skipping login.");
+            return;
+        }
+        
+        bf.waitUntilElementIsVisible("Could not find username input field for logging into onto wiki.",
+                By.id("username")).sendKeys(username);
+        
+         // Skipping password input
+        
+        
+        bf.getVisibleElement("Could not find Login button.", By.id("locallogin")).click();
+        logger.info("Successfuly logged in.");
+    }
 }
