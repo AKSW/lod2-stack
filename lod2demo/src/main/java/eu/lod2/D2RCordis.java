@@ -43,7 +43,7 @@ public class D2RCordis extends CustomComponent
 	Embedded browser = new Embedded();
 	try {
 
-        LOD2DemoInitApp urlD2r = new LOD2DemoInitApp(st, state.getHostName(false)+ "/d2r-cordis");
+        LOD2DemoInitApp urlD2r = new LOD2DemoInitApp(st, "d2r-cordis");
 
         System.err.println(urlD2r.service);
 	  	URL url = new URL(urlD2r.service);

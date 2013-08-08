@@ -33,13 +33,13 @@ public class LOD2DemoInitApp {
             // initialize the hostname and portnumber
             String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() +
                     "> where {<" + state.getConfigurationRDFgraph() +
-                    "> <http://lod2.eu/lod2demo/configures> <" +
+                    "> <http://lod2.eu/lod2demo/configures> <http://localhost/" +
                     applicationname +
-                    ">. <" +
+                    ">. <http://localhost/" +
                     applicationname +
-                    "> <http://lod2.eu/lod2demo/password> ?p. <" +
+                    "> <http://lod2.eu/lod2demo/password> ?p. <http://localhost/" +
                     applicationname +
-                    "> <http://lod2.eu/lod2demo/username> ?u. <" +
+                    "> <http://lod2.eu/lod2demo/username> ?u. <http://localhost/" +
                     applicationname +
                     "> <http://lod2.eu/lod2demo/service> ?s.} LIMIT 100";
             TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
@@ -60,7 +60,7 @@ public class LOD2DemoInitApp {
                 if (valueOfS instanceof LiteralImpl) {
                     LiteralImpl literalS = (LiteralImpl) valueOfS;
                     String service0 = literalS.getLabel();
-                    service= state.processService(service0, applicationname);
+                    service= state.processService(service0, "/"+applicationname);
                 };
             }
 
