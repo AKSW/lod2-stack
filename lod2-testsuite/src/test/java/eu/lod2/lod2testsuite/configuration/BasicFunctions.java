@@ -81,10 +81,13 @@ public class BasicFunctions {
      * @Notice Maybe add collection for multiple content identifiers.
      */
     public void checkIFrame(By frameIdentifier, By contentIdentifier)  {
+        driver.switchTo().defaultContent();
+        /*
         if(isElementVisible(contentIdentifier))  {
             logger.info("Already on correct frame. Skipping switch to different frame.");
             return;
         }
+        */
         WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
         driver.switchTo().frame(iframe);
         logger.info("Switched to different frame");

@@ -1,10 +1,9 @@
-package eu.lod2.lod2testsuite.configuration;
-
-import org.apache.log4j.Logger;
-import org.openqa.selenium.firefox.FirefoxProfile;
+package eu.lod2.lod2testsuite.configuration.testng;
 
 import java.io.File;
 import java.io.IOException;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 /**
  * This class provides a FirefoxProfile which can be used to personalise

@@ -9,34 +9,40 @@
     <parameter name="browser.type" value="firefox" /> 
     <parameter name="system.architecture" value="64" />
     <listeners>
-        <listener class-name="eu.lod2.lod2testsuite.configuration.TestCaseListener" />
-        <listener class-name="eu.lod2.lod2testsuite.configuration.ScreenShotListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.RetryAnalyzerAppender" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.ScreenShotListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.TestCaseListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.RetryTestListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
     
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
-    
+
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                    <parameter name="searchPhrase" value="museums" />
-                    <include  name="loadRDFdataFromPublicDataEu" />
-                    <include  name="loadRDFdataFromDataHub" />
+                    <parameter name="query" value="SELECT * WHERE {?s ?p ?o} LIMIT 10" />;
                     
-                    <parameter name="graphName" value="http://localhost/Geo" />
+                    <parameter name="searchPhraseEU" value="DNB" />
+                    <parameter name="resourceNmbrEU" value="2" />
+                    <parameter name="graphNameForPublicDataEuUpload" value="http://localhost/book" />
+                    <include  name="uploadGraphInVirtuosoFromPublicDataEu" />
+                    
+                    <parameter name="searchPhraseDH" value="Library" />
+                    <parameter name="resourceNmbrDH" value="2" />
+                    <parameter name="graphNameForDataHubUpload" value="http://localhost/library" />
+                    <include  name="uploadGraphInVirtuosoFromDataHub" />
+                    
+                    <parameter name="graphNameForLocalFile" value="http://localhost/Geo" />
                     <parameter name="graphFilePath" value="files/geo.rdf" />
-                    <include name="uploadGraphInVirtuoso" />
-                    
-                    <parameter name="graphName2" value="http://localhost/locations" />
-                    <parameter name="graphFilePath2" value="files/locations.rdf" />
-                    <include name="uploadGraphInVirtuoso2" />
+                    <include name="uploadGraphInVirtuosoFromFile" />
                     
                     <parameter name="xmlTextFile" value="files/ealXml.txt" />  
                     <parameter name="xsltTextFile" value="files/ealXslt.txt" />    
                     <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
-                    <include name="basicExtraction" />  
+                    <exclude name="basicExtraction" />  
                     
                     <parameter name="xmlFile" value="files/eal.xml" />  
                     <parameter name="xsltFile" value="files/eal.xslt" />    
@@ -60,7 +66,7 @@
             </class>
         </classes>
     </test>
-    
+
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
@@ -86,7 +92,7 @@
             </class>
         </classes>
     </test>
-   
+
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">

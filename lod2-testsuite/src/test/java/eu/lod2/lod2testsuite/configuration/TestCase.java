@@ -1,7 +1,10 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import eu.lod2.lod2testsuite.configuration.testng.FirefoxProfileConfig;
+import eu.lod2.lod2testsuite.configuration.testng.MyWebDriverEventListener;
+import eu.lod2.lod2testsuite.configuration.testng.BrowserType;
 import com.thoughtworks.selenium.Selenium;
-import static eu.lod2.lod2testsuite.configuration.BrowserType.*;
+import static eu.lod2.lod2testsuite.configuration.testng.BrowserType.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

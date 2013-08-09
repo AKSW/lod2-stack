@@ -43,6 +43,10 @@ public class Navigator {
      *          "Europe's Public Data" try it with "s Public Data". 
      */
     public void navigateTo(String[] path)  {
+        // Allways switch to default content before navigating.
+        driver.switchTo().defaultContent();
+        logger.info("Switched to default content before navigating");
+        
         int index = 0, x = 0;
         WebElement link = null;
         String pp = "";

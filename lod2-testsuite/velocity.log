@@ -1,65 +1,31 @@
-Thu Aug 08 16:14:42 CEST 2013  [debug] AvalonLogSystem initialized using logfile 'velocity.log'
-Thu Aug 08 16:14:42 CEST 2013   [info] ************************************************************** 
-Thu Aug 08 16:14:42 CEST 2013   [info] Starting Jakarta Velocity v1.4
-Thu Aug 08 16:14:42 CEST 2013   [info] RuntimeInstance initializing.
-Thu Aug 08 16:14:42 CEST 2013   [info] Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
-Thu Aug 08 16:14:42 CEST 2013   [info] Trying to use logger class org.apache.velocity.runtime.log.AvalonLogSystem
-Thu Aug 08 16:14:42 CEST 2013   [info] Using logger class org.apache.velocity.runtime.log.AvalonLogSystem
-Thu Aug 08 16:14:42 CEST 2013   [info] Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
-Thu Aug 08 16:14:42 CEST 2013   [info] Resource Loader Instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:14:42 CEST 2013   [info] ClasspathResourceLoader : initialization starting.
-Thu Aug 08 16:14:42 CEST 2013   [info] ClasspathResourceLoader : initialization complete.
-Thu Aug 08 16:14:42 CEST 2013   [info] ResourceCache : initialized. (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
-Thu Aug 08 16:14:42 CEST 2013   [info] Default ResourceManager initialization complete.
-Thu Aug 08 16:14:42 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Literal
-Thu Aug 08 16:14:42 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Macro
-Thu Aug 08 16:14:42 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Parse
-Thu Aug 08 16:14:42 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Include
-Thu Aug 08 16:14:42 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
-Thu Aug 08 16:14:42 CEST 2013   [info] Created: 20 parsers.
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : initialization starting.
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : adding VMs from VM library template : VM_global_library.vm
-Thu Aug 08 16:14:42 CEST 2013  [error] ResourceManager : unable to find resource 'VM_global_library.vm' in any resource loader.
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : error using  VM library template VM_global_library.vm : org.apache.velocity.exception.ResourceNotFoundException: Unable to find resource 'VM_global_library.vm'
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro :  VM library template macro registration complete.
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : allowInline = true : VMs can be defined inline in templates
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : allowInlineLocal = false : VMs defined inline will be  global in scope if allowed.
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : messages on  : VM system will output logging messages
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : autoload off  : VM system will not automatically reload global library macros
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocimacro : initialization complete.
-Thu Aug 08 16:14:42 CEST 2013   [info] Velocity successfully started.
-Thu Aug 08 16:15:33 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/index.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:33 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/overview.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:33 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/suites.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:33 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:33 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/class-results.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-Thu Aug 08 16:15:34 CEST 2013   [info] ResourceManager : found org/uncommons/reportng/templates/html/output.html.vm with loader org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+Fri Aug 09 16:27:20 CEST 2013  [debug] AvalonLogSystem initialized using logfile 'velocity.log'
+Fri Aug 09 16:27:20 CEST 2013   [info] ************************************************************** 
+Fri Aug 09 16:27:20 CEST 2013   [info] Starting Jakarta Velocity v1.4
+Fri Aug 09 16:27:20 CEST 2013   [info] RuntimeInstance initializing.
+Fri Aug 09 16:27:20 CEST 2013   [info] Default Properties File: org/apache/velocity/runtime/defaults/velocity.properties
+Fri Aug 09 16:27:20 CEST 2013   [info] Trying to use logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Aug 09 16:27:20 CEST 2013   [info] Using logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Aug 09 16:27:20 CEST 2013   [info] Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+Fri Aug 09 16:27:20 CEST 2013   [info] Resource Loader Instantiated: org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+Fri Aug 09 16:27:20 CEST 2013   [info] ClasspathResourceLoader : initialization starting.
+Fri Aug 09 16:27:20 CEST 2013   [info] ClasspathResourceLoader : initialization complete.
+Fri Aug 09 16:27:20 CEST 2013   [info] ResourceCache : initialized. (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+Fri Aug 09 16:27:20 CEST 2013   [info] Default ResourceManager initialization complete.
+Fri Aug 09 16:27:20 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+Fri Aug 09 16:27:20 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+Fri Aug 09 16:27:20 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+Fri Aug 09 16:27:20 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Include
+Fri Aug 09 16:27:20 CEST 2013   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+Fri Aug 09 16:27:20 CEST 2013   [info] Created: 20 parsers.
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : initialization starting.
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : adding VMs from VM library template : VM_global_library.vm
+Fri Aug 09 16:27:20 CEST 2013  [error] ResourceManager : unable to find resource 'VM_global_library.vm' in any resource loader.
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : error using  VM library template VM_global_library.vm : org.apache.velocity.exception.ResourceNotFoundException: Unable to find resource 'VM_global_library.vm'
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro :  VM library template macro registration complete.
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : allowInline = true : VMs can be defined inline in templates
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : allowInlineLocal = false : VMs defined inline will be  global in scope if allowed.
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : messages on  : VM system will output logging messages
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : autoload off  : VM system will not automatically reload global library macros
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocimacro : initialization complete.
+Fri Aug 09 16:27:20 CEST 2013   [info] Velocity successfully started.

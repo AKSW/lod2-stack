@@ -1,5 +1,6 @@
-package eu.lod2.lod2testsuite.configuration;
+package eu.lod2.lod2testsuite.configuration.testng;
 
+import eu.lod2.lod2testsuite.configuration.TestCase;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
@@ -53,9 +54,7 @@ public class ScreenShotListener extends TestListenerAdapter {
     private String takeScreenShot(ITestResult tr)  {
         String filename = "";
         try  {
-            TestCase tc = (TestCase)tr.getInstance();
-            WebDriver driver = TestCase.driver;
-            if(driver == null)  {
+            if(TestCase.driver == null)  {
                 return "Could not take screenshot, WebDriver was not initiallized "
                         + "because beforeSuite() was not run.\n";
             }
@@ -63,10 +62,24 @@ public class ScreenShotListener extends TestListenerAdapter {
             // Surfire reports directory
             String dir = System.getProperty("user.dir") + sep
                     + "target" + sep + "surefire-reports" + sep;
-            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            File file = ((TakesScreenshot) TestCase.driver).getScreenshotAs(OutputType.FILE);
             // Use testname specific title for screenshot. 
             // Replace special characters
+            
             filename = tr.getName().replace(' ', '_').replace("#", "");
+            
+            if (tr.getAttributeNames().contains("retry")) {
+                if ((Boolean) tr.getAttribute("retry")) {
+                    //attribute must exist:
+                    int count = (Integer) tr.getAttribute("retry.count");
+                    filename += "_"+count;
+                    logger.info("Making backup screenshot in " + this.getClass().getSimpleName()
+                            + " because of retry: " +filename);
+                }
+            }
+             
+            filename += ".png";
+            
             if(filename.isEmpty()) {
                 filename = file.getName();
             }
@@ -78,7 +91,7 @@ public class ScreenShotListener extends TestListenerAdapter {
                 throw new Exception("could not copy screenshot: "+e.getMessage());
             }
         } catch(Exception e)  {
-            logger.error("Could not take screenshot: "+e.getMessage());
+            logger.error("COULD NOT TAKE SCREENSHOT: "+e.getMessage());
         }
         return "<a href=\"../"+filename+" \">"
                     + "<img width=50% height=50% src=\"../" +filename+ "\" />"

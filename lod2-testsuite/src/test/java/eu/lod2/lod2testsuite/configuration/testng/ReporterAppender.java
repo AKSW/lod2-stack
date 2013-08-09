@@ -1,4 +1,4 @@
-package eu.lod2.lod2testsuite.configuration;
+package eu.lod2.lod2testsuite.configuration.testng;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
