@@ -1,7 +1,7 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
-import eu.lod2.lod2testsuite.pages.OntoWiki;
+import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import org.openqa.selenium.By;
 
 import org.testng.annotations.Parameters;
@@ -24,7 +24,7 @@ public class Authoring extends TestCase {
      */
     @Test
     @Parameters({ "username", "knowledgeBaseTitle", "knowledgeBaseUri", "importUri", "resourceTitle", "instanceTitle"})
-    public void ontoWiki(String username, String knowledgeBaseTitle, String knowledgeBaseUri, String importUri, String resourceTitle, String instanceTitle)  {
+    public void addAndEditKnowledgeBase(String username, String knowledgeBaseTitle, String knowledgeBaseUri, String importUri, String resourceTitle, String instanceTitle)  {
         
         navigator.navigateTo(new String[] {
             "Authoring", 
@@ -35,7 +35,7 @@ public class Authoring extends TestCase {
                 frameIdentifier, 
                 By.id("application"));
         
-        OntoWiki ontoWiki = new OntoWiki(frameIdentifier);   
+        OntoWikiPage ontoWiki = new OntoWikiPage(frameIdentifier);   
         
         // Login into onto wiki
         ontoWiki.logIntoOntoWiki(username,"");
@@ -48,10 +48,10 @@ public class Authoring extends TestCase {
         
         //TODO: drop off sparql query?
         // Add resource
-        ontoWiki.addResource(resourceTitle);
+        ontoWiki.addResource(knowledgeBaseUri, resourceTitle);
         
         //Add instance
-        ontoWiki.addInstanceToResource(resourceTitle, instanceTitle);
+        ontoWiki.addInstanceToResource(knowledgeBaseUri, resourceTitle, instanceTitle);
     }
     
     /**
@@ -72,7 +72,7 @@ public class Authoring extends TestCase {
         }
         bf.checkIFrame(frameIdentifier, By.id("application"));
         
-        OntoWiki ontoWiki = new OntoWiki(frameIdentifier);   
+        OntoWikiPage ontoWiki = new OntoWikiPage(frameIdentifier);   
         // Perform login if necessary
         ontoWiki.logIntoOntoWiki(username, "");
         // Delete KB
@@ -88,6 +88,7 @@ public class Authoring extends TestCase {
      */
     @Test
     public void publishToCkan()  {
+        bf.checkAndChooseDefaultGraph();
         navigator.navigateTo(new String[] {
             "Authoring", 
             "Publish to CKAN"});  

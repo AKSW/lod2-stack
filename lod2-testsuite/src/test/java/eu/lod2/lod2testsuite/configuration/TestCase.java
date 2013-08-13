@@ -190,13 +190,23 @@ public abstract class TestCase {
      */
     @AfterMethod(alwaysRun=true)
     public void afterTestCase()  {
+        By warning = By.xpath("//div[@class='gwt-HTML']");
+        
+        driver.switchTo().defaultContent();
         // Error message is visible.
         if(bf.isElementVisible(bf.getErrorPopupLocator()))  {
             WebElement message =  bf.getVisibleElement(bf.getErrorPopupLocator());
             logger.fatal("Error message is visible with text: " + message.getText());
             message.click();
-            bf.waitUntilElementDisappears(By.xpath("//div[@class='gwt-HTML']")); 
+            bf.waitUntilElementDisappears(warning); 
         }
+        
+        if(bf.isElementVisible(warning)) {
+            logger.info("Warning message was displayed.");
+            bf.getVisibleElement(warning).click();
+            bf.waitUntilElementDisappears(warning); 
+        }
+
     }
     
     /**

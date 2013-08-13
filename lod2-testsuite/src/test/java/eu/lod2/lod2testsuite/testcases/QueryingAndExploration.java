@@ -1,8 +1,10 @@
 package eu.lod2.lod2testsuite.testcases;
 
+import eu.lod2.lod2testsuite.configuration.BasicFunctions;
 import java.util.List;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
+import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import static org.testng.AssertJUnit.*;
@@ -22,95 +24,40 @@ import org.testng.annotations.Test;
 public class QueryingAndExploration extends TestCase {
     
     /**
-     * TC 001.
-     * 
-     * @Note: Will change soon.
-     */
-    @Test
-    @Parameters({ "query" })
-    public void sparqlViaSesameApi(String query)  {
-        
-        navigator.navigateTo(new String[] {
-            "Querying & Exploration", 
-            "SPARQL querying", 
-            "Direct via Sesame API"});
-
-        WebElement textfield = bf.waitUntilElementIsVisible(By.id("SesameSPARQL_query"));
-        
-        // Check for predefined value?
-        textfield.sendKeys(query);
-        
-        // Click "evaluate"
-        bf.getVisibleElement(By.id("SesameSPARQL_okbutton")).click();
-        
-        bf.waitUntilElementIsVisible(By.xpath("//div[@id='SesameSPARQL_sparqlResult']"
-                + "/div[@class='v-panel-content'][not(text()='')]"));
-        //"//div[@id='SesameSPARQL_sparqlResult']//textarea"
-        
-    }
-    
-    /**
      * TC 002.
-     * @Note: Needs a default - graph selected. Otherwise it states a message.
-     * Test this?
-     * @TODO choose graph??
-     * 
+     *
      */
     @Test
-    public void ontoWikiSparql()   {
-        
-        navigator.navigateTo(new String[] {
-            "Querying & Exploration", 
-            "SPARQL querying", 
-            "OntoWiki SPARQL endpoint"});
-        
-         // Check if isparql page is visible
-         bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'ontowiki')]"),
-                By.name("sparqlquery"));
-         
-         // Choose Graph??
-         
-         // Wait for text input field.
-         bf.waitUntilElementIsVisible(
-                 "Textfield that displays query is not visible.", 
-                 By.className("innercontent"));
-         
-         // Click submit
-         WebElement submitButton = bf.getVisibleElement("Could not find the submit button.",By.xpath(
-                 "//div[@class='messagebox']/div[@class='toolbar']/a[@class='button submit']"));
-         submitButton.click();
-         
-         WebElement firstSubject = bf.waitUntilElementIsVisible("No result from query found.", 
-                 By.id("r0-c0"));
-         
-         /*
-         // If not logged in already log in --> NOT NECESSARY for submitting a query.
-         if(bf.isElementVisible(By.xpath("//div[@class='login.window']")))  {
-             WebElement user = bf.getVisibleElement(
-                     "Could not find user input", 
-                     By.xpath("//input[@class='username.text']"));
-             WebElement pw = bf.getVisibleElement(
-                     "Could not find password input", 
-                     By.xpath("//input[@class='username.text']"));
-             
-             user.sendKeys("dba");
-             pw.sendKeys("dba");
-             
-             // Click login button
-             bf.getVisibleElement(
-                     "Could not find login button",
-                     By.xpath("//a[@class='locallogin.button']")).click();
+    @Parameters({ "geoGraph", "query", "geoGraphResult" })
+    public void ontoWikiSparql(String graph, String query, String expectedResult)   {
+        /*
+         boolean useDefaultQuery = false;
+         if(graph == null)  {
+         graph = "";
+         }
+         if(query == null)  {
+         useDefaultQuery = true;
          }
          */
+        bf.checkAndChooseDefaultGraph(graph);
+        navigator.navigateTo(new String[]{
+                    "Querying & Exploration",
+                    "SPARQL querying",
+                    "OntoWiki SPARQL endpoint"});
+
+        By frameIdent = By.xpath("//iframe[contains(@src,'ontowiki')]");
+        // Check if isparql page is visible
+        bf.checkIFrame(frameIdent, By.name("sparqlquery"));
+        OntoWikiPage ontoWiki = new OntoWikiPage(frameIdent);
+        ontoWiki.submitSparqlQuery("", query, expectedResult);
     }
     
     /**
      * TC 003.
      */
     @Test
-    @Parameters({ "graph", "expectedResult" })
-    public void virtuosoSparql(String graph, String expectedResult)  {
+    @Parameters({ "exampleGraph","query", "exampleGraphResult" })
+    public void virtuosoSparql(String graph, String query, String expectedResult)  {
      
         navigator.navigateTo(new String[] {
             "Querying & Exploration", 
@@ -126,12 +73,13 @@ public class QueryingAndExploration extends TestCase {
          bf.waitUntilElementIsVisible("Could not find input field for graph.", 
                  By.id("default-graph-uri")).sendKeys(graph);
          
+         // Type query
+         bf.getVisibleElement(By.id("query")).clear();
+         bf.getVisibleElement(By.id("query")).sendKeys(query);
          
          // Hit play button with predefined query
-         WebElement runButton = bf.getVisibleElement(
-                 By.xpath("//div[@id='main']//input[@type='submit']"));
-         
-         runButton.click();
+         bf.getVisibleElement(
+                 By.xpath("//div[@id='main']//input[@type='submit']")).click();
          
          // Get results of query request
          List<WebElement> results = bf.waitUntilElementsAreVisible(
@@ -151,8 +99,8 @@ public class QueryingAndExploration extends TestCase {
      * TC 004.
      */
     @Test
-    @Parameters({ "graph", "expectedResult" })
-    public void virtuosoInteractiveSparql(String graph, String expectedResult) {
+    @Parameters({ "exampleGraph","query", "exampleGraphResult" })
+    public void virtuosoInteractiveSparql(String graph, String query, String expectedResult) {
  
          navigator.navigateTo(new String[] {
             "Querying & Exploration", 
@@ -168,11 +116,14 @@ public class QueryingAndExploration extends TestCase {
          bf.waitUntilElementIsVisible("Could not find input field for graph.", 
                  By.id("default-graph-uri")).sendKeys(graph);
          
-         // Hit play button with predefined query
-         WebElement playButton = bf.getVisibleElement(
-                 By.xpath("//div[@id='toolbar']//img[contains(@src,'player_play')]"));
+         // Type query
+         bf.getVisibleElement(By.id("query")).clear();
+         bf.getVisibleElement(By.id("query")).sendKeys(query);
          
-         playButton.click();
+         // Hit play button with predefined query
+         bf.getVisibleElement(By.xpath("//div[@id='toolbar']"
+                 + "//img[contains(@src,'player_play')]")).click();
+        
          
          // Get results of query request
          List<WebElement> results = driver.findElements(
@@ -202,7 +153,6 @@ public class QueryingAndExploration extends TestCase {
     
     /**
      * TC 006.
-     * @TODO create TC
      */
     @Test
     @Parameters({ "geoGraph" })
@@ -211,29 +161,42 @@ public class QueryingAndExploration extends TestCase {
         navigator.navigateTo(new String[] {
             "Querying & Exploration", 
             "Geo-spatial exploration"});
+        
+        // TODO: Further testing
     }
     
     /**
      * TC 007.
-     * @TODO create TC
      */
     @Test
-    @Parameters({ "expectedResult" })
-    public void assistedQueryingWithCurrentGraph(String expectedResult) {
+    @Parameters({"geoGraph", "geoGraphResult" })
+    public void assistedQueryingWithCurrentGraph(String graph, String expectedResult) {
+        bf.checkAndChooseDefaultGraph(graph);
         navigator.navigateTo(new String[]{
                     "Querying & Exploration",
                     "SPARQL querying",
                     "SparQLed - Assisted Querying",
                     "Use currently selected graph"});
         
-        logger.info("finished navigation");
-        
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'sparqled')]"), 
                 By.xpath("//iframe[@src='sindice-editor']"));
-        bf.checkIFrame(
-                By.xpath("//iframe[@src='sindice-editor']"), 
-                By.id("flint-test"));
+        
+        WebElement iframe = bf.waitUntilElementIsVisible("Could not find iframe.",By.xpath("//iframe[@src='sindice-editor']"));        
+        driver.switchTo().frame(iframe);
+        logger.info("Switched to sindice editor frame.");
+
+        bf.waitUntilElementIsVisible(
+                "Iframe content was not correctly displayed.",
+                By.id("flint-test"), By.xpath("//iframe[@src='sindice-editor']"), BasicFunctions.MAX_PATIENCE_SECONDS);
+        /*
+        // Type query
+        WebElement inputField = bf.waitUntilElementIsVisible("Could not find inputField for query.",
+                By.xpath("//textarea"));
+        inputField.clear();
+        inputField.sendKeys(query);
+        */
+        
         // Click submit
         bf.getVisibleElement("Could not find submit button.", 
                 By.id("flint-endpoint-submit")).click();
@@ -249,8 +212,8 @@ public class QueryingAndExploration extends TestCase {
      * @TODO create TC
      */
     @Test
-    
-    public void assistedQueryingAndSummeryGraph() {
+     @Parameters({"bookGraph","geoGraph","query", "bookGraphResult" })
+    public void assistedQueryingAndSummeryGraph(String inputGraph, String outputGraph, String query, String expectedResult) {
         navigator.navigateTo(new String[]{
                     "Querying & Exploration",
                     "SPARQL querying",

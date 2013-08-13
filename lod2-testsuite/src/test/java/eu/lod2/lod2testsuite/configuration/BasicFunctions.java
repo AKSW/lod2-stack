@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.plaf.basic.BasicArrowButton;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -93,9 +94,31 @@ public class BasicFunctions {
         logger.info("Switched to different frame");
         waitUntilElementIsVisible(
                 "Iframe content was not correctly displayed.",
-                contentIdentifier);
+                contentIdentifier, frameIdentifier, BasicFunctions.MAX_PATIENCE_SECONDS);
     }
 
+    public void checkAndChooseDefaultGraph()  {
+        checkAndChooseDefaultGraph("http://localhost/Geo");
+    }
+    
+    public void checkAndChooseDefaultGraph(String defaultGraph)  {
+        driver.switchTo().defaultContent();
+        logger.info("Switching to default content.");
+        String dg = waitUntilElementIsVisibleFast("Could not find default graph info field.",
+                By.cssSelector("div.v-label-currentgraphlabel")).getText().trim();
+        
+        if(defaultGraph.equals(dg))  {
+            logger.info("Already on correct default graph: "+dg);
+        } else  {
+            logger.info("Not correct default graph: "+dg+". Setting it to: "+defaultGraph);
+            TestCase.navigator.navigateTo(new String[]{"Configuration", "Demonstrator configuration"});
+            handleSelector(By.cssSelector("div.v-filterselect"), defaultGraph, false);
+            getVisibleElement(By.cssSelector("div.v-form div.v-button")).click();
+        }
+        
+    }
+    
+    
     /**
      * @return 
      *       Returns the locator of a vaadin error message.
@@ -509,7 +532,7 @@ public class BasicFunctions {
      */
     public void setValueViaJavaScript(WebElement element, String value) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1]", element, value);
-    }
+    } 
     
       /**
      * Sets the current browser session to sleep until an element is present.
@@ -581,6 +604,51 @@ public class BasicFunctions {
 
         return element;
     }
+    
+    
+    public WebElement waitUntilElementIsVisible(String failureMessage, By locator, By frameIdentifier, int maxPatienceSeconds)  {
+        WebDriverWait pageWait = new WebDriverWait(driver, maxPatienceSeconds);
+        if (!failureMessage.isEmpty()) {
+            pageWait.withMessage("Time expired: " + failureMessage);
+        }
+        WebElement element = null;
+        int attempts = 0;
+        boolean rep = true;
+        while (attempts < MAX_ATTEMPTS && rep == true) {
+            attempts++;
+            rep = false;
+            try {
+                element = pageWait.until(
+                        ExpectedConditions.visibilityOfElementLocated(locator));
+            } catch (TimeoutException e) {
+                rep = true;
+                driver.switchTo().defaultContent();
+                WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
+                driver.switchTo().frame(iframe);
+                
+                logger.error("Element not found, switching I frame: "+frameIdentifier+" and trying again for "
+                        + attempts + " time.");
+                
+            } catch (StaleElementReferenceException se) {
+                rep = true;
+                logger.error("StaleElementReferenceException appeared. Retrying find for "
+                        + attempts + " time. " + se.getMessage());
+            }
+        }
+        assertFalse("To many stale reference exceptions during waiting"
+                + "for element to be visible.", attempts == MAX_ATTEMPTS);
+        
+        return element;
+    }
+    
+    public WebElement waitUntilElementIsVisible(String failureMessage, By locator, By frameIdentifier)  {
+        return waitUntilElementIsVisible(failureMessage, locator, frameIdentifier, MAX_PATIENCE_SECONDS);
+    }
+    
+    public WebElement waitUntilElementIsVisibleFast(String failureMessage, By locator, By frameIdentifier) {
+        return waitUntilElementIsVisible(failureMessage, locator, frameIdentifier, MAX_PATIENCE_SECONDS_REDUCED);
+    }
+    
     
     /**
      * Sets the current browser session to sleep until an element is present.

@@ -21,13 +21,16 @@ import org.testng.annotations.Test;
  */
 public class ExtractionAndLoading extends TestCase {
    
+    private By virtuosoFrameIdent = By.xpath("//iframe[contains(@src,'conductor')]");
+    
     /**
      * TC 001x Uploads a graph to the lod2stack.
      */
     @Test
     @Parameters({ "graphNameForLocalFile", "graphFilePath"})
     public void uploadGraphInVirtuosoFromFile(String graphName, String graphFilePath)  {
-        VirtuosoPage.navigateToVirtuoso();
+        VirtuosoPage virtuoso = new VirtuosoPage(virtuosoFrameIdent);
+        virtuoso.navigateToVirtuoso();
         // Get absolute paths.
         graphFilePath = getAbsolutePath(graphFilePath);
         // Check if required files exist
@@ -36,26 +39,30 @@ public class ExtractionAndLoading extends TestCase {
 
         // If not logged in: log into VirtuosoPage
         if (bf.isElementVisible(By.id("t_login_usr"))) {
-           VirtuosoPage.loginVirtuoso();
+           virtuoso.loginVirtuoso();
         }
         
-        VirtuosoPage.uploadDataToVirtuosoGraph(graphName, graphFilePath);
+        virtuoso.uploadDataToVirtuosoGraph(graphName, graphFilePath);
     }
     
     @Test
     @Parameters({"graphNameForPublicDataEuUpload", "searchPhraseEU", "resourceNmbrEU"})
     public void uploadGraphInVirtuosoFromPublicDataEu(String graphName, String searchPhrase, String resourceNmbr)  {
-        String ur = DataPage.getRDFdataFromPublicDataEu(searchPhrase, resourceNmbr);
-        VirtuosoPage.navigateToVirtuoso();
-        VirtuosoPage.uploadDataToVirtuosoGraph(graphName, ur);
+        VirtuosoPage virtuoso = new VirtuosoPage(virtuosoFrameIdent);
+        DataPage loadDataPage = new DataPage(By.xpath("//iframe[contains(@src,'publicdata.eu')]"));
+        String ur = loadDataPage.getRDFdataFromPublicDataEu(searchPhrase, resourceNmbr);
+        virtuoso.navigateToVirtuoso();
+        virtuoso.uploadDataToVirtuosoGraph(graphName, ur);
     }
     
     @Test
     @Parameters({"graphNameForDataHubUpload", "searchPhraseDH", "resourceNmbrDH"})
     public void uploadGraphInVirtuosoFromDataHub(String graphName, String searchPhrase, String resourceNmbr)  {
-        String ur = DataPage.getRDFdataFromDataHub(searchPhrase, resourceNmbr);
-        VirtuosoPage.navigateToVirtuoso();
-        VirtuosoPage.uploadDataToVirtuosoGraph(graphName, ur);
+        VirtuosoPage virtuoso = new VirtuosoPage(virtuosoFrameIdent);
+        DataPage loadDataPage = new DataPage(By.xpath("//iframe[contains(@src,'datahub.io')]"));
+        String ur = loadDataPage.getRDFdataFromDataHub(searchPhrase, resourceNmbr);
+        virtuoso.navigateToVirtuoso();
+        virtuoso.uploadDataToVirtuosoGraph(graphName, ur);
     }
     
     /**

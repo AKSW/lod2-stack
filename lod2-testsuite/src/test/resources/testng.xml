@@ -23,8 +23,6 @@
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
                 <methods>
-                    <parameter name="query" value="SELECT * WHERE {?s ?p ?o} LIMIT 10" />;
-                    
                     <parameter name="searchPhraseEU" value="DNB" />
                     <parameter name="resourceNmbrEU" value="2" />
                     <parameter name="graphNameForPublicDataEuUpload" value="http://localhost/book" />
@@ -71,27 +69,39 @@
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
+                    <parameter name="query" value="SELECT * WHERE {?s ?p ?o} LIMIT 10" />
+                    <parameter name="exampleGraph" value = "http://example.com/empty/" />
+                    <parameter name="exampleGraphResult" value="http://example.com/empty/owl_Class/TestResource" />
+                    
+                    <parameter name="geoGraph" value="http://localhost/Geo" />  
+                    <parameter name="geoGraphResult" value="nodeID://b10007" />  
+                    
+                    <parameter name="bookGraph" value="http://localhost/books" />  
+                    <parameter name="bookGraphResult" value="http://purl.org/ontology/bibo/Periodical" />  
+                    
+
+                    <exclude name="assistedQueryingWithCurrentGraph" />
+                    <exclude name="assistedQueryingAndSummeryGraph" />
+                    
+                    
                     <include name="ontoWikiSparql" />
                     
-                    <parameter name="graph" value="http://localhost/locations" />  
-                    <parameter name="expectedResult" value="http://www.w3.org/2002/07/owl#Ontology" />  
+                    <parameter name="virtuosoExpectedResult" value="http://www.w3.org/2002/07/owl#Ontology" />  
                     <include name="virtuosoSparql" />
                     
-                    <parameter name="graph" value="http://localhost/Geo" />  
-                    <parameter name="expectedResult" value="http://rdfs.org/ns/void#Dataset" />  
+                    
+                    <parameter name="interactiveExpectedResult" value="http://rdfs.org/ns/void#Dataset" />  
                     <include name="virtuosoInteractiveSparql" />
 
                     <include name="sigmaEe" />
                     <include name="geoSpatialExploration" />
                     
-                    <parameter name="expectedResult" value="http://www.openlinksw.com/virtrdf-data-formats#default-iid" /> 
-                    <include name="assistedQueryingWithCurrentGraph" />
-                    
-                    <include name="assistedQueryingAndSummeryGraph" />
+
                 </methods>
             </class>
         </classes>
     </test>
+
 
      <test name="Authoring" preserve-order="true">
         <classes>
@@ -104,8 +114,8 @@
                     <parameter name="resourceTitle" value="TestResource" />
                     <parameter name="instanceTitle" value="TestInstance" />
                     
-                    <include name="ontoWiki" />
-                    <include name="deleteKnowledgeBase" />
+                    <include name="addAndEditKnowledgeBase" />
+                    <exclude name="deleteKnowledgeBase" />
                     <include name="publishToCkan" />
                 </methods>
             </class>

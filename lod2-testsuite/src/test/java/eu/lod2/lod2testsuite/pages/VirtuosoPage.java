@@ -5,11 +5,14 @@
 
 package eu.lod2.lod2testsuite.pages;
 
+import eu.lod2.lod2testsuite.configuration.BasicFunctions;
+import eu.lod2.lod2testsuite.configuration.Navigator;
 import eu.lod2.lod2testsuite.configuration.TestCase;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -19,16 +22,33 @@ import org.openqa.selenium.WebElement;
 public class VirtuosoPage {
     private static Logger logger = Logger.getLogger(VirtuosoPage.class);
     
+    private WebDriver driver;
+    private BasicFunctions bf;
+    private Navigator navigator;
+    private By frameIdentifier;
+    
+    /**
+     * 
+     * @param frameIdentifier 
+     *          Identifier for the frame that layers Virtuoso.
+     */
+    public VirtuosoPage(By frameIdentifier)  {
+        this.driver = TestCase.driver;
+        this.bf = TestCase.bf;
+        this.navigator = TestCase.navigator;
+        
+        this.frameIdentifier = frameIdentifier;
+    }
     /**
      * Navigates to Virtuoso and switches frame.
      */
-    public static void navigateToVirtuoso()  {
-         TestCase.navigator.navigateTo(new String[] {
+    public void navigateToVirtuoso()  {
+         navigator.navigateTo(new String[] {
             "Extraction & Loading", 
             "Upload RDF file or RDF from URL"});
         // Check if Iframe is visible and shows VirtuosoPage.
-        TestCase.bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'conductor')]"), 
+        bf.checkIFrame(
+                frameIdentifier, 
                 By.id("MTB"));
     }
     
@@ -36,12 +56,12 @@ public class VirtuosoPage {
      * Navigates to quadStoreUpload tab of Virtuoso.
      * pre: VirtuosoPage is opened.
      */
-    public static void navigateToQuadStoreUploadTab()  {
+    public void navigateToQuadStoreUploadTab()  {
         // Click on Linked Data tab
-        TestCase.bf.waitUntilElementIsVisible("Could not find LinkedData tab",
+        bf.waitUntilElementIsVisible("Could not find LinkedData tab",
                 By.linkText("Linked Data")).click();
         // Wait and click on Quad Store Upload
-        TestCase.bf.waitUntilElementIsVisible("Could not find sub tab Quad Store Upload.",
+        bf.waitUntilElementIsVisible("Could not find sub tab Quad Store Upload.",
                 By.linkText("Quad Store Upload")).click();
     }
     
@@ -49,11 +69,11 @@ public class VirtuosoPage {
      * Logs into Virtuoso.
      * pre: VirtuosoPage is opened; Login field is visible.
      */
-    public static void loginVirtuoso()  {
-         WebElement user = TestCase.bf.getVisibleElement(
+    public void loginVirtuoso()  {
+         WebElement user = bf.getVisibleElement(
                     "Could not find user input",
                     By.id("t_login_usr"));
-            WebElement pw = TestCase.bf.getVisibleElement(
+            WebElement pw = bf.getVisibleElement(
                     "Could not find password input",
                     By.id("t_login_pwd"));
 
@@ -61,7 +81,7 @@ public class VirtuosoPage {
             pw.sendKeys("dba");
 
             // Click login button
-            TestCase.bf.getVisibleElement(
+            bf.getVisibleElement(
                     "Could not find login button",
                     By.id("login_btn")).click();
     }
@@ -76,7 +96,7 @@ public class VirtuosoPage {
      *          The source of the data to upload, can either be a url or
      *          a local path to a rdf file.
      */
-    public static void uploadDataToVirtuosoGraph(String graphName, String dataSource)  {
+    public void uploadDataToVirtuosoGraph(String graphName, String dataSource)  {
         boolean isUrl = true;
         try{
             // Check if dataSource is a url or a local path
@@ -86,27 +106,27 @@ public class VirtuosoPage {
         }
         if(isUrl)  {
             // Click radio button for url upload
-            TestCase.bf.getVisibleElement("Could not find url upload radio button.",
+            bf.getVisibleElement("Could not find url upload radio button.",
                     By.xpath("//input[@value='ur']")).click();
-            TestCase.bf.waitUntilElementIsVisible("Could not find url upload field.", 
+            bf.waitUntilElementIsVisible("Could not find url upload field.", 
                     By.xpath("//input[@name='t_rdf_url']")).sendKeys(dataSource);
         } else {
             // Click radio button for file upload
-            TestCase.bf.getVisibleElement("Could not find file upload radio button.",
+            bf.getVisibleElement("Could not find file upload radio button.",
                     By.xpath("//input[@value='fs']")).click();
-            TestCase.bf.waitUntilElementIsVisible("Could not find file upload field.", 
+            bf.waitUntilElementIsVisible("Could not find file upload field.", 
                     By.xpath("//input[@name='t_rdf_file']")).sendKeys(dataSource);
         }
         // Fill in graphName
-        WebElement graph = TestCase.bf.waitUntilElementIsVisible("Graph input field not found.",
+        WebElement graph = bf.waitUntilElementIsVisible("Graph input field not found.",
                 By.xpath("//input[@name='rdf_graph_name']"));
         // Type
         graph.clear();
         graph.sendKeys(graphName);
          // Click upload
-        TestCase.bf.getVisibleElement("Could not find submit button.", By.name("bt1")).click();
+        bf.getVisibleElement("Could not find submit button.", By.name("bt1")).click();
         // Wait for upload to finish
-        TestCase.bf.waitUntilElementIsVisible("Upload did not finish",
+        bf.waitUntilElementIsVisible("Upload did not finish",
                 By.xpath("//div[@class='message'][contains(.,'Upload finished')]"), 30);
     }
     
