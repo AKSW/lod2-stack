@@ -86,8 +86,9 @@
 			<xsl:when test="$doc-type='aufsatz-es'">
 				<xsl:choose>
 					<xsl:when test="$doc/zuordnung-produkt/verweis-zs">
+						<xsl:variable name="identifier-suffix" as="xs:string" select="fun:id-suffix-auf-es($doc)"/>
 						<xsl:variable name="identifier" select="$doc/zuordnung-produkt/verweis-zs[1]" as="element()"/>
-						<xsl:value-of select="fun:verweis-zs-id($identifier)"/>
+						<xsl:value-of select="concat(fun:verweis-zs-id($identifier),'/',$identifier-suffix)"/>
 					</xsl:when>
 					<xsl:when test="$doc/@bezugsquelle and $doc/verbundene-dokumente/verweis-es">
 						<xsl:variable name="identifier" select="$doc/verbundene-dokumente/verweis-es[1]" as="element()"/>
@@ -784,12 +785,53 @@ produkt + vsk + art + abs
 	</xsl:choose>
 </xsl:function>
 
+<xsl:function name="fun:id-suffix-auf-es" as="xs:string">
+	<xsl:param name="doc" as="element()"/>
+	<xsl:variable name="name" as="xs:string">
+		<xsl:choose>
+			<xsl:when test="$doc/autor/*[1][name()='person']">
+				<xsl:value-of select="fun:percentEncode(concat($doc/autor/person[1]/name/vorname,'_',$doc/autor/person[1]/name/nachname))"/>
+			</xsl:when>
+			<xsl:otherwise><xsl:value-of select="fun:percentEncode(string($doc/autor/organisation[1]/org-bezeichnung))"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="date" as="xs:string" select="replace(fun:dateDe2Iso(string($doc/@datum)),'-','')"/>
+    <xsl:variable name="court" as="xs:string">
+		<xsl:choose>
+			<xsl:when test="$doc/es-wiedergabe/esr-metadaten/gericht">
+				<xsl:value-of select="fun:courtId(string($doc/es-wiedergabe/esr-metadaten/gericht))"/>
+			</xsl:when>
+			<xsl:otherwise/>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="judgement" as="xs:string" select="fun:percentEncode(normalize-space($doc/es-wiedergabe/esr-metadaten/az-gruppe/az-haupt/az/wert))"/>
+	<xsl:value-of select="concat($name,'_',$date,'_',$court,'_',$judgement)"/>
+</xsl:function>
+
 </xsl:stylesheet>
 <!-- Stylus Studio meta-information - (c) 2004-2009. Progress Software Corporation. All rights reserved.
 
 <metaInformation>
 	<scenarios>
-		<scenario default="yes" name="kom" userelativepaths="yes" externalpreview="no" url="..\..\Data\kommentierung\Adam_TarifR_oeD_tvue_vka_kommentierung.xml" htmlbaseurl="" outputurl="" processortype="custom" useresolver="no" profilemode="0"
+		<scenario default="no" name="kom" userelativepaths="yes" externalpreview="no" url="..\..\Data\kommentierung\Adam_TarifR_oeD_tvue_vka_kommentierung.xml" htmlbaseurl="" outputurl="" processortype="custom" useresolver="no" profilemode="0"
+		          profiledepth="" profilelength="" urlprofilexml="" commandline=" net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
+		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
+		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
+			<advancedProp name="sInitialMode" value=""/>
+			<advancedProp name="bXsltOneIsOkay" value="true"/>
+			<advancedProp name="bSchemaAware" value="true"/>
+			<advancedProp name="bXml11" value="false"/>
+			<advancedProp name="iValidation" value="0"/>
+			<advancedProp name="bExtensions" value="true"/>
+			<advancedProp name="iWhitespace" value="0"/>
+			<advancedProp name="sInitialTemplate" value=""/>
+			<advancedProp name="bTinyTree" value="true"/>
+			<advancedProp name="xsltVersion" value="2.0"/>
+			<advancedProp name="bWarnings" value="true"/>
+			<advancedProp name="bUseDTD" value="false"/>
+			<advancedProp name="iErrorHandling" value="fatal"/>
+		</scenario>
+		<scenario default="yes" name="auf-es" userelativepaths="yes" externalpreview="no" url="..\..\Data\aufsatz-es\Jansen_20081216_LG_Koblenz_4_O_167-06.xml" htmlbaseurl="" outputurl="" processortype="custom" useresolver="no" profilemode="0"
 		          profiledepth="" profilelength="" urlprofilexml="" commandline=" net.sf.saxon.Transform -o %3 %1 %2" additionalpath="C:\Program Files\Java\jdk1.5.0_06\jre\bin\java"
 		          additionalclasspath="C:\xml\saxon8-6;C:\xml\jaxp\jaxp-1_3-20060207\jaxp-api.jar;C:\xml\jaxp\jaxp-1_3-20060207\dom.jar;C:\xml\jaxp\jaxp-1_3-20060207;C:\xml\saxon8-6\saxon8sa.jar;C:\xml\saxon8-6\saxon8-dom.jar;C:\xml\saxon8-6\saxon8-jdom.jar;C:\xml\saxon8-6\saxon8-sql.jar;C:\xml\saxon8-6\saxon8-xom.jar;C:\xml\saxon8-6\saxon8-xpath.jar;C:\xml\saxon8-6\saxon8.jar"
 		          postprocessortype="none" postprocesscommandline="" postprocessadditionalpath="" postprocessgeneratedext="" validateoutput="no" validator="internal" customvalidator="">
