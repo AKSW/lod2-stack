@@ -16,40 +16,17 @@
  */
 package eu.lod2;
 
-import java.net.*;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.io.*;
-
-import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.terminal.ExternalResource;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Alignment.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field.ValueChangeEvent;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Layout.*;
-
-import org.openrdf.model.*;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Embedded;
 import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.parser.ParsedQuery;
-import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.repository.Repository;
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.query.*;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.model.impl.*;
 
-import virtuoso.sesame2.driver.VirtuosoRepository;
-import eu.lod2.LOD2DemoState;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Embedded OntoWiki tool
@@ -95,7 +72,11 @@ public class OntoWiki extends CustomComponent
 			RepositoryConnection con = state.getRdfStore().getConnection();
 
 			// initialize the hostname and portnumber
-			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/ontowiki>. <http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/password> ?p. <http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/username> ?u. <http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/service> ?s.} LIMIT 100";
+			String query = "select ?u ?p ?s from <" + state.getConfigurationRDFgraph() + "> where {" +
+                    "<" + state.getConfigurationRDFgraph() + "> <http://lod2.eu/lod2statworkbench/configures> <http://localhost/ontowiki>. " +
+                    "<http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/password> ?p. " +
+                    "<http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/username> ?u. " +
+                    "<http://localhost/ontowiki> <http://lod2.eu/lod2statworkbench/service> ?s.} LIMIT 1";
 			TupleQuery tupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			TupleQueryResult result = tupleQuery.evaluate();
 			while (result.hasNext()) {

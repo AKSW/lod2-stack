@@ -216,10 +216,13 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 
         MenuBar.Command publishCommand = new Command() {
             public void menuSelected(MenuItem selectedItem){
-                // publishing should be protected with an authenticator, otherwise a store could be published
-                // without provenance information!
-                //showInWorkspace(new Authenticator(new CKANPublisherPanel(state), new HashSet<String>(Arrays.asList(state.adminRole)), state));
-                showInWorkspace(new CKANPublisherPanel(state));
+                showInWorkspace(new Authenticator(new CKANPublisherPanel(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
+            }
+        };
+
+        MenuBar.Command publishDataHubCommand = new Command() {
+            public void menuSelected(MenuItem selectedItem){
+                showInWorkspace(new Authenticator(new DataHubPublisher(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
             }
         };
 
@@ -326,6 +329,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         //menuQuery.addItem("CKAN", null, cmdCkan);
         menuPresent.addItem("Geo-Spatial exploration", null, cmdGeoSpatial);
         menuPresent.addItem("Publish to CKAN", null, publishCommand);
+        menuPresent.addItem("Publish to datahub.io", null, publishDataHubCommand);
 
         // enrichment menu
         menuEnrich.addItem("Interlinking dimensions (Silk)", null, cmdSilk);

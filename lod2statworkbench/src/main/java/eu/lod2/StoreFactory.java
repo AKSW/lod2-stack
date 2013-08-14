@@ -1,6 +1,9 @@
 package eu.lod2;
 
 import org.openrdf.model.Resource;
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.model.impl.StatementImpl;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.*;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
@@ -27,29 +30,172 @@ import java.util.Map;
  * TODO allows other types of stores as well.
  */
 public class StoreFactory {
-    //* the delay before the persistent memory store saves to disk (optional)
-    public static final String syncDelayURI ="http://lod2.eu/config/syncdelay";
-    //* the jdbc connection string to use when using a virtuoso repository
-    public static final String JDBCconnectionURI ="http://lod2.eu/config/jdbcConnect";
-    //* the user to use when connecting` to the jdbc db when using a virtuoso repository
-    public static final String JDBCuserURI ="http://lod2.eu/config/jdbcUser";
-    //* the password to use when connecting to the jdbc db when using a virtuoso repository
-    public static final String JDBCpwdURI ="http://lod2.eu/config/jdbcPWD";
-    //* the predicate that is used when defining which files to load to a store (optional)
-    public static final String loadPredicateURI = "http://lod2.eu/config/load";
-    //* the uri that can be used to represent the repository class
-    public static final String reposURI = "http://lod2.eu/config/repository";
-    //* the predicate to use when selecting a repository type
-    public static final String storeTypeURI = "http://lod2.eu/config/storeType";
-    //* the predicate that is used to specify the indexes for a native repository (optional)
-    public static final String indexesURI ="http://lod2.eu/config/indexes";
-    /**
-     * the predicate that is used to specify the file (directory!) to use for a
-     * persistent memory store or a native store. The contents of this directory may be
-     * overwritten to house the contents of the store.
-     */
-    public static final String filenameURI ="http://lod2.eu/config/fileName";
 
+    public static enum StoreFactoryArgument{
+        //* the delay before the persistent memory store saves to disk (optional)
+        syncDelay {
+            @Override
+            public String getURI() {
+                return "http://lod2.eu/config/syncdelay";
+            }
+
+            @Override
+            public String getArgumentString() {
+                return "syncdelay";
+            }
+        },
+        //* the jdbc connection string to use when using a virtuoso repository
+        JDBCConnection {
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/jdbcConnect";
+            }
+
+            @Override
+            public String getArgumentString(){
+                return "jdbcConnect";
+            }
+        },
+
+        //* the user to use when connecting` to the jdbc db when using a virtuoso repository
+        JDBCuser {
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/jdbcUser";
+            }
+            @Override
+            public String getArgumentString(){
+                return "jdbcUser";
+            }
+        },
+
+        //* the password to use when connecting to the jdbc db when using a virtuoso repository
+        JDBCpwd {
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/jdbcPWD";
+            }
+            @Override
+            public String getArgumentString(){
+                return "jdbcPWD";
+            }
+        },
+
+
+        //* the predicate that is used when defining which files to load to a store (optional)
+        loadPredicate {
+                @Override
+                public String getURI(){
+                    return "http://lod2.eu/config/load";
+                }
+                @Override
+                public String getArgumentString(){
+                    return "load";
+                }
+            },
+
+
+        //* the uri that can be used to represent the repository class
+        repos {
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/repository";
+            }
+            @Override
+            public String getArgumentString(){
+                return "repository";
+            }
+        },
+
+
+        //* the predicate to use when selecting a repository type
+        storeType {
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/storeType";
+            }
+            @Override
+            public String getArgumentString(){
+                return "storeType";
+            }
+        },
+
+
+        //* the predicate that is used to specify the indexes for a native repository (optional)
+        indexes {
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/indexes";
+            }
+            @Override
+            public String getArgumentString(){
+                return "indexes";
+            }
+        },
+
+        /**
+        * the predicate that is used to specify the file (directory!) to use for a
+        * persistent memory store or a native store. The contents of this directory may be
+        * overwritten to house the contents of the store.
+        */
+        filename{
+            @Override
+            public String getURI(){
+                return "http://lod2.eu/config/fileName";
+            }
+            @Override
+            public String getArgumentString(){
+                return "fileName";
+            }
+        };
+
+        public abstract String getURI();
+        public abstract String getArgumentString();
+    }
+
+
+
+    /**
+     * Turns the provided hashmap into a memory store. The hashmap is like a json object having props and either strings or lists (can be extended).
+     * When using a hashmap, only a single repos can be created atm.
+     */
+    public static Repository mapToMemStore(HashMap<String,Object> config) throws Exception{
+
+        Repository configurator= new SailRepository(new MemoryStore());
+        RepositoryConnection connection = configurator.getConnection();
+
+        URIImpl storeURI= new URIImpl("http://localhost/configurationStore");
+        connection.add(new StatementImpl(storeURI,new URIImpl("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
+                new URIImpl(StoreFactoryArgument.repos.getURI())));
+
+        for(String prop : config.keySet()){
+            StoreFactoryArgument argument = null;
+
+            for(StoreFactoryArgument check : StoreFactoryArgument.values()){
+                if(check.getArgumentString().toLowerCase().equals(prop.toLowerCase())){
+                    argument=check;
+                }
+            }
+            if(argument==null){
+                // unknown property
+                System.out.println("Found unknown store configuration property, called "+prop);
+            }else{
+                Object value = config.get(prop);
+                if(value instanceof String){
+                    connection.add(new StatementImpl(storeURI, new URIImpl(argument.getURI()), new LiteralImpl((String)value)));
+                }else if(value instanceof List){
+                    for(Object o : (List)value){
+                        connection.add(new StatementImpl(storeURI, new URIImpl(argument.getURI()), new LiteralImpl((String)o)));
+                    }
+                }else{
+                    System.out.println("Cannot handle value " + value.toString());
+                }
+            }
+        }
+
+        connection.close();
+        return configurator;
+    }
     /**
      * Creates all repositories that have been specified in the configuration file
      * @param config : the configuration file that determines which repositories to create
@@ -64,7 +210,7 @@ public class StoreFactory {
                 "SELECT " +
                         "?repos "+
                 "WHERE {"+
-                        "?repos a <" + reposURI +
+                        "?repos a <" + StoreFactoryArgument.repos.getURI()+
                 ">}";
         TupleQueryResult result=con.prepareTupleQuery(QueryLanguage.SPARQL, lookup).evaluate();
 
@@ -102,7 +248,7 @@ public class StoreFactory {
         result=type.buildRepos(storeUri,connection,this);
         result.initialize();
 
-        this.loadDefaultContents(storeUri,connection,result);
+        this.loadDefaultContents(storeUri, connection, result);
 
         connection.close();
         return result;
@@ -122,7 +268,7 @@ public class StoreFactory {
     private void loadDefaultContents(Resource storeUri, RepositoryConnection connection,Repository target)
             throws MalformedQueryException, RepositoryException, QueryEvaluationException,
             IllegalAccessException, IOException, RDFParseException {
-        List<String> filenames=this.getPropertyValue(storeUri,connection, loadPredicateURI);
+        List<String> filenames=this.getPropertyValue(storeUri, connection, StoreFactoryArgument.loadPredicate.getURI());
         if(filenames==null){
             // no files should be loaded
             return;
@@ -157,7 +303,7 @@ public class StoreFactory {
      */
     private StoreType findStoreType(Resource storeUri, RepositoryConnection configConnection)
             throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-        String storeType=this.requirePropertyValue(storeUri, configConnection,storeTypeURI);
+        String storeType=this.requirePropertyValue(storeUri, configConnection, StoreFactoryArgument.storeType.getURI());
         return StoreType.fromName(storeType);
     }
 
@@ -279,28 +425,29 @@ public class StoreFactory {
             @Override
             public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
                     throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-                String filename=factory.requirePropertyValue(storeUri,connection, filenameURI);
+                String filename=factory.requirePropertyValue(storeUri,connection, StoreFactoryArgument.filename.getURI());
                 MemoryStore memstore=new MemoryStore(new File(filename));
 
-                String sync=factory.requestPropertyValue(storeUri,connection, syncDelayURI);
+                String sync=factory.requestPropertyValue(storeUri,connection, StoreFactoryArgument.syncDelay.getURI());
                 if(sync!=null){
                     memstore.setSyncDelay(Long.parseLong(sync));
                 }
                 return new SailRepository(memstore);
             }
+
         },
         NATIVESTORE("disk") {
             @Override
             public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
                     throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-                String filename=factory.requirePropertyValue(storeUri, connection, filenameURI);
-                List<String> indexes=factory.getPropertyValue(storeUri, connection, indexesURI);
+                String filename=factory.requirePropertyValue(storeUri, connection, StoreFactoryArgument.filename.getURI());
+                List<String> indexes=factory.getPropertyValue(storeUri, connection, StoreFactoryArgument.indexes.getURI());
                 if(indexes==null || indexes.isEmpty()){
                     return new SailRepository(new NativeStore(new File(filename)));
                 }else{
                     String index=indexes.get(0);
                     if(indexes.size()>1){
-                        System.out.print("Warning: multiple values found for "+ indexesURI+", selecting "+index);
+                        System.out.print("Warning: multiple values found for "+ StoreFactoryArgument.indexes.getURI()+", selecting "+index);
                     }
                     return new SailRepository(new NativeStore(new File(filename)));
                 }
@@ -310,9 +457,9 @@ public class StoreFactory {
             @Override
             public Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
                     throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException {
-                String jdbcConnection=factory.requirePropertyValue(storeUri, connection, JDBCconnectionURI);
-                String jdbcUser=factory.requirePropertyValue(storeUri, connection, JDBCuserURI);
-                String jdbcPwd=factory.requirePropertyValue(storeUri,connection, JDBCpwdURI);
+                String jdbcConnection=factory.requirePropertyValue(storeUri, connection, StoreFactoryArgument.JDBCConnection.getURI());
+                String jdbcUser=factory.requirePropertyValue(storeUri, connection, StoreFactoryArgument.JDBCuser.getURI());
+                String jdbcPwd=factory.requirePropertyValue(storeUri,connection, StoreFactoryArgument.JDBCpwd.getURI());
                 return new VirtuosoRepository(jdbcConnection,jdbcUser,jdbcPwd);
             }
         };
@@ -347,5 +494,6 @@ public class StoreFactory {
          */
         public abstract Repository buildRepos(Resource storeUri, RepositoryConnection connection, StoreFactory factory)
                 throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException;
+
     }
 }

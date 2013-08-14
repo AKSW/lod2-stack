@@ -1,11 +1,10 @@
 package eu.lod2;
 
+import com.vaadin.data.Property;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -13,7 +12,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -34,13 +32,19 @@ import java.util.*;
  */
 public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGraphListener {
     protected LOD2DemoState state;
-    private Map<String, String> CKANInfo;
-    private Map<String, String> PackageInfo;
+    protected Map<String, String> CKANInfo;
+    protected Map<String, String> PackageInfo;
 
-    private Publisher publisher=null;
+    protected static String API_KEY_LABEL = "ckan api key";
+    protected static String CKAN_REPOS_LABEL = "CKAN repository";
+
+    protected Publisher publisher=null;
     //* the full name and id of the dataset that was retrieved by the user.
-    private Map<String,String> fullDatasetIdentifiers=null;
+    protected Map<String,String> fullDatasetIdentifiers=null;
     public final static String storageLocation="/storage/f/";
+
+    protected Set<String> packageProperties = new LinkedHashSet<String>(Arrays.asList(new String[] {"title", "url", "version"}));
+    protected Set<String> resourceProperties = new LinkedHashSet<String>(Arrays.asList(new String[] {"name", "filename"}));
 
     public CKANPublisherPanel(LOD2DemoState state){
         super();
@@ -111,10 +115,8 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         this.PackageInfo=this.readFieldsMap(packageFields);
 
         this.publisher=new Publisher();
-        this.publisher.CKANapi=this.CKANInfo.get("CKAN api key");
-        this.publisher.CKANrepos=this.CKANInfo.get("CKAN repository");
-        this.publisher.CKANuser=this.CKANInfo.get("CKAN username");
-        this.publisher.CKANpwd=this.CKANInfo.get("password");
+        this.publisher.CKANapi=this.CKANInfo.get(API_KEY_LABEL);
+        this.publisher.CKANrepos=this.CKANInfo.get(CKAN_REPOS_LABEL);
 
         if(this.publisher.CKANrepos.endsWith("/")){
             // remove trailing slash
@@ -157,7 +159,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
     /**
      * Asks the user whether he wants to create a new package if the package he wants does not exist yet
      */
-    private void requestCreatePermission(final Map<String, String> packageProperties, final Publisher publisher) {
+    protected void requestCreatePermission(final Map<String, String> packageProperties, final Publisher publisher) {
 
         final Window notifier= new Window("Create new package");
         notifier.setModal(true);
@@ -207,12 +209,16 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
 
             this.createSuccessMessage("Congratulations, your dataset is available under ",
-                    this.publisher.CKANrepos+storageLocation + location);
+                    this.getFileStorageURL(location));
         } catch (Exception e) {
             getWindow().showNotification("Could not create resource","An unexpected error occurred while creating the resource. " +
                     "<br>The message was: <br><br>"+e.getMessage(),
                     Window.Notification.TYPE_ERROR_MESSAGE,true);
         }
+    }
+
+    public String getFileStorageURL(String baseLocation){
+        return this.publisher.CKANrepos+storageLocation + baseLocation;
     }
 
     /**
@@ -261,7 +267,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
      * This function will throw a meaningful Validator.InvalidValueException when a validator of one of the fields is violated.
      * @return a map holding the values for all propeties
      */
-    private Map<String, String> readFieldsMap(Map<String, AbstractTextField> fieldMap){
+    protected Map<String, String> readFieldsMap(Map<String, AbstractTextField> fieldMap){
         Map<String,String> result=new LinkedHashMap<String, String>();
         for(String prop : fieldMap.keySet()){
             AbstractTextField field=fieldMap.get(prop);
@@ -284,15 +290,22 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
         // create required field for each property
         String[] properties= new String[]{
-                "CKAN repository", "CKAN api key", "CKAN username", "Password"};
+                CKAN_REPOS_LABEL, API_KEY_LABEL};
         LinkedHashMap<String, AbstractTextField> fields=new LinkedHashMap<String, AbstractTextField>();
-        for(String property : properties){
-            AbstractTextField field;
-            if(property.equals("Password")){
-                field=new PasswordField(property);
-            }else{
-                field=new TextField(property);
-            }
+        for(final String property : properties){
+            final AbstractTextField field;
+            field=makeTextField(property);
+            field.addListener(new Property.ValueChangeListener() {
+                public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                    if(CKANInfo == null){
+                        CKANInfo = new HashMap<String, String>();
+                    }
+                    Object value = field.getValue();
+                    if(value != null && !value.toString().isEmpty()){
+                        CKANInfo.put(property, value.toString());
+                    }
+                }
+            });
             field.setRequired(true);
             layout.addComponent(field);
             fields.put(property, field);
@@ -304,7 +317,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         return fields;
     }
 
-    private boolean packageDetails =false;
+    protected boolean packageDetails =false;
     /**
      * Creates the text fields that are required for the package configuration
      */
@@ -316,7 +329,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
         final Map<String,AbstractTextField> fields=new LinkedHashMap<String, AbstractTextField>();
         String nameTag="name";
-        TextField nameField=new TextField(nameTag);
+        TextField nameField=makeTextField(nameTag);
         nameField.setRequired(true);
         fields.put(nameTag, nameField);
         layout.addComponent(nameField);
@@ -327,14 +340,14 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         fields.put(descriptionTag,description);
         details.addComponent(description);
 
-        String[] properties= new String[] {"title", "url", "version"};
-        // TODO in a perfect world, tags would be added as well
+        Set<String> properties = this.getPackageProperties();
         for(String property : properties){
-            TextField field=new TextField(property);
+            TextField field=makeTextField(property);
             details.addComponent(field);
             fields.put(property, field);
         }
 
+        // extra details control
         CheckBox cb = new CheckBox("Extra details?");
         cb.setDescription("Check to add extra details to the package.\n Empty fields will be ignored.");
         cb.setImmediate(true);
@@ -346,6 +359,15 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
             }
         });
         layout.addComponent(cb);
+
+        //allow adding new properties
+        Button adderButton = new Button("Add property");
+        adderButton.addListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                addNewPropertyField(false);
+            }
+        });
+        details.addComponent(adderButton);
 
         details.setVisible(packageDetails);
         layout.addComponent(details);
@@ -361,6 +383,84 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         return fields;
     }
 
+    //* creates a new property field, either for the package or for the resource fields. Will cause the panel to re-render...
+    private void addNewPropertyField(final boolean resource) {
+        // Create the window...
+        final Window subwindow = new Window("New property");
+        // ...and make it modal
+        subwindow.setModal(true);
+        subwindow.setWidth("30%");
+
+        // Configure the windws layout; by default a VerticalLayout
+        VerticalLayout layout = (VerticalLayout) subwindow.getContent();
+        layout.setMargin(true);
+        layout.setSpacing(true);
+
+        final TextField field = makeTextField("Please enter the new property name: ");
+
+        subwindow.addComponent(field);
+
+        Button close = new Button("Cancel", new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                // close the window by removing it from the parent window
+                subwindow.getParent().removeWindow(subwindow);
+            }
+        });
+        Button ok = new Button("Ok", new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                Object value = field.getValue();
+                if(value == null || value.toString().isEmpty()){
+                    return;
+                }
+                String fieldName = field.getValue().toString();
+                if(resource){
+                    addResourceProperty(fieldName);
+                }else{
+                    addPackageProperty(fieldName);
+                }
+                // close the window by removing it from the parent window
+                subwindow.getParent().removeWindow(subwindow);
+            }
+        });
+
+        HorizontalLayout buttons = new HorizontalLayout();
+
+        buttons.addComponent(ok);
+        buttons.addComponent(close);
+        layout.addComponent(buttons);
+        layout.setComponentAlignment(buttons, Alignment.TOP_RIGHT);
+        getWindow().addWindow(subwindow);
+
+    }
+
+    public Set<String> getPackageProperties(){
+        return new HashSet(packageProperties);
+    }
+
+    public void removePackageProperty(String prop){
+        this.packageProperties.remove(prop);
+        this.render();
+    }
+
+    public void addPackageProperty(String prop){
+        this.packageProperties.add(prop);
+        this.render();
+    }
+
+    public Set<String> getResourceProperties(){
+        return new HashSet(resourceProperties);
+    }
+
+    public void removeResourceProperty(String prop){
+        this.resourceProperties.remove(prop);
+        this.render();
+    }
+
+    public void addResourceProperty(String prop){
+        this.resourceProperties.add(prop);
+        this.render();
+    }
+
     /**
      * Creates the text fields that are required for the resource configuration
      */
@@ -369,17 +469,26 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         VerticalLayout layout = (VerticalLayout) panel.getContent();
 
         final Map<String,AbstractTextField> fields=new LinkedHashMap<String, AbstractTextField>();
-        String[] properties= new String[] {"name", "filename"};
+        Set<String> properties = this.getResourceProperties();
         for(String property : properties){
-            TextField field=new TextField(property);
-            field.setRequired(true);
+            TextField field=makeTextField(property);
+            field.setRequired(property.equals("name") || property.equals("filename"));
             layout.addComponent(field);
             fields.put(property, field);
         }
 
         TextArea descriptionArea = new TextArea("description");
+        descriptionArea.setSizeFull();
         layout.addComponent(descriptionArea);
         fields.put("description", descriptionArea);
+
+        Button adderButton = new Button("Add property");
+        adderButton.addListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                addNewPropertyField(true);
+            }
+        });
+        panel.addComponent(adderButton);
 
         this.addComponent(panel);
         return fields;
@@ -431,8 +540,6 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         // the information necessary to execute operations on the CKAN store
         public String CKANrepos="";
         public String CKANapi="";
-        public String CKANuser="";
-        public String CKANpwd="";
         public String CKANapiHeader="X-CKAN-API-Key";
 
 
@@ -577,9 +684,6 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
                 postRequest.setEntity(reqEntity);
                 postRequest.setHeader(CKANapiHeader, this.CKANapi);
 
-                Credentials credentials= new UsernamePasswordCredentials(this.CKANuser, this.CKANpwd);
-                postRequest.addHeader(BasicScheme.authenticate(credentials, "UTF-8", false));
-
                 HttpResponse response = httpclient.execute(postRequest);
                 int statusCode = response.getStatusLine().getStatusCode();
                 BufferedReader br = new BufferedReader(
@@ -596,10 +700,18 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
                                     "to it, please contact support.",
                             Window.Notification.TYPE_ERROR_MESSAGE,true);
 
-                }else if(!body.toLowerCase().contains("<h1>Upload - Successful</h1>".toLowerCase())){
-                    // TODO why don't they just send a json object??????
-                    throw new IllegalStateException("The server sent an unexpected response. The server response was: "+
+                }else {
+                    // TODO this is a hack, the ckan response for the upload can be 200 even if the upload failed.
+                    // verifying that the url that was created does not give a 404
+                    String url = getFileStorageURL(filename);
+                    HttpGet verify = new HttpGet(url);
+
+                    HttpResponse verifyResponse = httpclient.execute(verify);
+
+                    if(verifyResponse.getStatusLine().getStatusCode() == 404){
+                        throw new IllegalStateException("The new resource could not be retrieved from the server. The server response at file upload was: "+
                             body);
+                    }
                 }
             }finally {
                 httpclient.getConnectionManager().shutdown();
@@ -620,9 +732,6 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
             HttpPost httpPost = new HttpPost(this.CKANrepos+method);
             httpPost.addHeader(CKANapiHeader, this.CKANapi);
-
-            Credentials credentials= new UsernamePasswordCredentials(this.CKANuser, this.CKANpwd);
-            httpPost.addHeader(BasicScheme.authenticate(credentials, "UTF-8", false));
 
             StringEntity dataentity = new StringEntity(json);
             //NOTE: this contenttype is very important. If it is set to anything else (for example, true content
@@ -670,9 +779,6 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
             String jsonCall="{";
 
             jsonCall+=this.buildJSONParams(packageInfo);
-            // TODO implementation dependent! make the calls conform to the datasets that we support
-            // these are apparently required (not in api, the store that we are using for testing is using a custom schema!!)
-            jsonCall+=",\"published_by\":\"acp\",\"description\":\"test\",\"url\":\"http://test.test\",\"status\":\"http://ec.europa.eu/open-data/kos/dataset-status/Completed\"";
 
             jsonCall+="}";
 
@@ -784,7 +890,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
                 currentInfo=((List<Map<String,Object>>)
                         ((Map<String,Object>) response.get("result"))
                                 .get("results")).get(0);
-            }catch(NullPointerException e){
+            }catch(Exception e){
                 //just for clarity
                 throw new IllegalStateException("The server responded with an object of an unexpected format. " +
                         "The object was: \n"+new ObjectMapper().writeValueAsString(response));
@@ -792,13 +898,15 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
             // all keys must be retained or their information is lost.
             // some values must be transformed, as requested by the ODP CKAN repository's implementation
-            // TODO note: CKAN implementation specific!! have to remove redundant " at start and end of string
+            // note: CKAN implementation specific!! have to remove redundant " at start and end of string
             // requesting all language uris from the server's developers and reversing the mapping)
+            /*
             String languageTag=(String)currentInfo.get("metadata_language");
             if(languageTag != null && languageTag.startsWith("\"") && languageTag.endsWith("\"")){
                 languageTag=languageTag.substring(1,languageTag.length()-1);
                 currentInfo.put("metadata_language",languageTag);
             }
+            */
             return currentInfo;
         }
 
@@ -911,5 +1019,19 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
             }
             return result+"</table>";
         }
+    }
+
+    public TextField makeTextField(String label, String value){
+        TextField field = new TextField(label,value);
+        field.setSizeFull();
+        field.setImmediate(true);
+        field.setNullSettingAllowed(true);
+        field.setNullRepresentation("");
+
+        return field;
+    }
+
+    public TextField makeTextField(String label){
+        return this.makeTextField(label,"");
     }
 }

@@ -19,6 +19,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.AbstractSelect.Filtering;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import eu.lod2.utils.GraphPicker;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -59,9 +60,9 @@ public class ConfigurationTab extends CustomComponent
 				t2f.setCaption("Configuration");
 
 				// the graph selector
-				// it displays all acceptable graphs in Virtuoso 
-				currentGraphPicker = new ComboBox("Select default graph: ");
-                //currentGraphPicker.setDebugId(this.getClass().getSimpleName()+"_graphSelector2");
+				// it displays all acceptable graphs in Virtuoso
+                currentGraphPicker= new GraphPicker("Select default graphs: ",state);
+				//currentGraphPicker.setDebugId(this.getClass().getSimpleName()+"_graphSelector2");
 				addCandidateGraphs(currentGraphPicker);
 
 				currentGraphPicker.setValue(this.state.getCurrentGraph());
