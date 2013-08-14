@@ -1,18 +1,19 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
   
 <suite name="LOD2TestSuite">
-    
+    <!-- <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />-->
     <parameter name="selenium.url" value="https://lod2.tenforce.be/lod2statworkbench/stat" />
-    <!--<parameter name="selenium.url" value="http://lod2-stack.semantic-web.at/lod2demo" />-->
+    <parameter name="selenium.url" value="http://fraunhofer2.imp.bg.ac.rs/lod2demo-test/stat" />
     <parameter name="graphName" value="http://localhost/Geo" />
     <parameter name="virtUser" value="dba" />
     <parameter name="virtPwd" value="dba" />
 
-    <!-- <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />-->
+    <parameter name="browser.type" value="firefox" /> 
+    <parameter name="system.architecture" value="64" />
     
     <listeners>
-        <listener class-name="eu.lod2.lod2testsuite.configuration.TestCaseListener" />
-        <listener class-name="eu.lod2.lod2testsuite.configuration.ScreenShotListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.TestCaseListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.ScreenShotListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
     

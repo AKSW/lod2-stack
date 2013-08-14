@@ -16,12 +16,11 @@ import static org.testng.AssertJUnit.*;
  *
  * @author Stefan Schurischuster
  */
-public class OntoWikiPage {
+public class OntoWikiPage extends Page {
     private static Logger logger = Logger.getLogger(OntoWikiPage.class);
     
     private static int createCount = 0;
     private WebDriver driver;
-    private By frameIdentifier;
     private BasicFunctions bf;
     
     /**
@@ -29,8 +28,8 @@ public class OntoWikiPage {
      * @param frameIdentifier 
      */
     public OntoWikiPage(By frameIdentifier)  {
+        super(frameIdentifier);
         //this.driver = driver;
-        this.frameIdentifier = frameIdentifier;
         this.driver = TestCase.driver;
         this.bf = TestCase.bf;
     }
@@ -123,8 +122,10 @@ public class OntoWikiPage {
         bf.getVisibleElement("Could not find create resource button.", 
                 By.id("rdfauthor-button-submit")).click();
         
-        bf.waitUntilElementIsVisible("Could not find resource with title: "+resource, 
-                rscsLocation, frameIdentifier).click();
+        // Otherwise a modal dialog pops up when the click comes to fast.
+        bf.bePatient(2000);
+        //bf.waitUntilElementIsVisible("Could not find resource with title: "+resource, 
+        //        rscsLocation, frameIdentifier).click();
         
         bf.waitUntilElementIsVisible("Could not find resource with title: "+resource, 
                 rscsLocation, frameIdentifier).click();

@@ -127,7 +127,7 @@
                     </systemProperties>
                     <skip>true</skip>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/teststat.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             

@@ -1,7 +1,9 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
+import eu.lod2.lod2testsuite.pages.SilkPage;
 import org.openqa.selenium.By;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 /**
@@ -20,30 +22,40 @@ public class Linking extends TestCase {
      */
     @Test
     public void silk()  {
+        String projectTitle = "asd";
+        
         navigator.navigateTo(new String[] {
             "Linking", 
             "Silk"});  
-        
-        bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'silk')]"), 
+        By frameIdentifier = By.xpath("//iframe[contains(@src,'silk')]");
+        bf.checkIFrame(frameIdentifier, 
                 By.id("project_movies_example"));
+        SilkPage silk = new SilkPage(frameIdentifier);
+        silk.deleteProject(projectTitle);
     }
     
     /**
      * TC 002.
-     * @TODO create TC
      */
     @Test
-    public void limes()  {
+    @Parameters({"geoGraph", "exampleGraph"})
+    public void limes(String inputGraph, String outputGraph )  {
         navigator.navigateTo(new String[] {
             "Linking", 
             "Limes"});  
-        /*
-        bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'silk')]"), 
-                By.id("project_movies_example"));
-         * 
-         */
+        
+        // Select input and output
+        bf.handleSelector(By.id("Limes_graphSelector_sourceGraph"), inputGraph, false);
+        bf.handleSelector(By.id("Limes_graphSelector_targetGraph"), outputGraph, false);
+        
+        // Submit
+        bf.getVisibleElement("Could not find commit button for Limes linking.",
+                By.id("Limes_commitButton")).click();
+        
+        bf.waitUntilElementIsVisibleFast("Could not find link to ColaNut after choosing graphs.", 
+                By.xpath("//a[@target='second']"));
+        
+        //TODO click link and perform further testing        
     }
     
     /**

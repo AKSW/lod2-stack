@@ -10,15 +10,19 @@
     <parameter name="system.architecture" value="64" />
     <listeners>
         <listener class-name="eu.lod2.lod2testsuite.configuration.testng.RetryAnalyzerAppender" />
-        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.ScreenShotListener" />
-        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.TestCaseListener" />
         <listener class-name="eu.lod2.lod2testsuite.configuration.testng.RetryTestListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.TestCaseListener" />
+        <listener class-name="eu.lod2.lod2testsuite.configuration.testng.ScreenShotListener" />
         <listener class-name="org.uncommons.reportng.HTMLReporter" />
     </listeners>
     
+    <parameter name="exampleGraph" value = "http://example.com/empty/" />
+    <parameter name="geoGraph" value="http://localhost/Geo" />  
+    <parameter name="bookGraph" value="http://localhost/books" />  
+   
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
-
+ <!--
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
@@ -69,40 +73,26 @@
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
                 <methods>
+                    
                     <parameter name="query" value="SELECT * WHERE {?s ?p ?o} LIMIT 10" />
-                    <parameter name="exampleGraph" value = "http://example.com/empty/" />
                     <parameter name="exampleGraphResult" value="http://example.com/empty/owl_Class/TestResource" />
-                    
-                    <parameter name="geoGraph" value="http://localhost/Geo" />  
-                    <parameter name="geoGraphResult" value="nodeID://b10007" />  
-                    
-                    <parameter name="bookGraph" value="http://localhost/books" />  
+                    <parameter name="geoGraphResult" value="http://test-pp-linux.punkt.at/doku" />  
                     <parameter name="bookGraphResult" value="http://purl.org/ontology/bibo/Periodical" />  
                     
-
-                    <exclude name="assistedQueryingWithCurrentGraph" />
-                    <exclude name="assistedQueryingAndSummeryGraph" />
-                    
-                    
+                    <parameter name="specialResult" value="http://www.openlinksw.com/virtrdf-data-formats#default-iid" />
+                    <include name="assistedQueryingWithCurrentGraph" />
+                    <include name="assistedQueryingAndSummeryGraph" />
                     <include name="ontoWikiSparql" />
-                    
-                    <parameter name="virtuosoExpectedResult" value="http://www.w3.org/2002/07/owl#Ontology" />  
-                    <include name="virtuosoSparql" />
-                    
-                    
-                    <parameter name="interactiveExpectedResult" value="http://rdfs.org/ns/void#Dataset" />  
+                    <include name="virtuosoSparql" />                    
                     <include name="virtuosoInteractiveSparql" />
-
                     <include name="sigmaEe" />
                     <include name="geoSpatialExploration" />
-                    
-
                 </methods>
             </class>
         </classes>
     </test>
-
-
+-->
+<!--
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
@@ -116,24 +106,25 @@
                     
                     <include name="addAndEditKnowledgeBase" />
                     <exclude name="deleteKnowledgeBase" />
-                    <include name="publishToCkan" />
+                    <exclude name="publishToCkan" />
                 </methods>
             </class>
         </classes>
     </test>
+-->
 
     <test name="Linking" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
                 <methods>
                     <include name="silk" />
-                    <include name="limes" />
-                    <include name="sameAsLinking" />
+                    <exclude name="limes" />
+                    <exclude name="sameAsLinking" />
                 </methods>
             </class>
         </classes>
     </test>
-
+<!--
     <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
@@ -175,5 +166,5 @@
             </class>
         </classes>
     </test>
-
+-->
 </suite>

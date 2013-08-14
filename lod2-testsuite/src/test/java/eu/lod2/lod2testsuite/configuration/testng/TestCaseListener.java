@@ -53,7 +53,7 @@ public class TestCaseListener extends TestListenerAdapter {
 
     @Override
     public void onTestSkipped(ITestResult tr) {
-String str = "";
+        String str = "";
         super.onTestSkipped(tr);
         if (tr.getAttributeNames().contains("retry")) {
             if ((Boolean) tr.getAttribute("retry")) {

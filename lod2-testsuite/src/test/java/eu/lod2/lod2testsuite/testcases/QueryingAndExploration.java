@@ -169,7 +169,7 @@ public class QueryingAndExploration extends TestCase {
      * TC 007.
      */
     @Test
-    @Parameters({"geoGraph", "geoGraphResult" })
+    @Parameters({"exampleGraph", "specialResult" })
     public void assistedQueryingWithCurrentGraph(String graph, String expectedResult) {
         bf.checkAndChooseDefaultGraph(graph);
         navigator.navigateTo(new String[]{
@@ -212,15 +212,63 @@ public class QueryingAndExploration extends TestCase {
      * @TODO create TC
      */
     @Test
-     @Parameters({"bookGraph","geoGraph","query", "bookGraphResult" })
+     @Parameters({"bookGraph","geoGraph","query", "specialResult" })
     public void assistedQueryingAndSummeryGraph(String inputGraph, String outputGraph, String query, String expectedResult) {
         navigator.navigateTo(new String[]{
                     "Querying & Exploration",
                     "SPARQL querying",
                     "SparQLed - Assisted Querying",
                     "Use manager to calculate summary graph"});
+        By frameIdentifier = By.xpath("//iframe[contains(@src,'sparqled')]");
         
-        // TODO
+        bf.checkIFrame(frameIdentifier, By.id("form"));
+        
+        bf.waitUntilElementIsVisible("Could not find input field for input graph.", 
+                By.id("input-graph")).sendKeys(inputGraph);
+        bf.getVisibleElement("Could not find input field for output graph.", 
+                By.id("output-graph")).sendKeys(outputGraph);
+        // Click create button
+        bf.getVisibleElement(By.id("create")).click();
+        
+        // Click refresh button
+        bf.getVisibleElement(By.id("list")).click();
+        
+        bf.waitUntilElementIsVisible("Summary is not listed in available summaries.",
+                By.xpath("//div[@id='list-result'][contains(.,'"+outputGraph+"')]"));
+        
+        bf.getVisibleElement("Could not find input field for summary graph.", 
+                By.id("dg")).sendKeys(outputGraph);
+        
+        // Click select button
+        bf.getVisibleElement(By.id("select")).click();
+        
+        WebElement iframe = bf.waitUntilElementIsVisible("Could not find iframe.",
+                By.xpath("//iframe[@src='/sparqled/sindice-editor/']"));        
+        driver.switchTo().frame(iframe);
+        logger.info("Switched to sindice editor frame.");
+
+        bf.waitUntilElementIsVisible(
+                "Iframe content was not correctly displayed.",
+                By.id("flint-test"), By.xpath("//iframe[@src='sindice-editor']"), BasicFunctions.MAX_PATIENCE_SECONDS);
+        /*
+        // Type query
+        WebElement inputField = bf.waitUntilElementIsVisible("Could not find inputField for query.",
+                By.xpath("//textarea"));
+        inputField.clear();
+        inputField.sendKeys(query);
+        */
+        
+        // Click submit
+        //bf.getVisibleElement("Could not find submit button.", 
+        //        By.id("flint-endpoint-submit")).click();
+        // Check results
+        //bf.waitUntilElementIsVisible("Query result: " + expectedResult
+        //        + " was not found after running query.", 
+        //        By.xpath("//div[@id='formatted-results']//font[contains(.,'" +expectedResult+ "')]"));
+        
+        
+        // TODO: submit query and check result
+        
     }
 
 }

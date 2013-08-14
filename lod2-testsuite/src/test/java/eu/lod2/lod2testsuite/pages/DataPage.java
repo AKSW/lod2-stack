@@ -21,13 +21,12 @@ import org.openqa.selenium.WebElement;
  *
  * @author Stefan Schurischuster
  */
-public class DataPage {
+public class DataPage extends Page {
     private static Logger logger = Logger.getLogger(DataPage.class);
     
     private WebDriver driver;
     private BasicFunctions bf;
     private Navigator navigator;
-    private By frameIdentifier;
     
     /**
      * 
@@ -35,11 +34,10 @@ public class DataPage {
      *          Identifier for the frame that layers Virtuoso.
      */
     public DataPage(By frameIdentifier)  {
+        super(frameIdentifier);
         this.driver = TestCase.driver;
         this.bf = TestCase.bf;
         this.navigator = TestCase.navigator;
-        
-        this.frameIdentifier = frameIdentifier;
     }
     
     

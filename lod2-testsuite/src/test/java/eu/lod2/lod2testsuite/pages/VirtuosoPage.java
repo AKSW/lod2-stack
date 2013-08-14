@@ -19,13 +19,12 @@ import org.openqa.selenium.WebElement;
  *
  * @author Stefan Schurischuster
  */
-public class VirtuosoPage {
+public class VirtuosoPage extends Page{
     private static Logger logger = Logger.getLogger(VirtuosoPage.class);
     
     private WebDriver driver;
     private BasicFunctions bf;
     private Navigator navigator;
-    private By frameIdentifier;
     
     /**
      * 
@@ -33,11 +32,10 @@ public class VirtuosoPage {
      *          Identifier for the frame that layers Virtuoso.
      */
     public VirtuosoPage(By frameIdentifier)  {
+        super(frameIdentifier);
         this.driver = TestCase.driver;
         this.bf = TestCase.bf;
         this.navigator = TestCase.navigator;
-        
-        this.frameIdentifier = frameIdentifier;
     }
     /**
      * Navigates to Virtuoso and switches frame.
