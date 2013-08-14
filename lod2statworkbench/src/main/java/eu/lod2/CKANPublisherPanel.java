@@ -336,7 +336,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
         final VerticalLayout details= new VerticalLayout();
         String descriptionTag="notes";
-        TextArea description=new TextArea(descriptionTag);
+        TextArea description=makeTextArea(descriptionTag);
         fields.put(descriptionTag,description);
         details.addComponent(description);
 
@@ -477,7 +477,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
             fields.put(property, field);
         }
 
-        TextArea descriptionArea = new TextArea("description");
+        TextArea descriptionArea = makeTextArea("description");
         descriptionArea.setSizeFull();
         layout.addComponent(descriptionArea);
         fields.put("description", descriptionArea);
@@ -882,15 +882,14 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
          * @return : a json object map with the current information on the package
          */
         private Map<String, Object> getPackageInfo(String packageId) throws IOException {
-            String jsonCall="{\"q\":\"id:"+packageId+"\"}";
+            String jsonCall="{\"id\":\""+packageId+"\"}";
 
-            Map<String,Object> response=(Map<String,Object>)this.postToCKANApi(jsonCall,"/api/action/package_search");
+            Map<String,Object> response=(Map<String,Object>)this.postToCKANApi(jsonCall,"/api/3/action/package_show");
             Map<String,Object> currentInfo = null;
             try{
-                currentInfo=((List<Map<String,Object>>)
-                        ((Map<String,Object>) response.get("result"))
-                                .get("results")).get(0);
+                currentInfo=(Map<String,Object>) response.get("result");
             }catch(Exception e){
+
                 //just for clarity
                 throw new IllegalStateException("The server responded with an object of an unexpected format. " +
                         "The object was: \n"+new ObjectMapper().writeValueAsString(response));
@@ -1033,5 +1032,19 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
 
     public TextField makeTextField(String label){
         return this.makeTextField(label,"");
+    }
+
+    public TextArea makeTextArea(String label, String value){
+        TextArea field = new TextArea(label,value);
+        field.setSizeFull();
+        field.setImmediate(true);
+        field.setNullSettingAllowed(true);
+        field.setNullRepresentation("");
+
+        return field;
+    }
+
+    public TextArea makeTextArea(String label){
+        return this.makeTextArea(label,"");
     }
 }
