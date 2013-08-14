@@ -594,42 +594,17 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
          * @return a map holding name and id as keys or null if no object was found
          */
         public Map<String,String> lookForDatasetByName(String datasetName) throws IOException {
-            String jsonCall="{\"q\":\"name:"+datasetName+"\", \"fl\":\"name,id\"}";
+            String jsonCall="{\"name_or_id\":\""+datasetName+"\"}";
 
-            Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/search/dataset");
-            List<Map<String,Object>> results=(List<Map<String,Object>>) resultMapping.get("results");
-            Map<String,String> bestMatch=new HashMap<String, String>();
-
-            int resultCount=results.size();
-            if(resultCount<1){
+            Map<String,Object> resultMapping=this.postToCKANApi(jsonCall,"/api/3/action/package_show");
+            try{
+                Map<String,Object> result=(Map<String,Object>) resultMapping.get("result");
+                HashMap<String,String> identification= new HashMap<String, String>();
+                identification.put("id",(String)result.get("id"));
+                identification.put("name",(String)result.get("name"));
+                return identification;
+            }catch (Exception e){
                 return null;
-            }else{
-                String shortest=null;
-                String id=null;
-
-
-                for(Map<String,Object> result : results){
-                    String name=(String)result.get("name");
-                    if(name !=null && (shortest==null || shortest.length() > name.length())){
-                        shortest=name;
-                        id=(String)result.get("id");
-                    }
-                }
-                // more than one result found. Take shortest (most complete match) but report to the user
-                if(resultCount>1){
-                    getWindow().showNotification("More than one match for the dataset name",
-                            "There were "+resultCount+" results in this CKAN repository for the name that you entered." +
-                                    "We picked the shortest one for you, as it is the closest match to your query. The " +
-                                    "full name of the repository that was retrieved was: <b>"+shortest+"</b>.<br>If you " +
-                                    "wanted to get another dataset, please add a more complete name to the dataset.",
-                            Window.Notification.TYPE_HUMANIZED_MESSAGE,
-                            true);
-                }
-                bestMatch.clear();
-                bestMatch.put("name",shortest);
-                bestMatch.put("id",id);
-
-                return bestMatch;
             }
         }
 
