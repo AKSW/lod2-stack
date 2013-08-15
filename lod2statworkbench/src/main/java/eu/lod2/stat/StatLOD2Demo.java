@@ -258,6 +258,8 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         MenuBar.Command exportTurtle = getOWExportCommand("turtle");
         MenuBar.Command exportRDFJson = getOWExportCommand("rdfjson");
         MenuBar.Command exportRDFN3 = getOWExportCommand("rdfn3");
+        
+        MenuBar.Command cmdExamples = getFramedUrlCommand("http://wiki.lod2.eu/display/LOD2DOC/LOD2+Statistical+Workbench");
 
         /*
          legend for menu item names:
@@ -356,7 +358,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         // help menu
         menuHelp.addItem("User Configuration", null, userinfoCommand);
         menuHelp.addItem("*Documentation", null, null);
-        menuHelp.addItem("*Examples", null, null);
+        menuHelp.addItem("Examples", null, cmdExamples);
         menuHelp.addItem("*About", null, null);
 
 
