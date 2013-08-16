@@ -796,14 +796,10 @@ produkt + vsk + art + abs
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="date" as="xs:string" select="replace(fun:dateDe2Iso(string($doc/@datum)),'-','')"/>
-    <xsl:variable name="court" as="xs:string">
-		<xsl:choose>
-			<xsl:when test="$doc/es-wiedergabe/esr-metadaten/gericht">
-				<xsl:value-of select="fun:courtId(string($doc/es-wiedergabe/esr-metadaten/gericht))"/>
-			</xsl:when>
-			<xsl:otherwise/>
-		</xsl:choose>
-	</xsl:variable>
+    <xsl:variable name="court" as="xs:string" select="
+	    if ($doc/es-wiedergabe/esr-metadaten/gericht)
+		   then fun:courtId(string($doc/es-wiedergabe/esr-metadaten/gericht))
+		   else ''"/>
 	<xsl:variable name="judgement" as="xs:string" select="fun:percentEncode(normalize-space($doc/es-wiedergabe/esr-metadaten/az-gruppe/az-haupt/az/wert))"/>
 	<xsl:value-of select="concat($name,'_',$date,'_',$court,'_',$judgement)"/>
 </xsl:function>
