@@ -23,6 +23,14 @@ public class Linking extends TestCase {
     @Test
     public void silk()  {
         String projectTitle = "asd";
+        String firstEndpointTitle = "dbpedia";
+        String firstEndpointURI = "http://dbpedia.org/sparql";
+        String secondEndpointTitle = "lod2-stack";
+        String secondEndpointURI = "http://lod2-stack.semantic-web.at/sparql";
+        String linkType = "http://www.w3.org/2002/07/owl#sameAs";
+        String sourceRestrictions = "?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .";
+        String targetRestrictions = "?b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .";
+        String linkName = "linkLawrence";
         
         navigator.navigateTo(new String[] {
             "Linking", 
@@ -30,8 +38,16 @@ public class Linking extends TestCase {
         By frameIdentifier = By.xpath("//iframe[contains(@src,'silk')]");
         bf.checkIFrame(frameIdentifier, 
                 By.id("project_movies_example"));
+        
         SilkPage silk = new SilkPage(frameIdentifier);
-        silk.deleteProject(projectTitle);
+        //silk.deleteProject(projectTitle);
+        //silk.createProject(projectTitle);
+        
+        //silk.addSilkSPARQLSource("", projectTitle, firstEndpointTitle, firstEndpointURI);
+        //silk.addSilkSPARQLSource("", projectTitle, secondEndpointTitle, secondEndpointURI);
+        
+        silk.createLink("silktest", "mapLawrence");
+        
     }
     
     /**

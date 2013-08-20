@@ -36,12 +36,8 @@ public class ExtractionAndLoading extends TestCase {
         // Check if required files exist
         assertTrue("Could not find graph file on local drive: " + graphFilePath, 
                 bf.isLocalFileAvailable(graphFilePath));        
-
-        // If not logged in: log into VirtuosoPage
-        if (bf.isElementVisible(By.id("t_login_usr"))) {
-           virtuoso.loginVirtuoso();
-        }
-        
+        virtuoso.loginVirtuoso();
+        virtuoso.navigateToUploadTab();
         virtuoso.uploadDataToVirtuosoGraph(graphName, graphFilePath);
     }
     
@@ -52,7 +48,10 @@ public class ExtractionAndLoading extends TestCase {
         DataPage loadDataPage = new DataPage(By.xpath("//iframe[contains(@src,'publicdata.eu')]"));
         String ur = loadDataPage.getRDFdataFromPublicDataEu(searchPhrase, resourceNmbr);
         virtuoso.navigateToVirtuoso();
+        virtuoso.loginVirtuoso();
+        virtuoso.navigateToUploadTab();
         virtuoso.uploadDataToVirtuosoGraph(graphName, ur);
+        
     }
     
     @Test
@@ -62,6 +61,8 @@ public class ExtractionAndLoading extends TestCase {
         DataPage loadDataPage = new DataPage(By.xpath("//iframe[contains(@src,'datahub.io')]"));
         String ur = loadDataPage.getRDFdataFromDataHub(searchPhrase, resourceNmbr);
         virtuoso.navigateToVirtuoso();
+        virtuoso.loginVirtuoso();
+        virtuoso.navigateToUploadTab();
         virtuoso.uploadDataToVirtuosoGraph(graphName, ur);
     }
     
@@ -123,17 +124,19 @@ public class ExtractionAndLoading extends TestCase {
         }
         bf.setValueViaJavaScript(xsltField, complete);
         xsltField.sendKeys(" ");
+        
         transformButton.click();
         // Wait for result to appear.
         WebElement resultField = bf.waitUntilElementIsVisible(
                 "Transformation did not succeed. Result was not displayed.", 
                 By.id("EXML_rdfResultField"));
+        
         // Verify result containing an rdf - tag
-        assertTrue("No rdf tags found.",resultField.getText().contains("<rdf:"));
+        // TODO Verify by running sparql query
         
         /*
-        // Don't select a graph and try to upload
-        uploadButton.click();
+         // Don't select a graph and try to upload
+         uploadButton.click();
         bf.waitUntilElementIsVisible(
                 "Upload was successful without any graph.", 
                 By.xpath("//div[@class='v-label'][contains(.,'No graph selected')]"));

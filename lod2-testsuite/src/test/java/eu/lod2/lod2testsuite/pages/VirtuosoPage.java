@@ -51,8 +51,26 @@ public class VirtuosoPage extends Page{
     }
     
     /**
+     * Navigates to upload tab.
+     * pre: logged into Virtuoso.
+     */
+    public void navigateToUploadTab()  {
+       if (bf.isElementVisible(By.xpath("//input[@name='t_rdf_url']"))) {
+           logger.info("Already on upload tab --> Skipping navigation.");
+           return;
+       }
+        // Click on Linked Data tab
+        bf.waitUntilElementIsVisible("Could not find LinkedData tab",
+                By.linkText("Linked Data")).click();
+        // Wait and click on Quad Store Upload
+        bf.waitUntilElementIsVisible("Could not find sub tab Quad Store Upload.",
+                By.linkText("Quad Store Upload")).click();
+       
+    }
+    
+    /**
      * Navigates to quadStoreUpload tab of Virtuoso.
-     * pre: VirtuosoPage is opened.
+     * pre: Virtuoso is opened.
      */
     public void navigateToQuadStoreUploadTab()  {
         // Click on Linked Data tab
@@ -65,24 +83,29 @@ public class VirtuosoPage extends Page{
     
     /**
      * Logs into Virtuoso.
-     * pre: VirtuosoPage is opened; Login field is visible.
+     * pre: Virtuoso is opened; Login field is visible.
      */
-    public void loginVirtuoso()  {
-         WebElement user = bf.getVisibleElement(
-                    "Could not find user input",
-                    By.id("t_login_usr"));
-            WebElement pw = bf.getVisibleElement(
-                    "Could not find password input",
-                    By.id("t_login_pwd"));
+    public void loginVirtuoso() {
+        if (!bf.isElementVisible(By.id("t_login_usr"))) {
+            logger.info("No login fields visible. -> Skipping login.");
+            return;
+        }
+        WebElement user = bf.getVisibleElement(
+                "Could not find user input",
+                By.id("t_login_usr"));
+        WebElement pw = bf.getVisibleElement(
+                "Could not find password input",
+                By.id("t_login_pwd"));
 
-            user.sendKeys("dba");
-            pw.sendKeys("dba");
+        user.sendKeys("dba");
+        pw.sendKeys("aeF4aeg8");
 
-            // Click login button
-            bf.getVisibleElement(
-                    "Could not find login button",
-                    By.id("login_btn")).click();
+        // Click login button
+        bf.getVisibleElement(
+                "Could not find login button",
+                By.id("login_btn")).click();
     }
+    
     
     /**
      * Performs the steps to upload a source to a graph in VirtuosoPage.
