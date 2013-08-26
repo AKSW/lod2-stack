@@ -125,7 +125,7 @@ case "$1" in
 
 	# substitute everywhere to be in sync with the password
 	mypwd=`date  +"%H.L.%M.O.%S.D2"`
-	subst="s/PWDLOD2/$mypwd/"
+	subst="s/PWDLOD2/$mypwd/g"
 	sed -e $subst -i /var/lib/lod2statworkbench/create_user.sql
 	sed -e $subst -i /etc/lod2statworkbench/configuration.rdf
         sed -e $subst -i /etc/lod2statworkbench/lod2statworkbench.conf
