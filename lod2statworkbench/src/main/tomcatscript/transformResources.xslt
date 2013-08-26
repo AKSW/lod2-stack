@@ -19,8 +19,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	roleGraph="http://webidrealm.localhost/rolegraph"
 	host="localhost"
 	port="1111"
-	user="dba"
-	pass="dba"/>
+	user="USERVIRT"
+	pass="PWDVIRT"/>
   </GlobalNamingResources>
 </xsl:template>
 <xsl:template match="Service">
@@ -37,7 +37,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	sslProtocol="TLS"
 	clientAuth="true"
 	keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
-	keystorePass="password"
+	keystorePass="PWDTRUST"
 	/>
     <xsl:apply-templates select="node()"/>
   </xsl:copy>
