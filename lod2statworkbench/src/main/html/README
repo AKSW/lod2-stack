@@ -1,7 +1,0 @@
-These html pages show how we can embed a small external javascript widget in the LOD2 demonstrator.
-
-These are some html pages which should be copied to your local webspace so
-that they can be referenced as http://localhost/<file.html>
-
-See in the OnlineTools.java how to embed such a widget page in the LOD2 demonstrator.
-

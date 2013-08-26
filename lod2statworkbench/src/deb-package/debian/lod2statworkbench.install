@@ -1,5 +1,3 @@
-html/lod2.sigma.html /var/www/
-lod2.sigma.html /var/www/
 lod2statworkbench.war /var/lib/tomcat6/webapps
 lod2statworkbench.conf etc/lod2statworkbench
 configuration/load.sql var/lib/lod2statworkbench
