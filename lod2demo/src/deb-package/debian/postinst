@@ -26,6 +26,24 @@ PIDFILE=/var/run/$VIRTUOSOVERSION.pid
 
 LOD2DEMODIR=/var/lib/lod2demo
 
+sedml () {
+# perform a sed operation on an entire file, including newlines
+pattern=$1
+sed -n "
+# if the first line copy the pattern to the hold buffer
+1h
+# if not the first line then append the pattern to the hold buffer
+1!H
+# if the last line then ...
+$ {
+        # copy from the hold to the pattern buffer
+        g
+        # do the search and replace
+        $pattern
+  }
+" $2
+}
+
 running_pid() {
 # Check if a given process pid's cmdline matches a given name
     pid=$1
@@ -123,9 +141,29 @@ case "$1" in
 		attempts=$(($attempts+1));
         done;
 
+	#find current password
+	pwdplacehold="PWDLOD2"
+	currentpwd=$(sedml "s/.*JDBCpassword\\s*=\\s*\\([^\\n]*\\).*/\\1/p" /etc/lod2demo/lod2demo.conf)
+
+	if [ "$currentpwd" = "$pwdplacehold" ]
+	then
+	    currentpwd=$(sedml "s/.*rdf:about=\"http:\\/\\/localhost\\/virtuoso\">[^>]*>\\([^<]*\\)<.*/\\1/p" /etc/lod2demo/configuration.rdf)
+	fi
+
+	if [ "$currentpwd" = "$pwdplacehold" ]
+	then
+	    currentpwd=$(sedml "s/.*user_create_if_not_exists('lod2demo',\\s*'\\([^']*\\).*/\\1/p" /var/lib/lod2demo/create_user.sql)
+	fi
+
+	if [ "$currentpwd" = "$pwdplacehold" ]
+	then
+	    mypwd=`date  +"%H.L.%M.O.%S.D2"`
+	else
+	    mypwd=$currentpwd
+	fi
+
 	# substitute everywhere to be in sync with the password
-	mypwd=`date  +"%H.L.%M.O.%S.D2"`
-	subst="s/PWDLOD2/$mypwd/"
+	subst="s/$pwdplacehold/$mypwd/g"
 	sed -e $subst -i /var/lib/lod2demo/create_user.sql
 	sed -e $subst -i /etc/lod2demo/configuration.rdf
         sed -e $subst -i /etc/lod2demo/lod2demo.conf

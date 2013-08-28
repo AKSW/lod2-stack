@@ -16,3 +16,6 @@ DB.DBA.USER_CREATE_IF_NOT_EXISTS(in name varchar, in pwd varchar)
 
 user_create_if_not_exists('lod2demo', 'PWDLOD2');
 update sys_users set u_group=0, u_sql_enable=1 where u_name='lod2demo';
+
+-- replace user password to be sure. Ensured that if an old password is present, the new one is inserted here.
+user_set_password('lod2demo', 'PWDLOD2');

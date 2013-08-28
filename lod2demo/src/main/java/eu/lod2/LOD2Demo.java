@@ -350,6 +350,21 @@ public class LOD2Demo extends Application
                 }
             };
 
+            MenuBar.Command lodms = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    IframedUrl content = new LODManager(state);
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+
 
         MenuBar.Command mconfiguration = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -739,6 +754,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem enrichment1 = enrichment.addItem("ORE", null, ore);
             MenuBar.MenuItem enrichment2 = enrichment.addItem("LOD enabled Refine", null, lodrefine);
             MenuBar.MenuItem enrichment3 = enrichment.addItem("DBpedia Spotlight", null, dbpeidaSpotlight);
+            MenuBar.MenuItem enrichment4 = enrichment.addItem("LOD manager", null, lodms);
 
             MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
             MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
