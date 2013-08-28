@@ -61,7 +61,7 @@ public class ConfigurationTab extends CustomComponent
 
 				// the graph selector
 				// it displays all acceptable graphs in Virtuoso
-                currentGraphPicker= new GraphPicker("Select default graphs: ",state);
+                currentGraphPicker= new GraphPicker("Select default graph: ",state);
 				//currentGraphPicker.setDebugId(this.getClass().getSimpleName()+"_graphSelector2");
 				addCandidateGraphs(currentGraphPicker);
 

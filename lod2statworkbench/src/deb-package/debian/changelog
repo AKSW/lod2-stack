@@ -1,3 +1,9 @@
+lod2statworkbench (0.0.2) lod2; urgency=low
+
+  * improve password management strategy in installation
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Wed, 28 Aug 2013 12:11:35 +0100
+
 lod2statworkbench (0.0.1) lod2; urgency=low
 
   * branching from lod2 demo to create the lod2statworkbench
