@@ -501,21 +501,21 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
     };
 
     private String introtext = 
-        "<p>This is Version 2.0 of the LOD2 Stack, which comprises a number of tools " +
-        "for managing the life-cycle of Linked Data. The life-cycle comprises in " + 
+        "<p>This is Version 1.0 of the LOD2 Statistical Office Workbench, which comprises a number of tools " +
+        "for managing the life-cycle of Data Cubes, <a href=\"http://www.w3.org/TR/vocab-data-cube/\">as defined by the W3C</a>. The life-cycle comprises in " +
         "particular the stages" + 
         "</p><p>" + 
         "<ul>" + 
-        "<li>Extraction of RDF from text, XML and SQL</li>" + 
-        "<li>Querying and Exploration using SPARQL</li>" + 
-        "<li>Authoring of Linked Data using a Semantic Wiki</li>" + 
-        "<li>Semi-automatic link discovery between Linked Data sources</li>" + 
-        "<li>Knowledge-base Enrichment and Repair</li>" + 
+        "<li>Managing the Data Cube</li>" +
+        "<li>Retrieving more information online</li>" +
+        "<li>Editing and Transforming the Data Cube</li>" +
+        "<li>Enriching the Data Cube with more information</li>" +
+        "<li>Presenting the Data Cube in an understandable way</li>" +
         "</ul>" + 
         "</p><p>" + 
         "You can access tools for each of these stages using the menu on top." + 
         "</p><p>" + 
-        "The LOD2 Stack is developed by the LOD2 project consortium comprising 15" + 
+        "The LOD2 Statistical Office Workbench is a part of the LOD2 Stack. The LOD2 Stack is developed by the LOD2 project consortium comprising 15" +
         "research groups and companies. The LOD2 project is co-funded by the" + 
         "European Commission within the 7th Framework Programme (GA no. 257934)." + 
         "</p><p>" + 

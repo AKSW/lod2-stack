@@ -34,7 +34,7 @@ public class R2R extends VerticalLayout {
     }
 
     public void render(){
-        this.removeAllComponents();
+                this.removeAllComponents();
 
         Panel panel=new Panel("Perform R2R mapping");
         this.addComponent(panel);
