@@ -1,3 +1,9 @@
+lod2demo (1.2.19) lod2; urgency=low
+
+  * minor fixes, preparation for v3 release
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Wed, 2 Sep 2013 15:23:10 +0100
+
 lod2demo (1.2.18) lod2; urgency=low
 
   * change password management to have more control

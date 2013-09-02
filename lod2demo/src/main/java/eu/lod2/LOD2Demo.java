@@ -865,12 +865,6 @@ public class LOD2Demo extends Application
         introV.addComponent(introtextl);
         introtextl.setWidth("400px");
 
-
-        Link link=new Link("Please take the time to fill out our useability survey!",
-                new ExternalResource("http://www.surveygizmo.com/s3/1216102/LOD2-Stack-Usability-Survey-2013"));
-        link.setStyleName("notify-box");
-        introV.addComponent(link);
-
         HorizontalLayout introVH =  new HorizontalLayout();
         introV.addComponent(introVH);
 
@@ -901,7 +895,7 @@ public class LOD2Demo extends Application
     };
 
     private String introtext = 
-        "<p>This is Version 2.0 of the LOD2 Stack, which comprises a number of tools " +
+        "<p>This is Version 3.0 of the LOD2 Stack, which comprises a number of tools " +
         "for managing the life-cycle of Linked Data. The life-cycle comprises in " + 
         "particular the stages" + 
         "</p><p>" + 

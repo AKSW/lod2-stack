@@ -47,6 +47,7 @@ public class LOD2DemoInitApp {
             while (result.hasNext()) {
                 BindingSet bindingSet = result.next();
                 Value valueOfH = bindingSet.getValue("u");
+
                 if (valueOfH instanceof LiteralImpl) {
                     LiteralImpl literalH = (LiteralImpl) valueOfH;
                     username = literalH.getLabel();
