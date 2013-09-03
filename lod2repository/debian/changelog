@@ -1,3 +1,15 @@
+lod2repository (1.30) lod2; urgency=low
+
+  * add Petar Petrovski keys (Uni Mannheim) (now real)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Tue, 03 Sep 2013 14:42:20 +0200
+
+lod2repository (1.29) lod2; urgency=low
+
+  * add Petar Petrovski keys (Uni Mannheim)
+
+ -- Sebastian Tramp <tramp@informatik.uni-leipzig.de>  Tue, 03 Sep 2013 14:38:31 +0200
+
 lod2repository (1.28) lod2; urgency=low
 
   * upgrade Sebastian Tramps gnupg key
