@@ -1,0 +1,149 @@
+Webservice
+----------
+
+The webservice is installed in tomcat.
+The default url for <service> is http://localhost:8080/lod2webapi.
+
+
+Webservice configuration
+------------------------
+The webservice can be configured at /etc/lod2webapi/lod2webapi.conf
+
+# JDBC connection to Virtuoso
+JDBCconnection = jdbc:virtuoso://localhost:1111
+JDBCuser       = dba
+JDBCpassword   = dba
+# the number of items in the return list
+Offset 		    = 100
+# the graph where all metadata for this webservice is stored
+SystemGraph 	    = <http://localhost/lod2democonfiguration>
+# the local Sparql endpoint 
+LocalSparqlEndpoint = <http://localhost::8890/sparql>
+
+
+
+Shared Graph management
+-----------------------
+
+retrieve information from the graph manager store
+
+    return all non-system graphs in the RDF store
+    <service>/graphs
+
+    return all graphs that match the given regex. All keyword avoids using the explicitly created graphs table from virtuoso, but uses sparql to get all graphs. 
+    <service>/graphsregex?regex=info&all=true
+
+    remove all graphs that have been provided from the graph manager store.
+    The graphs should be provided as the parameters of a post request. For
+    example: curl http://localhost:8088/remove_graph -H application/x-www-form-urlencoded
+    -d "graphs=<http://localhost/graph1>,<http://localhost/graph2>" removes graph1 and 
+    graph2
+    <service>/remove_graphs
+
+    return all non-system graphs that match the regular expression ".info."
+    The regular expresssion follows the following syntax 
+    http://docs.openlinksw.com/virtuoso/SELECTSTMT.html  
+    <service>/graphs?regex="info"
+
+    return all graphs including the system graphs. Per default, the system is false meaning that
+    the returned list does NOT contain any system graphs
+    <service>/graphs?system=true
+
+    return the sparql endpoints which are registered.
+    <service>/sparql_endpoints
+
+
+update the graph manager store
+
+    declare a graph to be a system graph for a tool in the LOD2 stack
+    At this moment the retrieval services do not return the tool aspect. 
+    But the information can be queried via a SPARQL query. 
+    TODO: show the query
+    <service>/declare_system_graph?graph=<http://mysystemgraph>&for_tool=<uri_of_tool>
+
+    register sparql endpoint to retrieve graphs
+    <service>/register_sparql_endpoint?ep=<uri>
+
+    register a graph as being located in the sparql endpoint
+    <service>/register_graph_in_sparql_endpoint?ep=<uri>&graph=<graph>
+
+    create a virtuoso graph group that holds the given graphs as children. Does not explicitly create the group
+    <service>/build_group?group=uri&graphs=<uri> <uri> <uri>
+
+    removes the given graph group from the store
+    <service>/build_group?group=uri
+
+General parameters
+
+    from : start the list returned from the ith element. With this the next batch of the result 
+           can be retrieved.
+    
+           e.g. <service>/graphs?from=10
+           return all graphs starting from the 10th element in the result list.
+
+
+To do: describe the json type being returned
+
+To be considered for extension: Virtuoso has the notion of graphgroups and security.
+
+
+
+Shared Prefix management
+------------------------
+We will use the Virtuoso namespace table as the storage.
+The default returned format is a json structure containing a list of pairs <Namespace> - <abbreviation>.
+
+    return all prefixes
+    <service>/prefix
+
+    return the expanded name(s) of the abbreviation 
+    In case there are multiple combinations then only the preferred is given.
+    In case there is no preference is assigned an error is returned. => not possible: we will return the prefixes that match
+    <service>/prefix?abbrev=dc,owl
+
+    return the abbreviation of the expanded name 
+    <service>/prefix?uri=http://foaf.org#,http://w3c.org/owl#
+
+    insert a new abbreviation for the namespace.
+    In case the abbreviation exists the user is asked to add a preferred item on one of the combinations
+    <service>/add_prefix?abbrev=dc&uri=<http://foaf.org#>&preferred
+
+    If the service cannot find the abbreviation or the namespace in the local store it does a request 
+    to prefix.cc to find them online.
+    At this moment this result is not committed in the local store. (TODO)
+    
+    The service extends the namespace table of Virtuoso with the notion of preferred abbreviation.
+    There can be only one preferred abbreviation for a namespace. 
+    Also no two preferred abbreviations are associated with a different namespace. (TODO).
+
+    The lists returned by the service will return only the preferred combinations augmented with
+    a random selection in case no preferred has been appointed. This notion of preferred is an aid for 
+    the end-user to harmonise its views over all tools that access this api.
+
+general parameter
+
+    from  : allows to select the next items in the result.
+
+
+# not implemented services
+
+    return all prefixes with multiple lines (that do not have a preference assigned).
+    <service>/validate_prefixes?exclude_with_preferences
+
+    insert all abbreviations found the the file.
+    First come, first served implementation.
+    <service>/add_prefixes?doc=file.ttl
+
+    delete an abbreviation for the namespace.
+    <service>/delete_prefix?abbrev=dc&uri=<http://foaf.org#>
+	delete all expansions for the abbreviation
+    <service>/delete_prefix?abbrev=dc
+	delete all abbreviations for the uri
+    <service>/delete_prefix?uri=<..>
+    
+
+    If a prefix is unknown the online service prefix.cc can be used to return an answers.
+    When prefix.cc returns a valid result, this abbreviation rule is added to the local storeage.
+
+
+to do: document the supported formats

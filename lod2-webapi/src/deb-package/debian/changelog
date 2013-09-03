@@ -1,0 +1,43 @@
+lod2webapi (0.7) lod2; urgency=low
+
+  * fix endpoint
+
+ -- Karel Kremer <karel.kremer@tenforce.com> Tue, 25 Jul 2013 13:33:30 +0100
+
+lod2webapi (0.6) lod2; urgency=low
+
+  * add graph deletion and regex features
+
+ -- Karel Kremer <karel.kremer@tenforce.com> Tue, 25 Jul 2013 10:25:30 +0200
+
+lod2webapi (0.5) lod2; urgency=low
+
+  * improve the postinst and postrm scripts
+  * rename the configuration file
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com> Mon, 02 Jul 2012 12:52:50 +0200
+
+lod2webapi (0.4) lod2; urgency=low
+
+  * change configuration directory
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com> Sat, 23 Jun 2012 14:22:20 +0200
+
+lod2webapi (0.3) lod2; urgency=low
+
+  * add extra post request register_graph
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com>  Sat, 23 Jun 2012 03:09:24 +0200
+
+lod2webapi (0.2) lod2; urgency=low
+
+  * add prefix sql validation
+  * clean the result
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com>  Tue, 15 May 2012 14:30:37 +0200
+
+lod2webapi (0.1) lod2; urgency=low
+
+  * Initial release
+
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com>  Wed, 07 May 2012 06:43:25 -0800

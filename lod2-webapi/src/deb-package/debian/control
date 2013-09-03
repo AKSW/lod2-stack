@@ -1,0 +1,16 @@
+Source: lod2webapi
+Section: misc
+Priority: extra
+Maintainer: Bert Van Nuffelen <bert.van.nuffelen@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://wiki.lod2.eu
+#Vcs-Git: git://git.debian.org/collab-maint/lod2webapi.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/lod2webapi.git;a=summary
+
+Package: lod2webapi
+Architecture: all
+Depends: virtuoso-opensource, tomcat6
+Description: This is a tomcat REST webapi for Virtuoso RDF store.
+ The service allows one to create a common view on graphs and prefixes for tools 
+ in the LOD2 stack.

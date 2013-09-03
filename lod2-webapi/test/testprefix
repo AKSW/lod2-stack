@@ -1,0 +1,54 @@
+#!/bin/bash
+
+curl http://localhost:8080/lod2api/prefix
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/prefix?from=15
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/prefix?abbrev=owl,rdf
+echo -e "\n\n"
+
+curl -G http://localhost:8080/lod2api/prefix --data-urlencode "uri=http://www.w3.org/2002/07/owl#,http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+echo -e "\n\n"
+
+curl -G http://localhost:8080/lod2api/prefix?from=1 --data-urlencode "uri=http://www.w3.org/2002/07/owl#,http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+echo -e "\n\n"
+
+curl -G http://localhost:8080/lod2api/prefix?from=1 --data-urlencode "uri=http://www.w3.org/2002/07/owl#,http://www.w3.org/1999/02/22-rdf-syntax-ns#" -d "abbrev=owl,rdf"
+echo -e "\n\n"
+
+# query external prefix CC
+curl http://localhost:8080/lod2api/prefix?abbrev=vann,sism
+echo -e "\n\n"
+  
+   # missing abbrevation xxx
+curl http://localhost:8080/lod2api/prefix?abbrev=owl,vann,xxx
+echo -e "\n\n"
+
+curl -G http://localhost:8080/lod2api/prefix --data-urlencode "uri=http://www.rdfabout.com/rdf/schema/usbill/"
+echo -e "\n\n"
+
+   # missing uri http://localhost/wkd
+curl -G http://localhost:8080/lod2api/prefix --data-urlencode "uri=http://www.rdfabout.com/rdf/schema/usbill/,http://localhost/wkd"
+echo -e "\n\n"
+
+
+# posts
+curl  http://localhost:8080/lod2api/add_prefix --data-urlencode "uri=http://www.w3.org/2002/07/owl#" -d "abbrev=owl" 
+
+curl  http://localhost:8080/lod2api/add_prefix --data-urlencode "uri=http://www.w3.org/2002/07/owl#" -d "abbrev=owl" -d "preferred=true"
+
+
+# multiple entries test case
+curl  http://localhost:8080/lod2api/add_prefix --data-urlencode "uri=http://localhost/a#" -d "abbrev=a" 
+echo -e "\n"
+curl  http://localhost:8080/lod2api/add_prefix --data-urlencode "uri=http://localhost/a#" -d "abbrev=b" -d "preferred=true"
+echo -e "\n\n"
+
+curl  -G http://localhost:8080/lod2api/prefix --data-urlencode "uri=http://localhost/a#" 
+echo -e "\n\n"
+curl  http://localhost:8080/lod2api/prefix?abbrev=a
+echo -e "\n\n"
+
+

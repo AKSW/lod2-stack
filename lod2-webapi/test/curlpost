@@ -1,0 +1,15 @@
+#!/bin/bash
+curl http://localhost:8080/lod2api/register_graph -d "graph=http://localhost/newgraph" 
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/declare_system_graph -d "graph=http://localhost/systemtest" -d "for_tool=ontowiki"
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/register_sparql_endpoint -d "ep=http://localhost:8890/sparql" 
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/register_graph_in_sparql_endpoint -d "ep=http://localhost:8890/sparql" -d "graph=http://wp7.lod2.eu/test"
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/remove_graphs -o /dev/null -s -w "%{http_code}" -d "graphs=<http://localhost/newgraph>,<http://localhost/systemtest>,<http://localhost/bogusunexistinggraph>"
+echo -e "\n\n"

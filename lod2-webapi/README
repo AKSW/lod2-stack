@@ -1,0 +1,89 @@
+SETUP
+-----
+
+* ensure the installation of the next base packages:
+
+  sudo apt-get install subversion maven2 openjdk-6-jdk
+
+configure the .m2/settings.xml with 
+
+	the necessary access to archiva (tenforce maven repository), and 
+        the configuration of tomcat server on which the default deployment can be done.
+
+<settings xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org  
+	/POM/4.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<servers>
+		<server>
+			<id>tomcat6</id>
+			<username>admin</username>
+			<password>admin</password>
+		</server>
+
+		<server>
+			<id>tenforce_archiva_external_free</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+		<server>
+			<id>tenforce_archiva_external_not_that_free</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+		<server>
+			<id>tenforce_archiva_public</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+		<server>
+			<id>tenforce_archiva_internal</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+		<server>
+			<id>tenforce_archiva_fallback</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+		<server>
+			<id>tenforce_archiva_snapshots</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+		<server>
+			<id>tenforce_archiva_cellar</id>
+			<username>TENFORCEUSER</username>
+			<password>TENFORCEUSER</password>
+		</server>
+
+	</servers>
+</settings>
+
+* ensure that tomcat-admin package is installed 
+
+	sudo apt-get install tomcat-admin
+
+and that the users are set 
+
+in /etc/tomcat6/tomcat-users.xml
+
+<role rolename="manager"/>
+<user username="admin" password="admin" roles="manager"/>
+
+after the update and installation do not forget to restart the tomcat service
+
+sudo service tomcat6 restart
+
+
+BUILD
+-----
+
+compile all source code
+     
+	mvn package
+
+compile & deploy in the local tomcat6 
+
+        mvn tomcat:deploy (the first time)
+        mvn tomcat:redeploy (second and next time)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- <context:annotation-config/> -->
+    <!-- <context:component-scan base-package="eu.esco.data.dataweb2.web.controller" />-->
+    
+    <bean id="defaultAnnotationHandlerMapping"  class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+    <bean id="annotationMethodHandlerAdapter"  class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+     <bean id="LOD2WebApiController" class="eu.lod2.controller.GraphController" init-method="init">
+        <property name="annotationMethodHandlerAdapter" ref="annotationMethodHandlerAdapter"/>
+      </bean>
+     <bean id="LOD2WebApiController2" class="eu.lod2.controller.PrefixController" init-method="init">
+        <property name="annotationMethodHandlerAdapter" ref="annotationMethodHandlerAdapter"/>
+      </bean>
+
+</beans>

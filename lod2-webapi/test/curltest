@@ -1,0 +1,37 @@
+#!/bin/bash
+
+curl http://localhost:8080/lod2api/graphs
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/graphs?system=true
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/graphs?system=false
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/graphs?from=1
+echo -e "\n\n"
+
+# error
+curl http://localhost:8080/lod2api/graphsregex
+echo -e "\n\n"
+# error
+curl http://localhost:8080/lod2api/graphsregex?system=true
+echo -e "\n\n"
+# error
+curl http://localhost:8080/lod2api/graphsregex?system=false
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/graphsregex?regex=.*te.*
+echo -e "\n\n"
+curl http://localhost:8080/lod2api/graphsregex?regex=.*te.*&system=true
+echo -e "\n\n"
+curl http://localhost:8080/lod2api/graphsregex?regex=.*te.*&system=false
+echo -e "\n\n"
+
+curl http://localhost:8080/lod2api/graphsregex?regex=.*te.*&from=1
+echo -e "\n\n"
+
+
+curl http://localhost:8080/lod2api/sparql_endpoints
+echo -e "\n\n"
