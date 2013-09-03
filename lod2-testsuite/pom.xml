@@ -88,29 +88,29 @@
 		</suiteXmlFiles>
 	      </configuration>
 	      
-	      <executions>
-		<execution>
-		  <phase>integration-test</phase>
-		  <goals>
-		    <goal>test</goal>
-		  </goals>
-		  <configuration>
-		    <skip>false</skip>
-		    <excludes>
-		      <exclude>none</exclude>
-		    </excludes>
-		    <includes>
-		      <include>**/*TestCase.java</include>
-		    </includes>
-		  </configuration>
-		</execution>
-	      </executions>
-            </plugin>
-	  </plugins>
-	</build> 
-      </profile>
-    </profiles>
--->
+           	      <executions>
+                  		<execution>
+                  		  <phase>integration-test</phase>
+                  		  <goals>
+                  		    <goal>test</goal>
+                  		  </goals>
+                  		  <configuration>
+                  		    <skip>false</skip>
+                  		    <excludes>
+                  		      <exclude>none</exclude>
+                  		    </excludes>
+                  		    <includes>
+                  		      <include>**/*TestCase.java</include>
+                  		    </includes>
+                  		  </configuration>
+                  		</execution>
+           	      </executions>
+                </plugin>
+           	  </plugins>
+           	</build> 
+          </profile>
+        </profiles>
+    -->
     <build>
         <plugins>
             <plugin>
@@ -148,6 +148,14 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
             </plugin>
         </plugins>
     </build> 
