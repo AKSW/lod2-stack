@@ -1,6 +1,7 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
+import eu.lod2.lod2testsuite.pages.SpotlightPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -58,11 +59,12 @@ public class EnrichmentAndDataCleaning extends TestCase {
          navigator.navigateTo(new String[] {
             "Enrichment", 
             "DBpedia Spotlight"});  
+         By frameIdent = By.xpath("//iframe[contains(@src,'dbpedia-spotlight-ui')]");
+        
+         bf.checkIFrame(frameIdent, By.id("action_container"));
          
-         bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'dbpedia-spotlight-ui')]"), 
-                By.id("action_container"));
+         SpotlightPage spotlight = new SpotlightPage(frameIdent);
          
-         // TODO further testing
+         spotlight.analyseText("", "", 0, 0, false);
     }
 }

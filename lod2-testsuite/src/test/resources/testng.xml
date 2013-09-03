@@ -22,7 +22,7 @@
    
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
- <!--
+<!--
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
@@ -44,7 +44,7 @@
                     <parameter name="xmlTextFile" value="files/ealXml.txt" />  
                     <parameter name="xsltTextFile" value="files/ealXslt.txt" />    
                     <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
-                    <exclude name="basicExtraction" />  
+                    <include name="basicExtraction" />  
                     
                     <parameter name="xmlFile" value="files/eal.xml" />  
                     <parameter name="xsltFile" value="files/eal.xslt" />    
@@ -68,7 +68,8 @@
             </class>
         </classes>
     </test>
-
+-->
+<!--
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
@@ -112,7 +113,7 @@
         </classes>
     </test>
 -->
-
+<!--
     <test name="Linking" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
@@ -124,7 +125,7 @@
             </class>
         </classes>
     </test>
-<!--
+-->
     <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
@@ -136,7 +137,7 @@
             </class>
         </classes>
     </test>
-    
+<!--
     <test name="OnlineToolsAndServices" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.OnlineToolsAndServices">

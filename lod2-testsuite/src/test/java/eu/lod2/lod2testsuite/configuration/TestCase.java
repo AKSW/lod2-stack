@@ -78,6 +78,8 @@ public abstract class TestCase {
         
         localFilesDirectory = System.getProperty("user.dir") + File.separator + "files";
         logger.info("Projects root directory is "+System.getProperty("user.dir"));
+        logger.info("Projects file directory is "+localFilesDirectory);
+        
 
         if (browserType.equals(CHROME)) {
             System.setProperty("webdriver.chrome.driver", localFilesDirectory 
