@@ -62,7 +62,7 @@ public class SPARQLPoolParty extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL("http://prod.poolparty.punkt.at/PoolParty/sparql/semweb");
+	  	URL url = new URL("https://lod2.poolparty.biz:8443/PoolParty/sparql/semweb");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

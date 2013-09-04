@@ -155,8 +155,8 @@ implements TextChangeListener
             String textLanguageVal = (String) textLanguage.getValue();
 
             String restCallString = 
-                "http://lod2.poolparty.biz/extractor/api/extract?text=" + encoded + 
-                "&project=2d5bb6fb-9aef-44f8-a587-15a1bd6332e1" +
+                "https://lod2.poolparty.biz:8443/extractor/api/extract?text=" + encoded + 
+                "&project=f281abfd-f967-4ac8-b687-47185deb6190" +
                 "&locale=en" +
                 "&format=rdfxml"+
                 "&countConcepts=25"+
