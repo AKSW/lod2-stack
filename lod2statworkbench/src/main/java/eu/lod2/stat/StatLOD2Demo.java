@@ -459,7 +459,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         workspace.setHeight("80%");
 
         HorizontalLayout introH = new HorizontalLayout();
-        Embedded lod2cycle = new Embedded("", new ThemeResource("app_images/lod-lifecycle-small.png"));
+        Embedded lod2cycle = new Embedded("", new ThemeResource("app_images/lod-lifecycle-cube.jpg"));
         lod2cycle.setMimeType("image/png");
         introH.addComponent(lod2cycle);
         introH.setComponentAlignment(lod2cycle, Alignment.MIDDLE_LEFT);
