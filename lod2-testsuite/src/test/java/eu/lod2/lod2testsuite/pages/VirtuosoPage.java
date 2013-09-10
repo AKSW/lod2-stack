@@ -20,7 +20,6 @@ import org.openqa.selenium.WebElement;
  * @author Stefan Schurischuster
  */
 public class VirtuosoPage extends Page{
-    private static Logger logger = Logger.getLogger(VirtuosoPage.class);
     
     private WebDriver driver;
     private BasicFunctions bf;
@@ -85,7 +84,12 @@ public class VirtuosoPage extends Page{
      * Logs into Virtuoso.
      * pre: Virtuoso is opened; Login field is visible.
      */
-    public void loginVirtuoso() {
+    public void logintoVirtuoso() {
+        if(!bf.isElementVisible(By.xpath("//div[@class='login_info'][contains(.,'dba')]")))  {
+            logger.info("wrong user is logged in. relogging with dba.");
+            driver.findElement(By.xpath("//div[@class='login_info']"
+                    + "//a[contains(@href,'main_tabs')]")).click();
+        }
         if (!bf.isElementVisible(By.id("t_login_usr"))) {
             logger.info("No login fields visible. -> Skipping login.");
             return;

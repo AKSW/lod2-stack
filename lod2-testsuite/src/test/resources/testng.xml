@@ -126,6 +126,7 @@
         </classes>
     </test>
 -->
+<!--
     <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
@@ -137,6 +138,7 @@
             </class>
         </classes>
     </test>
+-->
 <!--
     <test name="OnlineToolsAndServices" preserve-order="true">
         <classes>

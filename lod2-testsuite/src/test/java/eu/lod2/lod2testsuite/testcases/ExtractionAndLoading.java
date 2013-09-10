@@ -36,7 +36,7 @@ public class ExtractionAndLoading extends TestCase {
         // Check if required files exist
         assertTrue("Could not find graph file on local drive: " + graphFilePath, 
                 bf.isLocalFileAvailable(graphFilePath));        
-        virtuoso.loginVirtuoso();
+        virtuoso.logintoVirtuoso();
         virtuoso.navigateToUploadTab();
         virtuoso.uploadDataToVirtuosoGraph(graphName, graphFilePath);
     }
@@ -48,7 +48,7 @@ public class ExtractionAndLoading extends TestCase {
         DataPage loadDataPage = new DataPage(By.xpath("//iframe[contains(@src,'publicdata.eu')]"));
         String ur = loadDataPage.getRDFdataFromPublicDataEu(searchPhrase, resourceNmbr);
         virtuoso.navigateToVirtuoso();
-        virtuoso.loginVirtuoso();
+        virtuoso.logintoVirtuoso();
         virtuoso.navigateToUploadTab();
         virtuoso.uploadDataToVirtuosoGraph(graphName, ur);
         
@@ -61,7 +61,7 @@ public class ExtractionAndLoading extends TestCase {
         DataPage loadDataPage = new DataPage(By.xpath("//iframe[contains(@src,'datahub.io')]"));
         String ur = loadDataPage.getRDFdataFromDataHub(searchPhrase, resourceNmbr);
         virtuoso.navigateToVirtuoso();
-        virtuoso.loginVirtuoso();
+        virtuoso.logintoVirtuoso();
         virtuoso.navigateToUploadTab();
         virtuoso.uploadDataToVirtuosoGraph(graphName, ur);
     }
