@@ -80,16 +80,20 @@ public abstract class TestCase {
         logger.info("Projects root directory is "+System.getProperty("user.dir"));
         logger.info("Projects file directory is "+localFilesDirectory);
         
-
+        eventListener = new MyWebDriverEventListener();
+        
         if (browserType.equals(CHROME)) {
             System.setProperty("webdriver.chrome.driver", localFilesDirectory 
                     + File.separator + "chrome" + File.separator +"chromedriver"+systemArchitecture);
             DesiredCapabilities capabilities = DesiredCapabilities.chrome();            
             capabilities.setCapability("chrome.switches", Arrays.asList("--no-default-browser-check"));
             Map<String, Object> prefs = new HashMap<String, Object>();
-            prefs.put("profile.password_manager_enabled", false);            
+            prefs.put("profile.password_manager_enabled", false);
+            prefs.put("download.prompt_for_download", false); // Does not work
+            prefs.put("chrome.verbose", true);           
             capabilities.setCapability("chrome.prefs", prefs);
-            driver =  new EventFiringWebDriver(new ChromeDriver(capabilities));
+            driver =  new EventFiringWebDriver(
+                    new ChromeDriver(capabilities)).register(eventListener);
         } else {
             String firebugPath = localFilesDirectory + File.separator + "firefox"
                     + File.separator + "firebug-1.9.2.xpi";
@@ -118,7 +122,7 @@ public abstract class TestCase {
             //TODO
             //FirefoxBinary binary=new FirefoxBinary(new File("/home/karel/firefox-18/firefox-bin"));
             // Create WebDriver instance.
-            eventListener = new MyWebDriverEventListener();
+            
             //driver = new EventFiringWebDriver(
             //        new FirefoxDriver(binary,config.getConfiguredProfile()))
             //        .register(eventListener);
