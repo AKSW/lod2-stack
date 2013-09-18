@@ -8,6 +8,7 @@ clean:
 	rm -rf lod2repository*
 	rm -rf lod2stable-repository*
 	rm -rf lod2testing-repository*
+	rm -rf lod2virt7-repository*
 	rm -f *.log
 
 list:
@@ -78,6 +79,18 @@ lod2repository-build:
 	sed -i -e "s/lod2repository/lod2stable-repository/g" lod2stable-repository-$(LOD2REP_VERSION)/debian/control
 	cd lod2stable-repository-$(LOD2REP_VERSION) && debuild
 	# end stable
+	# start virtv7
+	mkdir -p lod2virt7-repository-$(LOD2REP_VERSION)
+	cp -R debian        lod2virt7-repository-$(LOD2REP_VERSION)
+	cp lod2virt7.* lod2virt7-repository-$(LOD2REP_VERSION)
+	cp pubring.gpg      lod2virt7-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
+	cp install_virt7  lod2virt7-repository-$(LOD2REP_VERSION)/debian/install
+	cp install_virt7  lod2virt7-repository-$(LOD2REP_VERSION)/debian/lod2virt7-repository.install
+	cp prerm_virt7  lod2virt7-repository-$(LOD2REP_VERSION)/debian/prerm
+	sed -i -e "s/lod2repository/lod2virt7-repository/g" lod2virt7-repository-$(LOD2REP_VERSION)/debian/changelog
+	sed -i -e "s/lod2repository/lod2virt7-repository/g" lod2virt7-repository-$(LOD2REP_VERSION)/debian/control
+	cd lod2virt7-repository-$(LOD2REP_VERSION) && debuild
+	# end virtv7
 	@echo ""
 	@echo "now test the package, then run \"dput lod2 lod2repository_xxx.changes\""
 	@echo "now test the package, then run \"dput lod2 lod2testing-repository_xxx.changes\""

@@ -1,0 +1,4 @@
+Package: *
+Pin: release n=lod2virt7
+Pin-Priority: 900
+

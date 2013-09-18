@@ -1,0 +1,3 @@
+lod2-keyring.gpg     etc/apt/trusted.gpg.d
+lod2virt7.list     etc/apt/sources.list.d
+lod2virt7.pref     etc/apt/preferences.d

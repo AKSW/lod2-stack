@@ -1,3 +1,9 @@
+lod2repository (1.31) lod2; urgency=low
+
+  * add Karel Kremers' public key to public keyring
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 17 Sep 2013 13:56:38 +0200
+
 lod2repository (1.30) lod2; urgency=low
 
   * add Petar Petrovski keys (Uni Mannheim) (now real)
