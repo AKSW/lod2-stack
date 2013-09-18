@@ -1,6 +1,6 @@
 lod2repository (1.31) lod2; urgency=low
 
-  * add Karel Kremers' public key to public keyring
+  * add Karel Kremers' public key to public keyring, added virtuoso7 specific package
 
  -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 17 Sep 2013 13:56:38 +0200
 
