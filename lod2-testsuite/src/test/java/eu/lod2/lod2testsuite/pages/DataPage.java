@@ -101,7 +101,7 @@ public class DataPage extends Page {
     public String loadData(String searchPhrase, int resourceNmbr)   {
         bf.checkIFrame(frameIdentifier, By.cssSelector("div.module-content"));
         // Search
-        By searchField = By.xpath("//form[@id='dataset-search']//input");
+        By searchField = By.xpath("//*[@class='module-content']//input[@class='search']");
         // Type
         bf.waitUntilElementIsVisible("Could not find search field.", 
                 searchField).clear();
