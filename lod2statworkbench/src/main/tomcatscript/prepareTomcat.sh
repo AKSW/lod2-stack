@@ -70,10 +70,10 @@ else
     if grep -q \<\/GlobalNamingResources server.xml 
     then
 # no resources yet, use xslt that adds full resources file
-	xsltproc -o server.xml $SCRIPTDIR/transformNoResources.xslt server.xml
+	xsltproc -o server.xml $SCRIPTDIR/transformResources.xslt server.xml
     else
 # reuse existing resources yet, simply add new resource
-	xsltproc -o server.xml $SCRIPTDIR/transformResources.xslt server.xml
+	xsltproc -o server.xml $SCRIPTDIR/transformNoResources.xslt server.xml
     fi
     echo "done"
 fi

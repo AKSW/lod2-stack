@@ -16,7 +16,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		       	name="WebIDDatabase" auth="Container"
 			type="com.turnguard.webid.tomcat.database.WebIDDatabase"
 			description="Using virtuoso as roles sources"
-			factory="com.turnguard.webid.tomcat.database.impl.virtuoso.VirtuosoWebIDDatabaseFactory	mpl"
+			factory="com.turnguard.webid.tomcat.database.impl.virtuoso.VirtuosoWebIDDatabaseFactoryImpl"
 			roleGraph="http://webidrealm.localhost/rolegraph"
 			host="localhost"
 			port="1111"
