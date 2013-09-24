@@ -99,7 +99,7 @@ public class QueryingAndExploration extends TestCase {
      * TC 004.
      */
     @Test
-    @Parameters({ "geoGraph","query", "gepGraphResult" })
+    @Parameters({ "geoGraph","query", "geoGraphResult" })
     public void virtuosoInteractiveSparql(String graph, String query, String expectedResult) {
  
          navigator.navigateTo(new String[] {
@@ -169,7 +169,7 @@ public class QueryingAndExploration extends TestCase {
      * TC 007.
      */
     @Test
-    @Parameters({"geoGrpah", "specialResult" })
+    @Parameters({"geoGraph", "specialResult" })
     public void assistedQueryingWithCurrentGraph(String graph, String expectedResult) {
         bf.checkAndChooseDefaultGraph(graph);
         navigator.navigateTo(new String[]{
