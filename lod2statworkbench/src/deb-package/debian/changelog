@@ -1,3 +1,9 @@
+lod2statworkbench (0.0.4) lod2; urgency=low
+
+  * fix proxy settings
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 24 Sep 2013 14:29:35 +0100
+
 lod2statworkbench (0.0.3) lod2; urgency=low
 
   * fix dependency issue for r2r

@@ -1,3 +1,9 @@
+lod2repository (1.32) lod2; urgency=low
+
+  * add recommends of lod2-virtuoso-opensource
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 24 Sep 2013 13:12:38 +0200
+
 lod2repository (1.31) lod2; urgency=low
 
   * add Karel Kremers' public key to public keyring, added virtuoso7 specific package

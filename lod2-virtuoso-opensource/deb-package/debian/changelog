@@ -1,0 +1,11 @@
+lod2-virtuoso-opensource (0.2) lod2; urgency=low
+
+  * Support all virtuoso related paths
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 24 Sep 2013 15:52:25 +0100
+
+lod2-virtuoso-opensource (0.1) lod2; urgency=low
+
+  * Initial release
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 24 Sep 2013 10:48:25 +0100

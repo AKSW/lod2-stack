@@ -1,0 +1,15 @@
+Source: lod2-virtuoso-opensource
+Section: misc
+Priority: extra
+Maintainer: Karel Kremer <Karel.Kremer@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://wiki.lod2.eu
+
+Package: lod2-virtuoso-opensource
+Architecture: all
+Depends: virtuoso-opensource
+Description: installs virtuoso-opensource for a lod stack
+ This package takes care of the installation of the virtuoso-opensource 
+ package for a lod stack. It attempts to handle all possible problems 
+ that might occur with version issues.

@@ -11,6 +11,7 @@ Homepage: http://lod2.eu
 Package: lod2repository
 Architecture: all
 Depends: ${misc:Depends}
+Recommends: lod2-virtuoso-opensource
 Description: LOD2 software stack repository as well as the LOD2 trusted keyring
  This package adds the LOD2 debian package repository and the LOD2
  trusted keyring to your debian system.
