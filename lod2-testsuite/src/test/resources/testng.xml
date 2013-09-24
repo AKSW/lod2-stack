@@ -93,7 +93,7 @@
         </classes>
     </test>
 -->
-<!--
+
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
@@ -112,7 +112,7 @@
             </class>
         </classes>
     </test>
--->
+
 <!--
     <test name="Linking" preserve-order="true">
         <classes>
