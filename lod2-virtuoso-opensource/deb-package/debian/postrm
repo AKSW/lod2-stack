@@ -37,6 +37,10 @@ case "$1" in
 	if [ -h /etc/init.d/virtuoso-opensource ] ; then 
 	    rm /etc/init.d/virtuoso-opensource
 	fi
+	
+	if [ -h /var/run/virtuoso-opensource ] ; then 
+	    rm /var/run/virtuoso-opensource
+	fi
 
         #remove legacy-support links
 	if [ -h /etc/virtuoso-opensource-6.1 ] ; then 
@@ -55,6 +59,9 @@ case "$1" in
 	    rm /etc/init.d/virtuoso-opensource-6.1
 	fi
 
+	if [ -h /var/run/virtuoso-opensource-6.1 ] ; then 
+	    rm /var/run/virtuoso-opensource-6.1
+	fi
 	
     ;;
 

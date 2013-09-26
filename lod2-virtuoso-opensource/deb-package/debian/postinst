@@ -30,11 +30,14 @@ case "$1" in
 			rm /etc/virtuoso-opensource
 			rm /usr/share/virtuoso-opensource
 			rm /var/lib/virtuoso-opensource
+			rm /etc/init.d/virtuoso-opensource
+			rm /var/run/virtuoso-opensource
 		    fi
 		    ln -s "/etc/$VERSION" /etc/virtuoso-opensource
 		    ln -s "/usr/share/$VERSION" /usr/share/virtuoso-opensource
 		    ln -s "/var/lib/$VERSION" /var/lib/virtuoso-opensource
 		    ln -s "/etc/init.d/$VERSION" /etc/init.d/virtuoso-opensource
+		    ln -s "/var/run/$VERSION" /var/run/virtuoso-opensource
 		fi
 	    done
 	fi
@@ -45,6 +48,7 @@ case "$1" in
 	    ln -s /usr/share/virtuoso-opensource /usr/share/virtuoso-opensource-6.1 
 	    ln -s /var/lib/virtuoso-opensource /var/lib/virtuoso-opensource-6.1 
 	    ln -s /etc/init.d/virtuoso-opensource /etc/init.d/virtuoso-opensource-6.1
+	    ln -s /var/run/virtuoso-opensource /var/run/virtuoso-opensource-6.1
 	fi
 
     ;;
