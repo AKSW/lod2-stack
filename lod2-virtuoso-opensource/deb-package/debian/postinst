@@ -23,17 +23,18 @@ case "$1" in
 
 	if [ ! -e /etc/virtuoso-opensource ]; then 
 	# loop through all versions of virtuoso that are supported an take the latest one
-	    for DIRECTORY in "virtuoso-opensource-6.1" "virtuoso-opensource-7.0"
+	    for VERSION in "virtuoso-opensource-6.1" "virtuoso-opensource-7.0"
 	    do
-		if [ -d "/etc/$DIRECTORY" ]; then
+		if [ -d "/etc/$VERSION" ]; then
 		    if [ -h /etc/virtuoso-opensource ]; then
 			rm /etc/virtuoso-opensource
 			rm /usr/share/virtuoso-opensource
 			rm /var/lib/virtuoso-opensource
 		    fi
-		    ln -s "/etc/$DIRECTORY" /etc/virtuoso-opensource
-		    ln -s "/usr/share/$DIRECTORY" /usr/share/virtuoso-opensource
-		    ln -s "/var/lib/$DIRECTORY" /var/lib/virtuoso-opensource
+		    ln -s "/etc/$VERSION" /etc/virtuoso-opensource
+		    ln -s "/usr/share/$VERSION" /usr/share/virtuoso-opensource
+		    ln -s "/var/lib/$VERSION" /var/lib/virtuoso-opensource
+		    ln -s "/etc/init.d/$VERSION" /etc/init.d/virtuoso-opensource
 		fi
 	    done
 	fi
@@ -43,6 +44,7 @@ case "$1" in
 	    ln -s /etc/virtuoso-opensource /etc/virtuoso-opensource-6.1 
 	    ln -s /usr/share/virtuoso-opensource /usr/share/virtuoso-opensource-6.1 
 	    ln -s /var/lib/virtuoso-opensource /var/lib/virtuoso-opensource-6.1 
+	    ln -s /etc/init.d/virtuoso-opensource /etc/init.d/virtuoso-opensource-6.1
 	fi
 
     ;;
