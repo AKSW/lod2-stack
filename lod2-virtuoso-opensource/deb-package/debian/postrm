@@ -39,7 +39,7 @@ case "$1" in
 	fi
 	
 	if [ -h /var/run/virtuoso-opensource ] ; then 
-	    rm /var/run/virtuoso-opensource
+	    rm /var/run/virtuoso-opensource.pid
 	fi
 
         #remove legacy-support links
@@ -60,7 +60,7 @@ case "$1" in
 	fi
 
 	if [ -h /var/run/virtuoso-opensource-6.1 ] ; then 
-	    rm /var/run/virtuoso-opensource-6.1
+	    rm /var/run/virtuoso-opensource-6.1.pid
 	fi
 	
     ;;
