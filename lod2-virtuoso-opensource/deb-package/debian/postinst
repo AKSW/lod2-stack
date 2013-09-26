@@ -42,6 +42,12 @@ case "$1" in
 	    done
 	fi
 
+	# add lod2 links to dirs allowed in virtuoso ini
+	virtuosoini="/etc/virtuoso-opensource/virtuoso.ini"
+	# try to remove the addition first in order to avoid double entries
+	sed 's/^\(DirsAllowed.*\)\(, \/usr\/share\/virtuoso-opensource\)\(.*\)/\1\3/' -i $virtuosoini
+	sed 's/^\(DirsAllowed.*\)/\1, \/usr\/share\/virtuoso-opensource/' -i $virtuosoini
+
         #support legacy systems
 	if [ ! -e /etc/virtuoso-opensource-6.1 ]; then
 	    ln -s /etc/virtuoso-opensource /etc/virtuoso-opensource-6.1 
@@ -49,8 +55,12 @@ case "$1" in
 	    ln -s /var/lib/virtuoso-opensource /var/lib/virtuoso-opensource-6.1 
 	    ln -s /etc/init.d/virtuoso-opensource /etc/init.d/virtuoso-opensource-6.1
 	    ln -s /var/run/virtuoso-opensource.pid /var/run/virtuoso-opensource-6.1.pid
-	fi
 
+            # try to remove the addition first in order to avoid double entries
+	    sed 's/^\(DirsAllowed.*\)\(, \/usr\/share\/virtuoso-opensource-6\.1\)\(.*\)/\1\3/' -i $virtuosoini
+	    sed 's/^\(DirsAllowed.*\)/\1, \/usr\/share\/virtuoso-opensource-6.1/' -i $virtuosoini
+
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
