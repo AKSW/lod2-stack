@@ -1,3 +1,9 @@
+lod2-virtuoso-opensource (0.7) lod2; urgency=low
+
+  * Fix for removal
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Thu, 26 Sep 2013 12:25:25 +0100
+
 lod2-virtuoso-opensource (0.6) lod2; urgency=low
 
   * Support for vad location

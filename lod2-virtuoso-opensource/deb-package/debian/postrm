@@ -38,7 +38,7 @@ case "$1" in
 	    rm /etc/init.d/virtuoso-opensource
 	fi
 	
-	if [ -h /var/run/virtuoso-opensource ] ; then 
+	if [ -h /var/run/virtuoso-opensource.pid ] ; then 
 	    rm /var/run/virtuoso-opensource.pid
 	fi
 
@@ -59,7 +59,7 @@ case "$1" in
 	    rm /etc/init.d/virtuoso-opensource-6.1
 	fi
 
-	if [ -h /var/run/virtuoso-opensource-6.1 ] ; then 
+	if [ -h /var/run/virtuoso-opensource-6.1.pid ] ; then 
 	    rm /var/run/virtuoso-opensource-6.1.pid
 	fi
 	
