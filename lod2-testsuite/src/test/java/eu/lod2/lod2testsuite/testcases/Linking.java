@@ -46,7 +46,7 @@ public class Linking extends TestCase {
         //silk.addSilkSPARQLSource("", projectTitle, firstEndpointTitle, firstEndpointURI);
         //silk.addSilkSPARQLSource("", projectTitle, secondEndpointTitle, secondEndpointURI);
         
-        silk.createLink("silktest", "mapLawrence");
+        //silk.createLink("silktest", "mapLawrence");
         
     }
     
@@ -54,7 +54,7 @@ public class Linking extends TestCase {
      * TC 002.
      */
     @Test
-    @Parameters({"geoGraph", "exampleGraph"})
+    @Parameters({"geoGraph", "geoGraph"})
     public void limes(String inputGraph, String outputGraph )  {
         navigator.navigateTo(new String[] {
             "Linking", 

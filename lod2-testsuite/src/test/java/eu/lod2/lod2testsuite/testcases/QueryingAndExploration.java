@@ -44,7 +44,7 @@ public class QueryingAndExploration extends TestCase {
                     "Querying & Exploration",
                     "SPARQL querying",
                     "OntoWiki SPARQL endpoint"});
-
+        
         By frameIdent = By.xpath("//iframe[contains(@src,'ontowiki')]");
         // Check if isparql page is visible
         bf.checkIFrame(frameIdent, By.name("sparqlquery"));
@@ -250,6 +250,9 @@ public class QueryingAndExploration extends TestCase {
         bf.waitUntilElementIsVisible(
                 "Iframe content was not correctly displayed.",
                 By.id("flint-test"), By.xpath("//iframe[@src='sindice-editor']"), BasicFunctions.MAX_PATIENCE_SECONDS);
+        
+        driver.switchTo().defaultContent();
+        
         /*
         // Type query
         WebElement inputField = bf.waitUntilElementIsVisible("Could not find inputField for query.",
