@@ -32,7 +32,7 @@
 <http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/password> "PWDLOD2"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/service> "http://localhost:8890/conductor"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/virtuoso> <http://lod2.eu/lod2statworkbench/username> "lod2statworkbench"^^<http://www.w3.org/2001/XMLSchema#string> .
-<http://localhost/ckan> <http://lod2.eu/lod2statworkbench/password> "k&wEL324EWcI"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://localhost/ckan> <http://lod2.eu/lod2statworkbench/password> "75a12eb1-6119-44a0-8d9b-9056efcae1a7"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/ckan> <http://lod2.eu/lod2statworkbench/service> "http://datahub.io"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://localhost/ckan> <http://lod2.eu/lod2statworkbench/username> "lod2test"^^<http://www.w3.org/2001/XMLSchema#string> .
 <http://lod2.eu/tools.owl>  <http://lod2.eu/lod2statworkbench/SystemGraphFor> <http://localhost/lod2statworkbenchconfiguration>.

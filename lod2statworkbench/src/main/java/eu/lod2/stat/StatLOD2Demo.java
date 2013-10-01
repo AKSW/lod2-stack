@@ -216,13 +216,13 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 
         MenuBar.Command publishCommand = new Command() {
             public void menuSelected(MenuItem selectedItem){
-                showInWorkspace(new Authenticator(new CKANPublisherPanel(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
+                showInWorkspace(new CKANPublisherPanel(state));
             }
         };
 
         MenuBar.Command publishDataHubCommand = new Command() {
             public void menuSelected(MenuItem selectedItem){
-                showInWorkspace(new Authenticator(new DataHubPublisher(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
+                showInWorkspace(new DataHubPublisher(state));
             }
         };
 
@@ -357,9 +357,9 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         
         // help menu
         menuHelp.addItem("User Configuration", null, userinfoCommand);
-        menuHelp.addItem("*Documentation", null, null);
+        //menuHelp.addItem("*Documentation", null, null);
         menuHelp.addItem("Examples", null, cmdExamples);
-        menuHelp.addItem("*About", null, null);
+        //menuHelp.addItem("*About", null, null);
 
 
         HorizontalLayout menubarContainer = new HorizontalLayout();
