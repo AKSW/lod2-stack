@@ -21,7 +21,14 @@ set -e
 DAEMON=/usr/bin/virtuoso-t
 VIRTUOSOVERSION=virtuoso-opensource-6.1
 SHORTNAME=virtuoso
-PIDFILE=/var/run/$VIRTUOSOVERSION.pid
+PIDFILE=`ls /var/run/ | grep virtuoso`
+
+if [ -z "$PIDFILE" ] 
+then
+    PIDFILE=/var/run/$VIRTUOSOVERSION.pid
+else
+    PIDFILE=/var/run/$PIDFILE
+fi
 
 running_pid() {
 # Check if a given process pid's cmdline matches a given name
