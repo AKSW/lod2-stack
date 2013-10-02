@@ -1,3 +1,9 @@
+lod2statworkbench (0.0.6) lod2; urgency=low
+
+  * Support for virtuoso7 and future versions
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 2 Oct 2013 14:11:35 +0100
+
 lod2statworkbench (0.0.5) lod2; urgency=low
 
   * fix datahub.io configuration, removed unexisting documentation elements from menu.
