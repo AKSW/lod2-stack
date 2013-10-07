@@ -22,7 +22,7 @@
    
     <!-- 'preserve-order' is reqired when using testng 6.0.1, otherwise there is
     no correct method ordering -->
-<!--
+
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
@@ -68,8 +68,7 @@
             </class>
         </classes>
     </test>
--->
-<!--
+
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
@@ -79,22 +78,20 @@
                     <parameter name="exampleGraphResult" value="http://example.com/empty/owl_Class/TestResource" />
                     <parameter name="geoGraphResult" value="http://test-pp-linux.punkt.at/doku" />  
                     <parameter name="bookGraphResult" value="http://purl.org/ontology/bibo/Periodical" />  
-                    
                     <parameter name="specialResult" value="http://www.openlinksw.com/virtrdf-data-formats#default-iid" />
-                    <include name="assistedQueryingAndSummeryGraph" />
+                    
                     <include name="assistedQueryingWithCurrentGraph" />
                     <include name="ontoWikiSparql" />
                     <include name="virtuosoSparql" />                    
                     <include name="virtuosoInteractiveSparql" />
                     <include name="sigmaEe" />
                     <include name="geoSpatialExploration" />
+                    <include name="assistedQueryingAndSummeryGraph" />
                 </methods>
             </class>
         </classes>
     </test>
--->
 
-<!--
      <test name="Authoring" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Authoring">
@@ -113,9 +110,8 @@
             </class>
         </classes>
     </test>
--->
-<!--
-    <test name="Linking" preserve-order="true">
+
+     <test name="Linking" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
                 <methods>
@@ -126,9 +122,8 @@
             </class>
         </classes>
     </test>
--->
-<!--
-    <test name="EnrichmentAndDataCleaning" preserve-order="true">
+
+     <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
                 <methods>
@@ -139,8 +134,7 @@
             </class>
         </classes>
     </test>
--->
-<!--
+
     <test name="OnlineToolsAndServices" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.OnlineToolsAndServices">
@@ -160,7 +154,7 @@
         </classes>
     </test>
 
-     <test name="Configuration" preserve-order="true">
+    <test name="Configuration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Configuration">
                 <methods>
@@ -170,5 +164,5 @@
             </class>
         </classes>
     </test>
--->
+
 </suite>
