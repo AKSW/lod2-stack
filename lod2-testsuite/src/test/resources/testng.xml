@@ -130,6 +130,7 @@
                     <include name="ore" />
                     <include name="lodrefine" />
                     <include name="dbpediaSpotlight" />
+                    <include name="lodManager" />
                 </methods>
             </class>
         </classes>
