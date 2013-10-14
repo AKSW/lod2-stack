@@ -1,3 +1,9 @@
+lod2statworkbench (0.0.7) lod2; urgency=low
+
+  * Update for merge component: more readable uris
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 14 Oct 2013 10:06:35 +0100
+
 lod2statworkbench (0.0.6) lod2; urgency=low
 
   * Support for virtuoso7 and future versions

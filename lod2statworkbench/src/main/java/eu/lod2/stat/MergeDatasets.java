@@ -738,6 +738,30 @@ public class MergeDatasets extends VerticalLayout {
             //TODO
         }
 
+        //* removes the leading namespace part from the given uri if possible, returns uri otherwise
+        private String removeNamespace(String uri){
+            if(uri.endsWith("/")){
+                uri=uri.substring(0,uri.length()-1);
+            }
+            try{
+                return uri.substring(uri.lastIndexOf("/")+1);
+            }catch (Exception e){
+                return uri;
+            }
+        }
+
+        //* generates a name from the given component uri that has not been taken in the provided set of names
+        private String generateNameFromComponentUri(String componentUri,Set namesTaken){
+            String name = removeNamespace(componentUri);
+            int i = 1;
+            while(namesTaken.contains(name)){
+                name = name + i;
+                i++;
+            }
+            namesTaken.add(name);
+            return name;
+        }
+
         /**
          * Builds the new component specifications, taking the original dataset's components for a base
          * links the new dsd to the component specifications
@@ -747,12 +771,15 @@ public class MergeDatasets extends VerticalLayout {
         private HashMap<String,String> buildNewComponents() {
             // for each component
             int count=1;
+            // holds all new component names in this namespace
+            HashSet<String> namesTaken=new HashSet<String>();
             HashMap<String, String> componentMapping=new HashMap<String, String>();
             for(String component:this.userMapping.keySet()){
                 StringBuilder builder=new StringBuilder();
-                String newComponentName=datacubeURI+componentSuffix+"/c"+count;
+                String name = generateNameFromComponentUri(component,namesTaken);
+                String newComponentName=datacubeURI+componentSuffix+"/"+name;
                 componentMapping.put(component,newComponentName);
-                String newComponentSpecName=datacubeURI+componentSpecSuffix+"/c"+count;
+                String newComponentSpecName=datacubeURI+componentSpecSuffix+"/"+name;
                 String type="http://purl.org/linked-data/cube#"+referenceTypes.get(component);
 
                 //create component specifications
