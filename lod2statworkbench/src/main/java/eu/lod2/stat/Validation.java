@@ -90,13 +90,69 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	
 	@SuppressWarnings("unused")
 	private class IntegrityConstraint{
+//		private String query;
+//		private TupleQueryResult res;
+		private ICQuery icQuery;
+		private List<BindingSet> resList = new LinkedList<BindingSet>();
+		private Boolean status = null;
+//		private StatusFunction statusFunction;
+		
+		public IntegrityConstraint(String query){
+			this.icQuery = new ICQuerySimple(query);
+		}
+		public IntegrityConstraint(String query, StatusFunction statusFunction){
+			this.icQuery = new ICQuerySimple(query, statusFunction);
+		}
+		public IntegrityConstraint(ICQuery icQuery){
+			this.icQuery = icQuery;
+		}
+		public void evaluate(){
+			resList.clear();
+			resList.addAll(icQuery.evaluate());
+			status = icQuery.getStatus();
+		}
+		public Iterator<BindingSet> getResults(){ 
+			return resList.iterator();
+		}
+		public Boolean getStatus(){
+			return status;
+		}
+	}
+	
+	private abstract class ICQuery {
+		protected List<ICQuery> list = new LinkedList<Validation.ICQuery>();
+		public abstract List<BindingSet> evaluate();
+		public abstract Boolean getStatus();
+		public void add(ICQuery q) {}
+		public void remove(ICQuery q) {}
+	}
+	
+	private class ICQueryComposite extends ICQuery{
+		public void add(ICQuery q) { list.add(q); }
+		public void remove(ICQuery q) { list.remove(q); }
+		public Boolean getStatus(){
+			Boolean res = null;
+			for (ICQuery q:list){
+				if (q.getStatus() == null) return null;
+				if (!q.getStatus().booleanValue()) res = q.getStatus(); 
+			}
+			if (res != null) return res;
+			return true;
+		}
+		public List<BindingSet> evaluate(){
+			List<BindingSet> res = new LinkedList<BindingSet>();
+			for (ICQuery q: list) res.addAll(q.evaluate());
+			return res;
+		}
+	}
+	
+	private class ICQuerySimple extends ICQuery {
+		private Boolean status = null;
+		private StatusFunction statusFunction;
 		private String query;
 		private TupleQueryResult res;
 		private List<BindingSet> resList = new LinkedList<BindingSet>();
-		private Boolean status = null;
-		private StatusFunction statusFunction;
-		
-		public IntegrityConstraint(String query){
+		public ICQuerySimple(String query){
 			this.query = query;
 			this.statusFunction = new StatusFunction() {
 				public Boolean getStatus(Iterator<BindingSet> queryResult) {
@@ -106,18 +162,11 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				}
 			};
 		}
-		public IntegrityConstraint(String query, StatusFunction statusFunction){
+		public ICQuerySimple(String query, StatusFunction statusFunction){
 			this.query = query;
 			this.statusFunction = statusFunction;
 		}
-		
-		public void setQuery(String query){
-			this.query = query;
-		}
-		public void setStatusFunction(StatusFunction statusFunction){
-			this.statusFunction = statusFunction;
-		}
-		public void evaluate(){
+		public List<BindingSet> evaluate(){
 			try {
 				RepositoryConnection conn = state.getRdfStore().getConnection();
 				res = conn.prepareTupleQuery(QueryLanguage.SPARQL, query).evaluate();
@@ -132,9 +181,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				e.printStackTrace();
 			}
 			try { if (res!=null) res.close(); } catch (QueryEvaluationException e) {}
-		}
-		public Iterator<BindingSet> getResults(){ 
-			return resList.iterator();
+			return resList;
 		}
 		public Boolean getStatus(){
 			return status;
