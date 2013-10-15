@@ -2,6 +2,7 @@ package eu.lod2.stat;
 
 import com.vaadin.ui.AbstractComponent;
 import eu.lod2.*;
+import eu.lod2.utils.CurrentGraphEnforcer;
 
 public class CustomComponentFactory {
 	
@@ -35,6 +36,7 @@ public class CustomComponentFactory {
 		SPARQLPoolParty,
         EditDatasetOW, EditStructureDefOW, EditComponentPropOW, MondecaSPARQLList,
         VisualizeCubeviz,
+        MergeDimensions,
         MergeDatasets,SliceDatasets,
         R2R;
 	}
@@ -73,6 +75,7 @@ public class CustomComponentFactory {
 			case MondecaSPARQLList: return new MondecaSPARQLList(state);
 			case VisualizeCubeviz: return new OntoWikiPathExtended(state, "/cubeviz", true);
             case MergeDatasets: return new MergeDatasets(state);
+            case MergeDimensions: return new CurrentGraphEnforcer(new MergeDimensions(state),state);
             case SliceDatasets: return new CreateSlices(state);
             case R2R: return new R2R(state);
 			default: return null;

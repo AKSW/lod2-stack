@@ -199,7 +199,7 @@ public class LOD2DemoState
 
     // accessors
     public String getCurrentGraph() {
-        return currentGraph;
+        return currentGraph == null || currentGraph.isEmpty()?null:currentGraph;
     };
 
     // accessors

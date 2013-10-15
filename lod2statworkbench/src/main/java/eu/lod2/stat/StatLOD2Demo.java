@@ -179,6 +179,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         MenuBar.Command cmdSparqlUpdateVirtuoso = getFramedUrlCommand(sparqlAuthURL);
         MenuBar.Command cmdPoolPartyEdit = getCustomComponentCommand(CompType.OnlinePoolParty);
         MenuBar.Command cmdMergeDatasets = getCustomComponentCommand(CompType.MergeDatasets);
+        MenuBar.Command cmdMergeDimensions = getCustomComponentCommand(CompType.MergeDimensions);
         MenuBar.Command cmdSliceDatasets = getCustomComponentCommand(CompType.SliceDatasets);
         //MenuBar.Command cmdCkan = getCustomComponentCommand(CompType.CKAN);
         MenuBar.Command cmdGeoSpatial = getCustomComponentCommand(CompType.GeoSpatial);
@@ -301,6 +302,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         editmenu.addItem("Edit qb:StructureDefinition",null, cmdEditStructureDef);
         editmenu.addItem("Edit qb:ComponentProperty",null,cmdEditComponentProp);
         menuEdit.addItem("Edit Code Lists (PoolParty)", null, cmdPoolPartyEdit);
+        menuEdit.addItem("Reconcile dimensions", null, cmdMergeDimensions);
         menuEdit.addItem("Merge datasets", null, cmdMergeDatasets);
         menuEdit.addItem("Slice datasets", null, cmdSliceDatasets);
         menuEdit.addItem("Transform and Update Graph (SPARQL Update Endpoint)", null, cmdSparqlUpdateVirtuoso);
