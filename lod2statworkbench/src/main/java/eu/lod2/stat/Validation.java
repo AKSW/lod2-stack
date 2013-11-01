@@ -11,6 +11,7 @@ import com.vaadin.ui.themes.Reindeer;
 
 import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
+import eu.lod2.utils.ValidationFixUtils;
 
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -296,7 +297,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		// IC-6
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
-		strBuilder.append("select distinct ?componentSpec ?component \n");
+		strBuilder.append("select distinct ?dsd ?componentSpec ?component \n");
 		strBuilder.append("from ").append(helperGraph).append(" where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsd qb:component ?componentSpec . \n");
@@ -1362,6 +1363,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-6 layout
 	private void attributesOptional(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icAttributesOptional.getResults();
@@ -1377,7 +1379,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		final HashMap<String, String> compMap = new HashMap<String, String>();
 		while (res.hasNext()){
 			BindingSet set = res.next();
-			compMap.put(set.getValue("componentSpec").stringValue(), set.getValue("component").stringValue());
+			compMap.put(set.getValue("component").stringValue(), set.getValue("dsd").stringValue());
 		}
 		
 		if (compMap.size() == 0){
@@ -1389,20 +1391,87 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		}
 		
 		Label lbl = new Label();
-		lbl.setValue("Following components are marked as optionakm, but they are not attributes");
+		lbl.setValue("Following components are marked as optional, but they are not attributes");
 		validationTab.addComponent(lbl);
 		
-		final ListSelect listComponents = new ListSelect("Component Specifications", compMap.keySet());
+		final ListSelect listComponents = new ListSelect("Component Properties", compMap.keySet());
 		listComponents.setNullSelectionAllowed(false);
 		validationTab.addComponent(listComponents);
 		
-		// TODO: add label that tells to which component this compSpec is linked and maybe details table
+		final Table detailsTable = new Table("Details");
+		detailsTable.setHeight("200px");
+		detailsTable.setWidth("100%");
+		detailsTable.addContainerProperty("Property", String.class, null);
+		detailsTable.addContainerProperty("Object", String.class, null);
+		validationTab.addComponent(detailsTable);
+		listComponents.addListener(new DetailsListener(detailsTable));
 		
-		Button fix = new Button("Edit in OntoWiki");
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+//		final Label lblProblem = new Label("<b>Problem description: </b>", Label.CONTENT_XHTML);
+//		validationTab.addComponent(lblProblem);
 		
-		fix.addListener(new Button.ClickListener() {
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
+		
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue(""); // TODO
+		panelLayout.addComponent(fixLabel);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button editOW = new Button("Edit in OntoWiki");
+		Button removeCompReq = new Button("Remove qb:componentRequired");
+		Button turnToAttr = new Button("Turn to attribute");
+		btnLayout.addComponent(removeCompReq);
+		btnLayout.addComponent(turnToAttr);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		removeCompReq.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				// TODO: implement action
+				String chosenComponent = (String)listComponents.getValue();
+				if (chosenComponent == null){
+					getWindow().showNotification("Cannot execute the action", 
+							"A component needs to be chosen first", 
+							Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				String chosenDSD = compMap.get(chosenComponent);
+				String query = ValidationFixUtils.ic06_removeComponentRequired(state.getCurrentGraph(), chosenDSD, chosenComponent);
+				executeGraphQuery(query);
+				getWindow().showNotification("Fix executed");
+				refresh();
+				attributesOptional();
+			}
+		});
+		turnToAttr.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				// TODO: implement action
+				String chosenComponent = (String)listComponents.getValue();
+				if (chosenComponent == null){
+					getWindow().showNotification("Cannot execute the action", 
+							"A component needs to be chosen first", 
+							Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				String query = ValidationFixUtils.ic06_changeToAttribute(state.getCurrentGraph(), chosenComponent);
+				String query2 = ValidationFixUtils.ic06_changeToAttribute2(state.getCurrentGraph(), chosenComponent);
+				executeGraphQuery(query);
+				executeGraphQuery(query2);
+				getWindow().showNotification("Fix executed");
+				refresh();
+				attributesOptional();
+			}
+		});
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)listComponents.getValue());
 			}
@@ -1901,12 +1970,50 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		validationTab.addComponent(listObservations);
 		
 		// TODO: add label that tells which attribute is missing
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
 		
-		Button fix = new Button("Edit in OntoWiki");
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue(""); // TODO
+		panelLayout.addComponent(fixLabel);
 		
-		fix.addListener(new Button.ClickListener() {
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button removeRequired = new Button("Remove qb:componentRequired");
+		Button editOW = new Button("Edit in OntoWiki");
+		btnLayout.addComponent(removeRequired);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		removeRequired.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				String chosenObs = (String)listObservations.getValue();
+				if (chosenObs == null){
+					getWindow().showNotification("Cannot execute the action", 
+							"Observation needs to be chosen first", 
+							Notification.TYPE_ERROR_MESSAGE);
+					return;
+				}
+				String query = ValidationFixUtils.ic13_removeComponentRequiredTrue(state.getCurrentGraph(), 
+						chosenObs, 
+						obsMap.get(chosenObs));
+				executeGraphQuery(query);
+				getWindow().showNotification("Fix executed");
+				refresh();
+				requiredAttributes();
+			}
+		});
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)listObservations.getValue());
 			}
@@ -2262,6 +2369,27 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 //		mainContrainer.setSizeFull();
 	}
 	
+	private class DetailsListener implements Property.ValueChangeListener{
+		private Table tbl;
+		public DetailsListener(Table tbl) {
+			this.tbl = tbl;
+		}
+		public void valueChange(ValueChangeEvent event) {
+			TupleQueryResult res = getResourceProperties((String)event.getProperty().getValue());
+			int i=1;
+			tbl.removeAllItems();
+			try {
+				while (res.hasNext()){
+					BindingSet set = res.next();
+					tbl.addItem(new Object [] { set.getValue("p").stringValue(),
+							set.getValue("o").stringValue() }, new Integer(i++));
+				}
+			} catch (QueryEvaluationException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private void showInOntowiki(String resource){
 		if (resource == null || resource.isEmpty())
 			return;
@@ -2270,6 +2398,22 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		OntoWikiPathExtended component = new OntoWikiPathExtended(state, path, false);
 		component.setSizeFull();
 		target.addComponent(component);
+	}
+	
+	private GraphQueryResult executeGraphQuery(String query){
+		try {
+			RepositoryConnection con = state.getRdfStore().getConnection();
+			GraphQuery graphQuery = con.prepareGraphQuery(QueryLanguage.SPARQL, query);
+			GraphQueryResult result = graphQuery.evaluate();
+			return result;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private TupleQueryResult executeTupleQuery(String query){
