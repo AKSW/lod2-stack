@@ -1,3 +1,9 @@
+lod2webapi (0.8) lod2; urgency=low
+
+  * regex improvements
+
+ -- Karel Kremer <karel.kremer@tenforce.com> Tue, 03 Dec 2013 14:00:30 +0100
+
 lod2webapi (0.7) lod2; urgency=low
 
   * fix endpoint

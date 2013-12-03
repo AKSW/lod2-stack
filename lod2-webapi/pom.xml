@@ -201,7 +201,7 @@
 	   <id>codehaus-snapshots</id>
 	   <!--<url>http://snapshots.repository.codehaus.org</url>-->
        <!--<url>https://nexus.codehaus.org/content/repositories/codehaus-snapshots</url>-->
-<url>https://nexus.codehaus.org/content/repositories/codehaus-snapshots/</url>
+<url>https://mvnrepository.com</url>
       <snapshots>
           <enabled>true</enabled>
       </snapshots>
@@ -219,7 +219,7 @@
     <pluginRepository>
       <id>codehaus-snapshots</id>
 <!--      <url>http://nexus.codehaus.org/snapshots</url>-->
-<url>https://nexus.codehaus.org/content/repositories/codehaus-snapshots/</url>
+<url>https://mvnrepository.com</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -423,11 +423,11 @@
    <artifactId>jackson-mapper-asl</artifactId>
    <version>${jackson.version}</version>
   </dependency>
-      <dependency>
+<!--      <dependency>
           <groupId>com.google.gwt</groupId>
           <artifactId>gwt-dev</artifactId>
           <version>2.4.0</version>
-      </dependency>
+      </dependency> -->
 
   </dependencies>
 </project>
