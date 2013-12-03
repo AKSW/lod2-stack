@@ -1,2 +1,3 @@
 # Added the testing repository of the lod2stack
 deb http://stack.lod2.eu/deb/distributions/ lod2precise main
+deb http://stack.lod2.eu/deb/distributions/ lod2virt6 main

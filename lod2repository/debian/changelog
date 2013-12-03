@@ -1,3 +1,9 @@
+lod2repository (1.33) ldstack-nightly; urgency=low
+
+  * add legacy virtuoso6 distribution
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 23 Oct 2013 12:31:38 +0200
+
 lod2repository (1.32) lod2; urgency=low
 
   * add recommends of lod2-virtuoso-opensource
