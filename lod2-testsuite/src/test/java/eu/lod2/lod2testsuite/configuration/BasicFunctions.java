@@ -1,26 +1,18 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.plaf.basic.BasicArrowButton;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import static org.testng.AssertJUnit.*;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * Contains methods that ease up the use of Webdriver. 
@@ -464,7 +456,7 @@ public class BasicFunctions {
     /**
      * Reads a file from resources.
      * 
-     * @param filename
+     * @param file
      *          The name of the file to read.
      * @return 
      *          An ArrayList containing the lines of the file.

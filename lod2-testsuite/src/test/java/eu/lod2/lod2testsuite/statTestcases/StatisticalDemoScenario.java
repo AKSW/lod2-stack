@@ -54,7 +54,7 @@ public class StatisticalDemoScenario extends StatTestCase {
         // enter upload information
         bf.getVisibleElement(By.xpath("//input[@value='empty']")).click();
 
-        bf.getVisibleElement(By.xpath("//input[@id='model-input']")).sendKeys(testGraph);
+        bf.getVisibleElement(By.xpath("//input[@name='modeluri']")).sendKeys(testGraph);
 
         // Click create
         bf.getVisibleElement("Could not find submit button.", By.xpath("//a[@id='createmodel']")).click();
@@ -148,19 +148,32 @@ public class StatisticalDemoScenario extends StatTestCase {
         bf.waitUntilElementIsVisible("Could not find the inserted dimensions",
                 By.xpath("//div[@id='navigation']//a[text()[contains(.,'location')]]"));
     }
-    //* helper function for csvimport testcase that creates csvimport dimensions
-    private void addCSVDimension(String name, int startLeft, int startTop, int endLeft, int endTop) {
-        // horrible, horrible hack to avoid the prompt issue which selenium can't handle
-        ((JavascriptExecutor)driver).executeScript("window.prompt=function(message,defaultvalue){ " +
-                "return '"+name+"'; }");
-        // argh! the HORROR! glad it's over now...
-        driver.findElement(By.xpath("//a[@id='btn-add-dimension']")).click();
-        bf.bePatient(100);
 
-        clickCSVCells(startLeft,startTop,endLeft,endTop);
+  //* helper function for csvimport testcase that creates csvimport dimensions
+  private void addCSVDimension(String name, int startLeft, int startTop, int endLeft, int endTop) {
+
+      // horrible, horrible hack to avoid the prompt issue which selenium can't handle
+      ((JavascriptExecutor)driver).executeScript("window.prompt=function(message,defaultvalue){ " +
+              "return '"+name+"'; }");
+      // argh! the HORROR! glad it's over now...
+
+    driver.findElement(By.xpath("//a[@id='btn-add-dimension']")).click();
+
+    try{
+      WebElement input = bf.waitUntilElementIsVisible("Could not find the new csvimport dimension inputs, no matter, going legacy!",
+          By.xpath("//input[@id='dimension-prompt-name']"),2);
+      input.clear();
+      input.sendKeys(name);
+      driver.findElement(By.xpath("//input[@id='dimension-prompt-add']")).click();
+    }catch (Exception e){
+      // no new version of csvimport found
     }
+    bf.bePatient(100);
 
-    //* helper function for csvimport testcase that selects the given range of cells
+    clickCSVCells(startLeft, startTop, endLeft, endTop);
+  }
+
+  //* helper function for csvimport testcase that selects the given range of cells
     private void clickCSVCells(int startLeft, int startTop, int endLeft, int endTop){
         for(int left=startLeft; left<=endLeft; left++){
             for(int top=startTop; top<=endTop; top++){
@@ -191,15 +204,21 @@ public class StatisticalDemoScenario extends StatTestCase {
 
 
         // do the upload
-        driver.findElement(By.xpath("//input[@value='upload']")).click();
+        driver.findElement(By.xpath("//input[@id='import-basicimporter-rdfupload']")).click();
+        driver.findElement(By.xpath("//a[@id='addmodel']")).click();
+
         bf.waitUntilElementIsVisible("Could not find the file upload button",
                 By.xpath("//input[@id='file-input']")).sendKeys(pptFilePath);
 
-        driver.findElement(By.xpath("//a[@id='addmodel']")).click();
+        driver.findElement(By.xpath("//a[@id='importdata']")).click();
 
-        // check if the code list has been added
+      bf.checkIFrame(
+          By.xpath("//iframe[contains(@src,'ontowiki')]"),
+          By.id("modellist"));
+
+      // check if the code list has been added
         bf.waitUntilElementIsVisible("Could not find the inserted dimensions",
-                By.xpath("//div[@id='navigation']//a[text()[contains(.,'skos:Concept')]]"));
+                By.xpath("//div[@id='navigation']//a[@about='http://www.w3.org/2004/02/skos/core#Concept']"));
     }
 
     @Test
@@ -210,7 +229,7 @@ public class StatisticalDemoScenario extends StatTestCase {
     public void validateCube(){
         navigator.navigateTo(new String[]{"Manage Graph", "Validate"});
 
-        driver.findElement(By.xpath("//option[text()[contains(.,'Summary')]]")).click();
+        driver.findElement(By.xpath("//span[text()[contains(.,'Summary')]]")).click();
         bf.waitUntilElementIsVisible("Could not get summary information",
                 By.xpath("//h2[text()[contains(.,'Summary')]]"));
 
@@ -227,6 +246,8 @@ public class StatisticalDemoScenario extends StatTestCase {
      * post: there is a same as predicate between the csv locations and the poolparty locations
      *
      * NOTE: silk broke their namespaces. have to do that manually for xpath
+     *
+     * NOTE: this test requires that the sparql user has update rights. Allow for test and then disallow after testing please.
      */
     public void linkPoolPartyLocations(String silkProjectName, String virtUser, String virtPwd, String silkLinkSpec){
         // Get absolute paths.
@@ -370,7 +391,7 @@ public class StatisticalDemoScenario extends StatTestCase {
         // select sparql output option
         WebElement select =driver.findElement(By.xpath("//*[local-name()='select'][./*[local-name()='option'][text()='SPARQL/Update']]"));
         select.sendKeys("SPARQL");
-        bf.bePatient(200);
+        bf.bePatient(1000);
 
         // NOTE: the following code is a hack that works around this issue
         // find the div above the select that has an id for access
@@ -406,7 +427,7 @@ public class StatisticalDemoScenario extends StatTestCase {
         bf.checkIFrame(By.xpath("//iframe[contains(@src, 'cubeviz')]"),
                 By.id("modellist"));
 
-        driver.findElement(By.xpath("//h1[text()[contains(.,'"+testGraph+"')]]"));
+        driver.findElement(By.xpath("//div[@title='disease_CS']"));
         driver.findElement(By.xpath("//*[local-name()='svg']"));
     }
 
@@ -427,13 +448,20 @@ public class StatisticalDemoScenario extends StatTestCase {
         driver.findElement(By.xpath("//div[@class='v-button']//span[text()='Set configuration']")).click();
 
         navigator.navigateTo(new String[]{"Manage Graph", "Remove Graphs"});
-        driver.findElement(By.xpath("//div[preceding-sibling::div//div[text()[contains(.,'Filter:')]]]//" +
-                "input[@type='text']")).sendKeys(testGraph);
+        WebElement filter = driver.findElement(By.xpath("//div[preceding-sibling::div//div[text()[contains(.,'Filter:')]]]//" +
+            "input[@type='text']"));
+        filter.clear();
+        filter.sendKeys(testGraph);
+        driver.findElement(By.xpath("//div[@class='v-button']" +
+            "[.//span[text()[contains(.,'Fetch matching graphs')]]]")).click();
         bf.bePatient(500); // updating filter
+
         driver.findElement(By.xpath("//div[@class='v-button']" +
-                "[.//span[text()[contains(.,'Mark selected graphs')]]]")).click();
+            "[.//span[text()[contains(.,'Apply filter to table')]]]")).click();
         driver.findElement(By.xpath("//div[@class='v-button']" +
-                "[.//span[text()[contains(.,'Delete marked graphs')]]]")).click();
+            "[.//span[text()[contains(.,'Mark selected graphs')]]]")).click();
+        driver.findElement(By.xpath("//div[@class='v-button']" +
+            "[.//span[text()[contains(.,'Delete marked graphs')]]]")).click();
 
         bf.waitUntilElementIsVisible("Could not find confirmation dialog",
                 By.xpath("//div[preceding-sibling::div//div[text()[contains(.,'Are you sure?')]]]//" +
