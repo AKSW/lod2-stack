@@ -49,8 +49,8 @@ public class CustomComponentFactory {
 	
 	public AbstractComponent create(CompType type){
 		switch (type) {
-			case CreateKB: return new OntoWikiPathExtended(state,"/model/create",false); 
-			case ImportCSV: return new OntoWikiPathExtended(state,"/csvimport",true); 
+			case CreateKB: return new OntoWikiPathExtended(state,"/model/create",false);
+			case ImportCSV: return new OntoWikiPathExtended(state,"/csvimport",true);
 			case UploadRDF: return new ELoadRDFFile(state);
 			case ExtractFromXML: return new EXML(state);
 			case ExtractFromXMLExtended: return new EXMLExtended(state);

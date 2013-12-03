@@ -68,6 +68,7 @@ public class CKANPublisherPanel extends Panel implements LOD2DemoState.CurrentGr
         this.removeAllComponents();
 
         String currentGraph=this.state.getCurrentGraph();
+
         if(currentGraph==null || currentGraph.isEmpty()){
             this.addComponent(new Label("Please select a graph first using the " +
                     "interface below:"));

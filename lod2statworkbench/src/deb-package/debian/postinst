@@ -22,7 +22,7 @@ set -e
 DAEMON=/usr/bin/virtuoso-t
 VIRTUOSOVERSION=virtuoso-opensource-6.1
 SHORTNAME=virtuoso
-PIDFILE=`ls /var/run/ | grep virtuoso`
+PIDFILE=`ls /var/run/ | grep -m1 virtuoso`
 
 if [ -z "$PIDFILE" ] 
 then

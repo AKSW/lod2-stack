@@ -1,3 +1,33 @@
+lod2statworkbench (0.1.2) lod2; urgency=low
+
+  * Fix for ontowiki configurations
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 03 Dec 2013 14:00:35 +0100
+
+lod2statworkbench (0.1.1) lod2; urgency=low
+
+  * Fix to proxy settings
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 22 Nov 2013 17:13:35 +0100
+
+lod2statworkbench (0.1.0) lod2; urgency=low
+
+  * Update dependency of lodrefine
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 22 Nov 2013 15:23:35 +0100
+
+lod2statworkbench (0.0.9) lod2; urgency=low
+
+  * Fix in postinstall
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 17 Oct 2013 13:03:35 +0100
+
+lod2statworkbench (0.0.8) lod2; urgency=low
+
+  * Added first support for reconciling dimensions
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 14 Oct 2013 10:06:35 +0100
+
 lod2statworkbench (0.0.7) lod2; urgency=low
 
   * Update for merge component: more readable uris
