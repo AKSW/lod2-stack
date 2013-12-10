@@ -171,3 +171,7 @@
     	font-family:"Droid Sans", sans-serif; 
 	font-size: 12px;
 }
+
+.config-table-input[type="text"] {
+	font-size: 14px;
+}
