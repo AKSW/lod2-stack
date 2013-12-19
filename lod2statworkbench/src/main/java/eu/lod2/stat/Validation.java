@@ -213,7 +213,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		// IC-2
 //		strBuilder = new StringBuilder();
 //		strBuilder.append("select ?dataSet (count(?struct) as ?dsdNum) \n");
-//		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 ////		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 //		strBuilder.append("  ?dataSet a <http://purl.org/linked-data/cube#DataSet> . ");
 //		strBuilder.append("  OPTIONAL { ");
@@ -227,7 +227,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		// IC-1
 //		strBuilder = new StringBuilder();
 //		strBuilder.append("select ?obs (count(?dataSet) as ?dsNum) \n");
-//		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+//		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 ////		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 //		strBuilder.append("  ?obs a <http://purl.org/linked-data/cube#Observation> . ");
 //		strBuilder.append("  OPTIONAL { ");
@@ -243,7 +243,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?obs ?dsNum \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  { SELECT DISTINCT ?obs (0 as ?dsNum) WHERE { ?obs a qb:Observation . FILTER NOT EXISTS { ?obs qb:dataSet ?ds . ?ds a qb:DataSet . } } } \n");
 		strBuilder.append("  UNION \n");
@@ -256,7 +256,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dataSet ?dsdNum \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  { SELECT DISTINCT ?dataSet (0 as ?dsdNum) WHERE { ?dataSet a qb:DataSet . FILTER NOT EXISTS { ?dataSet qb:structure ?dsd . ?dsd a qb:DataStructureDefinition . } } } \n");
 		strBuilder.append("  UNION \n");
@@ -270,7 +270,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dsd \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsd a qb:DataStructureDefinition . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
@@ -286,7 +286,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?dim \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  FILTER NOT EXISTS { ?dim rdfs:range [] . } \n");
@@ -298,7 +298,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?dsd ?componentSpec ?component \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dsd qb:component ?componentSpec . \n");
 		strBuilder.append("  ?componentSpec qb:componentRequired \"false\"^^xsd:boolean . \n");
@@ -312,7 +312,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?sliceKey \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
 		strBuilder.append("  FILTER NOT EXISTS { \n");
@@ -327,7 +327,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?sliceKey \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?sliceKey a qb:SliceKey . \n");
 		strBuilder.append("  ?sliceKey qb:componentProperty ?prop . \n");
@@ -344,7 +344,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?slice \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  { \n");
 		strBuilder.append("    ?slice a qb:Slice . \n");
@@ -363,7 +363,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select ?slice ?dim \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?slice qb:sliceStructure ?key . \n");
 		strBuilder.append("  ?key qb:componentProperty ?dim . \n");
@@ -379,7 +379,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?dim \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
 		strBuilder.append("  ?dim rdfs:range skos:Concept . \n");
@@ -393,7 +393,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?obs \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -410,7 +410,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?obs1 ?obs2 \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs1 qb:dataSet ?dataSet . \n");
 		strBuilder.append("  ?obs2 qb:dataSet ?dataSet . \n");
@@ -432,7 +432,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?attr \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -448,7 +448,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?measure \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -468,7 +468,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?measure \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -484,7 +484,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?measure ?omeasure \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -504,7 +504,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs1 ?numMeasures (COUNT(?obs2) AS ?count) \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  { \n");
 		strBuilder.append("    SELECT ?dsd (COUNT(?m) AS ?numMeasures) WHERE { \n");
@@ -535,7 +535,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder = new StringBuilder();
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("select distinct ?obs ?dataset ?slice \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?dataset qb:slice ?slice . \n");
 		strBuilder.append("  ?slice   qb:observation ?obs . \n");
@@ -549,7 +549,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
 		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
 		strBuilder.append("select distinct ?dim ?v ?list \n");
-		strBuilder.append("from ").append(helperGraph).append(" where { \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
 //		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
 		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
 		strBuilder.append("  ?ds qb:structure ?dsd . \n");
@@ -607,7 +607,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 			throws RepositoryException, MalformedQueryException, QueryEvaluationException{
 		String curGraph = "<" + state.getCurrentGraph() + ">";
 		StringBuilder builder = new StringBuilder();
-		final String insertIntoPart = builder.append("INSERT INTO GRAPH ").append(helperGraph).append(" { \n").toString();
+		final String insertIntoPart = builder.append("INSERT INTO GRAPH <").append(helperGraph).append("> { \n").toString();
 		builder = new StringBuilder();
 		final String wherePart = builder.append("} WHERE { GRAPH ").append(curGraph).append(" { \n").toString();
 		final String endingPart = "}}";
@@ -625,11 +625,11 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	}
 	
 	private void createHelperGraph(){
-		helperGraph = "<http://localhost:8080/lod2statworkbench/validationHelper/" + this.hashCode() + "/>";
+		helperGraph = "http://localhost:8080/lod2statworkbench/validationHelper/" + this.hashCode() + "/";
 		try {
 			RepositoryConnection conn = state.getRdfStore().getConnection();
-			conn.prepareGraphQuery(QueryLanguage.SPARQL, "DROP SILENT GRAPH " + helperGraph).evaluate();
-			conn.prepareGraphQuery(QueryLanguage.SPARQL, "CREATE SILENT GRAPH " + helperGraph).evaluate();
+			conn.prepareGraphQuery(QueryLanguage.SPARQL, "DROP SILENT GRAPH <" + helperGraph + ">").evaluate();
+			conn.prepareGraphQuery(QueryLanguage.SPARQL, "CREATE SILENT GRAPH <" + helperGraph + ">").evaluate();
 			
 			executeHelperInsertQuery(conn, "  ?o rdf:type qb:Observation . \n", 
 					"  [] qb:observation ?o . \n");
@@ -693,7 +693,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private void removeHelperGraph(){
 		try {
 			RepositoryConnection conn = state.getRdfStore().getConnection();
-			conn.prepareGraphQuery(QueryLanguage.SPARQL, "DROP SILENT GRAPH " + helperGraph).evaluate();
+			conn.prepareGraphQuery(QueryLanguage.SPARQL, "DROP SILENT GRAPH <" + helperGraph + ">").evaluate();
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		} catch (QueryEvaluationException e) {
@@ -1003,6 +1003,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-1 layout
 	private void observationLinks(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icLinkToDataSet.getResults();
@@ -1131,6 +1132,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-2 layout
 	private void dataSetLinks(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icLinkToDSD.getResults();
@@ -1258,6 +1260,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-3 layout
 	private void measuresInDSD(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icMeasuresInDSD.getResults();
@@ -1292,22 +1295,66 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listDSDs.setNullSelectionAllowed(false);
 		validationTab.addComponent(listDSDs);
 		
-		Button editInOW = new Button("Edit in OntoWiki");
-		editInOW.addListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				showInOntowiki((String)listDSDs.getValue());
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
+		
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue("After the fix, component selected in the combo box below will be turned to measure, " +
+				"or you can choose to edit the above selected DSD manually in OntoWiki");
+		panelLayout.addComponent(fixLabel);
+		final ComboBox comboComponents = new ComboBox();
+		comboComponents.setWidth("100%");
+		comboComponents.setNullSelectionAllowed(false);
+		panelLayout.addComponent(comboComponents);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button editOW = new Button("Edit in OntoWiki");
+		Button turnToMeasure = new Button("Turn to measure");
+		btnLayout.addComponent(turnToMeasure);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		listDSDs.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				String dsd = event.getProperty().getValue().toString();
+				if (dsd == null || dsd.equalsIgnoreCase("")) return;
+				
+				comboComponents.removeAllItems();
+				TupleQueryResult qRes = executeTupleQuery(ValidationFixUtils.ic03_getRequiredAttributes(state.getCurrentGraph(), dsd));
+				try {
+					while (qRes.hasNext()){
+						comboComponents.addItem(qRes.next().getValue("attr").toString());
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
 			}
 		});
-		
-		Button fix = new Button("Edit in OntoWiki");
-		HorizontalLayout buttonsLayout = new HorizontalLayout();
-		buttonsLayout.setSpacing(true);
-		buttonsLayout.addComponent(fix);
-		buttonsLayout.addComponent(editInOW);
-		validationTab.addComponent(buttonsLayout);
-		validationTab.setExpandRatio(buttonsLayout, 2.0f);
-		
-		fix.addListener(new Button.ClickListener() {
+		turnToMeasure.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				Object selVal = comboComponents.getValue();
+				if (selVal == null) {
+					getWindow().showNotification("No component was selected in the combo box");
+					return;
+				}
+				
+				executeGraphQuery(ValidationFixUtils.ic03_turnToMeasure(state.getCurrentGraph(), selVal.toString()));
+				executeGraphQuery(ValidationFixUtils.ic03_turnToMeasure2(state.getCurrentGraph(), selVal.toString()));
+				getWindow().showNotification("Fix executed");
+				icMeasuresInDSD.evaluate();
+				measuresInDSD();
+			}
+		});
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)listDSDs.getValue());
 			}
@@ -1316,6 +1363,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-4 layout
 	private void dimensionsHaveRange(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icDimensionsHaveRange.getResults();
@@ -1436,7 +1484,6 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		
 		removeCompReq.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				// TODO: implement action
 				String chosenComponent = (String)listComponents.getValue();
 				if (chosenComponent == null){
 					getWindow().showNotification("Cannot execute the action", 
@@ -1454,7 +1501,6 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		});
 		turnToAttr.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				// TODO: implement action
 				String chosenComponent = (String)listComponents.getValue();
 				if (chosenComponent == null){
 					getWindow().showNotification("Cannot execute the action", 
@@ -1480,6 +1526,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-7 layout
 	private void sliceKeysDeclared(){
 		validationTab.removeAllComponents();
 		
@@ -1520,10 +1567,34 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		detailsTable.addContainerProperty("Object", String.class, null);
 		validationTab.addComponent(detailsTable);
 		
-		Button editInOW = new Button("Edit in OntoWiki");
-		validationTab.addComponent(editInOW);
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
 		
-		editInOW.addListener(new Button.ClickListener() {
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue("After the fix, slice key chosen above will be associated with the DSD chosen below, or you can edit the slice key manually.");
+		panelLayout.addComponent(fixLabel);
+		final ComboBox comboDSDs = new ComboBox();
+		comboDSDs.setNullSelectionAllowed(false);
+		comboDSDs.setWidth("100%");
+		panelLayout.addComponent(comboDSDs);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button editOW = new Button("Edit in OntoWiki");
+		Button fix = new Button("Quick fix");
+		btnLayout.addComponent(fix);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)lsSliceKeys.getValue());
 			}
@@ -1544,10 +1615,42 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				}
 			}
 		});
+		lsSliceKeys.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				String sk = event.getProperty().getValue().toString();
+				if (sk == null || sk.equalsIgnoreCase("")) return;
+				
+				TupleQueryResult resSliceKeys = executeTupleQuery(ValidationFixUtils.ic07_getMatchingDSDs(state.getCurrentGraph(), sk));
+				comboDSDs.removeAllItems();
+				try {
+					while (resSliceKeys.hasNext()){
+						comboDSDs.addItem(resSliceKeys.next().getValue("dsd").stringValue());
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				Object selVal = comboDSDs.getValue();
+				if (selVal == null){
+					getWindow().showNotification("No DSD was selected");
+					return;
+				}
+				executeGraphQuery(ValidationFixUtils.ic07_insertConnection(state.getCurrentGraph(), 
+						selVal.toString(), lsSliceKeys.getValue().toString()));
+				getWindow().showNotification("Fix executed");
+				
+				icSliceKeysDeclared.evaluate();
+				sliceKeysDeclared();
+			}
+		});
 		
 		showContent();
 	}
 	
+	// IC-8 layout
 	private void sliceKeysConsistentWithDSD(){
 		validationTab.removeAllComponents();
 		
@@ -1621,6 +1724,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	
+	// IC-9 layout
 	private void sliceStructureUnique(){
 		validationTab.removeAllComponents();
 		
@@ -1689,6 +1794,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-10 layout
 	private void sliceDimensionsComplete(){
 		validationTab.removeAllComponents();
 		
@@ -1778,6 +1884,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-5 layout
 	private void dimensionDefinitions(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icDimsHaveCodeLists.getResults();
@@ -1825,6 +1932,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-11 layout
 	private void dimensionsRequired(){
 		validationTab.removeAllComponents();
 		validationTab.addComponent(new Label("Following observation don't have a value for each dimension: "));
@@ -1845,6 +1953,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
+	// IC-12 layout
 	private void noDuplicateObs(){
 		validationTab.removeAllComponents();
 		validationTab.addComponent(new Label("Following observations belong to the same data set and have the same value for all dimensions."));
@@ -1934,7 +2043,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
-	// IC-13
+	// IC-13 layout
 	private void requiredAttributes(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icRequiredAttributes.getResults();
@@ -2022,7 +2131,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
-	// IC-14
+	// IC-14 layout
 	private void allMeasuresPresent(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icAllMeasuresPresent.getResults();
@@ -2072,7 +2181,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
-	// IC-15
+	// IC-15 layout
 	private void measureDimConsistent(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icMeasureDimConsistent.getResults();
@@ -2122,7 +2231,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
-	// IC-16
+	// IC-16 layout
 	private void singleMeasure(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icSingleMeasure.getResults();
@@ -2181,7 +2290,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 		
-	// IC-17
+	// IC-17 layout
 	private void allMeasuresPresentInMeasDimCube(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icAllMeasuresPresentInMeasDimCube.getResults();
@@ -2244,7 +2353,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
-	// IC-18
+	// IC-18 layout
 	private void consistentDataSetLinks(){
 		validationTab.removeAllComponents();
 		Iterator<BindingSet> res = icConsistentDataSetLinks.getResults();
@@ -2303,7 +2412,7 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		showContent();
 	}
 	
-	// IC-19
+	// IC-19 layout
 	private void codesFromCodeList(){
 		validationTab.removeAllComponents();
 		final Iterator<BindingSet> res = icCodesFromCodeLists.getResults();

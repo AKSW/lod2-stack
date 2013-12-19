@@ -25,12 +25,14 @@ public class ValidationFixUtils {
 	
 	public static String ic03_getRequiredAttributes(String graph, String dsd){
 		StringBuilder query = createBuilder();
-		query.append("SELECT ?dim \n");
+		query.append("SELECT DISTINCT ?attr \n");
 		query.append("FROM <").append(graph).append("> WHERE { \n");
 		query.append("  <").append(dsd).append("> qb:component ?cs . \n");
-		query.append("  ?cs qb:componentProperty ?attr . \n");
-		query.append("  ?cs qb:componentRequired true^^xsd:boolean . \n");
-		query.append("  ?attr a qb:AttributeProperty . \n");
+		query.append("  ?cs qb:componentRequired \"true\"^^xsd:boolean . \n");
+		query.append("  { { ?cs qb:attribute ?attr. } UNION { \n");
+		query.append("    ?cs qb:componentProperty ?attr . \n");
+		query.append("    ?attr a qb:AttributeProperty . \n");
+		query.append("  }} \n");
 		query.append("}");
 		return query.toString();
 	}
@@ -46,7 +48,23 @@ public class ValidationFixUtils {
 		query.append("} \n");
 		query.append("WHERE { \n");
 		query.append("  <").append(dim).append("> a ?type . \n");
-		query.append("  FILTER (?type IN (qb:MeasureProperty, qb:AttributeProperty)) \n");
+		query.append("  FILTER (?type IN (qb:DimensionProperty, qb:AttributeProperty)) \n");
+		query.append("} ");
+		return query.toString();
+	}
+	
+	public static String ic03_turnToMeasure2(String graph, String dim){
+		StringBuilder query = createBuilder();
+		query.append("MODIFY GRAPH <").append(graph).append("> \n");
+		query.append("DELETE { \n");
+		query.append("  ?s ?prop <").append(dim).append("> . \n");
+		query.append("} \n");
+		query.append("INSERT { \n");
+		query.append("  ?s qb:measure <").append(dim).append("> . \n");
+		query.append("} \n");
+		query.append("WHERE { \n");
+		query.append("  ?s ?prop <").append(dim).append("> . \n");
+		query.append("  FILTER (?prop IN (qb:dimension, qb:attribute)) \n");
 		query.append("} ");
 		return query.toString();
 	}
@@ -91,7 +109,7 @@ public class ValidationFixUtils {
 		query.append("    ?obs qb:dataSet ?ds . \n");
 		query.append("    ?ds qb:structure ?dsd . \n");
 		query.append("    ?dsd qb:component ?cs . \n");
-		query.append("    ?cs qb:componentProperty <dim> . ");
+		query.append("    ?cs qb:componentProperty <").append(dim).append("> . ");
 		query.append("    ?obs <").append(dim).append("> ?val . \n");
 		query.append("    FILTER NOT EXISTS { \n");
 		query.append("      ?val skos:inScheme ?list . \n");
@@ -105,18 +123,26 @@ public class ValidationFixUtils {
 		StringBuilder query = createBuilder();
 		query.append("SELECT DISTINCT ?list \n");
 		query.append("FROM <").append(graph).append("> WHERE { \n");
-		query.append("  ?list a skos:Scheme . \n");
+		query.append("  ?list a skos:ConceptScheme . \n");
 		query.append("  FILTER EXISTS { \n");
 		query.append("    ?obs qb:dataSet ?ds . \n");
 		query.append("    ?ds qb:structure ?dsd . \n");
 		query.append("    ?dsd qb:component ?cs . \n");
-		query.append("    ?cs qb:componentProperty <dim> . ");
+		query.append("    ?cs qb:componentProperty <").append(dim).append("> . ");
 		query.append("    ?obs <").append(dim).append("> ?val . \n");
 		query.append("    FILTER NOT EXISTS { \n");
 		query.append("      ?val skos:inScheme ?list . \n");
 		query.append("    } \n");
 		query.append("  } \n");
 		query.append("}");
+		return query.toString();
+	}
+	
+	public static String ic05_insertCodeList(String graph, String dim, String codeList){
+		StringBuilder query = createBuilder();
+		query.append("INSERT INTO GRAPH <").append(graph).append("> { \n");
+		query.append("  <").append(dim).append("> qb:codeList <").append(codeList).append("> . \n");
+		query.append("} ");
 		return query.toString();
 	}
 	
@@ -174,12 +200,15 @@ public class ValidationFixUtils {
 		query.append("    <").append(key).append("> qb:componentProperty ?prop . \n");
 		query.append("    FILTER NOT EXISTS { \n");
 		query.append("      ?dsd qb:component ?cs . \n");
-		query.append("      ?cs qb:componentProperty ?prop . \n");
+		query.append("      ?cs ?p2 ?prop . \n");
+		query.append("      FILTER (?p2 IN (qb:componentProperty, qb:dimension)) . \n");
 		query.append("    } \n");
 		query.append("  } \n");
 		query.append("}");
 		return query.toString();
 	}
+	
+	// TODO: consider including getOtherDSDs???
 	
 	public static String ic07_insertConnection(String graph, String dsd, String key){
 		StringBuilder query = createBuilder();
@@ -245,6 +274,21 @@ public class ValidationFixUtils {
 		query.append("    } \n");
 		query.append("  } \n");
 		query.append("}");
+		return query.toString();
+	}
+	
+	public static String ic09_setSliceKey(String graph, String slice, String key){
+		StringBuilder query = createBuilder();
+		query.append("MODIFY GRAPH <").append(graph).append("> \n");
+		query.append("DELETE { \n");
+		query.append("  <").append(slice).append("> qb:sliceStructure ?key . \n");
+		query.append("} \n");
+		query.append("INSERT { \n");
+		query.append("  <").append(slice).append("> qb:sliceStructure <").append(key).append("> . \n");
+		query.append("} \n");
+		query.append("WHERE { \n");
+		query.append("  <").append(slice).append("> qb:sliceStructure ?key . \n");
+		query.append("} ");
 		return query.toString();
 	}
 	
