@@ -1766,10 +1766,35 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		detailsTable.addContainerProperty("Object", String.class, null);
 		validationTab.addComponent(detailsTable);
 		
-		Button editInOW = new Button("Edit in OntoWiki");
-		validationTab.addComponent(editInOW);
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
 		
-		editInOW.addListener(new Button.ClickListener() {
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue("After the fix, slice chosen above will be associated with the slice key chosen in the below combo box, " +
+				"or the problematic slice can be edited manuallz in OntoWiki");
+		panelLayout.addComponent(fixLabel);
+		final ComboBox comboKeys = new ComboBox();
+		comboKeys.setWidth("100%");
+		comboKeys.setNullSelectionAllowed(false);
+		panelLayout.addComponent(comboKeys);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button editOW = new Button("Edit in OntoWiki");
+		Button fix = new Button("Quick fix");
+		btnLayout.addComponent(fix);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)lsSlices.getValue());
 			}
@@ -1788,6 +1813,36 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				} catch (QueryEvaluationException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		lsSlices.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				String slice = event.getProperty().toString();
+				comboKeys.removeAllItems();
+				TupleQueryResult resKeys = executeTupleQuery(ValidationFixUtils.ic09_getMatchingKeys(state.getCurrentGraph(), slice));
+				try {
+					while (resKeys.hasNext()){
+						comboKeys.addItem(resKeys.next().getValue("key"));
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				Object selKey = comboKeys.getValue();
+				Object selSlice = lsSlices.getValue();
+				if (selKey == null || selSlice == null) {
+					getWindow().showNotification("No slice key or slice was selected");
+					return;
+				}
+				
+				executeGraphQuery(ValidationFixUtils.ic09_removeSliceKeys(state.getCurrentGraph(), selSlice.toString()));
+				executeGraphQuery(ValidationFixUtils.ic09_insertSliceKey(state.getCurrentGraph(), selSlice.toString(), selKey.toString()));
+				getWindow().showNotification("Fix executed");
+				icSliceStructureUnique.evaluate();
+				sliceStructureUnique();
 			}
 		});
 		

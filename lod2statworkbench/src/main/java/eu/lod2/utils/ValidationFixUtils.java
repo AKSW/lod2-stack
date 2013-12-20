@@ -277,18 +277,22 @@ public class ValidationFixUtils {
 		return query.toString();
 	}
 	
-	public static String ic09_setSliceKey(String graph, String slice, String key){
+	public static String ic09_removeSliceKeys(String graph, String slice){
 		StringBuilder query = createBuilder();
-		query.append("MODIFY GRAPH <").append(graph).append("> \n");
-		query.append("DELETE { \n");
+		query.append("DELETE FROM GRAPH <").append(graph).append("> { \n");
 		query.append("  <").append(slice).append("> qb:sliceStructure ?key . \n");
-		query.append("} \n");
-		query.append("INSERT { \n");
-		query.append("  <").append(slice).append("> qb:sliceStructure <").append(key).append("> . \n");
 		query.append("} \n");
 		query.append("WHERE { \n");
 		query.append("  <").append(slice).append("> qb:sliceStructure ?key . \n");
 		query.append("} ");
+		return query.toString();
+	}
+	
+	public static String ic09_insertSliceKey(String graph, String slice, String key){
+		StringBuilder query = createBuilder();
+		query.append("INSERT INTO GRAPH <").append(graph).append("> { \n");
+		query.append("  <").append(slice).append("> qb:sliceStructure <").append(key).append("> . \n");
+		query.append("} \n");
 		return query.toString();
 	}
 	
