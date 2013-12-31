@@ -76,14 +76,16 @@ public class ValidationFixUtils {
 		query.append("  ?obs qb:dataSet ?ds . \n");
 		query.append("  ?ds qb:structure ?dsd . \n");
 		query.append("  ?dsd qb:component ?cs . \n");
-		query.append("  ?cs qb:componentProperty <").append(dim).append("> . \n");
+		query.append("  ?cs ?prop <").append(dim).append("> . ");
+		query.append("  FILTER (?prop IN (qb:dimension, qb:componentProperty)) \n");
 		query.append("  ?obs <").append(dim).append("> ?val . \n");
 		query.append("  ?val a ?type . \n");
 		query.append("  FILTER NOT EXISTS { \n");
 		query.append("    ?obs2 qb:dataSet ?ds2 . \n");
 		query.append("    ?ds2 qb:structure ?dsd2 . \n");
 		query.append("    ?dsd2 qb:component ?cs2 . \n");
-		query.append("    ?cs2 qb:componentProperty <").append(dim).append("> . \n");
+		query.append("    ?cs2 ?prop2 <").append(dim).append("> . ");
+		query.append("    FILTER (?prop2 IN (qb:dimension, qb:componentProperty)) \n");
 		query.append("    ?obs2 <").append(dim).append("> ?val2 . \n");
 		query.append("    FILTER NOT EXISTS { ?val2 a ?type . } \n");
 		query.append("  } \n");
@@ -109,7 +111,8 @@ public class ValidationFixUtils {
 		query.append("    ?obs qb:dataSet ?ds . \n");
 		query.append("    ?ds qb:structure ?dsd . \n");
 		query.append("    ?dsd qb:component ?cs . \n");
-		query.append("    ?cs qb:componentProperty <").append(dim).append("> . ");
+		query.append("    ?cs ?prop <").append(dim).append("> . ");
+		query.append("    FILTER (?prop IN (qb:dimension, qb:componentProperty)) \n");
 		query.append("    ?obs <").append(dim).append("> ?val . \n");
 		query.append("    FILTER NOT EXISTS { \n");
 		query.append("      ?val skos:inScheme ?list . \n");
@@ -128,7 +131,8 @@ public class ValidationFixUtils {
 		query.append("    ?obs qb:dataSet ?ds . \n");
 		query.append("    ?ds qb:structure ?dsd . \n");
 		query.append("    ?dsd qb:component ?cs . \n");
-		query.append("    ?cs qb:componentProperty <").append(dim).append("> . ");
+		query.append("    ?cs ?prop <").append(dim).append("> . ");
+		query.append("    FILTER (?prop IN (qb:dimension, qb:componentProperty)) \n");
 		query.append("    ?obs <").append(dim).append("> ?val . \n");
 		query.append("    FILTER NOT EXISTS { \n");
 		query.append("      ?val skos:inScheme ?list . \n");

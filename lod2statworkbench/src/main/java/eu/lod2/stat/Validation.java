@@ -13,6 +13,8 @@ import eu.lod2.ConfigurationTab;
 import eu.lod2.LOD2DemoState;
 import eu.lod2.utils.ValidationFixUtils;
 
+import net.sf.saxon.trans.NoDynamicContextException;
+
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
@@ -887,7 +889,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	}
 	
 	private Object createTreeItem(String caption, IntegrityConstraint ic){
-		final Object itemObject = criteriaTree.addItem();
+		final Object itemObject = ic;
+		criteriaTree.addItem(ic);
 		criteriaTree.setItemCaption(itemObject, caption);
 		criteriaTree.setChildrenAllowed(itemObject, false);
 		ic.evaluate();
@@ -896,6 +899,13 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		else 
 			criteriaTree.setItemIcon(itemObject, iconError);
 		return itemObject;
+	}
+	
+	private void updateItemIcon(IntegrityConstraint ic){
+		if (ic.getStatus() != null && ic.getStatus().booleanValue())
+			criteriaTree.setItemIcon(ic, iconOK);
+		else 
+			criteriaTree.setItemIcon(ic, iconError);
 	}
 	
 	private void summary(){
@@ -1125,6 +1135,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				ArrayList<Statement> addStmts = new ArrayList<Statement>();
 				addStmts.add(getStatementFromUris(observation, dataSetProp, chosenDataSet));
 				uploadStatements(addStmts);
+				getWindow().showNotification("Fix executed");
+//				icLinkToDataSet.evaluate();
+//				updateItemIcon(icLinkToDataSet);
+				refresh();
 				observationLinks();
 			}
 		});
@@ -1253,6 +1267,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				ArrayList<Statement> addStmts = new ArrayList<Statement>();
 				addStmts.add(getStatementFromUris(dataSet, structProp, chosenDSD));
 				uploadStatements(addStmts);
+				getWindow().showNotification("Fix executed");
+//				icLinkToDSD.evaluate();
+//				updateItemIcon(icLinkToDSD);
+				refresh();
 				dataSetLinks();
 			}
 		});
@@ -1350,7 +1368,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				executeGraphQuery(ValidationFixUtils.ic03_turnToMeasure(state.getCurrentGraph(), selVal.toString()));
 				executeGraphQuery(ValidationFixUtils.ic03_turnToMeasure2(state.getCurrentGraph(), selVal.toString()));
 				getWindow().showNotification("Fix executed");
-				icMeasuresInDSD.evaluate();
+//				icMeasuresInDSD.evaluate();
+//				updateItemIcon(icMeasuresInDSD);
+				refresh();
 				measuresInDSD();
 			}
 		});
@@ -1398,13 +1418,70 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listDimensions.setNullSelectionAllowed(false);
 		validationTab.addComponent(listDimensions);
 		
-		Button fix = new Button("Edit in OntoWiki");
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
 		
-		fix.addListener(new Button.ClickListener() {
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue("After the fix, dimension chosen above will have a range chosen in the combo box below. " +
+				"Alternatively, the problematic dimension can be edited manually in OntoWiki");
+		panelLayout.addComponent(fixLabel);
+		final ComboBox comboType = new ComboBox();
+		comboType.setWidth("100%");
+		comboType.setNullSelectionAllowed(false);
+		panelLayout.addComponent(comboType);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button editOW = new Button("Edit in OntoWiki");
+		Button fix = new Button("Quick fix");
+		btnLayout.addComponent(fix);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)listDimensions.getValue());
+			}
+		});
+		listDimensions.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				String dim = event.getProperty().getValue().toString();
+				String query = ValidationFixUtils.ic04_getMathingRange(state.getCurrentGraph(), dim);
+				TupleQueryResult qRes = executeTupleQuery(query);
+				comboType.removeAllItems();
+				try {
+					while (qRes.hasNext()){
+						comboType.addItem(qRes.next().getValue("type").stringValue());
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				Object selDim = listDimensions.getValue();
+				Object selType = comboType.getValue();
+				if (selDim == null || selType == null){
+					getWindow().showNotification("Dimension or type was not selected");
+					return;
+				}
+				
+				executeGraphQuery(ValidationFixUtils.ic04_insertRange(
+						state.getCurrentGraph(), selDim.toString(), selType.toString()));
+				getWindow().showNotification("Fix executed");
+//				icDimensionsHaveRange.evaluate();
+//				updateItemIcon(icDimensionsHaveRange);
+				refresh();
+				dimensionsHaveRange();
 			}
 		});
 		
@@ -1495,6 +1572,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				String query = ValidationFixUtils.ic06_removeComponentRequired(state.getCurrentGraph(), chosenDSD, chosenComponent);
 				executeGraphQuery(query);
 				getWindow().showNotification("Fix executed");
+//				icAttributesOptional.evaluate();
+//				updateItemIcon(icAttributesOptional);
 				refresh();
 				attributesOptional();
 			}
@@ -1513,6 +1592,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				executeGraphQuery(query);
 				executeGraphQuery(query2);
 				getWindow().showNotification("Fix executed");
+//				icAttributesOptional.evaluate();
+//				updateItemIcon(icAttributesOptional);
 				refresh();
 				attributesOptional();
 			}
@@ -1640,9 +1721,11 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				}
 				executeGraphQuery(ValidationFixUtils.ic07_insertConnection(state.getCurrentGraph(), 
 						selVal.toString(), lsSliceKeys.getValue().toString()));
-				getWindow().showNotification("Fix executed");
 				
-				icSliceKeysDeclared.evaluate();
+				getWindow().showNotification("Fix executed");
+//				icSliceKeysDeclared.evaluate();
+//				updateItemIcon(icSliceKeysDeclared);
+				refresh();
 				sliceKeysDeclared();
 			}
 		});
@@ -1841,7 +1924,9 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 				executeGraphQuery(ValidationFixUtils.ic09_removeSliceKeys(state.getCurrentGraph(), selSlice.toString()));
 				executeGraphQuery(ValidationFixUtils.ic09_insertSliceKey(state.getCurrentGraph(), selSlice.toString(), selKey.toString()));
 				getWindow().showNotification("Fix executed");
-				icSliceStructureUnique.evaluate();
+//				icSliceStructureUnique.evaluate();
+//				updateItemIcon(icSliceStructureUnique);
+				refresh();
 				sliceStructureUnique();
 			}
 		});
@@ -1974,13 +2059,70 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		listDimensions.setNullSelectionAllowed(false);
 		validationTab.addComponent(listDimensions);
 		
-		Button fix = new Button("Edit in OntoWiki");
-		validationTab.addComponent(fix);
-		validationTab.setExpandRatio(fix, 2.0f);
+		Form panelQuickFix = new Form();
+		panelQuickFix.setCaption("Quick Fix");
+		panelQuickFix.setSizeFull();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setSpacing(true);
+		panelLayout.setSizeFull();
+		panelQuickFix.setLayout(panelLayout);
+		validationTab.addComponent(panelQuickFix);
+		validationTab.setExpandRatio(panelQuickFix, 2.0f);
 		
-		fix.addListener(new Button.ClickListener() {
+		Label fixLabel = new Label();
+		fixLabel.setContentMode(Label.CONTENT_XHTML);
+		fixLabel.setValue("After the fix, dimension chosen above will be associated with the code list chosen in the combo box below. " +
+				"Alternatively, the problematic dimension can be edited manually in OntoWiki");
+		panelLayout.addComponent(fixLabel);
+		final ComboBox comboCodeLists = new ComboBox();
+		comboCodeLists.setWidth("100%");
+		comboCodeLists.setNullSelectionAllowed(false);
+		panelLayout.addComponent(comboCodeLists);
+		HorizontalLayout btnLayout = new HorizontalLayout();
+		btnLayout.setSpacing(true);
+		Button editOW = new Button("Edit in OntoWiki");
+		Button fix = new Button("Quick fix");
+		btnLayout.addComponent(fix);
+		btnLayout.addComponent(editOW);
+		panelLayout.addComponent(btnLayout);
+		panelLayout.setExpandRatio(btnLayout, 2.0f);
+		
+		editOW.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				showInOntowiki((String)listDimensions.getValue());
+			}
+		});
+		listDimensions.addListener(new Property.ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				String dim = event.getProperty().getValue().toString();
+				String query = ValidationFixUtils.ic05_getMathingCodeLists(state.getCurrentGraph(), dim);
+				TupleQueryResult qRes = executeTupleQuery(query);
+				comboCodeLists.removeAllItems();
+				try {
+					while (qRes.hasNext()){
+						comboCodeLists.addItem(qRes.next().getValue("list").stringValue());
+					}
+				} catch (QueryEvaluationException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		fix.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				Object selDim = listDimensions.getValue();
+				Object selList = comboCodeLists.getValue();
+				if (selDim == null || selList == null){
+					getWindow().showNotification("Dimension or code list was not selected");
+					return;
+				}
+				
+				executeGraphQuery(ValidationFixUtils.ic05_insertCodeList(
+						state.getCurrentGraph(), selDim.toString(), selList.toString()));
+				getWindow().showNotification("Fix executed");
+//				icDimsHaveCodeLists.evaluate();
+//				updateItemIcon(icDimsHaveCodeLists);
+				refresh();
+				dimensionDefinitions();
 			}
 		});
 		
@@ -2061,37 +2203,46 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		panelLayout.addComponent(new Label("After the fix duplicates of the selected observation will be removed from the graph"));
 		
 		Button fix = new Button("Quick Fix");
-		fix.setEnabled(false);
 		panelLayout.addComponent(fix);
 		panelLayout.setExpandRatio(fix, 2.0f);
 		
 		fix.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				String obsString = (String)ls1.getValue();
-				if (obsString == null || obsString.isEmpty())
+				if (obsString == null || obsString.isEmpty()) {
 					getWindow().showNotification("Select observation first", Notification.TYPE_ERROR_MESSAGE);
-				ValueFactory factory = state.getRdfStore().getValueFactory();
-				URI obsURI = factory.createURI(obsString);
-				TupleQueryResult res = getResourceProperties(obsString);
-				ArrayList<Statement> stmts = new ArrayList<Statement>();
-				try {
-					while (res.hasNext()){
-						BindingSet set = res.next();
-						URI propURI = factory.createURI(set.getValue("p").stringValue());
-						Value objValue = set.getValue("o");
-						stmts.add(factory.createStatement(obsURI, propURI, objValue));
-					}
-					res = getResourceLinks(obsString);
-					while (res.hasNext()){
-						BindingSet set = res.next();
-						URI propURI = factory.createURI(set.getValue("p").stringValue());
-						URI subURI = factory.createURI(set.getValue("s").stringValue());
-						stmts.add(factory.createStatement(subURI, propURI, obsURI));
-					}
-					removeStatements(stmts);
-				} catch (QueryEvaluationException e) {
-					e.printStackTrace();
+					return;
 				}
+				ValueFactory factory = state.getRdfStore().getValueFactory();
+				
+				for (String duplicateString: mapDuplicates.get(obsString)){
+					URI duplicateURI = factory.createURI(duplicateString);
+					TupleQueryResult res = getResourceProperties(duplicateString);
+					ArrayList<Statement> stmts = new ArrayList<Statement>();
+					try {
+						while (res.hasNext()){
+							BindingSet set = res.next();
+							URI propURI = factory.createURI(set.getValue("p").stringValue());
+							Value objValue = set.getValue("o");
+							stmts.add(factory.createStatement(duplicateURI, propURI, objValue));
+						}
+						res = getResourceLinks(duplicateString);
+						while (res.hasNext()){
+							BindingSet set = res.next();
+							URI propURI = factory.createURI(set.getValue("p").stringValue());
+							URI subURI = factory.createURI(set.getValue("s").stringValue());
+							stmts.add(factory.createStatement(subURI, propURI, duplicateURI));
+						}
+						removeStatements(stmts);
+					} catch (QueryEvaluationException e) {
+						e.printStackTrace();
+					}
+				}
+				getWindow().showNotification("Fix executed");
+//				icNoDuplicateObservations.evaluate();
+//				updateItemIcon(icNoDuplicateObservations);
+				refresh();
+				noDuplicateObs();
 			}
 		});
 		
@@ -2173,6 +2324,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 						obsMap.get(chosenObs));
 				executeGraphQuery(query);
 				getWindow().showNotification("Fix executed");
+//				icRequiredAttributes.evaluate();
+//				updateItemIcon(icRequiredAttributes);
 				refresh();
 				requiredAttributes();
 			}
@@ -2812,7 +2965,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					statements.add(getStatementFromUris(resource, inScheme, codeList));
 					uploadStatements(statements);
 					Validation.this.getWindow().removeWindow(QuickFixCodesFromCodeLists.this);
-					dimensionDefinitions();
+//					icCodesFromCodeLists.evaluate();
+//					updateItemIcon(icCodesFromCodeLists);
+					refresh();
+					codesFromCodeList();
 				}
 			});
 			setContent(content);
