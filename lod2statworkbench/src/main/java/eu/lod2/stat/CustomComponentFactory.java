@@ -78,7 +78,7 @@ public class CustomComponentFactory {
             case MergeDatasets: return new MergeDatasets(state);
             case MergeDimensions: return new CurrentGraphEnforcer(new MergeDimensions(state),state);
             case SliceDatasets: return new CreateSlices(state);
-            case ConfigGUIStat: return new ConfigurationGUI(new ConfigurationTestStatFakeGraph(state));
+            case ConfigGUIStat: return new ConfigurationGUI(new ConfigurationFakeBackend(state));
             case R2R: return new R2R(state);
 			default: return null;
 		}
