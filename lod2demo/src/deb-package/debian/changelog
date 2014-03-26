@@ -1,3 +1,27 @@
+lod2demo (1.3.3) lod2; urgency=low
+
+  * Fixed proxy configuration
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Fri, 22 Nov 2013 17:16:10 +0100
+
+lod2demo (1.3.2) lod2; urgency=low
+
+  * Updated lodrefine dependency
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Fri, 22 Nov 2013 15:16:10 +0100
+
+lod2demo (1.3.1) lod2; urgency=low
+
+  * Added lod2-virtuoso-opensource as a dependency
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Wed, 23 Oct 2013 14:53:10 +0100
+
+lod2demo (1.2.22) lod2; urgency=low
+
+  * Fix in postinstall
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Wed, 17 Oct 2013 13:01:10 +0100
+
 lod2demo (1.2.21) lod2; urgency=low
 
   * Support for virtuoso7 and future versions
