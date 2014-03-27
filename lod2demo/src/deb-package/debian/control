@@ -2,7 +2,7 @@ Source: lod2demo
 Section: misc
 Priority: extra
 Maintainer: Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
-Build-Depends: debhelper (>= 7.0.50~)
+Build-Depends: debhelper (>= 7.0.50~), raptor2-utils
 Standards-Version: 3.8.4
 Homepage: http://lod2.eu
 

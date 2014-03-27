@@ -151,7 +151,7 @@ case "$1" in
 
 	#find current password
 	pwdplacehold="PWDLOD2"
-	currentpwd=$(sedml "s/.*JDBCpassword\\s*=\\s*\\([^\\n]*\\).*/\\1/p" /etc/lod2demo/lod2demo.conf)
+	currentpwd=$(sed -n "s/.*JDBCpassword\\s*=\\s*\\([^\\n]*\\).*/\\1/p" /etc/lod2demo/lod2demo.conf)
 
 	if [ "$currentpwd" = "$pwdplacehold" ]
 	then
