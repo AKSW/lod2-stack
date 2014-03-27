@@ -34,13 +34,13 @@ Apache Tomcat 6
 ~~~~~~~~~~~~~~~
 A popular servet container of which we install version 6.
 
-	sudo apt-get install tomcat6
-	sudo apt-get install tomcat6-admin
+	sudo apt-get install tomcat7
+	sudo apt-get install tomcat7-admin
 
 In order to access the tomcat manager page an administrator has to be defined.
 Edit the tomcat-users.xml file:
 
-	sudo vim /etc/tomcat6/tomcat-users.xml
+	sudo vim /etc/tomcat7/tomcat-users.xml
 
 and add the next 2 lines
 
@@ -51,14 +51,14 @@ Adapt the username and password to your conventions.
 
 Restart tomcat 
 
-	sudo service tomcat6 restart
+	sudo service tomcat7 restart
 
 to make the changes have effect.
 
 Some installation locations:
 	
-* tomcat server : /usr/share/tomcat6
-* tomcat webspace : /var/lib/tomcat6
+* tomcat server : /usr/share/tomcat7
+* tomcat webspace : /var/lib/tomcat7
 
 
 Apache Maven
@@ -182,9 +182,9 @@ should be adapted:
 in JAVA_OPTS or CATALINA_OPTS
 
 I could not get it working hence I adopted the following solution.
-I created in the logs directory of the deployment space of tomcat6
+I created in the logs directory of the deployment space of tomcat7
 
-	cd /var/libs/tomcat6/logs 
+	cd /var/libs/tomcat7/logs 
 
 a new directory 
 	
@@ -194,10 +194,10 @@ make the directory public accessible
 	
 	sudo chmod 777 .aduna
 
-make a link from the tomcat6 server location
+make a link from the tomcat7 server location
 
-	cd /usr/share/tomcat6
-	sudo ln -s /var/libs/tomcat6/logs/.aduna
+	cd /usr/share/tomcat7
+	sudo ln -s /var/libs/tomcat7/logs/.aduna
 
 
 
@@ -273,7 +273,7 @@ Extend the pom.xml with the following plugin
 		<!--<version>1.0-beta-1</version>-->
 		<version>LATEST</version>
 		<configuration>
-			<server>tomcat6</server>
+			<server>tomcat7</server>
 			<url>http://localhost:8080/manager</url>
 		</configuration>
 	</plugin>
@@ -286,7 +286,7 @@ In
 add the server specification
 
 	<server>
-        	<id>tomcat6</id>
+        	<id>tomcat7</id>
         	<username>admin</username>
         	<password>admin</password>
         </server>
@@ -483,7 +483,7 @@ Add the build script build_debpkg.sh to src/deb-package
 The package contains a war file which must be installed at the appropriate place during the installation process of the
 debian package. 
 
-	lod2demo-1.0.war /var/lib/tomcat6/webapps
+	lod2demo-1.0.war /var/lib/tomcat7/webapps
 
 The package is automatically signed by the debuild command at the end of the script.
 

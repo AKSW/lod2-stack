@@ -22,9 +22,9 @@ case "$1" in
     configure)
 
 	chmod 644 /etc/lod2webapi/lod2webapi.conf
-	if [ -f /etc/virtuoso-opensource-6.1/bd.ini ] ; then 
-		VUSER=`grep Username /etc/virtuoso-opensource-6.1/bd.ini | sed "s/Username=//"`
-		VPWD=`grep Password /etc/virtuoso-opensource-6.1/bd.ini | sed "s/Password=//"`
+	if [ -f /etc/virtuoso-opensource/bd.ini ] ; then 
+		VUSER=`grep Username /etc/virtuoso-opensource/bd.ini | sed "s/Username=//"`
+		VPWD=`grep Password /etc/virtuoso-opensource/bd.ini | sed "s/Password=//"`
 		sed -i -e "s/JDBCuser.*/JDBCuser = $VUSER/" /etc/lod2webapi/lod2webapi.conf 
 		sed -i -e "s/JDBCpassword.*/JDBCpassword = $VPWD/" /etc/lod2webapi/lod2webapi.conf 
 	else 

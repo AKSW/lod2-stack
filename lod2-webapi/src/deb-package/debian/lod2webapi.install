@@ -1,3 +1,3 @@
 configuration/* etc/lod2webapi
 lod2webapi.war usr/share/lod2webapi
-lod2webapi.xml etc/tomcat6/Catalina/localhost
+lod2webapi.xml etc/tomcat7/Catalina/localhost

@@ -8,7 +8,7 @@ Homepage: http://lod2.eu
 
 Package: lod2demo
 Architecture: all
-Depends: tomcat6, virtuoso-opensource (>= 6.1.5), apache2, openjdk-7-jre | openjdk-6-jre | sun-java6-jre, ontowiki-virtuoso,  virtuoso-vad-isparql, d2r-cordis, silk, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut, lod2webapi, dbpedia-spotlight-ui, ontowiki-cubeviz, sparqled, lodrefine | lod2-refine | lodgrefine | lod-refine, rdf-dataset-integration, dl-learner-components-core, dl-learner-interfaces, libjs-rdfauthor, lodms, siren, sparqlify, ontowiki-csvimport, lod2-virtuoso-opensource
+Depends: tomcat7, lod2-virtuoso-opensource, apache2, lod2-java7, virtuoso-vad-isparql, d2r-cordis, valiant, lod2webapi, lodrefine | lod2-refine | lodgrefine | lod-refine, rdf-dataset-integration, dl-learner-components-core, dl-learner-interfaces, libjs-rdfauthor, siren, sparqlify 
 Description: The LOD2 demonstrator application
  This package is a web application which allows one to explore 
  the different components in the LOD2 stack. It also serves as

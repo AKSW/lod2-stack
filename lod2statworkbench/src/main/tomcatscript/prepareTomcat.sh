@@ -2,9 +2,9 @@
 
 STARTDIR=`pwd`
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-TOMCATCONF="/etc/tomcat6"
-TOMCATROOT="/usr/share/tomcat6"
-VIRTUOSOVERSION=virtuoso-opensource-6.1
+TOMCATCONF="/etc/tomcat7"
+TOMCATROOT="/usr/share/tomcat7"
+VIRTUOSOVERSION=virtuoso-opensource
 LIBSLOCATION=$SCRIPTDIR/lib
 
 #get a password for the key and truststores
@@ -79,7 +79,7 @@ else
 fi
 
 #add the required libraries to the tomcat instance
-echo -n "adding required libraries to /usr/share/tomcat6/lib..."
+echo -n "adding required libraries to /usr/share/tomcat7/lib..."
 cp -f $LIBSLOCATION/* $TOMCATROOT/lib
 echo "done"
 

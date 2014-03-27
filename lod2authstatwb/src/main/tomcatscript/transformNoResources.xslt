@@ -39,7 +39,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	SSLEnabled="true"
 	sslProtocol="TLS"
 	clientAuth="true"
-	keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
+	keystoreFile="/var/lib/tomcat7/conf/tomcat.keystore"
 	keystorePass="password"
 	/>
     <xsl:apply-templates select="node()"/>

@@ -19,7 +19,7 @@ case "$1" in
 
 	ISQLIDOBC=`which isql-iodbc`
 	if [ -z "$ISQLIDOBC" ] ; then
-		echo "The LOD2 version of Virtuoso is not installed. One need to have isql-iodbc installed and in /etc/virtuoso-opensource-6.1/bd.ini present"
+		echo "The LOD2 version of Virtuoso is not installed. One need to have isql-iodbc installed and in /etc/virtuoso-opensource/bd.ini present"
 	fi
     ;;
 

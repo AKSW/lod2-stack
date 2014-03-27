@@ -1,33 +1,38 @@
+lod2webapi (0.9) lod2; urgency=low
+  * bumped tomcat, java, virtuoso version
+
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com> Fri, 21 Mar 2014 15:25:08 +0100
+
 lod2webapi (0.8) lod2; urgency=low
 
   * regex improvements
 
- -- Karel Kremer <karel.kremer@tenforce.com> Tue, 03 Dec 2013 14:00:30 +0100
+ -- Karel Kremer <karel.kremer@tenforce.com>  Tue, 03 Dec 2013 14:00:30 +0100
 
 lod2webapi (0.7) lod2; urgency=low
 
   * fix endpoint
 
- -- Karel Kremer <karel.kremer@tenforce.com> Tue, 25 Jul 2013 13:33:30 +0100
+ -- Karel Kremer <karel.kremer@tenforce.com>  Tue, 25 Jul 2013 13:33:30 +0100
 
 lod2webapi (0.6) lod2; urgency=low
 
   * add graph deletion and regex features
 
- -- Karel Kremer <karel.kremer@tenforce.com> Tue, 25 Jul 2013 10:25:30 +0200
+ -- Karel Kremer <karel.kremer@tenforce.com>  Tue, 25 Jul 2013 10:25:30 +0200
 
 lod2webapi (0.5) lod2; urgency=low
 
   * improve the postinst and postrm scripts
   * rename the configuration file
 
- -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com> Mon, 02 Jul 2012 12:52:50 +0200
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com>  Mon, 02 Jul 2012 12:52:50 +0200
 
 lod2webapi (0.4) lod2; urgency=low
 
   * change configuration directory
 
- -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com> Sat, 23 Jun 2012 14:22:20 +0200
+ -- Bert Van Nuffelen (TenForce/LOD2) <bert.van.nuffelen@tenforce.com>  Sat, 23 Jun 2012 14:22:20 +0200
 
 lod2webapi (0.3) lod2; urgency=low
 

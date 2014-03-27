@@ -19,7 +19,7 @@ set -e
 # some script code copied from virtuoso init.d script
 # With this code we can correctly verify if the virtuoso server is running
 DAEMON=/usr/bin/virtuoso-t
-VIRTUOSOVERSION=virtuoso-opensource-6.1
+VIRTUOSOVERSION=virtuoso-opensource
 SHORTNAME=virtuoso
 PIDFILE=/var/run/$VIRTUOSOVERSION.pid
 

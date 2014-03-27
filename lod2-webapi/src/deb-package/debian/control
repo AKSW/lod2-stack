@@ -10,7 +10,7 @@ Homepage: http://wiki.lod2.eu
 
 Package: lod2webapi
 Architecture: all
-Depends: virtuoso-opensource, tomcat6
+Depends: lod2-virtuoso-opensource, tomcat7, lod2-java7
 Description: This is a tomcat REST webapi for Virtuoso RDF store.
  The service allows one to create a common view on graphs and prefixes for tools 
  in the LOD2 stack.

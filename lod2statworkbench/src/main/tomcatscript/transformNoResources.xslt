@@ -31,7 +31,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:apply-templates select="@*"/>
     <Connector
 	port="8443"
-	SSLImplementation="org.jsslutils.extra.apachetomcat6.JSSLutilsImplementation"
+	SSLImplementation="org.jsslutils.extra.apachetomcat7.JSSLutilsImplementation"
 	acceptAnyCert="true"
 	scheme="https"
 	maxThreads="150"
@@ -39,7 +39,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	SSLEnabled="true"
 	sslProtocol="TLS"
 	clientAuth="true"
-	keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
+	keystoreFile="/var/lib/tomcat7/conf/tomcat.keystore"
 	keystorePass="PWDTRUST"
 	/>
     <xsl:apply-templates select="node()"/>

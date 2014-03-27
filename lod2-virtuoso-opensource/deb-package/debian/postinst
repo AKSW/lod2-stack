@@ -23,7 +23,7 @@ case "$1" in
 
 	if [ ! -e /etc/virtuoso-opensource ]; then 
 	# loop through all versions of virtuoso that are supported an take the latest one
-	    for VERSION in "virtuoso-opensource-6.1" "virtuoso-opensource-7.0"
+	    for VERSION in "virtuoso-opensource-6.1" "virtuoso-opensource-7.0" "virtuoso-opensource-7.1"
 	    do
 		if [ -d "/etc/$VERSION" ]; then
 		    if [ -h /etc/virtuoso-opensource ]; then
@@ -47,20 +47,6 @@ case "$1" in
 	# try to remove the addition first in order to avoid double entries
 	sed 's/^\(DirsAllowed.*\)\(, \/usr\/share\/virtuoso-opensource\)\(.*\)/\1\3/' -i $virtuosoini
 	sed 's/^\(DirsAllowed.*\)/\1, \/usr\/share\/virtuoso-opensource/' -i $virtuosoini
-
-        #support legacy systems
-	if [ ! -e /etc/virtuoso-opensource-6.1 ]; then
-	    ln -s /etc/virtuoso-opensource /etc/virtuoso-opensource-6.1 
-	    ln -s /usr/share/virtuoso-opensource /usr/share/virtuoso-opensource-6.1 
-	    ln -s /var/lib/virtuoso-opensource /var/lib/virtuoso-opensource-6.1 
-	    ln -s /etc/init.d/virtuoso-opensource /etc/init.d/virtuoso-opensource-6.1
-	    ln -s /var/run/virtuoso-opensource.pid /var/run/virtuoso-opensource-6.1.pid
-
-            # try to remove the addition first in order to avoid double entries
-	    sed 's/^\(DirsAllowed.*\)\(, \/usr\/share\/virtuoso-opensource-6\.1\)\(.*\)/\1\3/' -i $virtuosoini
-	    sed 's/^\(DirsAllowed.*\)/\1, \/usr\/share\/virtuoso-opensource-6.1/' -i $virtuosoini
-
-	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

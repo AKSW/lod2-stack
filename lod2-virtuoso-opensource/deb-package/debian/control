@@ -8,7 +8,7 @@ Homepage: http://wiki.lod2.eu
 
 Package: lod2-virtuoso-opensource
 Architecture: all
-Depends: virtuoso-opensource
+Depends: virtuoso-opensource ( >= 7.1 )
 Description: installs virtuoso-opensource for a lod stack
  This package takes care of the installation of the virtuoso-opensource 
  package for a lod stack. It attempts to handle all possible problems 

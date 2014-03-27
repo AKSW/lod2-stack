@@ -182,8 +182,8 @@ creating a keystore
 </p>
 
 
-<pre class="src src-bash">  cd /var/lib/tomcat6/conf
-keytool -genkey -v -alias tomcat -keyalg RSA -validity 3650 -keystore /var/lib/tomcat6/conf/tomcat.keystore -dname <span style="color: #bc8f8f;">"CN=demo.lod2.eu, OU=demo, O=lod2"</span>
+<pre class="src src-bash">  cd /var/lib/tomcat7/conf
+keytool -genkey -v -alias tomcat -keyalg RSA -validity 3650 -keystore /var/lib/tomcat7/conf/tomcat.keystore -dname <span style="color: #bc8f8f;">"CN=demo.lod2.eu, OU=demo, O=lod2"</span>
 </pre>
 
 
@@ -193,7 +193,7 @@ creating a truststore
 </p>
 
 
-<pre class="src src-bash">  cd /var/lib/tomcat6/conf
+<pre class="src src-bash">  cd /var/lib/tomcat7/conf
 keytool -genkey -v -alias demoKey -keyalg RSA -storetype PKCS12 -keystore demo.p12 -dname <span style="color: #bc8f8f;">"CN=demoKey, OU=demo, O=DieOrg"</span>
 </pre>
 
@@ -204,7 +204,7 @@ export demo.cer
 </p>
 
 
-<pre class="src src-bash">cd /var/lib/tomcat6/conf
+<pre class="src src-bash">cd /var/lib/tomcat7/conf
 keytool -export -alias demoKey -keystore demo.p12 -storetype PKCS12 -rfc -file demo.cer
 </pre>
 
@@ -215,7 +215,7 @@ import demo.cer into keystore
 </p>
 
 
-<pre class="src src-bash">cd /var/lib/tomcat6/conf
+<pre class="src src-bash">cd /var/lib/tomcat7/conf
 keytool -import -v -file demo.cer -keystore tomcat.keystore
 </pre>
 
@@ -246,7 +246,7 @@ Note: as noted in the following section, I had some problems when using the trus
     <span style="color: #b8860b;">SSLEnabled</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
     <span style="color: #b8860b;">sslProtocol</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">TLS</span><span style="color: #bc8f8f;">"</span>
     <span style="color: #b8860b;">clientAuth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
-    <span style="color: #b8860b;">keystoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat6/conf/tomcat.keystore</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">keystoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat7/conf/tomcat.keystore</span><span style="color: #bc8f8f;">"</span>
     <span style="color: #b8860b;">keystorePass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">password</span><span style="color: #bc8f8f;">"</span>/&gt;
 </pre>
 
@@ -262,7 +262,7 @@ In case a truststore is used, the connector would need the following properties 
 
 
 <pre class="src src-xml">&lt;<span style="color: #0000ff;">Connector</span>
-  <span style="color: #b8860b;">truststoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat6/conf/tomcat.truststore</span><span style="color: #bc8f8f;">"</span>
+  <span style="color: #b8860b;">truststoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat7/conf/tomcat.truststore</span><span style="color: #bc8f8f;">"</span>
   <span style="color: #b8860b;">truststorePass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">password</span><span style="color: #bc8f8f;">"</span>
   <span style="color: #b8860b;">truststoreType</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">PKCS12</span><span style="color: #bc8f8f;">"</span>/&gt;
 </pre>
@@ -439,7 +439,7 @@ In order for the application to know which resource to use for discovering the r
 <h3 id="sec-3.3"><span class="section-number-3">3.3</span> Application Dependencies </h3>
 <div class="outline-text-3" id="text-3.3">
 
-<p>Because both the virtuoso and the application need to make use of some libraries (for interacting with virtuoso and turnguard webid for instance), some application dependencies should be marked as <b>provided</b> in the pom file. If this is not configured like this, the libraries will be loaded twice, by different class loaders. This is a problem when using the application based security that is laid out above. The cast to WEBIDUser will fail, as the user was loaded by the library that is used in the tomcat6 server, while the cast is made to the version in the library used in the application. 
+<p>Because both the virtuoso and the application need to make use of some libraries (for interacting with virtuoso and turnguard webid for instance), some application dependencies should be marked as <b>provided</b> in the pom file. If this is not configured like this, the libraries will be loaded twice, by different class loaders. This is a problem when using the application based security that is laid out above. The cast to WEBIDUser will fail, as the user was loaded by the library that is used in the tomcat7 server, while the cast is made to the version in the library used in the application. 
 </p>
 <p>
 This is important, as the application now assumes that the tomcat instance has been properly configured. To that end, a script was written that takes care of the configuration.
@@ -573,7 +573,7 @@ This is important, as the application now assumes that the tomcat instance has b
     <span style="color: #b8860b;">SSLEnabled</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
     <span style="color: #b8860b;">sslProtocol</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">TLS</span><span style="color: #bc8f8f;">"</span>
     <span style="color: #b8860b;">clientAuth</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">true</span><span style="color: #bc8f8f;">"</span>
-    <span style="color: #b8860b;">keystoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat6/conf/tomcat.keystore</span><span style="color: #bc8f8f;">"</span>
+    <span style="color: #b8860b;">keystoreFile</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">/var/lib/tomcat7/conf/tomcat.keystore</span><span style="color: #bc8f8f;">"</span>
     <span style="color: #b8860b;">keystorePass</span>=<span style="color: #bc8f8f;">"</span><span style="color: #bc8f8f;">password</span><span style="color: #bc8f8f;">"</span>/&gt;
 
     <span style="color: #b22222;">&lt;!--</span><span style="color: #b22222;"> Define an AJP 1.3 Connector on port 8009 </span><span style="color: #b22222;">--&gt;</span>

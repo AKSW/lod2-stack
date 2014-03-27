@@ -10,7 +10,7 @@ Homepage: http://code.google.com/p/lod2-stack/
 
 Package: valiant
 Architecture: all
-Depends: ${misc:Depends}
+Depends: lod2-java7,unzip
 Description: A XSLT transformation engine to transform XML to RDF.
  Valiant is a tool to transform XML content into RDF. It has been build in the 
  context of The European project LOD2, http://lod2.eu.

@@ -63,7 +63,7 @@
         <!--<version>1.0-beta-1</version>-->
         <version>LATEST</version>
         <configuration>
-          <server>tomcat6</server>
+          <server>tomcat7</server>
           <url>http://localhost:8080/manager</url>
         </configuration>
       </plugin>
@@ -176,7 +176,7 @@
                   <type>file</type>
                   <mapper>
                     <type>perm</type>
-                    <prefix>/var/lib/tomcat6/webapps</prefix>
+                    <prefix>/var/lib/tomcat7/webapps</prefix>
                   </mapper>
                 </data>
               </dataSet>

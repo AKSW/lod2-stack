@@ -16,7 +16,7 @@ configure the .m2/settings.xml with
 	/POM/4.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 	<servers>
 		<server>
-			<id>tomcat6</id>
+			<id>tomcat7</id>
 			<username>admin</username>
 			<password>admin</password>
 		</server>
@@ -66,14 +66,14 @@ configure the .m2/settings.xml with
 
 and that the users are set 
 
-in /etc/tomcat6/tomcat-users.xml
+in /etc/tomcat7/tomcat-users.xml
 
 <role rolename="manager"/>
 <user username="admin" password="admin" roles="manager"/>
 
 after the update and installation do not forget to restart the tomcat service
 
-sudo service tomcat6 restart
+sudo service tomcat7 restart
 
 
 BUILD
@@ -83,7 +83,7 @@ compile all source code
      
 	mvn package
 
-compile & deploy in the local tomcat6 
+compile & deploy in the local tomcat7 
 
         mvn tomcat:deploy (the first time)
         mvn tomcat:redeploy (second and next time)

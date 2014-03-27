@@ -25,22 +25,22 @@ We need to setup a keystore and a truststore for the tomcat server, as described
 
 creating a keystore
 #+begin_src bash
-  cd /var/lib/tomcat6/conf
-keytool -genkey -v -alias tomcat -keyalg RSA -validity 3650 -keystore /var/lib/tomcat6/conf/tomcat.keystore -dname "CN=demo.lod2.eu, OU=demo, O=lod2"
+  cd /var/lib/tomcat7/conf
+keytool -genkey -v -alias tomcat -keyalg RSA -validity 3650 -keystore /var/lib/tomcat7/conf/tomcat.keystore -dname "CN=demo.lod2.eu, OU=demo, O=lod2"
 #+end_src
 creating a truststore
 #+begin_src bash
-  cd /var/lib/tomcat6/conf
+  cd /var/lib/tomcat7/conf
 keytool -genkey -v -alias demoKey -keyalg RSA -storetype PKCS12 -keystore demo.p12 -dname "CN=demoKey, OU=demo, O=DieOrg"
 #+end_src
 export demo.cer
 #+begin_src bash
-cd /var/lib/tomcat6/conf
+cd /var/lib/tomcat7/conf
 keytool -export -alias demoKey -keystore demo.p12 -storetype PKCS12 -rfc -file demo.cer
 #+end_src
 import demo.cer into keystore
 #+begin_src bash
-cd /var/lib/tomcat6/conf
+cd /var/lib/tomcat7/conf
 keytool -import -v -file demo.cer -keystore tomcat.keystore
 #+end_src
 Note: as noted in the following section, I had some problems when using the truststore. The truststore, however is optional
@@ -58,7 +58,7 @@ To run the server over SSL, we need to set up a new Connection element in the to
       SSLEnabled="true"
       sslProtocol="TLS"
       clientAuth="true"
-      keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
+      keystoreFile="/var/lib/tomcat7/conf/tomcat.keystore"
       keystorePass="password"/>
 #+end_src
 
@@ -67,7 +67,7 @@ In this xml element, the location of the keystore File has been provided, togeth
 In case a truststore is used, the connector would need the following properties as well:
 #+begin_src xml
   <Connector
-    truststoreFile="/var/lib/tomcat6/conf/tomcat.truststore"
+    truststoreFile="/var/lib/tomcat7/conf/tomcat.truststore"
     truststorePass="password"
     truststoreType="PKCS12"/>
 #+end_src
@@ -163,7 +163,7 @@ The user that is logged in can also be requested at runtime. This means that the
   }
 #+end_src
 ** Application Dependencies
-Because both the virtuoso and the application need to make use of some libraries (for interacting with virtuoso and turnguard webid for instance), some application dependencies should be marked as *provided* in the pom file. If this is not configured like this, the libraries will be loaded twice, by different class loaders. This is a problem when using the application based security that is laid out above. The cast to WEBIDUser will fail, as the user was loaded by the library that is used in the tomcat6 server, while the cast is made to the version in the library used in the application. 
+Because both the virtuoso and the application need to make use of some libraries (for interacting with virtuoso and turnguard webid for instance), some application dependencies should be marked as *provided* in the pom file. If this is not configured like this, the libraries will be loaded twice, by different class loaders. This is a problem when using the application based security that is laid out above. The cast to WEBIDUser will fail, as the user was loaded by the library that is used in the tomcat7 server, while the cast is made to the version in the library used in the application. 
 
 This is important, as the application now assumes that the tomcat instance has been properly configured. To that end, a script was written that takes care of the configuration.
 * Files
@@ -280,7 +280,7 @@ This section holds all the files that were used in this document. Passwords have
     SSLEnabled="true"
     sslProtocol="TLS"
     clientAuth="true"
-    keystoreFile="/var/lib/tomcat6/conf/tomcat.keystore"
+    keystoreFile="/var/lib/tomcat7/conf/tomcat.keystore"
     keystorePass="password"/>
 
     <!-- Define an AJP 1.3 Connector on port 8009 -->

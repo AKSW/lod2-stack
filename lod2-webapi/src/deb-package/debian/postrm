@@ -22,8 +22,8 @@ set -e
 case "$1" in
 
     purge|remove|abort-install|disappear)
-	if [ -d /var/lib/tomcat6/webapps/lod2webapi ] ; then 
-		rm -rf /var/lib/tomcat6/webapps/lod2webapi
+	if [ -d /var/lib/tomcat7/webapps/lod2webapi ] ; then 
+		rm -rf /var/lib/tomcat7/webapps/lod2webapi
 	fi;
 	
     ;;

@@ -1,3 +1,21 @@
+valiant (1.4.2) lod2; urgency=low
+
+  * unzip jar
+
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com> Mon, 24 Mar 2014 15:30:54 +0100
+
+valiant (1.4.1) lod2; urgency=low
+
+  * added unzip as a dependency
+
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com> Mon, 24 Mar 2014 15:30:54 +0100
+
+valiant (1.4) lod2; urgency=low
+
+  * update dependencies
+
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com>  Fri, 21 Mar 2014 15:49:12 +0100
+
 valiant (1.3) lod2; urgency=low
 
   * fix the unpacking script postinst
@@ -18,6 +36,6 @@ valiant (1.1) lod2; urgency=low
 
 valiant (1.0-1) unstable; urgency=low
 
-  * Initial release 
-
+  * Initial release
+	
  -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Thu, 05 Jan 2012 06:43:25 -0800

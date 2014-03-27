@@ -1,10 +1,10 @@
 #!/bin/sh
 
-    username=`grep Username /etc/virtuoso-opensource-6.1/bd.ini | sed -i -e "s/Username.*=//"`
-    password=`grep Password /etc/virtuoso-opensource-6.1/bd.ini | sed -i -e "s/Password.*=//"`
-    address=`grep Address /etc/virtuoso-opensource-6.1/bd.ini | sed -e "s/Address.*=//"`
+    username=`grep Username /etc/virtuoso-opensource/bd.ini | sed -i -e "s/Username.*=//"`
+    password=`grep Password /etc/virtuoso-opensource/bd.ini | sed -i -e "s/Password.*=//"`
+    address=`grep Address /etc/virtuoso-opensource/bd.ini | sed -e "s/Address.*=//"`
 
-VIRTUOSOVERSION=virtuoso-opensource-6.1
+VIRTUOSOVERSION=virtuoso-opensource
 
 env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < test.sql
 

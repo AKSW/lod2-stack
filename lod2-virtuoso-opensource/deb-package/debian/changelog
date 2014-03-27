@@ -1,3 +1,9 @@
+lod2-virtuoso-opensource (0.9.2) lod2; urgency=high
+
+  * Updated dependencies
+
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com>  Fri, 21 Mar 2014 15:41:49 +0100
+
 lod2-virtuoso-opensource (0.7) lod2; urgency=low
 
   * Fix for removal
