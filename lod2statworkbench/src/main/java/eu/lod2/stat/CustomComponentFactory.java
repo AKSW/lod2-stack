@@ -39,7 +39,8 @@ public class CustomComponentFactory {
         MergeDimensions,
         MergeDatasets,SliceDatasets,
         ConfigGUIStat,
-        R2R;
+        R2R,
+        SearchCubes;
 	}
 	
 	private LOD2DemoState state;
@@ -80,6 +81,7 @@ public class CustomComponentFactory {
             case SliceDatasets: return new CreateSlices(state);
             case ConfigGUIStat: return new ConfigurationGUI(new ConfigurationFakeBackend(state));
             case R2R: return new R2R(state);
+            case SearchCubes: return new SearchCubes(state);
 			default: return null;
 		}
 	}
