@@ -211,7 +211,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         };
         MenuBar.Command userinfoCommand = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
-                showInWorkspace(new Authenticator(new UserInformation(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
+                showInWorkspace(/*new Authenticator(*/new UserInformation(state)/*, new HashSet<String>(Arrays.asList(state.userRole)), state)*/);
             }
         };
 
