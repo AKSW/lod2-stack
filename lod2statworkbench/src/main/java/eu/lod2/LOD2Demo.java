@@ -628,7 +628,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
 
             MenuBar.Command userinfoCommand = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
-                    showInWorkspace(new Authenticator(new UserInformation(state), state));
+                    showInWorkspace(/*new Authenticator(*/new UserInformation(state)/*, state)*/);
                 }
             };
 
@@ -636,13 +636,13 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                 public void menuSelected(MenuItem selectedItem){
                     // publishing should be protected with an authenticator, otherwise a store could be published
                     // without provenance information!
-                    showInWorkspace(new Authenticator(new CKANPublisherPanel(state), state));
+                    showInWorkspace(/*new Authenticator(*/new CKANPublisherPanel(state)/*, state)*/);
                 }
             };
 
             MenuBar.Command mDeleteGraphs = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
-                    showInWorkspace(new Authenticator(new DeleteGraphs(state), state));
+                    showInWorkspace(/*new Authenticator(*/new DeleteGraphs(state)/*, state)*/);
                 }
             };
 
