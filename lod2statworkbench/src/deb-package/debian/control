@@ -8,7 +8,7 @@ Homepage: http://lod2.eu
 
 Package: lod2statworkbench
 Architecture: all
-Depends: tomcat7, lod2-virtuoso-opensource, apache2, openjdk-7-jre |  oracle-java7-installer, ontowiki-virtuoso, virtuoso-vad-isparql, silk, lod2webapi, sparqled, xsltproc, ontowiki-cubeviz, ontowiki-csvimport
+Depends: tomcat7, lod2-virtuoso-opensource, apache2, lod2-java7, ontowiki-virtuoso, virtuoso-vad-isparql, lod2webapi, xsltproc, ontowiki-cubeviz, ontowiki-csvimport
 Suggests: d2r-cordis, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut, lodrefine | lod2-refine | lodgrefine | lod-refine, dbpedia-spotlight-ui, rdf-dataset-integration, dl-learner-components-core, dl-learner-interfaces, libjs-rdfauthor, lodms
 Description: The lod2 statistical workbench application
  This package is a web application which allows one to explore 

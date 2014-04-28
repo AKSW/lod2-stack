@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/lod2statworkbench">
     <Valve className="org.apache.catalina.authenticator.SSLAuthenticator"/>
-    <Realm className="com.turnguard.webid.tomcat.realm.WebIDRealm" resourceName="WebIDDatabase" validate="false"/>
 </Context>

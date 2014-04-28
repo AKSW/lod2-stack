@@ -203,7 +203,7 @@ case "$1" in
 	chmod 741 /tmp/uploads 
 
 	# make tomcat ready for authentication
-	bash /var/lib/lod2statworkbench/tomcatscript/prepareTomcat.sh
+	#bash /var/lib/lod2statworkbench/tomcatscript/prepareTomcat.sh
 
 #	# sparql editor configuration
 #	sparqlpwd=`date  +"%H.S.%M.P.%S.QL"`
