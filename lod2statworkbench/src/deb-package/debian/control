@@ -9,7 +9,7 @@ Homepage: http://lod2.eu
 Package: lod2statworkbench
 Architecture: all
 Depends: tomcat7, lod2-virtuoso-opensource, apache2, lod2-java7, ontowiki-virtuoso, virtuoso-vad-isparql, lod2webapi, xsltproc, ontowiki-cubeviz, ontowiki-csvimport
-Suggests: d2r-cordis, sigmaee, ore-gwt, valiant, spatial-semantic-browser, colanut, lodrefine | lod2-refine | lodgrefine | lod-refine, dbpedia-spotlight-ui, rdf-dataset-integration, dl-learner-components-core, dl-learner-interfaces, libjs-rdfauthor, lodms
+Suggests: d2r-cordis, ore-ui, valiant, spatial-semantic-browser, colanut, lodrefine | lod2-refine | lodgrefine | lod-refine, dbpedia-spotlight-ui, rdf-dataset-integration, dl-learner-components-core, dl-learner-interfaces, libjs-rdfauthor, unifiedviews-webapp
 Description: The lod2 statistical workbench application
  This package is a web application which allows one to explore 
  the power of the lod2 stack in the context of a statistical
