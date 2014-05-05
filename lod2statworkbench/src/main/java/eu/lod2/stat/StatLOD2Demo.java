@@ -209,11 +209,11 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
                 content.setHeight("500px");
             }  
         };
-        MenuBar.Command userinfoCommand = new MenuBar.Command() {
+        /*MenuBar.Command userinfoCommand = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
-                showInWorkspace(/*new Authenticator(*/new UserInformation(state)/*, new HashSet<String>(Arrays.asList(state.userRole)), state)*/);
+                showInWorkspace(new Authenticator(new UserInformation(state), new HashSet<String>(Arrays.asList(state.userRole)), state));
             }
-        };
+        }; removed due to WebID issues */
 
         MenuBar.Command publishCommand = new Command() {
             public void menuSelected(MenuItem selectedItem){
@@ -358,7 +358,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         menuExtraction.addItem("Mondeca SPARQL endpoint Collection", null, cmdMondecaSPARQLList);
         
         // help menu
-        menuHelp.addItem("User Configuration", null, userinfoCommand);
+        /* menuHelp.addItem("User Configuration", null, userinfoCommand); removed due to WebID issues */
         //menuHelp.addItem("*Documentation", null, null);
         menuHelp.addItem("Examples", null, cmdExamples);
         //menuHelp.addItem("*About", null, null);
