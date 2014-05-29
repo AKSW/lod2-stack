@@ -1,5 +1,8 @@
 package eu.lod2.stat;
 
+import com.vaadin.data.Property;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
@@ -33,6 +36,7 @@ public class SearchCubes extends CustomComponent {
 	private LOD2DemoState state;
 	private VerticalLayout mainContainer;
 	private VisualizeResults visualizer;
+    private TextField searchPhrase;
 	
 	private class MatchingParams {
 		public String g, ds;
@@ -278,23 +282,25 @@ public class SearchCubes extends CustomComponent {
 		searchBar.setSpacing(true);
 		mainContainer.addComponent(searchBar);
 		searchBar.addComponent(new Label("Search:"));
-		final TextField searchPhrase = new TextField();
+		searchPhrase = new TextField();
 		searchPhrase.setWidth("100%");
 		searchBar.addComponent(searchPhrase);
 		searchBar.setExpandRatio(searchPhrase, 2.0f);
 		Button searchButton = new Button("Search");
 		searchBar.addComponent(searchButton);
-		searchButton.addListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				String regex = searchPhrase.getValue().toString().trim(); 
-				try {
-					visualizer.visualize(getMatchingCubesKeywords(regex), regex);
-				} catch (Exception e) {
-					e.printStackTrace();
-					getWindow().showNotification("Error", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
-				}
-			}
+		
+                searchButton.addListener(new Button.ClickListener() {
+                    public void buttonClick(ClickEvent event) {
+                        searchAction();
+                    }
 		});
+                searchPhrase.addShortcutListener(new ShortcutListener("ENTER", ShortcutAction.KeyCode.ENTER, null) { 
+                    @Override
+                    public void handleAction(Object sender, Object target) {
+                        if (target == searchPhrase)
+                            searchAction();
+                    }
+                });
 		
 //		final Table resultsTable = new Table();
 //		mainContainer.addComponent(resultsTable);
@@ -311,6 +317,16 @@ public class SearchCubes extends CustomComponent {
 		mainContainer.setExpandRatio(resultsLayout, 2.0f);
 		visualizer = new LabelVisualization(resultsLayout);
 	}
+        
+        private void searchAction(){
+            String regex = searchPhrase.getValue().toString().trim(); 
+            try {
+                visualizer.visualize(getMatchingCubesKeywords(regex), regex);
+            } catch (Exception e) {
+                e.printStackTrace();
+                getWindow().showNotification("Error", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+            }
+        }
         
         private Collection<MatchingParams> getMatchingCubesKeywords(String keywords) throws RepositoryException, MalformedQueryException, QueryEvaluationException{
             ArrayList<MatchingParams> cubes = new ArrayList<SearchCubes.MatchingParams>();
