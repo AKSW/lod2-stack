@@ -1,12 +1,24 @@
 package eu.lod2.stat;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.Notification;
+import com.vaadin.ui.themes.Reindeer;
+import eu.lod2.LOD2DemoState;
+import eu.lod2.utils.SearchUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openrdf.model.Value;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.MalformedQueryException;
@@ -16,20 +28,6 @@ import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window.Notification;
-import com.vaadin.ui.themes.Reindeer;
-
-import eu.lod2.LOD2DemoState;
-import eu.lod2.utils.SearchUtils;
-
 public class SearchCubes extends CustomComponent {
 	
 	private LOD2DemoState state;
@@ -38,15 +36,100 @@ public class SearchCubes extends CustomComponent {
 	
 	private class MatchingParams {
 		public String g, ds;
-		public Value title, label, description, comment;
-		public int getSortingScore(){
+                private List<String> titles, labels, descriptions, comments;
+                private int mergedScore;
+                
+                public MatchingParams (){
+                    titles = new ArrayList<String>();
+                    labels = new ArrayList<String>();
+                    descriptions = new ArrayList<String>();
+                    comments = new ArrayList<String>();
+                    mergedScore = 0;
+                }
+
+                public List<String> getTitles() {
+                    return titles;
+                }
+                
+                public String getMainTitle(){
+                    return titles.get(0);
+                }
+
+                public List<String> getLabels() {
+                    return labels;
+                }
+                
+                public String getMainLabel(){
+                    return labels.get(0);
+                }
+
+                public List<String> getDescriptions() {
+                    return descriptions;
+                }
+                
+                public String getMainDescription(){
+                    return descriptions.get(0);
+                }
+
+                public List<String> getComments() {
+                    return comments;
+                }
+                
+                public String getMainComment(){
+                    return comments.get(0);
+                }
+                
+                public boolean hasTitle(){
+                    return titles.size()>0;
+                }
+                public boolean hasLabel(){
+                    return labels.size()>0;
+                }
+                public boolean hasDescription(){
+                    return descriptions.size()>0;
+                }
+                public boolean hasComment(){
+                    return comments.size()>0;
+                }
+                
+		public int calculateScore(){
 			int score = 0;
-			score += (title != null)?3:0;
-			score += (label != null)?3:0;
-			score += (description != null)?1:0;
-			score += (comment != null)?1:0;
+                        score += (titles.size() > 0)?3:0;
+			score += (labels.size() > 0)?3:0;
+			score += (descriptions.size() > 0)?1:0;
+			score += (comments.size() > 0)?1:0;
 			return score;
 		}
+                public int getSortingScore(){
+                    return (mergedScore == 0)?calculateScore():mergedScore;
+                }
+                public void mergeTuple(Value title, Value label,
+                        Value description, Value comment){
+                    if (title != null && !titles.contains(title.stringValue()))
+                        titles.add(title.stringValue());
+                    if (label != null && !labels.contains(label.stringValue()))
+                        labels.add(label.stringValue());
+                    if (description != null && !descriptions.contains(description.stringValue()))
+                        descriptions.add(description.stringValue());
+                    if (comment != null && !comments.contains(comment.stringValue()))
+                        comments.add(comment.stringValue());
+                }
+                public boolean merge(MatchingParams mp){
+                    if (!g.equals(mp.g) || !ds.equals(mp.ds))
+                        return false;
+                    
+                    if (mergedScore == 0) mergedScore = calculateScore();
+                    mergedScore += mp.calculateScore();
+                    for (String item: mp.getTitles())
+                        if (!titles.contains(item)) titles.add(item);
+                    for (String item: mp.getLabels())
+                        if (!labels.contains(item)) labels.add(item);
+                    for (String item: mp.getDescriptions())
+                        if (!descriptions.contains(item)) descriptions.add(item);
+                    for (String item: mp.getComments())
+                        if (!comments.contains(item)) comments.add(item);
+                    return true;
+                }
 	}
 	private class ParamsComparator implements Comparator<MatchingParams> {
 		public int compare(MatchingParams o1, MatchingParams o2) {
@@ -69,17 +152,18 @@ public class SearchCubes extends CustomComponent {
 				String graph = params.g;
 				table.addItem(new Object [] {ds, "", ""}, i++);
 				table.addItem(new Object[] {"", "graph", graph}, i++);
-				if (params.title != null) {
-					table.addItem(new Object[] {"", "dct:title", params.title.stringValue()}, i++);
+                                
+				if (params.hasTitle()) {
+					table.addItem(new Object[] {"", "dct:title", params.getMainTitle()}, i++);
 				}
-				if (params.label != null) {
-					table.addItem(new Object[] {"", "rdfs:label", params.label.stringValue()}, i++);
+				if (params.hasLabel()) {
+					table.addItem(new Object[] {"", "rdfs:label", params.getMainLabel()}, i++);
 				}
-				if (params.description != null) {
-					table.addItem(new Object[] {"", "dct:description", params.description.stringValue()}, i++);
+				if (params.hasDescription()) {
+					table.addItem(new Object[] {"", "dct:description", params.getMainDescription()}, i++);
 				}
-				if (params.comment != null) {
-					table.addItem(new Object[] {"", "rdfs:comment", params.comment.stringValue()}, i++);
+				if (params.hasComment()) {
+					table.addItem(new Object[] {"", "rdfs:comment", params.getMainComment()}, i++);
 				}
 			}
 		}
@@ -89,7 +173,14 @@ public class SearchCubes extends CustomComponent {
 		public LabelVisualization(VerticalLayout l){
 			layout = l;
 		}
-		private String formatText(String text, Pattern pattern){
+                private String formatTextKeywords(String text, String keywords){
+                    String res = text;    
+                    for (String kw: keywords.split("\\s+"))
+                        res = formatText(res, kw.trim());
+                    return res;
+                }
+		private String formatText(String text, String regex){
+                        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 			StringBuilder builder = new StringBuilder();
 			Matcher matcher = pattern.matcher(text);
 			int lastPosition = 0;
@@ -109,7 +200,7 @@ public class SearchCubes extends CustomComponent {
 			emptySpace.setHeight("1.5em");
 			layout.addComponent(emptySpace);
 			StringBuilder html = new StringBuilder();
-			Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+			
 			for (MatchingParams params: results){
 				final String ds = params.ds;
 				final String graph = params.g;
@@ -139,24 +230,24 @@ public class SearchCubes extends CustomComponent {
 				gLayout.addComponent(btn);
 				html = new StringBuilder();
 				
-				if (params.title != null) {
+				if (params.hasTitle()) {
 					html.append("<span style=\"font-size:12px;\">");
-					html.append("<b>dct:title: </b>").append(formatText(params.title.stringValue(), pattern));
+					html.append("<b>dct:title: </b>").append(formatTextKeywords(params.getMainTitle(), regex));
 					html.append("</span><br>");
 				}
-				if (params.label != null) {
+				if (params.hasLabel()) {
 					html.append("<span style=\"font-size:12px;\">");
-					html.append("<b>rdfs:label: </b>").append(formatText(params.label.stringValue(), pattern));
+					html.append("<b>rdfs:label: </b>").append(formatTextKeywords(params.getMainLabel(), regex));
 					html.append("</span><br>");
 				}
-				if (params.description != null) {
+				if (params.hasDescription()) {
 					html.append("<span style=\"font-size:12px;\">");
-					html.append("<b>dct:description: </b>").append(formatText(params.description.stringValue(), pattern));
+					html.append("<b>dct:description: </b>").append(formatTextKeywords(params.getMainDescription(), regex));
 					html.append("</span><br>");
 				}
-				if (params.comment != null) {
+				if (params.hasComment()) {
 					html.append("<span style=\"font-size:12px;\">");
-					html.append("<b>rdfs:comment: </b>").append(formatText(params.comment.stringValue(), pattern));
+					html.append("<b>rdfs:comment: </b>").append(formatTextKeywords(params.getMainComment(), regex));
 					html.append("</span><br>");
 				}
 				
@@ -195,9 +286,9 @@ public class SearchCubes extends CustomComponent {
 		searchBar.addComponent(searchButton);
 		searchButton.addListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
-				String regex = searchPhrase.getValue().toString(); 
+				String regex = searchPhrase.getValue().toString().trim(); 
 				try {
-					visualizer.visualize(getMatchingCubes(regex), regex);
+					visualizer.visualize(getMatchingCubesKeywords(regex), regex);
 				} catch (Exception e) {
 					e.printStackTrace();
 					getWindow().showNotification("Error", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
@@ -220,28 +311,47 @@ public class SearchCubes extends CustomComponent {
 		mainContainer.setExpandRatio(resultsLayout, 2.0f);
 		visualizer = new LabelVisualization(resultsLayout);
 	}
+        
+        private Collection<MatchingParams> getMatchingCubesKeywords(String keywords) throws RepositoryException, MalformedQueryException, QueryEvaluationException{
+            ArrayList<MatchingParams> cubes = new ArrayList<SearchCubes.MatchingParams>();
+            for (String kw: keywords.split("\\s+"))
+                for (MatchingParams mp: getMatchingCubes(kw.trim())) {
+                    boolean newParamsInd = true;
+                    for (MatchingParams cube: cubes)
+                        if (cube.merge(mp)) {
+                            newParamsInd = false;
+                            break;
+                        }
+                    if (newParamsInd) cubes.add(mp);
+                }
+            Collections.sort(cubes, new ParamsComparator());
+            return cubes;   
+        }
 	
 	private Collection<MatchingParams> getMatchingCubes(String regex) throws RepositoryException, MalformedQueryException, QueryEvaluationException{
 		ArrayList<MatchingParams> cubes = new ArrayList<SearchCubes.MatchingParams>();
 		RepositoryConnection conn = state.getRdfStore().getConnection();
 		TupleQueryResult resultSet = conn.prepareTupleQuery(QueryLanguage.SPARQL, SearchUtils.getMatchingDataSets(regex)).evaluate();
 		String lastG = null, lastDS = null;
+                MatchingParams params = new MatchingParams();
 		while (resultSet.hasNext()){
 			BindingSet set = resultSet.next();
 			String graph = set.getValue("g").stringValue();
 			String dataset = set.getValue("ds").stringValue();
-			if (graph.equals(lastG) && dataset.equals(lastDS)) continue;
-			
-			MatchingParams params = new MatchingParams();
-			params.g = lastG = graph;
-			params.ds = lastDS = dataset;
-			params.title = set.getValue("title");
-			params.label = set.getValue("label");
-			params.description = set.getValue("description");
-			params.comment = set.getValue("comment");
-			cubes.add(params);
+			if (!graph.equals(lastG) || !dataset.equals(lastDS)) {
+                            if (lastG != null) {
+                                cubes.add(params);
+                            }
+//                            cubes.add(params);
+                            params = new MatchingParams();
+                            params.g = lastG = graph;
+                            params.ds = lastDS = dataset;
+                        }
+                        params.mergeTuple(set.getValue("title"), set.getValue("label"), 
+                                set.getValue("description"), set.getValue("comment"));
 		}
-		Collections.sort(cubes, new ParamsComparator());
+                if (params.ds != null && params.g != null)
+                    cubes.add(params);
 		return cubes;
 	}
 
