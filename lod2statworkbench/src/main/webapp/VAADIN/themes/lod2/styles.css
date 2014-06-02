@@ -175,3 +175,8 @@
 .config-table-input[type="text"] {
 	font-size: 14px;
 }
+
+.graph-btn .v-button-caption {
+	font-size: 14px;
+	text-decoration: none;
+}
