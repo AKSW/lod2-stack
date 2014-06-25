@@ -86,6 +86,11 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	private IntegrityConstraint icDimsHaveCodeLists;
 	
 	private String helperGraph;
+        private String testHierarchicalTemplate;
+        private String testHierarchicalInverseTemplate;
+        private String testHierarchicalQuery;
+    private IntegrityConstraint icHierarchical;
+    private IntegrityConstraint icHierarchicalInverse;
 	
 	private interface StatusFunction{
 		public Boolean getStatus(Iterator<BindingSet> queryResult);
@@ -131,13 +136,15 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 	}
 	
 	private class ICQueryComposite extends ICQuery{
+                @Override
 		public void add(ICQuery q) { list.add(q); }
+                @Override
 		public void remove(ICQuery q) { list.remove(q); }
 		public Boolean getStatus(){
 			Boolean res = null;
 			for (ICQuery q:list){
 				if (q.getStatus() == null) return null;
-				if (!q.getStatus().booleanValue()) res = q.getStatus(); 
+				if (!q.getStatus()) res = q.getStatus(); 
 			}
 			if (res != null) return res;
 			return true;
@@ -148,6 +155,23 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 			return res;
 		}
 	}
+        
+        private class ICQueryTemplate extends ICQueryComposite {
+                private ICQuery icTemplate;
+                private String query;
+                public ICQueryTemplate(String template, String query){
+                        icTemplate = new ICQuerySimple(template);
+                        this.query = query;
+                }
+                public void init(){
+                    List<BindingSet> res = icTemplate.evaluate();
+                    for (BindingSet set: res){
+                        String q = query.replace("@p", set.getValue("p").toString());
+                        ICQuerySimple ic = new ICQuerySimple(q);
+                        add(ic);
+                    }
+                }
+        }
 	
 	private class ICQuerySimple extends ICQuery {
 		private Boolean status = null;
@@ -565,6 +589,62 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		strBuilder.append("}");
 		testCodesFromCodeLists = strBuilder.toString();
 		icCodesFromCodeLists = new IntegrityConstraint(testCodesFromCodeLists);
+                
+                // IC-20
+                // first template
+                strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+                strBuilder.append("select distinct ?p \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+                strBuilder.append("  ?hierarchy a qb:HierarchicalCodeList . \n");
+                strBuilder.append("  ?hierarchy qb:parentChildProperty ?p . \n");
+                strBuilder.append("  FILTER (isIRI(?p) )\n");
+                strBuilder.append("}");
+                testHierarchicalTemplate = strBuilder.toString();
+                // then a query
+                strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+		strBuilder.append("select distinct ?dim <@p> as ?p \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+		strBuilder.append("  ?obs qb:dataSet ?ds . \n");
+		strBuilder.append("  ?ds qb:structure ?dsd . \n");
+		strBuilder.append("  ?dsd qb:component ?cs . \n");
+		strBuilder.append("  ?cs qb:componentProperty ?dim . \n");
+		strBuilder.append("  ?dim a qb:DimensionProperty . \n");
+		strBuilder.append("  ?dim qb:codeList ?list . \n");
+                strBuilder.append("  ?list a qb:HierarchicalCodeList . \n");
+                strBuilder.append("  ?obs ?dim ?v . \n");
+                strBuilder.append("  FILTER NOT EXISTS { \n");
+                strBuilder.append("    ?list qb:hierarchyRoot ?root . \n");
+                strBuilder.append("    ?root <@p>* ?v . \n");
+                strBuilder.append("  } \n");
+                strBuilder.append("}");
+                testHierarchicalQuery = strBuilder.toString();
+                icHierarchical = new IntegrityConstraint(new ICQueryTemplate(
+                        testHierarchicalTemplate, testHierarchicalQuery));
+                
+                // IC-21
+                // first template
+                strBuilder = new StringBuilder();
+		strBuilder.append("prefix qb: <http://purl.org/linked-data/cube#> \n");
+		strBuilder.append("prefix skos: <http://www.w3.org/2004/02/skos/core#> \n");
+                strBuilder.append("prefix owl: <http://www.w3.org/2002/07/owl#> \n");
+                strBuilder.append("select distinct ?p \n");
+		strBuilder.append("from <").append(helperGraph).append("> where { \n");
+//		strBuilder.append("from <").append(state.getCurrentGraph()).append("> \n where { \n");
+                strBuilder.append("  ?hierarchy a qb:HierarchicalCodeList . \n");
+                strBuilder.append("  ?hierarchy qb:parentChildProperty ?pcp . \n");
+                strBuilder.append("  FILTER (isBlank(?pcp) )\n");
+                strBuilder.append("  ?pcp  owl:inverseOf ?p . \n");
+                strBuilder.append("  FILTER (isIRI(?p) )\n");
+                strBuilder.append("}");
+                testHierarchicalInverseTemplate = strBuilder.toString();
+                icHierarchicalInverse = new IntegrityConstraint(new ICQueryTemplate(
+                        testHierarchicalInverseTemplate, testHierarchicalQuery));
 	}
 	
 	public Validation(LOD2DemoState state, AbstractLayout target){
@@ -766,6 +846,8 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		final Object itemAllMeasuresPresentInMeasDimCube = createTreeItem("IC-17 All measures present in meas. dim. cube ", icAllMeasuresPresentInMeasDimCube);
 		final Object itemConsistentDataSetLinks = createTreeItem("IC-18 Consistent data set links", icConsistentDataSetLinks);
 		final Object itemCodesFromCodeList = createTreeItem("IC-19 Codes from code list", icCodesFromCodeLists);
+                final Object itemCodesFromHierarchy = createTreeItem("IC-20 Codes from hierarchy", icHierarchical);
+                final Object itemCodesFromHierarchyInverse = createTreeItem("IC-21 Codes from hierarchy (inverse)", icHierarchicalInverse);
 		
 		criteriaTree.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
@@ -812,6 +894,10 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 					consistentDataSetLinks();
 				else if (selectedItem == itemCodesFromCodeList)
 					codesFromCodeList();
+                                else if (selectedItem == itemCodesFromHierarchy)
+					codesFromHierarchy();
+                                else if (selectedItem == itemCodesFromHierarchyInverse)
+					codesFromHierarchyInverse();
 				else {
 					summary();
 				}
@@ -2679,6 +2765,90 @@ public class Validation extends CustomComponent implements LOD2DemoState.Current
 		
 		showContent();
 	}
+        
+        // IC-20 layout
+        private void codesFromHierarchy(){
+                validationTab.removeAllComponents();
+		final Iterator<BindingSet> res = icHierarchical.getResults();
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> map = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			map.put(set.getValue("dim").stringValue(), set.getValue("p").stringValue());
+		}
+		
+		if (map.size() == 0){
+			Label label = new Label();
+			label.setValue("All values of hierarchical dimensions with a non-blank qb:parentChildProperty are reachable from a root of the hierarchy");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+                
+                Label label = new Label();
+		label.setValue("Following dimensions need to be fixed because some of its values cannot be reached from root of the hierarchy along the qb:parentChildProperty links");
+		validationTab.addComponent(label);
+		
+		final ListSelect listValues= new ListSelect("Resources", map.keySet());
+		listValues.setNullSelectionAllowed(false);
+		validationTab.addComponent(listValues);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listValues.getValue());
+			}
+		});
+        }
+        
+        // IC-21 layout
+        private void codesFromHierarchyInverse(){
+                validationTab.removeAllComponents();
+		final Iterator<BindingSet> res = icHierarchical.getResults();
+		if (res == null) {
+			Label label = new Label();
+			label.setValue("ERROR - " + errorMsg);
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+		
+		final HashMap<String, String> map = new HashMap<String, String>();
+		while (res.hasNext()){
+			BindingSet set = res.next();
+			map.put(set.getValue("dim").stringValue(), set.getValue("p").stringValue());
+		}
+		
+		if (map.size() == 0){
+			Label label = new Label();
+			label.setValue("All values of hierarchical dimensions with an inverse qb:parentChildProperty are reachable from a root of the hierarchy");
+			validationTab.addComponent(label);
+			showContent();
+			return;
+		}
+                
+                Label label = new Label();
+		label.setValue("Following dimensions need to be fixed becaue some of its values cannot be reached from root of the hierarchy along the inverse qb:parentChildProperty links");
+		validationTab.addComponent(label);
+		
+		final ListSelect listValues= new ListSelect("Resources", map.keySet());
+		listValues.setNullSelectionAllowed(false);
+		validationTab.addComponent(listValues);
+		
+		Button editInOW = new Button("Edit in OntoWiki");
+		editInOW.addListener(new Button.ClickListener() {
+			public void buttonClick(ClickEvent event) {
+				showInOntowiki((String)listValues.getValue());
+			}
+		});
+        }
 	
 	private void showContent(){
 //		mainContrainer.setExpandRatio(criteriaPanel, 0.0f);
