@@ -100,12 +100,13 @@ case "$1" in
 	a2enmod ssl
 
 
-	   # restart apache
-	service apache2 stop
-	wait
-	service apache2 start
-	wait
-
+	# restart apache
+	# service apache2 stop
+	if which invoke-rc.d >/dev/null 2>&1; then
+     	invoke-rc.d apache2 restart
+  else
+     	/etc/init.d/apache2 restart
+  fi
 
 	### VIRTUOSO CONFIG
 	virtetc="/etc/${VIRTUOSOVERSION}/"
@@ -113,10 +114,12 @@ case "$1" in
 	virtuosoini="$virtetc/virtuoso.ini"
 
 	# stop the server
-	service ${VIRTUOSOVERSION} stop
-
-	wait
-
+	# service ${VIRTUOSOVERSION} stop
+	if which invoke-rc.d >/dev/null 2>&1; then
+     	invoke-rc.d ${VIRTUOSOVERSION} stop
+  else
+     	/etc/init.d/${VIRTUOSOVERSION} stop
+  fi
 
 	# add ontowiki directory to DirsAllowed
 	# try to remove the addition first in order to avoid double entries
@@ -127,7 +130,12 @@ case "$1" in
 	wait 
 
 	# restart the server
-	service ${VIRTUOSOVERSION} start
+	# service ${VIRTUOSOVERSION} start
+	if which invoke-rc.d >/dev/null 2>&1; then
+     	invoke-rc.d ${VIRTUOSOVERSION} start
+  else
+     	/etc/init.d/${VIRTUOSOVERSION} start
+  fi
 	
 	wait
 	sleep 1;
@@ -135,19 +143,26 @@ case "$1" in
 	# if it is not running try again infinitely
 	attempts=0;
 	until running || [ "$attempts" -gt 5 ] ; do
-		service ${VIRTUOSOVERSION} start ;
-		sleep 2;
-		attempts=$(($attempts+1));
+			if which invoke-rc.d >/dev/null 2>&1; then
+     			invoke-rc.d ${VIRTUOSOVERSION} start
+			else
+     			/etc/init.d/${VIRTUOSOVERSION} start
+			fi
+			sleep 2;
+			attempts=$(($attempts+1));
 	done;
 
 	# wait with proceeding until isql-vt can properly connect and answer a query.
 	attempts=0;
 	until connect || [ "$attempts" -gt 5 ] ; do
-		service ${VIRTUOSOVERSION} start ;
-		wait ;
-		sleep 1;
-		attempts=$(($attempts+1));
-        done;
+			if which invoke-rc.d >/dev/null 2>&1; then
+     			invoke-rc.d ${VIRTUOSOVERSION} start
+			else
+     			/etc/init.d/${VIRTUOSOVERSION} start
+			fi
+			sleep 1;
+			attempts=$(($attempts+1));
+  done;
 
 	#find current password
 	pwdplacehold="PWDLOD2"
@@ -177,16 +192,16 @@ case "$1" in
         sed -e $subst -i /etc/lod2demo/lod2demo.conf
 		
 	if running; then
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user.sql;
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/load.sql;
-    	        env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/vad_install.sql;
-		chown tomcat7:tomcat7 /etc/lod2demo/lod2demo.conf
-		chmod 640 /etc/lod2demo/lod2demo.conf
-		wait ;
-        else 
-		exit 1;
+    	env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/create_user.sql;
+    	env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/load.sql;
+    	env ODBCINI=/etc/$VIRTUOSOVERSION/bd.ini isql-iodbc DSN=LocalVirtDBA < /var/lib/lod2demo/vad_install.sql;
+			chown tomcat7:tomcat7 /etc/lod2demo/lod2demo.conf
+			chmod 640 /etc/lod2demo/lod2demo.conf
+			wait ;
+  else 
+			exit 1;
 	fi
-
+	
 	# create a upload directory
 	test -d /tmp/uploads || mkdir /tmp/uploads
 	chown tomcat7:tomcat7 /tmp/uploads 

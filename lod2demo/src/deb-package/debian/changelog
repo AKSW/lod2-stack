@@ -1,3 +1,9 @@
+lod2demo (1.3.7) lod2; urgency=low
+
+	* postinst service start, stop, restart changed to using invoke init scripts
+
+ -- Paul Massey <paul.massey@tenforce.com> Wed, 25 Jun 2014, 16:10:00 +0100
+	
 lod2demo (1.3.6) lod2; urgency=low
 
   * added pivot-browser, colanut and other
