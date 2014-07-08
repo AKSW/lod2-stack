@@ -42,11 +42,15 @@ case "$1" in
 	    done
 	fi
 
-	# add lod2 links to dirs allowed in virtuoso ini
+	# add links to dirs allowed in virtuoso ini
 	virtuosoini="/etc/virtuoso-opensource/virtuoso.ini"
 	# try to remove the addition first in order to avoid double entries
 	sed 's/^\(DirsAllowed.*\)\(, \/usr\/share\/virtuoso-opensource\)\(.*\)/\1\3/' -i $virtuosoini
 	sed 's/^\(DirsAllowed.*\)/\1, \/usr\/share\/virtuoso-opensource/' -i $virtuosoini
+
+	if [ ! -e /etc/virtuoso-opensource/bd.ini ]; then
+		echo "WARNING: probably a version of Virtuoso Open Source has been installed that does not comply to the configuration expectations of the Linked Data Stack."
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

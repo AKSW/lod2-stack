@@ -1,15 +1,15 @@
 Source: lod2-virtuoso-opensource
 Section: misc
 Priority: extra
-Maintainer: Karel Kremer <Karel.Kremer@tenforce.com>
+Maintainer: Bert Van Nuffelen <Bert.Van.Nuffelen@tenforce.com>
 Build-Depends: debhelper (>= 7.0.50~)
 Standards-Version: 3.8.4
-Homepage: http://wiki.lod2.eu
+Homepage: http://stack.linkeddata.org
 
 Package: lod2-virtuoso-opensource
 Architecture: all
 Depends: virtuoso-opensource ( >= 7.1 )
 Description: installs virtuoso-opensource for a lod stack
- This package takes care of the installation of the virtuoso-opensource 
- package for a lod stack. It attempts to handle all possible problems 
- that might occur with version issues.
+ (Linked Data) This package is a meta package for the installation of the virtuoso-opensource 
+ package. It creates Virtuoso version agnostic environment on which other packages can build upon. 
+ Note the package depends on the Linked Data Stack version of Virtuoso Open Source. 
