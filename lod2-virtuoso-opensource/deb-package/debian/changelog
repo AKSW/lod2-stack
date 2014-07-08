@@ -3,7 +3,7 @@ lod2-virtuoso-opensource (0.9.3) lod2; urgency=low
   * update control meta data and  descriptions 
   * removed obsolete files
 
- -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com> Tue, 08 Jul 2014 21:37:19 +0200
+ -- Bert Van Nuffelen (TenForce/LOD2) <Bert.Van.Nuffelen@tenforce.com>  Tue, 08 Jul 2014 21:37:19 +0200
 
 lod2-virtuoso-opensource (0.9.2) lod2; urgency=high
 

@@ -10,6 +10,7 @@ Package: lod2-virtuoso-opensource
 Architecture: all
 Depends: virtuoso-opensource ( >= 7.1 )
 Description: installs virtuoso-opensource for a lod stack
- (Linked Data) This package is a meta package for the installation of the virtuoso-opensource 
- package. It creates Virtuoso version agnostic environment on which other packages can build upon. 
- Note the package depends on the Linked Data Stack version of Virtuoso Open Source. 
+ (Linked Data) This package is a meta package for the installation of the
+ virtuoso-opensource package. It creates Virtuoso version agnostic environment
+ on which other packages can build upon.  Note the package depends on the Linked
+ Data Stack version of Virtuoso Open Source. 
