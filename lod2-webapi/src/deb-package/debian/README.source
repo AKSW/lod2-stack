@@ -1,9 +1,8 @@
 lod2webapi for Debian
-------------------
+---------------------
 
-<this file describes information about the source package, see Debian policy
-manual section 4.14. You WILL either need to modify or delete this file>
-
+The lod2 webapi is a java based web api that supports the management of graphs and prefixes.
+Although not restricted to, it has only been tested with Virtuoso.
 
 
 
