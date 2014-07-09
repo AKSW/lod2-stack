@@ -1,0 +1,13 @@
+Source: lod2-java7
+Section: misc
+Priority: extra
+Maintainer: Niels Vandekeybus <niels.vandekeybus@tenforce.com>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://www.tenforce.com/
+
+Package: lod2-java7
+Architecture: all
+Depends: openjdk-7-jre-headless | openjdk-7-jre | oracle-java7-installer
+Description: A helper package to strongly hint the use of java7 via update-alternatives' priorities
+Provides: java6-runtime-headless

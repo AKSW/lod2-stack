@@ -1,0 +1,11 @@
+Package: lod2-java7
+Version: 0.0.4
+Architecture: all
+Maintainer: Niels Vandekeybus <niels.vandekeybus@tenforce.com>
+Installed-Size: 29
+Depends: openjdk-7-jre-headless | openjdk-7-jre | oracle-java7-installer
+Provides: java6-runtime-headless
+Section: misc
+Priority: extra
+Homepage: http://www.tenforce.com/
+Description: A helper package to strongly hint the use of java7 via update-alternatives' priorities

@@ -1,0 +1,6 @@
+lod2-virtuoso-opensource for Debian
+------------------
+
+this package installs the virtuoso-opensource package for a lod stack and tries to handle all dependency issues that might occur
+
+ -- Karel Kremer <Karel.Kremer@tenforce.com>  Tue, 24 Sep 2013 11:52:25 +0100
