@@ -47,6 +47,7 @@ import eu.lod2.LOD2DemoState;
 
 /**
  * Sigma online service
+ * Deprecated temporarily
  */
 //@SuppressWarnings("serial")
 public class Sigma extends CustomComponent

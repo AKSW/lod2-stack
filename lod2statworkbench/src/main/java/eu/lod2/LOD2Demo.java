@@ -696,7 +696,8 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
 
             MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
             MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
-            MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
+	    //Deprecated temporarily
+            //MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
             MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
             MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);
             MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);

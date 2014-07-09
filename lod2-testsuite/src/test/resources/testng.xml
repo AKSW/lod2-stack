@@ -84,7 +84,7 @@
                     <include name="ontoWikiSparql" />
                     <include name="virtuosoSparql" />                    
                     <include name="virtuosoInteractiveSparql" />
-                    <include name="sigmaEe" />
+                 <!--   <include name="sigmaEe" />	-->
                     <include name="geoSpatialExploration" />
                     <include name="assistedQueryingAndSummeryGraph" />
                 </methods>
@@ -142,7 +142,7 @@
                 <methods>
                     <include name="sameAs" />
                     <include name="sindice" />
-                    <include name="sigma" />
+                 <!--   <include name="sigma" />	-->
                     <include name="sindiceWebLinkageValidator" />
                     <include name="ckan" />
                     <include name="poolParty" />

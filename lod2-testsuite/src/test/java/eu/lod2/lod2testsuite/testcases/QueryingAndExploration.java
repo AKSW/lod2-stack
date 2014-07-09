@@ -139,7 +139,7 @@ public class QueryingAndExploration extends TestCase {
     
     /**
      * TC 005.
-     */
+     * Deprecated temporarily
     @Test
     public void sigmaEe()  {
         navigator.navigateTo(new String[] {
@@ -150,6 +150,7 @@ public class QueryingAndExploration extends TestCase {
                 By.xpath("//iframe[contains(@src,'sigmaee')]"), 
                 By.id("header"));
     }
+     */
     
     /**
      * TC 006.

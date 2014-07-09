@@ -517,7 +517,7 @@ public class LOD2Demo extends Application
                     content.setHeight("500px");
                 }  
             };
-
+	    /** Deprecated temporarily
             MenuBar.Command mo2c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -532,6 +532,7 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
             MenuBar.Command mo3c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -638,7 +639,8 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
-
+	    
+	    /** Deprecated temporarily
             MenuBar.Command mo10c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -653,6 +655,7 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
             MenuBar.Command mo11c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -759,7 +762,7 @@ public class LOD2Demo extends Application
 
             MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
             MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
-            MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
+            //MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
             MenuBar.MenuItem weblinkageOnline  = onlinetools.addItem("Sindice Web Linkage Validator", null, weblinkagecmd);
             MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
             MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);

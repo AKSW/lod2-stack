@@ -44,7 +44,7 @@ public class OnlineToolsAndServices extends TestCase {
     
     /**
      * TC 003.
-     */
+     * Deprecated temporarily
     @Test
     public void sigma()  {
         navigator.navigateTo(new String[] {
@@ -55,6 +55,7 @@ public class OnlineToolsAndServices extends TestCase {
                 By.xpath("//iframe[contains(@src,'sig.ma')]"), 
                 By.id("search-w"));
     }   
+    */
 
             
     /**

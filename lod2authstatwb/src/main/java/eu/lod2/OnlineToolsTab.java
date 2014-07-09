@@ -120,7 +120,7 @@ public class OnlineToolsTab extends CustomComponent
 		onlineToolsTab.addComponent(sidenc);
 		onlineToolsTab.addComponent(sidbutton);
 
-
+		/** Deprecated Temporarily
 		try { 
 			URL url2 = new URL(state.getHostName() + "/lod2.sigma.html");
 			Embedded browser2 = new Embedded("", new ExternalResource(url2));
@@ -131,6 +131,7 @@ public class OnlineToolsTab extends CustomComponent
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		};
+		*/
 
 
 		/* The online resources link page */
@@ -148,7 +149,7 @@ public class OnlineToolsTab extends CustomComponent
 				new ExternalResource("http://sig.ma/"));
 		l2.setTargetName("_blank");
 		l2.setTargetBorder(Link.TARGET_BORDER_NONE);
-		panelContent.addComponent(l2);
+		//panelContent.addComponent(l2);
 
 		Link l3 = new Link("LOD cloud",
 				new ExternalResource("http://lod.openlinksw.com/"));
