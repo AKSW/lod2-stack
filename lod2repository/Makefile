@@ -91,6 +91,18 @@ lod2repository-build:
 	sed -i -e "s/lod2repository/lod2virt7-repository/g" lod2virt7-repository-$(LOD2REP_VERSION)/debian/control
 	cd lod2virt7-repository-$(LOD2REP_VERSION) && debuild
 	# end virtv7
+	# start lod2final
+	mkdir -p lod2final-repository-$(LOD2REP_VERSION)
+	cp -R debian        lod2final-repository-$(LOD2REP_VERSION)
+	cp lod2final.* lod2final-repository-$(LOD2REP_VERSION)
+	cp pubring.gpg      lod2final-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
+	cp install_final  lod2final-repository-$(LOD2REP_VERSION)/debian/install
+	cp install_final  lod2final-repository-$(LOD2REP_VERSION)/debian/lod2final-repository.install
+	cp prerm_final  lod2final-repository-$(LOD2REP_VERSION)/debian/prerm
+	sed -i -e "s/lod2repository/lod2final-repository/g" lod2final-repository-$(LOD2REP_VERSION)/debian/changelog
+	sed -i -e "s/lod2repository/lod2final-repository/g" lod2final-repository-$(LOD2REP_VERSION)/debian/control
+	cd lod2final-repository-$(LOD2REP_VERSION) && debuild
+	# end lod2final
 	@echo ""
 	@echo "now test the package, then run \"dput lod2 lod2repository_xxx.changes\""
 	@echo "now test the package, then run \"dput lod2 lod2testing-repository_xxx.changes\""
