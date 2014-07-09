@@ -92,13 +92,14 @@ lod2repository-build:
 	cd lod2virt7-repository-$(LOD2REP_VERSION) && debuild
 	# end virtv7
 	# start lod2final
+	rm -rf lod2final-repository-$(LOD2REP_VERSION)
 	mkdir -p lod2final-repository-$(LOD2REP_VERSION)
 	cp -R debian        lod2final-repository-$(LOD2REP_VERSION)
-	cp lod2final.* lod2final-repository-$(LOD2REP_VERSION)
+	cp lod2final.*      lod2final-repository-$(LOD2REP_VERSION)
 	cp pubring.gpg      lod2final-repository-$(LOD2REP_VERSION)/lod2-keyring.gpg
-	cp install_final  lod2final-repository-$(LOD2REP_VERSION)/debian/install
-	cp install_final  lod2final-repository-$(LOD2REP_VERSION)/debian/lod2final-repository.install
-	cp prerm_final  lod2final-repository-$(LOD2REP_VERSION)/debian/prerm
+	cp install_lod2final    lod2final-repository-$(LOD2REP_VERSION)/debian/install
+	cp install_lod2final    lod2final-repository-$(LOD2REP_VERSION)/debian/lod2final-repository.install
+	cp prerm_final      lod2final-repository-$(LOD2REP_VERSION)/debian/prerm
 	sed -i -e "s/lod2repository/lod2final-repository/g" lod2final-repository-$(LOD2REP_VERSION)/debian/changelog
 	sed -i -e "s/lod2repository/lod2final-repository/g" lod2final-repository-$(LOD2REP_VERSION)/debian/control
 	cd lod2final-repository-$(LOD2REP_VERSION) && debuild
