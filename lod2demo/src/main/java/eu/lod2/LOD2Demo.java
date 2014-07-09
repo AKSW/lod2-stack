@@ -732,7 +732,8 @@ public class LOD2Demo extends Application
 
 
             MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
-            MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
+	    // Sigma EE is temporarily deprecated
+            //MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
             MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
             MenuBar.MenuItem siren = querying.addItem("Siren", null, sirenCommand);
             // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager

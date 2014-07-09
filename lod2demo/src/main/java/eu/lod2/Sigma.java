@@ -25,6 +25,7 @@ import java.net.URL;
 
 /**
  * Sigma online service
+ * Deprecated temporarily!
  */
 //@SuppressWarnings("serial")
 public class Sigma extends CustomComponent
@@ -40,7 +41,7 @@ public class Sigma extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL(state.getHostName(false) + "/sigmaee");
+	  	URL url = new URL(state.getHostName(false) + ":8080/sigmaee");
 
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);

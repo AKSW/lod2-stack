@@ -465,7 +465,7 @@ Other remarkable features are:
 </owl:NamedIndividual>
 
 <!-- http://localhost/sigmaee -->
-
+<!-- Deprecated
 <owl:NamedIndividual rdf:about="&localhost;sigmaee">
 <rdf:type rdf:resource="&lod2;Tool"/>
 <rdfs:label xml:lang="en">Sigma Enterprise Edition</rdfs:label>
@@ -492,7 +492,7 @@ It is very easy to implement new custom data source (e.g. for your relational or
 	<license rdf:resource="&lod2;GnuAffero"/>
 	<responsible rdf:resource="&lod2;SzymonDanielczyk"/>
 	</owl:NamedIndividual>
-
+-->
 
 	<!--
 	///////////////////////////////////////////////////////////////////////////////////////
