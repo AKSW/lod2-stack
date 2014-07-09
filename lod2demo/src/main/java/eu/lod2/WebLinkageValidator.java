@@ -9,6 +9,7 @@ import java.net.URL;
 
 /**
  * Iframe integrator for the sindice web linkage validator
+ * Deprecated temporarily
  */
 public class WebLinkageValidator extends CustomComponent
 {

@@ -353,7 +353,7 @@ public class LOD2Demo extends Application
             MenuBar.Command lodms = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
-                    IframedUrl content = new LODManager(state);
+                    LODManager content = new LODManager(state);
                     workspace.addComponent(content);
                     // stretch the content to the full workspace area
                     welcome.setHeight("110px");
@@ -462,6 +462,7 @@ public class LOD2Demo extends Application
                 }
             };
 
+	    /** Deprecated temporarily
             MenuBar.Command mq5c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -475,6 +476,7 @@ public class LOD2Demo extends Application
                     mainContainer.setExpandRatio(workspace, 2.0f);
                 }
             };
+	    
             
             MenuBar.Command mq_s_6c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -490,6 +492,7 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    
             
             MenuBar.Command mq_s_7c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -505,6 +508,7 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
 
             MenuBar.Command mo1c = new MenuBar.Command() {
@@ -687,6 +691,7 @@ public class LOD2Demo extends Application
                 }
             };
 
+	    /* Deprecated temporarily
             MenuBar.Command weblinkagecmd = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -701,6 +706,7 @@ public class LOD2Demo extends Application
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
             MenuBar.Command sirenCommand = new Command() {
                 public void menuSelected(MenuItem menuItem) {
@@ -737,12 +743,14 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
 	    // Sigma EE is temporarily deprecated
             //MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
-            MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
+	    // Geo-spatial exploration is temporarily deprecated
+            //MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
             MenuBar.MenuItem siren = querying.addItem("Siren", null, sirenCommand);
             // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
-            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq_s_6c);
-            MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
-            MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
+            // Sparqled is temporarily deprecated
+	    //MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq_s_6c);
+            //MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
+            //MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
             //MenuBar.MenuItem mqs1 = mq1.addItem("Direct via Sesame API", null, mq1c);
             MenuBar.MenuItem mqs2 = mq1.addItem("OntoWiki SPARQL endpoint", null, mq2c);
             MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);
@@ -763,7 +771,7 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem sameAs       = onlinetools.addItem("SameAs", null, mo1c);
             MenuBar.MenuItem sindice      = onlinetools.addItem("Sindice", null, mo11c);
             //MenuBar.MenuItem sigmaOnline  = onlinetools.addItem("Sigma", null, mo10c);
-            MenuBar.MenuItem weblinkageOnline  = onlinetools.addItem("Sindice Web Linkage Validator", null, weblinkagecmd);
+            //MenuBar.MenuItem weblinkageOnline  = onlinetools.addItem("Sindice Web Linkage Validator", null, weblinkagecmd);
             MenuBar.MenuItem ckan      = onlinetools.addItem("CKAN", null, mo8c);
             MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);
             MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);

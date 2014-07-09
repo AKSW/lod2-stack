@@ -62,7 +62,7 @@ public class MondecaSPARQLList extends CustomComponent
 
 	Embedded browser = new Embedded();
 	try { 
-	  	URL url = new URL("http://labs.mondeca.com/sparqlEndpointsStatus/index.html");
+	  	URL url = new URL("http://sparqles.okfn.org/");
 		browser = new Embedded("", new ExternalResource(url));
 		browser.setType(Embedded.TYPE_BROWSER);
 		browser.setSizeFull();

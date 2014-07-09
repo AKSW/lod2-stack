@@ -7,6 +7,8 @@ import com.vaadin.ui.Embedded;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+// Deprecated temporarily
+
 public class SparqledManager extends CustomComponent {
 	
 private LOD2DemoState state;

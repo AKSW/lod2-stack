@@ -33,6 +33,7 @@ import java.net.URLEncoder;
 
 /**
  * The GeoSpatial allows to visualize geospatial data.
+ * Deprecated temporarily
  */
 //@SuppressWarnings("serial")
 public class GeoSpatial extends CustomComponent

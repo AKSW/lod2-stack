@@ -19,6 +19,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+// Deprecated temporarily
+
 public class Sparqled extends CustomComponent {
 	
 	private LOD2DemoState state;
