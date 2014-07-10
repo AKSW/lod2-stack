@@ -1,7 +1,13 @@
+lod2webapi (0.10) lod2; urgency=low
+
+  * typo fixed (I hope) in this file and the copyright file.
+
+ -- Paul Massey <paul.massey@tenforce.com>  Thu, 10 Jul 2014 11:00:00 +0100
 lod2webapi (0.9) lod2; urgency=low
+
   * bumped tomcat, java, virtuoso version
 
- -- Niels Vandekeybus <niels.vandekeybus@tenforce.com> Fri, 21 Mar 2014 15:25:08 +0100
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com>  Fri, 21 Mar 2014 15:25:08 +0100
 
 lod2webapi (0.8) lod2; urgency=low
 
