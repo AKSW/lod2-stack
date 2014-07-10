@@ -9,7 +9,7 @@ Homepage: http://lod2.eu
 Package: lod2demo
 Architecture: all
 Depends: tomcat7, lod2-virtuoso-opensource, apache2, lod2-java7, virtuoso-vad-isparql, d2r-cordis, valiant, lod2webapi, lodrefine | lod2-refine | lodgrefine | lod-refine, rdf-dataset-integration, dl-learner-components-core, dl-learner-interfaces, libjs-rdfauthor, sparqlify, lodstack-analyse-packages, ontowiki-virtuoso, ontowiki-csvimport, ontowiki-cubeviz, dbpedia-spotlight-ui, siren, lod2statworkbench, pivot-browser, lod2statworkbench, unifiedviews-webapp, ore-ui
-Description: The LOD2 demonstrator application
+Description: LOD2 demonstrator application
  (Linked Data) This package is a web application which allows one to explore 
  the different components in the LOD2 Linked Data stack. It also serves as
  the root meta-package to install all Linked Data stack components.
