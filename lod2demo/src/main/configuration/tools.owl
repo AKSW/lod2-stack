@@ -299,6 +299,39 @@ The license under which the tool is distributed.
 ///////////////////////////////////////////////////////////////////////////////////////
 -->
 
+<!-- http://www.payola.cz -->
+<owl:NamedIndividual rdf:about="http://www.payola.cz">
+<rdf:type rdf:resource="&lod2;Tool"/>
+<rdfs:label>Payola</rdfs:label>
+<tool_homepage rdf:datatype="&xsd;string">http://www.payola.cz</tool_homepage>
+<tool_description xml:lang="en">Payola is a web application which lets you work with graph data in a new way. You can visualize Linked Data using several preinstalled plugins as graphs, tables, etc. Moreover, you can create an analysis and run it against a set of SPARQL endpoints. Analysis results are processed and visualized using the embedded visualization plugins.
+</tool_description>
+<contributed_by_partner rdf:resource="&Partner;uep"/>
+<license rdf:resource="&lod2;GPL3"/>
+<responsible rdf:resource="&lod2;payola_responsible"/>
+</owl:NamedIndividual>
+
+<!-- http://jpo.imp.bg.ac.rs/rozeta -->
+<owl:NamedIndividual rdf:about="http://jpo.imp.bg.ac.rs/rozeta">
+<rdf:type rdf:resource="&lod2;Tool"/>
+<rdfs:label>Rozeta</rdfs:label>
+<tool_homepage rdf:datatype="&xsd;string">http://jpo.imp.bg.ac.rs/rozeta</tool_homepage>
+<tool_description xml:lang="en">Rozeta is a multilingual and multifunctional Natural Language Processing (NLP) and Linked Data tool wrapped around STRUTEX[7], a structured text knowledge representation technique, which is used to extract words and phrases from natural language documents and represent them in a structured form. Its web-based environment provides automatic extraction of STRUTEX dictionaries in Linked Data form, semantic enrichment through link discovery services, a manual revision and authoring component, a document similarity search tool and an automatic document classifier.
+</tool_description>
+<contributed_by_partner rdf:resource="&Partner;imp"/>
+<responsible rdf:resource="&lod2;rozeta_responsible"/>
+</owl:NamedIndividual>
+
+<!-- http://context.aksw.org/app/ -->
+<owl:NamedIndividual rdf:about="http://context.aksw.org/app/">
+<rdf:type rdf:resource="&lod2;Tool"/>
+<rdfs:label>conTEXT</rdfs:label>
+<tool_homepage rdf:datatype="&xsd;string">http://context.aksw.org/app/</tool_homepage>
+<tool_description xml:lang="en">conTEXT allows to semantically analyze text corpora (such as blogs, RSS/Atom feeds, Facebook, G+, Twitter or SlideWiki.org decks) and provides novel ways for browsing and visualizing the results.
+</tool_description>
+<contributed_by_partner rdf:resource="&Partner;ulei"/>
+<responsible rdf:resource="&lod2;context_responsible"/>
+</owl:NamedIndividual>
 
 <!-- http://localhost/CKAN -->
 
@@ -867,6 +900,30 @@ It is very easy to implement new custom data source (e.g. for your relational or
 	<rdf:type rdf:resource="&lod2;ToolResponsible"/>
 	<person_name rdf:datatype="&xsd;string">CKAN contact</person_name>
 	<person_email rdf:datatype="&xsd;string">info@ckan.org</person_email>
+	</owl:NamedIndividual>
+
+	<!-- http://lod2.eu/tools.owl#payola_responsible -->
+
+	<owl:NamedIndividual rdf:about="&lod2;payola_responsible">
+	<rdf:type rdf:resource="&lod2;ToolResponsible"/>
+	<person_name rdf:datatype="&xsd;string">Jakub Klímek and Jiří Helmich</person_name>
+	<person_email rdf:datatype="&xsd;string">info@payola.cz</person_email>
+	</owl:NamedIndividual>
+
+	<!-- http://lod2.eu/tools.owl#rozeta_responsible -->
+
+	<owl:NamedIndividual rdf:about="&lod2;rozeta_responsible">
+	<rdf:type rdf:resource="&lod2;ToolResponsible"/>
+	<person_name rdf:datatype="&xsd;string">Uros Milosevic</person_name>
+	<person_email rdf:datatype="&xsd;string">uros.milosevic@pupin.rs</person_email>
+	</owl:NamedIndividual>
+
+	<!-- http://lod2.eu/tools.owl#context_responsible -->
+
+	<owl:NamedIndividual rdf:about="&lod2;context_responsible">
+	<rdf:type rdf:resource="&lod2;ToolResponsible"/>
+	<person_name rdf:datatype="&xsd;string">Ali Khalili</person_name>
+	<person_email rdf:datatype="&xsd;string">khalili@informatik.uni-leipzig.de</person_email>
 	</owl:NamedIndividual>
 
 	<!-- http://lod2.eu/tools.owl#RobertIsele -->

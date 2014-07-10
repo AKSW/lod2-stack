@@ -676,6 +676,51 @@ public class LOD2Demo extends Application
                 }
             };
 
+            MenuBar.Command mo12c = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    IframedUrl content = new IframedUrl(state, "http://www.payola.cz");
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+
+            MenuBar.Command mo13c = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    IframedUrl content = new IframedUrl(state, "http://jpo.imp.bg.ac.rs/rozeta");
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+
+            MenuBar.Command mo14c = new MenuBar.Command() {
+                public void menuSelected(MenuItem selectedItem) {
+                    workspace.removeAllComponents();
+                    IframedUrl content = new IframedUrl(state, "http://context.aksw.org/app/");
+                    workspace.addComponent(content);
+                    // stretch the content to the full workspace area
+                    welcome.setHeight("110px");
+                    content.setSizeFull();
+                    workspace.setSizeFull();
+                    workspace.setExpandRatio(content, 1.0f);
+                    mainContainer.setExpandRatio(workspace, 2.0f);
+                    mainWindow.getContent().setSizeFull();
+                }
+            };
+
         /*
         MenuBar.Command userinfoCommand = new MenuBar.Command() {
             public void menuSelected(MenuItem selectedItem) {
@@ -776,6 +821,9 @@ public class LOD2Demo extends Application
             MenuBar.MenuItem publicdata = onlinetools.addItem("Europe's Public Data", null, mo9c);
             MenuBar.MenuItem poolparty = onlinetools.addItem("PoolParty", null, mo6c);
             MenuBar.MenuItem sparqlonline = onlinetools.addItem("Online SPARQL endpoints", null, null);
+	    MenuBar.MenuItem payola	= onlinetools.addItem("Payola", null, mo12c);
+	    MenuBar.MenuItem rozeta	= onlinetools.addItem("Rozeta", null, mo13c);
+	    MenuBar.MenuItem conTEXT	= onlinetools.addItem("conTEXT", null, mo14c);
             MenuBar.MenuItem lodcloud        = sparqlonline.addItem("LOD cloud", null, mo3c);
             MenuBar.MenuItem dbpedia         = sparqlonline.addItem("DBpedia", null, mo4c);
             MenuBar.MenuItem sparqlpoolparty = sparqlonline.addItem("PoolParty SPARQL endpoint", null, mo5c);
