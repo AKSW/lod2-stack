@@ -1,9 +1,15 @@
+lod2statworkbench (0.1.5) lod2; urgency=low
+
+  * minor typo fixed to reduce lintian warnings
+
+ -- Paul Massey <paul.massey@tenforce.com>  Thu, 10 Jul 2014 11:14:00 +0100
+
 lod2statworkbench (0.1.4) lod2; urgency=low
 
-	* postinst service start, stop, restart changed to using invoke init scripts
+  * postinst service start, stop, restart changed to using invoke init scripts
 
- -- Paul Massey <paul.massey@tenforce.com> Wed, 25 Jun 2014, 16:02:00 +0100
-	
+ -- Paul Massey <paul.massey@tenforce.com> Wed, 25 Jun 2014 16:02:00 +0100
+
 lod2statworkbench (0.1.3) lod2; urgency=low
 
   * disabled webid support pending tomcat7 support
