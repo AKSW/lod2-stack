@@ -419,6 +419,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                 }
             };
 
+	    /** Deprecated temporarily
             MenuBar.Command mq5c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -462,6 +463,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
 
             MenuBar.Command mo1c = new MenuBar.Command() {
@@ -475,6 +477,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                 }  
             };
 
+	    /** Deprecated temporarily
             MenuBar.Command mo2c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -489,6 +492,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
             MenuBar.Command mo3c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -596,6 +600,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                 }
             };
 
+	    /** Deprecated temporarily
             MenuBar.Command mo10c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
                     workspace.removeAllComponents();
@@ -610,6 +615,7 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
                     mainWindow.getContent().setSizeFull();
                 }
             };
+	    */
 
             MenuBar.Command mo11c = new MenuBar.Command() {
                 public void menuSelected(MenuItem selectedItem) {
@@ -673,12 +679,13 @@ public class LOD2Demo extends Application implements LOD2DemoState.CurrentGraphL
 
 
             MenuBar.MenuItem mq1 = querying.addItem("SPARQL querying", null, null);
-            MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
-            MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
+	    // Deprecated temporarily
+            //MenuBar.MenuItem mq2 = querying.addItem("Sig.ma EE", null, mo2c);
+            //MenuBar.MenuItem mq3 = querying.addItem("Geo-spatial exploration", null, mq5c);
             // TODO: replace this with a menu with two entries, editor and manager, after stephane fixes the manager
-            MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq_s_6c);
-            MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
-            MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
+            //MenuBar.MenuItem mqs5 = mq1.addItem("SparQLed - Assisted Querying", null, mq_s_6c);
+            //MenuBar.MenuItem mqsparqled1 = mqs5.addItem("Use currently selected graph", null, mq_s_6c);
+            //MenuBar.MenuItem mqsparqled2 = mqs5.addItem("Use manager to calculate summary graph", null, mq_s_7c);
             //MenuBar.MenuItem mqs1 = mq1.addItem("Direct via Sesame API", null, mq1c);
             MenuBar.MenuItem mqs2 = mq1.addItem("OntoWiki SPARQL endpoint", null, mq2c);
             MenuBar.MenuItem mqs3 = mq1.addItem("Virtuoso SPARQL endpoint", null, mq3c);

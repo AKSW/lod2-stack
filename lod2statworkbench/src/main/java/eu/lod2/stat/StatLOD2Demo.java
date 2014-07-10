@@ -320,9 +320,10 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         // querying menu
         // many sparql query frontends are attached to the same endpoint (virtuoso) Removing duplicates
         //MenuBar.MenuItem itemSparqlQuerying = menuEdit.addItem("SPARQL querying", null, null);
-        MenuBar.MenuItem itemSparqled = menuEdit.addItem("SparQLed - Assisted Querying", null, cmdSparqled);
-        itemSparqled.addItem("Use currently selected graph", null, cmdSparqled);
-        itemSparqled.addItem("Use manager to calculate summary graph", null, cmdSparqledManager);
+	//Deprecated temporarily
+        //MenuBar.MenuItem itemSparqled = menuEdit.addItem("SparQLed - Assisted Querying", null, cmdSparqled);
+        //itemSparqled.addItem("Use currently selected graph", null, cmdSparqled);
+        //itemSparqled.addItem("Use manager to calculate summary graph", null, cmdSparqledManager);
         //itemSparqlQuerying.addItem("OntoWiki SPARQL endpoint", null, cmdSparqlOntowiki);
         //itemSparqlQuerying.addItem("Virtuoso SPARQL endpoint", null, cmdSparqlVirtuoso);
         //itemSparqlQuerying.addItem("Virtuoso interactive SPARQL endpoint", null, cmdSparqlVirtuosoI);
@@ -331,7 +332,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         menuPresent.addItem("Visualization with CubeViz", null, cmdVisualizeCubeviz);
         // seems like duplicate of publicdata.eu
         //menuQuery.addItem("CKAN", null, cmdCkan);
-        menuPresent.addItem("Geo-Spatial exploration", null, cmdGeoSpatial);
+        //menuPresent.addItem("Geo-Spatial exploration", null, cmdGeoSpatial);
         menuPresent.addItem("Publish to CKAN", null, publishCommand);
         menuPresent.addItem("Publish to datahub.io", null, publishDataHubCommand);
 

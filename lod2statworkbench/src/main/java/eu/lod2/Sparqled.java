@@ -20,6 +20,8 @@ import com.vaadin.terminal.ExternalResource;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Embedded;
 
+// Deprecated temporarily
+
 public class Sparqled extends CustomComponent {
 	
 	private LOD2DemoState state;
