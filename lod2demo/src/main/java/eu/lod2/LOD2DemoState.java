@@ -179,6 +179,21 @@ public class LOD2DemoState
         return rdfStore;
     };
 
+	// Do not rely on the updoad directory to be created in /tmp
+	// and installation file, so this will be first see if it exists
+	// and attempt to create it if it does not (exception if a problem).
+	public String getCreatedUploadDir() throws Exception {
+		File f = new File(getUploadDir());
+		if (f.exists() || f.mkdir()) {
+			return getUploadDir();
+		} else {
+			String message = "Error (getCreatedUploadDir): Failed to create uploadDir: "
+					+ getUploadDir();
+			System.out.println(message);
+			throw new Exception(message);
+		}
+	}
+
     public String getUploadDir(){
         return uploadDir;
     }

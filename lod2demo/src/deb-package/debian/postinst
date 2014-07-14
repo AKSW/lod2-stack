@@ -203,9 +203,10 @@ case "$1" in
 	fi
 	
 	# create a upload directory
-	test -d /tmp/uploads || mkdir /tmp/uploads
-	chown tomcat7:tomcat7 /tmp/uploads 
-	chmod 741 /tmp/uploads 
+	# PMA would be removed after reboot on most systems.
+	# test -d /tmp/uploads || mkdir /tmp/uploads
+	# chown tomcat7:tomcat7 /tmp/uploads 
+	# chmod 741 /tmp/uploads 
 
 #	# sparql editor configuration
 #	sparqlpwd=`date  +"%H.S.%M.P.%S.QL"`

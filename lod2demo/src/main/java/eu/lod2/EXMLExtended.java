@@ -17,17 +17,11 @@
 package eu.lod2;
 
 import java.io.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 
 import com.vaadin.terminal.ErrorMessage;
 import com.vaadin.terminal.UserError;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.Notification;
 
@@ -297,7 +291,7 @@ implements Button.ClickListener
             }
         }
         try{
-            rdfFile = new File (state.getUploadDir() + "file.rdf");
+            rdfFile = new File (state.getCreatedUploadDir() + "file.rdf");
             FileOutputStream fos = new FileOutputStream(rdfFile);
             oStream.writeTo(fos);
             String baseURI = state.getCurrentGraph() + "#";
@@ -368,8 +362,9 @@ implements Button.ClickListener
 
         public OutputStream receiveUpload(String filename, String MIMEType) {
             FileOutputStream fos = null; // Output stream to write to
-            file = new File(state.getUploadDir() + filename);
+            
             try {
+            	file = new File(state.getCreatedUploadDir() + filename);
                 // Open the file for writing.
                 fos = new FileOutputStream(file);
             } catch (java.io.FileNotFoundException e) {
@@ -379,7 +374,14 @@ implements Button.ClickListener
                         "Access to the file failed.",
                         e.getMessage(),
                         Notification.TYPE_ERROR_MESSAGE);
-            }
+            } catch (Exception e) {
+            	this.getWindow().showNotification(
+                        "Upload dir access failed.",
+                        e.getMessage(),
+                        Notification.TYPE_ERROR_MESSAGE);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
             return fos; // Return the output stream to write to
         }
