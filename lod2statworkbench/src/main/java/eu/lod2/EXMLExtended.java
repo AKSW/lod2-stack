@@ -297,7 +297,7 @@ implements Button.ClickListener
             }
         }
         try{
-            rdfFile = new File (state.getUploadDir() + "file.rdf");
+            rdfFile = new File (state.getCreatedUploadDir() + "file.rdf");
             FileOutputStream fos = new FileOutputStream(rdfFile);
             oStream.writeTo(fos);
             String baseURI = state.getCurrentGraph() + "#";

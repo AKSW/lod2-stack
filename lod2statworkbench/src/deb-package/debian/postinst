@@ -215,9 +215,11 @@ case "$1" in
 	fi
 	
 	# create a upload directory
-	test -d /tmp/uploads || mkdir /tmp/uploads
-	chown tomcat7:tomcat7 /tmp/uploads 
-	chmod 741 /tmp/uploads 
+	# PMA: Removed, since cannot be relied on to exists
+  #      code updated to test and mkdir on demand.
+	# test -d /tmp/uploads || mkdir /tmp/uploads
+	# chown tomcat7:tomcat7 /tmp/uploads 
+	# chmod 741 /tmp/uploads 
 
 	# make tomcat ready for authentication
 	#bash /var/lib/lod2statworkbench/tomcatscript/prepareTomcat.sh
