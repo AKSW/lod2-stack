@@ -1,14 +1,26 @@
+valiant (1.4.4) lod2; urgency=low
+
+  * Added rm -rf /usr/lib/valiant to the prerm operations (so cleanup ok)
+
+ -- Paul Massey <paul.massey@tenforce.com>  Fri, 18 Jul 2014 10:50:54 +0100
+
+valiant (1.4.3) lod2; urgency=low
+
+  * changes cd instructions in postinst to pushd/popd.
+
+ -- Paul Massey <paul.massey@tenforce.com>  Fri, 18 Jul 2014 10:41:54 +0100
+
 valiant (1.4.2) lod2; urgency=low
 
   * unzip jar
 
- -- Niels Vandekeybus <niels.vandekeybus@tenforce.com> Mon, 24 Mar 2014 15:30:54 +0100
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com>  Mon, 24 Mar 2014 15:31:54 +0100
 
 valiant (1.4.1) lod2; urgency=low
 
   * added unzip as a dependency
 
- -- Niels Vandekeybus <niels.vandekeybus@tenforce.com> Mon, 24 Mar 2014 15:30:54 +0100
+ -- Niels Vandekeybus <niels.vandekeybus@tenforce.com>  Mon, 24 Mar 2014 15:30:54 +0100
 
 valiant (1.4) lod2; urgency=low
 

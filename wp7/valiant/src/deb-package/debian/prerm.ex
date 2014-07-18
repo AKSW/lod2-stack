@@ -19,6 +19,7 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
+				rm -rf /usr/lib/valiant
     ;;
 
     failed-upgrade)
