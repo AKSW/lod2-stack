@@ -1,10 +1,10 @@
 package eu.lod2.lod2testsuite.configuration;
 
+import com.thoughtworks.selenium.Selenium;
+import eu.lod2.lod2testsuite.configuration.testng.BrowserType;
+import static eu.lod2.lod2testsuite.configuration.testng.BrowserType.*;
 import eu.lod2.lod2testsuite.configuration.testng.FirefoxProfileConfig;
 import eu.lod2.lod2testsuite.configuration.testng.MyWebDriverEventListener;
-import eu.lod2.lod2testsuite.configuration.testng.BrowserType;
-import com.thoughtworks.selenium.Selenium;
-import static eu.lod2.lod2testsuite.configuration.testng.BrowserType.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,10 +15,10 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -95,39 +95,10 @@ public abstract class TestCase {
             driver =  new EventFiringWebDriver(
                     new ChromeDriver(capabilities)).register(eventListener);
         } else {
-            String firebugPath = localFilesDirectory + File.separator + "firefox"
-                    + File.separator + "firebug-1.9.2.xpi";
-            String firefinderPath = localFilesDirectory + File.separator + "firefox"
-                    + File.separator + "firefinder_for_firebug-1.2.2.xpi";
-            String firepathPath = localFilesDirectory + File.separator + "firefox"
-                    + File.separator + "firepath-0.9.7-fx.xpi";
-            // Create new FirefoxProfile:
-            FirefoxProfileConfig config = new FirefoxProfileConfig(localFilesDirectory);
-            try {
-                // Add firebug extension
-                config.addFireBugExtension(firebugPath);
-                
-                // Add firefinder extension
-                config.addExtension(firefinderPath);
-                config.addExtension(firepathPath);
-                
-            } catch (FileNotFoundException ex) {
-                Assert.fail("Could not find firefox-plugin: " + ex.getMessage());
-            } catch (IOException ex) {
-                Assert.fail("Something went wrong trying to register "
-                        + "plugins at firefox profile.: " + ex.getMessage());
-            }
-            // use the custom firefox binary (version 1.8 to be compatible with selenium
-            //FirefoxBinary binary=new FirefoxBinary(new File(filesDir+File.separator+"firefox-18"));
-            //TODO
-            //FirefoxBinary binary=new FirefoxBinary(new File("/home/karel/firefox-18/firefox-bin"));
-            // Create WebDriver instance.
-            
-            //driver = new EventFiringWebDriver(
-            //        new FirefoxDriver(binary,config.getConfiguredProfile()))
-            //        .register(eventListener);
+                        FirefoxProfile config = new FirefoxProfileConfig(
+                    "",false).getConfiguredProfile();
             driver = new EventFiringWebDriver(
-                    new FirefoxDriver(config.getConfiguredProfile()))
+                     new FirefoxDriver(config))
                     .register(eventListener);
         }
         
@@ -189,6 +160,20 @@ public abstract class TestCase {
         
     }
     
+    @BeforeMethod(alwaysRun=true)
+    public void xclickAwayFailureOnStartUp()  {
+        bf.bePatient(1000);
+        By warning = By.xpath("//div[@class='gwt-HTML']");
+        if (bf.isElementVisible(bf.getErrorPopupLocator())) {
+            WebElement message = bf.getVisibleElement(bf.getErrorPopupLocator());
+            logger.fatal("Error message is visible with text: " + message.getText());
+            message.click();
+            bf.waitUntilElementDisappears(warning);
+        } else  {
+            logger.info("No error to click away");
+        }
+    }
+    
     /**
      * Closes opened error messages.
      * Error messages from earlier test cases can interfere with current 
@@ -221,7 +206,6 @@ public abstract class TestCase {
     @AfterSuite(alwaysRun=true)
     public void tearDown()  {
         logger.info("STOPPING");
-        //Insteat of driver.quit();
         driver.quit();
         //selenium.stop();
     }   

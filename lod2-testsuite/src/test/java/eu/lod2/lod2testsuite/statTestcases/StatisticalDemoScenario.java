@@ -1,14 +1,14 @@
 package eu.lod2.lod2testsuite.statTestcases;
 
-import junit.framework.Assert;
+import org.testng.Assert;
+import static org.testng.AssertJUnit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import static org.testng.AssertJUnit.assertTrue;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
-import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * This class contains functional tests concerning extraction and loading of

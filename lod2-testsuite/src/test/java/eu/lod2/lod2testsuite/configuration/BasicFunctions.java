@@ -117,6 +117,8 @@ public class BasicFunctions {
      */
     public By getErrorPopupLocator()  {
         return By.xpath("//div[@class='gwt-HTML']/../..[contains(@class,'error')]");
+        //return By.xpath("//div[@class='gwt-HTML']/ancestor::*[contains(@class,'error')]");
+        
     }
 
     /**

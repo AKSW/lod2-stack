@@ -1,15 +1,13 @@
 package eu.lod2.lod2testsuite.configuration;
 
-import junit.framework.Assert;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-
-import java.util.List;
-
+import org.testng.Assert;
 import static org.testng.AssertJUnit.assertTrue;
 
 /**
