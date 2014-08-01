@@ -98,7 +98,7 @@ public class OnlineToolsAndServices extends TestCase {
         
         bf.checkIFrame(
                 By.xpath("//iframe[contains(@src,'poolparty')]"), 
-                By.id("TabSet"));
+                By.id("main_content"));
     }            
             
     /**
@@ -157,22 +157,52 @@ public class OnlineToolsAndServices extends TestCase {
             "Mondeca SPARQL endpoint Collection"});
         
         bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'mondeca.com')]"), 
-                By.id("endpoint_stats"));
+                By.xpath("//iframe[contains(@src,'okfn.org')]"), 
+                By.id("footer-search"));
     }      
     
     /**
      * TC 011.
      */
     @Test
-    public void sindiceWebLinkageValidator()  {
+    public void payola()  {
         
         navigator.navigateTo(new String[] {
             "Online Tools", 
-            "Sindice Web Linkage Validator"});
+            "Payola"});
         
         bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'demo.sindice')]"), 
-                By.id("wrapper"));
+                By.xpath("//iframe[contains(@src,'payola.cz')]"), 
+                By.xpath("//header/h1[.='Payola']"));
     }
+    
+    /**
+     * TC 012.
+     */
+    @Test
+    public void rozeta()  {
+        
+        navigator.navigateTo(new String[] {
+            "Online Tools", 
+            "Rozeta"});
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'rozeta')]"), 
+                By.id("graph"));
+    } 
+    
+    /**
+     * TC 013.
+     */
+    @Test
+    public void conText()  {
+        
+        navigator.navigateTo(new String[] {
+            "Online Tools", 
+            "conTEXT"});
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'context.aksw.or')]"), 
+                By.id("description_block"));
+    }     
 }

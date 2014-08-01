@@ -4,6 +4,7 @@ import eu.lod2.lod2testsuite.configuration.TestCase;
 import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -17,9 +18,28 @@ import org.testng.annotations.Test;
  * @author Stefan Schurischuster
  * @email s.schurischuster@semantic-web.at
  */
-public class Authoring extends TestCase {
+public class OntoWikiTestCases extends Authoring {
     
-   
+    @BeforeMethod(alwaysRun=true)
+    @Override
+    public void prepareTestCase()  {
+        logger.info("Preparing for onto wiki test...");
+        logger.info("Current url: " +driver.getCurrentUrl());
+        
+        if(!driver.getCurrentUrl().equals(ontowikiUrl.toString()) &&
+                !driver.getCurrentUrl().equals(ontowikiUrl.toString()+"/"))  {
+            driver.get(ontowikiUrl.toString());
+            logger.info("Navigating to: " +ontowikiUrl.toString());
+        }
+        // Reposition the browser view to be at the top.
+        bf.scrollIntoView(bf.waitUntilElementIsVisible(By.id("application")));
+    }
+
+    @BeforeMethod(alwaysRun=true)
+    @Override
+    public void afterTestCase() {}
+
+
     /**
      * TC 001.
      * pre: ontoWiki is accessible.
@@ -28,7 +48,6 @@ public class Authoring extends TestCase {
     @Test(groups = { "ontowiki" })
     @Parameters({"ontowiki.user","ontowiki.pw"})
     public void logIntoOntoWiki(String user, String pw)  {
-        driver.get(url.resolve("/ontowiki").toString());
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
                 By.id("application"));
         OntoWikiPage ontoWiki = new OntoWikiPage();
@@ -42,8 +61,7 @@ public class Authoring extends TestCase {
      */
     @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseTitle","knowledgeBaseUri"})
-    public void createNewKnowledgeBase(String user, String pw,String knowledgeBaseTitle, String knowledgeBaseUri)  {
-        driver.get(url.resolve("/ontowiki").toString());
+    public void createNewKnowledgeBase(String user, String pw,String knowledgeBaseTitle, String knowledgeBaseUri)  {        
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
                 By.id("application"));
         OntoWikiPage ontoWiki = new OntoWikiPage();
@@ -59,7 +77,6 @@ public class Authoring extends TestCase {
     @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseTitle","knowledgeBaseUri"})
     public void addDataToKnowledgeBaseViaRDFFromWeb(String user, String pw, String knowledgeBaseUri, String importUri)  {
-        driver.get(url.resolve("/ontowiki").toString());
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
                 By.id("application"));
         OntoWikiPage ontoWiki = new OntoWikiPage();
@@ -74,8 +91,7 @@ public class Authoring extends TestCase {
      */
     @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseUri","resourceTitle"})
-    public void addResource(String user, String pw, String knowledgeBaseUri, String resourceTitle)  {
-        driver.get(url.resolve("/ontowiki").toString());
+    public void addResource(String user, String pw, String knowledgeBaseUri, String resourceTitle)  {        
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
                 By.id("application"));
         OntoWikiPage ontoWiki = new OntoWikiPage();
@@ -91,7 +107,6 @@ public class Authoring extends TestCase {
     @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase","addResource"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseUri","resourceTitle","instanceTitle"})
     public void addInstanceToResource(String user, String pw, String knowledgeBaseUri, String resourceTitle, String instanceTitle)  {
-        driver.get(url.resolve("/ontowiki").toString());
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
                 By.id("application"));
         OntoWikiPage ontoWiki = new OntoWikiPage();

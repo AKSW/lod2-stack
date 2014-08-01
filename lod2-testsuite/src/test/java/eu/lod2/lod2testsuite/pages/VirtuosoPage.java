@@ -10,7 +10,6 @@ import eu.lod2.lod2testsuite.configuration.Navigator;
 import eu.lod2.lod2testsuite.configuration.TestCase;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -101,8 +100,8 @@ public class VirtuosoPage extends Page{
                 "Could not find password input",
                 By.id("t_login_pwd"));
 
-        user.sendKeys("dba");
-        pw.sendKeys("aeF4aeg8");
+        user.sendKeys(TestCase.virtuosoUser);
+        pw.sendKeys(TestCase.virtuosoPw);
 
         // Click login button
         bf.getVisibleElement(
@@ -154,5 +153,4 @@ public class VirtuosoPage extends Page{
         bf.waitUntilElementIsVisible("Upload did not finish",
                 By.xpath("//div[@class='message'][contains(.,'Upload finished')]"), 30);
     }
-    
 }

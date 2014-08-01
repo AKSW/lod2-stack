@@ -26,7 +26,7 @@ public class BasicFunctions {
     public static int MAX_PATIENCE_SECONDS_EXTENDED = 45;
     public static int MAX_PATIENCE_SECONDS_REDUCED = 5;
     public static int REFRESH_WAIT_SECONDS = 5;
-    public static int MAX_ATTEMPTS = 5;
+    public static int MAX_ATTEMPTS = 2;
     private static final Logger logger = Logger.getLogger(BasicFunctions.class);
     private WebDriver driver;
     
@@ -74,19 +74,24 @@ public class BasicFunctions {
      * @Notice Maybe add collection for multiple content identifiers.
      */
     public void checkIFrame(By frameIdentifier, By contentIdentifier)  {
-        driver.switchTo().defaultContent();
-        /*
-        if(isElementVisible(contentIdentifier))  {
-            logger.info("Already on correct frame. Skipping switch to different frame.");
-            return;
+        if(frameIdentifier != null)  {
+            driver.switchTo().defaultContent();
+            /*
+            if(isElementVisible(contentIdentifier))  {
+                logger.info("Already on correct frame. Skipping switch to different frame.");
+                return;
+            }
+            */
+            WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
+            driver.switchTo().frame(iframe);
+            logger.info("Switched to different frame");
+        } else  {
+            logger.info("No frame identifier defined --> Skipping frame switch.");
         }
-        */
-        WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
-        driver.switchTo().frame(iframe);
-        logger.info("Switched to different frame");
         waitUntilElementIsVisible(
                 "Iframe content was not correctly displayed.",
                 contentIdentifier, frameIdentifier, BasicFunctions.MAX_PATIENCE_SECONDS);
+        
     }
 
     public void checkAndChooseDefaultGraph()  {
@@ -616,20 +621,21 @@ public class BasicFunctions {
                         ExpectedConditions.visibilityOfElementLocated(locator));
             } catch (TimeoutException e) {
                 rep = true;
-                driver.switchTo().defaultContent();
-                WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
-                driver.switchTo().frame(iframe);
-                
-                logger.error("Element not found, switching I frame: "+frameIdentifier+" and trying again for "
-                        + attempts + " time.");
-                
+                if(frameIdentifier != null)  {
+                    driver.switchTo().defaultContent();
+                    WebElement iframe = waitUntilElementIsVisible("Could not find iframe.",frameIdentifier);
+                    driver.switchTo().frame(iframe);
+
+                    logger.error("Element not found, switching I frame: "+frameIdentifier+" and trying again for "
+                            + attempts + " time.");
+                }
             } catch (StaleElementReferenceException se) {
                 rep = true;
                 logger.error("StaleElementReferenceException appeared. Retrying find for "
                         + attempts + " time. " + se.getMessage());
             }
         }
-        assertFalse("To many stale reference exceptions during waiting"
+        assertFalse("Exeeded maximum attempts while waiting "
                 + "for element to be visible.", attempts == MAX_ATTEMPTS);
         
         return element;

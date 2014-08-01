@@ -25,6 +25,14 @@ public class OntoWikiPage extends Page {
     
     /**
      * 
+     */
+    public OntoWikiPage()  {
+        //this.driver = driver;
+        this.driver = TestCase.driver;
+        this.bf = TestCase.bf;
+    } 
+    /**
+     * 
      * @param frameIdentifier 
      */
     public OntoWikiPage(By frameIdentifier)  {

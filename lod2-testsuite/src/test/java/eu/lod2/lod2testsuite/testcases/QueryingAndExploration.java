@@ -153,6 +153,21 @@ public class QueryingAndExploration extends TestCase {
      */
     
     /**
+     * TC 00.
+     * 
+     */ 
+    @Test
+    public void siren()  {
+        navigator.navigateTo(new String[] {
+            "Querying & Exploration", 
+            "Siren"});  
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'siren')]"), 
+                By.id("index"));
+    }
+    
+    /**
      * TC 006.
      */
     @Test

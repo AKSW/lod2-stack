@@ -25,6 +25,8 @@ public abstract class Page {
         this.frameIdentifier = frameIdentifier;
     }
     
+    public Page()  {}
+    
     public By getFrameIdentifier() {
         return frameIdentifier;
     }

@@ -8,6 +8,8 @@ import eu.lod2.lod2testsuite.configuration.testng.MyWebDriverEventListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +40,9 @@ import org.testng.annotations.BeforeSuite;
  * @author Stefan Schurischuster
  */
 public abstract class TestCase {
-    protected String url;
-
+    protected URI url;
+    protected URI ontowikiUrl;
+    
     public static WebDriver driver; 
     public static Selenium selenium;
     public static Actions driverActions;
@@ -49,6 +52,8 @@ public abstract class TestCase {
     public static BrowserType browserType;
     public static String systemArchitecture;
     public static String localFilesDirectory;
+    public static String virtuosoUser;
+    public static String virtuosoPw;
     
     protected static final Logger logger = Logger.getLogger(TestCase.class);
     
@@ -59,11 +64,15 @@ public abstract class TestCase {
      *          Contains the necessary meta information from the testng.xml
      */
     @BeforeSuite(alwaysRun=true)
-    public void setUp(ITestContext context) {
+    public void setUp(ITestContext context) throws URISyntaxException {
         logger.info("STARTING");
         // Get parameters from testng.xml
-        url = context.getCurrentXmlTest().getParameter("selenium.url");
+        url = new URI(context.getCurrentXmlTest().getParameter("selenium.url"));
+        ontowikiUrl = url.resolve("/ontowiki");
+        
         systemArchitecture = context.getCurrentXmlTest().getParameter("system.architecture");
+        virtuosoUser = context.getCurrentXmlTest().getParameter("virtuoso.user");
+        virtuosoPw = context.getCurrentXmlTest().getParameter("virtuoso.pw");
         
         String posBrowser = context.getCurrentXmlTest().getParameter("browser.type");
         // Get correct browser object
@@ -116,7 +125,7 @@ public abstract class TestCase {
         
         logger.info("Opening url: "+ url);
         // Open Website
-        driver.get(url);
+        driver.get(url.toString());
         
         //selenium.open(url);
         // Wait for page to be completely displayed.
@@ -145,10 +154,17 @@ public abstract class TestCase {
     @BeforeMethod(alwaysRun=true)
     public void prepareTestCase()  {
         driver.switchTo().defaultContent();
-        
         logger.info("Switching to default frame.");
-                
-        WebElement toMove = bf.getVisibleElement(By.xpath(
+        
+        logger.info("Current url: " +driver.getCurrentUrl());
+        logger.info("Base url: " + url.toString());
+        
+        if(!driver.getCurrentUrl().equals(url.toString()))  {
+            driver.get(url.toString());
+            logger.info("Navigating to: " +url.toString());
+        }
+        
+        WebElement toMove = bf.waitUntilElementIsVisible(By.xpath(
                 "//img[contains(@src,'logo-lod2-small.png')]"));
         //driverActions.moveToElement(toMove).build().perform();
         // Reposition the browser view to be at the top.
