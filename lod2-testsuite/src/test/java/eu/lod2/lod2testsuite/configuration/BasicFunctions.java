@@ -26,7 +26,7 @@ public class BasicFunctions {
     public static int MAX_PATIENCE_SECONDS_EXTENDED = 45;
     public static int MAX_PATIENCE_SECONDS_REDUCED = 5;
     public static int REFRESH_WAIT_SECONDS = 5;
-    public static int MAX_ATTEMPTS = 2;
+    public static int MAX_ATTEMPTS = 3;
     private static final Logger logger = Logger.getLogger(BasicFunctions.class);
     private WebDriver driver;
     

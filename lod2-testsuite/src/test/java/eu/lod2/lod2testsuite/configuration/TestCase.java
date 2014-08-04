@@ -40,8 +40,8 @@ import org.testng.annotations.BeforeSuite;
  * @author Stefan Schurischuster
  */
 public abstract class TestCase {
-    protected URI url;
-    protected URI ontowikiUrl;
+    protected static URI url;
+    protected static URI ontowikiUrl;
     
     public static WebDriver driver; 
     public static Selenium selenium;
@@ -54,6 +54,8 @@ public abstract class TestCase {
     public static String localFilesDirectory;
     public static String virtuosoUser;
     public static String virtuosoPw;
+    public static String ontowikiUser;
+    public static String ontowikiPw;
     
     protected static final Logger logger = Logger.getLogger(TestCase.class);
     
@@ -64,15 +66,18 @@ public abstract class TestCase {
      *          Contains the necessary meta information from the testng.xml
      */
     @BeforeSuite(alwaysRun=true)
-    public void setUp(ITestContext context) throws URISyntaxException {
+    public static void setUp(ITestContext context) throws URISyntaxException {
         logger.info("STARTING");
         // Get parameters from testng.xml
         url = new URI(context.getCurrentXmlTest().getParameter("selenium.url"));
         ontowikiUrl = url.resolve("/ontowiki");
         
         systemArchitecture = context.getCurrentXmlTest().getParameter("system.architecture");
+        
         virtuosoUser = context.getCurrentXmlTest().getParameter("virtuoso.user");
         virtuosoPw = context.getCurrentXmlTest().getParameter("virtuoso.pw");
+        ontowikiUser = context.getCurrentXmlTest().getParameter("ontowiki.user");
+        ontowikiPw = context.getCurrentXmlTest().getParameter("ontowiki.pw");
         
         String posBrowser = context.getCurrentXmlTest().getParameter("browser.type");
         // Get correct browser object

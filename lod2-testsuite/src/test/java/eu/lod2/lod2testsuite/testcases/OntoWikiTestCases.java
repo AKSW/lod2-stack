@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
  * @author Stefan Schurischuster
  * @email s.schurischuster@semantic-web.at
  */
-public class OntoWikiTestCases extends Authoring {
+public class OntoWikiTestCases extends TestCase {
     
     @BeforeMethod(alwaysRun=true)
     @Override
@@ -59,7 +59,7 @@ public class OntoWikiTestCases extends Authoring {
      * pre: Knowledge Base with the same URI does not exist.
      * post: New knowledge base exists.
      */
-    @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki"})
+    @Test(groups = { "ontowiki" })//, dependsOnMethods= {"logIntoOntoWiki"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseTitle","knowledgeBaseUri"})
     public void createNewKnowledgeBase(String user, String pw,String knowledgeBaseTitle, String knowledgeBaseUri)  {        
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
@@ -74,8 +74,8 @@ public class OntoWikiTestCases extends Authoring {
      * pre: Knowledge base is accessible; Web resource is available.
      * post: Knowledge base has data added.
      */
-    @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase"})
-    @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseTitle","knowledgeBaseUri"})
+    @Test(groups = { "ontowiki" })//, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase"})
+    @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseUri","importUri"})
     public void addDataToKnowledgeBaseViaRDFFromWeb(String user, String pw, String knowledgeBaseUri, String importUri)  {
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
                 By.id("application"));
@@ -89,7 +89,7 @@ public class OntoWikiTestCases extends Authoring {
      * pre: Knowledge base is accessible; Resource with same title does not exist already.
      * post: New Resource exists in knowledge base.
      */
-    @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase"})
+    @Test(groups = { "ontowiki" })//, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseUri","resourceTitle"})
     public void addResource(String user, String pw, String knowledgeBaseUri, String resourceTitle)  {        
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
@@ -104,7 +104,7 @@ public class OntoWikiTestCases extends Authoring {
      * pre: Resource is accessible; Instance with same title does not exist already.
      * post: New Instance is added to existing Resource.
      */
-    @Test(groups = { "ontowiki" }, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase","addResource"})
+    @Test(groups = { "ontowiki" })//, dependsOnMethods= {"logIntoOntoWiki","createNewKnowledgeBase","addResource"})
     @Parameters({"ontowiki.user","ontowiki.pw","knowledgeBaseUri","resourceTitle","instanceTitle"})
     public void addInstanceToResource(String user, String pw, String knowledgeBaseUri, String resourceTitle, String instanceTitle)  {
         bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
@@ -116,81 +116,19 @@ public class OntoWikiTestCases extends Authoring {
     
     
     /**
-     * TC 001 - 006.
-     */
-    @Test
-    @Parameters({ "ontowiki.user", "knowledgeBaseTitle", "knowledgeBaseUri", "importUri", "resourceTitle", "instanceTitle"})
-    public void addAndEditKnowledgeBase(String username, String knowledgeBaseTitle, String knowledgeBaseUri, String importUri, String resourceTitle, String instanceTitle)  {
-        
-        navigator.navigateTo(new String[] {
-            "Authoring", 
-            "OntoWiki"});  
-        By frameIdentifier = By.xpath("//iframe[contains(@src,'ontowiki')]");
-        
-        bf.checkIFrame(
-                frameIdentifier, 
-                By.id("application"));
-        
-        OntoWikiPage ontoWiki = new OntoWikiPage(frameIdentifier);   
-        
-        // Login into onto wiki
-        ontoWiki.logIntoOntoWiki(username,"");
-        
-        // Create new Knowledge base
-        ontoWiki.createNewKnowledgeBase(knowledgeBaseTitle,knowledgeBaseUri,"");
-        
-        // Add data
-        ontoWiki.addDataToKnowledgeBaseViaRDFFromWeb(knowledgeBaseUri, importUri);
-        
-        //TODO: drop off sparql query?
-        // Add resource
-        ontoWiki.addResource(knowledgeBaseUri, resourceTitle);
-        
-        //Add instance
-        ontoWiki.addInstanceToResource(knowledgeBaseUri, resourceTitle, instanceTitle);
-    }
-    
-    /**
-     * TC 007.
+     * TC 006.
      * pre: Knowledge base to delete exists
      * post: Knowledge base is deleted.
      */
-    @Test
-    @Parameters({ "username","knowledgeBaseUri" })
-    public void deleteKnowledgeBase(String username, String knowledgeBaseUri)  {
-        By frameIdentifier = By.xpath("//iframe[contains(@src,'ontowiki')]");
-        if(bf.isElementVisible(frameIdentifier))  {
-            logger.info("Already on correct page. Skipping navigation");
-        } else {
-            navigator.navigateTo(new String[] {
-            "Authoring", 
-            "OntoWiki"});  
-        }
-        bf.checkIFrame(frameIdentifier, By.id("application"));
-        
-        OntoWikiPage ontoWiki = new OntoWikiPage(frameIdentifier);   
+    @Test(groups = { "ontowiki" })
+    @Parameters({ "ontowiki.user","ontowiki.pw","knowledgeBaseUri" })
+    public void deleteKnowledgeBase(String username, String pw, String knowledgeBaseUri)  {
+        bf.waitUntilElementIsVisible("Ontowiki could not be loaded in time.",
+                By.id("application"));
+        OntoWikiPage ontoWiki = new OntoWikiPage();   
         // Perform login if necessary
-        ontoWiki.logIntoOntoWiki(username, "");
+        ontoWiki.logIntoOntoWiki(username, pw);
         // Delete KB
-        ontoWiki.navigateToContextMenuEntry(knowledgeBaseUri,"Delete Knowledge");
-        // Check for delted
-        By element = By.xpath("//div[@class='section-sidewindows']//a[" +bf.xpathEndsWith("@about", knowledgeBaseUri) +"]");
-        bf.waitUntilElementDisappears("Knowledgebase was not correctly deleted. It is still"
-                + "visible after delete.", element);        
-    }
-    
-    /**
-     * TC 002.
-     */
-    @Test
-    public void publishToCkan()  {
-        bf.checkAndChooseDefaultGraph();
-        navigator.navigateTo(new String[] {
-            "Authoring", 
-            "Publish to CKAN"});  
-
-        bf.waitUntilElementIsVisible("Could not find CKAN input fields.", 
-                By.cssSelector("input.v-textfield"));
-        //TODO: further testing
+        ontoWiki.deleteKnowledgeBase(knowledgeBaseUri);        
     }
 }

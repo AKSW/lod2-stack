@@ -41,7 +41,7 @@ public class OntoWikiPage extends Page {
         this.driver = TestCase.driver;
         this.bf = TestCase.bf;
     }
-    
+
     /**
      * Adds data to a existing knowledge base
      * @param knowledgeBaseUri 
@@ -93,10 +93,16 @@ public class OntoWikiPage extends Page {
         bf.waitUntilElementIsVisibleFast("Add-dialog did not pop up.", 
                 By.id("rdfauthor-view"));
         bf.getVisibleElement(By.xpath("//*[starts-with(@id,'literal-value-')]")).sendKeys(resourceLabel);
+        bf.bePatient(700);
         // Click submit
         bf.getVisibleElement("Could not find create resource button.", 
                 By.id("rdfauthor-button-submit")).click();
-        bf.waitUntilElementIsVisibleFast("Data"+ resourceLabel+" was not correctly added.", 
+        if(bf.isElementVisible(By.id("rdfauthor-button-submit")))  {
+            bf.getVisibleElement("Could not find create resource button.", 
+                By.id("rdfauthor-button-submit")).click();
+        }
+
+        bf.waitUntilElementIsVisible("Data"+ resourceLabel+" was not correctly added.", 
                 By.xpath("//div[@id='navigation-content']//a[" 
                 +bf.xpathEndsWith("@about", resourceLabel) +"]"),
                 frameIdentifier);
@@ -126,10 +132,14 @@ public class OntoWikiPage extends Page {
         bf.waitUntilElementIsVisibleFast("Add-dialog did not pop up.", 
                 By.id("rdfauthor-view"));
         bf.getVisibleElement(By.xpath("//*[starts-with(@id,'literal-value-')]")).sendKeys(label);
+        bf.bePatient(1000);
         // Click submit
         bf.getVisibleElement("Could not find create resource button.", 
                 By.id("rdfauthor-button-submit")).click();
-        
+        if(bf.isElementVisible(By.id("rdfauthor-button-submit")))  {
+            bf.getVisibleElement("Could not find create resource button.", 
+                By.id("rdfauthor-button-submit")).click();
+        }     
         // Otherwise a modal dialog pops up when the click comes to fast.
         bf.bePatient(2000);
         //bf.waitUntilElementIsVisible("Could not find resource with title: "+resource, 
@@ -205,6 +215,34 @@ public class OntoWikiPage extends Page {
         logger.info("Successfully created a new knowledge base.");
     }    
     
+    /**    
+     * Deletes an existing Knowledge Base, or skips method if the
+     * resource to delete does not exist.
+     * 
+     * @param knowledgeBaseUri 
+     *          The uri of the Knowledge Base to delete.
+     * 
+     * post: Knowledge base is not visible.
+     */
+    public void deleteKnowledgeBase(String knowledgeBaseUri)  {
+        By kbIdentifier = By.xpath("//div[@class='section-sidewindows']//a[" 
+                +bf.xpathEndsWith("@about", knowledgeBaseUri) +"]");
+        
+        if(!bf.isElementVisibleAfterWait(kbIdentifier))  {
+            logger.info("Could not find knowledge base to delete: "+knowledgeBaseUri);
+            logger.info("Skipping delete.");
+            return;
+        }
+        
+        bf.checkIFrame(frameIdentifier, By.id("application"));
+        navigateToContextMenuEntry(knowledgeBaseUri,"Delete Knowledge");
+        // Check if delted
+        bf.waitUntilElementDisappears("Knowledgebase was not correctly deleted. It is still"
+                + "visible after delete.", kbIdentifier);        
+    }
+    
+    
+    
     /**
      * Navigates to a knowledge base context menu entry.
      * 
@@ -215,6 +253,7 @@ public class OntoWikiPage extends Page {
      */
     public void navigateToContextMenuEntry(String ident, String entry)  {
         By element = By.xpath("//div[@class='section-sidewindows']//a[" +bf.xpathEndsWith("@about", ident) +"]");
+        //By element = By.xpath("//div[@class='section-sidewindows']//a[starts-with(normalize-space(.),'" +ident+ "')]");
         bf.checkIFrame(frameIdentifier, element);
         
         bf.waitUntilElementIsVisible("Could not find knowledge base with uri: "+ ident, 
