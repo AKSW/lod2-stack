@@ -6,8 +6,6 @@ import static eu.lod2.lod2testsuite.configuration.testng.BrowserType.*;
 import eu.lod2.lod2testsuite.configuration.testng.FirefoxProfileConfig;
 import eu.lod2.lod2testsuite.configuration.testng.MyWebDriverEventListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -25,7 +23,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.events.WebDriverEventListener;
-import org.testng.Assert;
 import static org.testng.AssertJUnit.*;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -42,6 +39,7 @@ import org.testng.annotations.BeforeSuite;
 public abstract class TestCase {
     protected static URI url;
     protected static URI ontowikiUrl;
+    protected static URI unifiedviewsUrl;
     
     public static WebDriver driver; 
     public static Selenium selenium;
@@ -71,6 +69,8 @@ public abstract class TestCase {
         // Get parameters from testng.xml
         url = new URI(context.getCurrentXmlTest().getParameter("selenium.url"));
         ontowikiUrl = url.resolve("/ontowiki");
+        unifiedviewsUrl = new URI(url.getScheme(), url.getUserInfo(), url.getHost(), 
+                8080, "/unifiedviews", url.getQuery(), url.getFragment());
         
         systemArchitecture = context.getCurrentXmlTest().getParameter("system.architecture");
         

@@ -16,6 +16,8 @@
     <parameter name="virtuoso.pw" value="aeF4aeg8" />
     <parameter name="ontowiki.user" value="Admin" />
     <parameter name="ontowiki.pw" value="" />
+    <parameter name="unifiedviews.user" value="admin" />
+    <parameter name="unifiedviews.pw" value="test" />
     
     <listeners>
         <!--<listener class-name="eu.lod2.lod2testsuite.configuration.testng.RetryAnalyzerAppender" />-->
@@ -133,15 +135,26 @@
             </class>
         </classes>
     </test>
-
+-->
+<!--
      <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
+            <parameter name="pipeline.name" value="Testpipe" />
+            <parameter name="pipeline.description" value="A pipeline for testing" />
+            <parameter name="pipeline.visibility" value="Public" />
+            
+            <class name="eu.lod2.lod2testsuite.testcases.UnifiedViewsTestCases">
+                <methods>
+                    <include name="logIntoUnifiedViews" />
+                    <include name="createPipeline" />
+                </methods>
+            </class>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
                 <methods>
-                    <include name="ore" />
-                    <include name="lodrefine" />
-                    <include name="dbpediaSpotlight" />
-                    <include name="lodManager" />
+                    <exclude name="ore" />
+                    <exclude name="lodRefine" />
+                    <exclude name="dbpediaSpotlight" />
+                    <exclude name="lodManager" />
                 </methods>
             </class>
         </classes>

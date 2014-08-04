@@ -67,14 +67,4 @@ public class EnrichmentAndDataCleaning extends TestCase {
          
          spotlight.analyseText("", "", 0, 0, false);
     }
-    
-    @Test
-    public void lodManager()  {
-         navigator.navigateTo(new String[] {
-            "Enrichment", 
-            "LOD manager"});  
-         By frameIdent = By.xpath("//iframe[contains(@src,'lodms')]");
-        
-         bf.checkIFrame(frameIdent, By.xpath("//*[starts-with(@id,'lodms')]"));
-    }
 }

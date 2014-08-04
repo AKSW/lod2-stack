@@ -10,7 +10,6 @@ import eu.lod2.lod2testsuite.configuration.TestCase;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import static org.testng.AssertJUnit.*;
 /**
  *
@@ -23,11 +22,8 @@ public class OntoWikiPage extends Page {
     private WebDriver driver;
     private BasicFunctions bf;
     
-    /**
-     * 
-     */
+    
     public OntoWikiPage()  {
-        //this.driver = driver;
         this.driver = TestCase.driver;
         this.bf = TestCase.bf;
     } 
@@ -292,8 +288,8 @@ public class OntoWikiPage extends Page {
         bf.waitUntilElementIsVisible("Could not find username input field for logging into onto wiki.",
                 By.id("username")).sendKeys(username);
         
-         // Skipping password input
-        
+        bf.waitUntilElementIsVisible("Could not find password input field for logging into onto wiki.",
+                By.id("password")).sendKeys(password);
         
         bf.getVisibleElement("Could not find Login button.", By.id("locallogin")).click();
         logger.info("Successfuly logged in.");
