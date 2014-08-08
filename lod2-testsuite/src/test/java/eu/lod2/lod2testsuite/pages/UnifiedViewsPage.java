@@ -50,8 +50,41 @@ public class UnifiedViewsPage extends Page {
      */
     public void createPipeline(String name, String description, String visibility)  {
         navigateToTopMenu("Pipelines");
-        bf.bePatient(1200);
-        
+        bf.waitUntilElementIsVisible("Create pipeline button not found.", 
+                By.xpath(getButtonIdentifier("Create pipeline")), 
+                frameIdentifier).click();
+        bf.waitUntilElementIsVisible("Pipeline details view did not show up.", 
+                By.cssSelector("div.pipelineSettingsLayout"), 
+                frameIdentifier);
+        // Type name and description
+        driver.findElement(By.cssSelector(
+                "div.pipelineSettingsLayout input.v-textfield")).sendKeys(name);
+        driver.findElement(By.cssSelector(
+                "div.pipelineSettingsLayout textarea.v-textarea")).sendKeys(description);
+        // Choose visibility
+        driver.findElement(By.xpath(
+                "//div[contains(@class,'pipelineSettingsLayout')]//label[.='"
+                +visibility+ "']/../input")).click();
+        // Save and close
+        driver.findElement(By.xpath("//span[@class='v-button-wrap'][.='Save & Close']")).click();
+        bf.waitUntilElementIsVisible("Could not find Pipeline after create: "+name, 
+                By.xpath("//table[@class='v-table-table']//td[@class='v-table-cell-content']"
+                        + "[.='" +name+ "']"), frameIdentifier);
+    }
+    
+    /**
+     * Deletes a new pipeline.
+     *
+     * pre: pipeline exists.
+     * post: pipeline is deleted; all schedules of this pipeline are removed too.
+     * 
+     * @param name
+     *          The name of the pipeline.
+     */
+    public void deletePipeline(String name)  {
+        navigateToTopMenu("Pipelines");
+        bf.waitUntilElementIsVisible("Could not find Pipeline to delete: "+name, 
+                By.xpath(getPipelineIdentifier(name)), frameIdentifier);
     }
     
     /**
@@ -94,4 +127,19 @@ public class UnifiedViewsPage extends Page {
                 frameIdentifier).click();
         
     }
+    
+    
+    private String getButtonIdentifier(String caption)  {
+        return "//span[@class='v-button-wrap'][.='" +caption +"']";
+    }
+    
+    private String getPipelineIdentifier(String name)  {
+        return "//table[@class='v-table-table']//td[@class='v-table-cell-content']"
+                        + "[.='" +name+ "']/..";
+    }
+    
+    private String getPipelineButtonIdentifier(String pipeline, String buttonAltText)  {
+        return getPipelineIdentifier(pipeline)+"//span[@class='v-button-wrap']";
+    }
 }
+////table[@class='v-table-table']//td[@class='v-table-cell-content'][.='Testpipe']/..//span[@class='v-button-wrap']
