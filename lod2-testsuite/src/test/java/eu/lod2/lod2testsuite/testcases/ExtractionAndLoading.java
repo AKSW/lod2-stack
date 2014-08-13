@@ -24,7 +24,9 @@ public class ExtractionAndLoading extends TestCase {
     private By virtuosoFrameIdent = By.xpath("//iframe[contains(@src,'conductor')]");
     
     /**
-     * TC 001x Uploads a graph to the lod2stack.
+     * TC 001-4.
+     * pre: Virtuoso available
+     * post: New Graph created.
      */
     @Test
     @Parameters({ "graphNameForLocalFile", "graphFilePath"})
@@ -41,6 +43,11 @@ public class ExtractionAndLoading extends TestCase {
         virtuoso.uploadDataToVirtuosoGraph(graphName, graphFilePath);
     }
     
+    /**
+     * TC 001-2.
+     * pre: Virtuoso available
+     * post: New Graph created.
+     */
     @Test
     @Parameters({"graphNameForPublicDataEuUpload", "searchPhraseEU", "resourceNmbrEU"})
     public void uploadGraphInVirtuosoFromPublicDataEu(String graphName, String searchPhrase, String resourceNmbr)  {
@@ -54,6 +61,11 @@ public class ExtractionAndLoading extends TestCase {
         
     }
     
+    /**
+     * TC 001-3.
+     * pre: Virtuoso available
+     * post: New Graph created.
+     */    
     @Test
     @Parameters({"graphNameForDataHubUpload", "searchPhraseDH", "resourceNmbrDH"})
     public void uploadGraphInVirtuosoFromDataHub(String graphName, String searchPhrase, String resourceNmbr)  {
@@ -207,6 +219,8 @@ public class ExtractionAndLoading extends TestCase {
         // Select export graph
         bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
         uploadButton.click();
+        
+        
         // Wait for upload message.
         WebElement success = bf.waitUntilElementIsVisible(
                 "Upload did not succeed. Message was not displayed.", 
@@ -223,8 +237,7 @@ public class ExtractionAndLoading extends TestCase {
      * Extended Extraction.
      * 
      */
-    //@Test(dependsOnMethods={"extendedExtraction"})
-    @Test
+    @Test(dependsOnMethods={"extendedExtraction"})
     @Parameters({"downloadFileName", "downloadFilePath" })
     public void downloadExtendedExtraction(String downloadFileName, String downloadFilePath)  {
         // Download file
@@ -236,6 +249,7 @@ public class ExtractionAndLoading extends TestCase {
         // Click download
         bf.getVisibleElement(By.id("EXMLExtended_downloadButton")).click();
         assertFalse("Error message appeared.",bf.isElementVisible(bf.getErrorPopupLocator()));
+        // TODO exported file.
     }
     
     /**

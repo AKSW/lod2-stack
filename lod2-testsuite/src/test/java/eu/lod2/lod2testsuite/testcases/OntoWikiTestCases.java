@@ -3,7 +3,6 @@ package eu.lod2.lod2testsuite.testcases;
 import eu.lod2.lod2testsuite.configuration.TestCase;
 import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 
 import org.testng.annotations.Parameters;
@@ -41,7 +40,7 @@ public class OntoWikiTestCases extends TestCase {
 
 
     /**
-     * TC 001.
+     * TC 003.
      * pre: ontoWiki is accessible.
      * post: user is logged into ontoWiki
      */
@@ -55,7 +54,7 @@ public class OntoWikiTestCases extends TestCase {
     }
     
     /**
-     * TC 002.
+     * TC 004.
      * pre: Knowledge Base with the same URI does not exist.
      * post: New knowledge base exists.
      */
@@ -70,7 +69,7 @@ public class OntoWikiTestCases extends TestCase {
     }
     
     /**
-     * TC 003.
+     * TC 005.
      * pre: Knowledge base is accessible; Web resource is available.
      * post: Knowledge base has data added.
      */
@@ -85,7 +84,7 @@ public class OntoWikiTestCases extends TestCase {
     }
     
     /**
-     * TC 004.
+     * TC 006.
      * pre: Knowledge base is accessible; Resource with same title does not exist already.
      * post: New Resource exists in knowledge base.
      */
@@ -100,7 +99,7 @@ public class OntoWikiTestCases extends TestCase {
     }
    
     /**
-     * TC 005.
+     * TC 007.
      * pre: Resource is accessible; Instance with same title does not exist already.
      * post: New Instance is added to existing Resource.
      */
@@ -116,7 +115,7 @@ public class OntoWikiTestCases extends TestCase {
     
     
     /**
-     * TC 006.
+     * TC 008.
      * pre: Knowledge base to delete exists
      * post: Knowledge base is deleted.
      */

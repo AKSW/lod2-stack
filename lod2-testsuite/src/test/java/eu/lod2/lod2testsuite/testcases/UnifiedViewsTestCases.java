@@ -1,7 +1,6 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
-import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import eu.lod2.lod2testsuite.pages.UnifiedViewsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -52,7 +51,7 @@ public class UnifiedViewsTestCases extends TestCase {
     /**
      * TC 001.
      * pre: Unifiedviews is accessible.
-     * post: user is logged into unifiedviews
+     * post: User is logged into unifiedviews
      */
     @Test(groups={"unifiedviews"})
     @Parameters({"unifiedviews.user","unifiedviews.pw"})
@@ -62,9 +61,9 @@ public class UnifiedViewsTestCases extends TestCase {
     }
     
     /**
-     * TC 001.
-     * pre: Unifiedviews is accessible.
-     * post: user is logged into unifiedviews
+     * TC 002.
+     * pre: Logged into unifiedviews
+     * post: New pipeline is created
      */
     @Test(groups={"unifiedviews"})
     @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name","pipeline.description","pipeline.visibility"})    

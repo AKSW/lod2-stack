@@ -1,11 +1,7 @@
 package eu.lod2.lod2testsuite.testcases;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
-import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 /**
@@ -20,7 +16,7 @@ import org.testng.annotations.Test;
 public class Authoring extends TestCase {
     
     /**
-     * TC 002.
+     * TC 001.
      */
     @Test
     public void publishToCkan()  {

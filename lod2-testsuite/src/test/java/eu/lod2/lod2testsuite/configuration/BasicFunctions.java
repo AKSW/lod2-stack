@@ -152,7 +152,7 @@ public class BasicFunctions {
      *      Returns the locator of a vaadin info message.
      */
     public By getInfoPopupLocator()  {
-        return By.xpath("//div[@class='gwt-HTML']/../..[@class='v-Notification']");
+        return By.xpath("//*[@class='v-Notification']//div[@class='gwt-HTML']");
     }
     
     /**

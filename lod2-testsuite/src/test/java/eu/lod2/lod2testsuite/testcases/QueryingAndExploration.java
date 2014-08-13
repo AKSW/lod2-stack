@@ -1,6 +1,5 @@
 package eu.lod2.lod2testsuite.testcases;
 
-import eu.lod2.lod2testsuite.configuration.BasicFunctions;
 import java.util.List;
 
 import eu.lod2.lod2testsuite.configuration.TestCase;
@@ -8,7 +7,6 @@ import eu.lod2.lod2testsuite.pages.OntoWikiPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import static org.testng.AssertJUnit.*;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -24,7 +22,7 @@ import org.testng.annotations.Test;
 public class QueryingAndExploration extends TestCase {
     
     /**
-     * TC 002.
+     * TC 001.
      *
      */
     @Test
@@ -53,7 +51,7 @@ public class QueryingAndExploration extends TestCase {
     }
     
     /**
-     * TC 003.
+     * TC 002.
      */
     @Test
     @Parameters({ "geoGraph","query", "geoGraphResult" })
@@ -96,7 +94,7 @@ public class QueryingAndExploration extends TestCase {
     
     
     /**
-     * TC 004.
+     * TC 003.
      */
     @Test
     @Parameters({ "geoGraph","query", "geoGraphResult" })
@@ -137,6 +135,37 @@ public class QueryingAndExploration extends TestCase {
                  +expectedResult+ "')]")));
     }
     
+
+    /**
+     * TC 004.
+     * 
+     */ 
+    @Test
+    public void siren()  {
+        navigator.navigateTo(new String[] {
+            "Querying & Exploration", 
+            "Siren"});  
+        
+        bf.checkIFrame(
+                By.xpath("//iframe[contains(@src,'siren')]"), 
+                By.id("solr"));
+    }
+    
+    
+    /**
+     * TC 006.
+     
+    @Test
+    @Parameters({ "geoGraph" })
+    public void geoSpatialExploration(@Optional String geoGraph)  {
+        
+        navigator.navigateTo(new String[] {
+            "Querying & Exploration", 
+            "Geo-spatial exploration"});
+        
+    }
+    */
+    
     /**
      * TC 005.
      * Deprecated temporarily
@@ -152,38 +181,10 @@ public class QueryingAndExploration extends TestCase {
     }
      */
     
-    /**
-     * TC 00.
-     * 
-     */ 
-    @Test
-    public void siren()  {
-        navigator.navigateTo(new String[] {
-            "Querying & Exploration", 
-            "Siren"});  
-        
-        bf.checkIFrame(
-                By.xpath("//iframe[contains(@src,'siren')]"), 
-                By.id("index"));
-    }
-    
-    /**
-     * TC 006.
-     */
-    @Test
-    @Parameters({ "geoGraph" })
-    public void geoSpatialExploration(@Optional String geoGraph)  {
-        
-        navigator.navigateTo(new String[] {
-            "Querying & Exploration", 
-            "Geo-spatial exploration"});
-        
-        // TODO: Further testing
-    }
     
     /**
      * TC 007.
-     */
+     
     @Test
     @Parameters({"geoGraph", "specialResult" })
     public void assistedQueryingWithCurrentGraph(String graph, String expectedResult) {
@@ -205,13 +206,6 @@ public class QueryingAndExploration extends TestCase {
         bf.waitUntilElementIsVisible(
                 "Iframe content was not correctly displayed.",
                 By.id("flint-test"), By.xpath("//iframe[@src='sindice-editor']"), BasicFunctions.MAX_PATIENCE_SECONDS);
-        /*
-        // Type query
-        WebElement inputField = bf.waitUntilElementIsVisible("Could not find inputField for query.",
-                By.xpath("//textarea"));
-        inputField.clear();
-        inputField.sendKeys(query);
-        */
         
         // Click submit
         bf.getVisibleElement("Could not find submit button.", 
@@ -222,11 +216,11 @@ public class QueryingAndExploration extends TestCase {
                 By.xpath("//div[@id='formatted-results']//font[contains(.,'" +expectedResult+ "')]"));
         
     }
+    */
 
     /**
      * TC 008.
      * @TODO create TC
-     */
     @Test
      @Parameters({"bookGraph","geoGraph","query", "specialResult" })
     public void assistedQueryingAndSummeryGraph(String inputGraph, String outputGraph, String query, String expectedResult) {
@@ -269,14 +263,6 @@ public class QueryingAndExploration extends TestCase {
         
         driver.switchTo().defaultContent();
         
-        /*
-        // Type query
-        WebElement inputField = bf.waitUntilElementIsVisible("Could not find inputField for query.",
-                By.xpath("//textarea"));
-        inputField.clear();
-        inputField.sendKeys(query);
-        */
-        
         // Click submit
         //bf.getVisibleElement("Could not find submit button.", 
         //        By.id("flint-endpoint-submit")).click();
@@ -286,8 +272,7 @@ public class QueryingAndExploration extends TestCase {
         //        By.xpath("//div[@id='formatted-results']//font[contains(.,'" +expectedResult+ "')]"));
         
         
-        // TODO: submit query and check result
-        
+        // TODO: submit query and check result    
     }
-
+    */
 }
