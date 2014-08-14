@@ -50,6 +50,12 @@ public class UnifiedViewsPage extends Page {
      */
     public void createPipeline(String name, String description, String visibility)  {
         navigateToTopMenu("Pipelines");
+        if (bf.isElementVisibleAfterWait(By.xpath(getPipelineIdentifier(name)))) {
+            logger.info("Pipline with same title already exists:" + name);
+            logger.info("Deleting exisitng Pipeline: " + name);
+            deletePipeline(name);
+        }
+        
         bf.waitUntilElementIsVisible("Create pipeline button not found.", 
                 By.xpath(getButtonIdentifier("Create pipeline")), 
                 frameIdentifier).click();
@@ -85,6 +91,14 @@ public class UnifiedViewsPage extends Page {
         navigateToTopMenu("Pipelines");
         bf.waitUntilElementIsVisible("Could not find Pipeline to delete: "+name, 
                 By.xpath(getPipelineIdentifier(name)), frameIdentifier);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(name,"trash"))).click();
+        logger.info("Clicked delete");
+        bf.waitUntilElementIsVisible("Confirm delete dialog did not pop up.", 
+                By.xpath("//*[@class='popupContent']"
+                        +getButtonIdentifier("Delete pipeline"))).click();
+        bf.waitUntilElementDisappears("Pipeline was not deleted. It is still visible.", 
+                By.xpath(getPipelineIdentifier(name)));
     }
     
     /**
@@ -138,8 +152,9 @@ public class UnifiedViewsPage extends Page {
                         + "[.='" +name+ "']/..";
     }
     
-    private String getPipelineButtonIdentifier(String pipeline, String buttonAltText)  {
-        return getPipelineIdentifier(pipeline)+"//span[@class='v-button-wrap']";
+    private String getPipelineButtonIdentifier(String pipeline, String pictureTitle)  {
+        return getPipelineIdentifier(pipeline)+"//span[@class='v-button-wrap']/img[contains(@src,'"
+                + pictureTitle +"')]";
     }
 }
 ////table[@class='v-table-table']//td[@class='v-table-cell-content'][.='Testpipe']/..//span[@class='v-button-wrap']

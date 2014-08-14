@@ -72,4 +72,18 @@ public class UnifiedViewsTestCases extends TestCase {
         unifiedviews.login(user, pw);   
         unifiedviews.createPipeline(name, description, visibility);
     }
+    
+    /**
+     * TC 003.
+     * pre: Logged into unifiedviews; Pipeline to create exists.
+     * post: Pipeline is deleted
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
+    public void deletePipeline(String user, String pw, String name)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.deletePipeline(name);
+    }
+    
 }

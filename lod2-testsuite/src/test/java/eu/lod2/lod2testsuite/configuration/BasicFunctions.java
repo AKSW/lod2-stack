@@ -312,31 +312,30 @@ public class BasicFunctions {
      * @param typeValue 
      *          true types value. false chooses value from popup.
      */
-    public void handleSelector(By locator, String value, boolean typeValue)  {
-         WebElement selector = waitUntilElementIsVisible(locator);
-         WebElement input = null;
-         WebElement button = null;
-         
-         try { // This should search relativly to selector.
-             input = selector.findElement(By.className("v-filterselect-input"));
-             button = selector.findElement(By.className("v-filterselect-button"));
-         } catch(NoSuchElementException e)  {
-             Assert.fail(e.getMessage());
-         }
-         
-         if(typeValue)  {
+    public void handleSelector(By locator, String value, boolean typeValue) {
+        WebElement selector = waitUntilElementIsVisible(locator);
+        WebElement input = null;
+        WebElement button = null;
+
+        try { // This should search relativly to selector.
+            input = selector.findElement(By.className("v-filterselect-input"));
+            button = selector.findElement(By.className("v-filterselect-button"));
+        } catch (NoSuchElementException e) {
+            Assert.fail(e.getMessage());
+        }
+
+        if (typeValue) {
             input.sendKeys(value);
-         } else  {
-             button.click();
-             WebElement popUpElement = waitUntilElementIsVisible(
-                     "Slector Element not found.", 
-                     By.xpath("//div[contains(@class,'popupContent')]//"
-                     + "td[contains(@class,'gwt-MenuItem')]"
-                     + "/span[text() = '" +value+ "']"));
-             
-             popUpElement.click();
-             bePatient();
-         }
+        } else {
+            button.click();
+        }
+        WebElement popUpElement = waitUntilElementIsVisible(
+                "Slector Element not found.",
+                By.xpath("//div[contains(@class,'popupContent')]//"
+                        + "td[contains(@class,'gwt-MenuItem')]"
+                        + "/span[text() = '" + value + "']"));
+        popUpElement.click();
+        bePatient();
     }
     
     /**

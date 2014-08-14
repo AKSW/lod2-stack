@@ -76,13 +76,19 @@ public class Linking extends TestCase {
     
     /**
      * TC 003.
-     * @TODO create TC
-     * @TDOD get valid test data for sameAsLinking
      */
     @Test
-    public void sameAsLinking()  {
+    @Parameters({"sparqlGraph", "sameAsURI"})
+    public void sameAsLinking(String exportGraph, String URI)  {
         navigator.navigateTo(new String[] {
             "Linking", 
             "SameAs Linking"});  
+       bf.bePatient();
+       bf.handleSelector(By.id("ExportSelector_graphSelector"), exportGraph, false);
+       bf.handleSelector(By.id("SameAsLinking_uriSelector"), URI, true);
+       driver.findElement(By.id("ExportSelector_graphSelector")).click();
+       bf.waitUntilElementIsVisible("No results displayed when extracting links from sameAs.", 
+               By.xpath("//*[@class='v-label'][contains(.,'Added')][contains(.,'triples')]"));
+       
     }
 }

@@ -221,6 +221,10 @@ public abstract class TestCase {
 
     }
     
+    public WebDriver getDriver()  {
+        return driver;
+    }
+    
     /**
      * Stops browser.
      */

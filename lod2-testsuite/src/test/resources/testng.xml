@@ -2,8 +2,7 @@
   
 <suite name="LOD2TestSuite">
     
-    <!--<parameter name="selenium.url" value="http://localhost:8080/lod2demo" />-->
-  
+    <!--<parameter name="selenium.url" value="http://localhost:8080/lod2demo" />-->  
     <parameter name="selenium.url" value="http://demo.lod2.eu/lod2demo/" />
     <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />
     <parameter name="selenium.url" value="http://lod2-stack.semantic-web.at/lod2demo" />
@@ -11,8 +10,9 @@
     <parameter name="browser.type" value="chrome" /> 
     <parameter name="system.architecture" value="64" />
     
-    <!--<parameter name="virtuoso.pw" value="dba" />-->
+    
     <parameter name="virtuoso.user" value="dba" />
+    <!--<parameter name="virtuoso.pw" value="dba" />-->
     <parameter name="virtuoso.pw" value="aeF4aeg8" />
     <parameter name="ontowiki.user" value="Admin" />
     <parameter name="ontowiki.pw" value="" />
@@ -30,7 +30,8 @@
     <parameter name="exampleGraph" value = "http://example.com/empty/" />
     <parameter name="geoGraph" value="http://localhost/Geo" />  
     <parameter name="bookGraph" value="http://localhost/books" />  
-<!--
+    <parameter name="sparqlGraph" value="http://localhost:8890/sparql" />
+
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
@@ -38,12 +39,12 @@
                     <parameter name="searchPhraseEU" value="Land Registry Price Index" />
                     <parameter name="resourceNmbrEU" value="15" />
                     <parameter name="graphNameForPublicDataEuUpload" value="http://localhost/book" />
-                    <exclude  name="uploadGraphInVirtuosoFromPublicDataEu" />
+                    <include  name="uploadGraphInVirtuosoFromPublicDataEu" />
            
                     <parameter name="searchPhraseDH" value="Open Library" />
                     <parameter name="resourceNmbrDH" value="2" />
                     <parameter name="graphNameForDataHubUpload" value="http://localhost/library" />
-                    <exclude  name="uploadGraphInVirtuosoFromDataHub" />
+                    <include  name="uploadGraphInVirtuosoFromDataHub" />
                     
                     <parameter name="graphNameForLocalFile" value="http://localhost/Geo" />
                     <parameter name="graphFilePath" value="files/geo.rdf" />
@@ -52,32 +53,32 @@
                     <parameter name="xmlTextFile" value="files/ealXml.txt" />  
                     <parameter name="xsltTextFile" value="files/ealXslt.txt" />    
                     <parameter name="exportGraphBasicExtraction" value="http://localhost/Geo" />  
-                    <exclude name="basicExtraction" />  
+                    <include name="basicExtraction" />  
                     
                     <parameter name="xmlFile" value="files/eal.xml" />  
                     <parameter name="xsltFile" value="files/eal.xslt" />    
                     <parameter name="catalogFile" value="files/catalog.xml" />    
                     <parameter name="exportGraphExtendedExtraction" value="http://localhost/Geo" />  
-                    <exclude name="extendedExtraction" />                     
+                    <include name="extendedExtraction" />                     
                     
                     <parameter name="downloadFileName" value="downloadedExtendedExtraction" />
                     <parameter name="downloadFilePath" value="files/" />
-                    <exclude name="downloadExtendedExtraction" /> 
+                    <include name="downloadExtendedExtraction" /> 
                     
                     <parameter name="textFile" value="files/text.txt" />  
-                    <exclude name="annotatePlainText" /> 
+                    <include name="annotatePlainText" />     
                     
                     <parameter name="exportGraphExtractor" value="http://localhost/Geo" />  
                     <parameter name="poolPartyProjectId" value="http://lod2.poolparty.biz/AirportEMThesaurus " />    
                     <parameter name="language" value="en" />    
                     <parameter name="textFile" value="files/text.txt" />  
-                    <exclude name="poolPartyExtractor" />        
+                    <include name="poolPartyExtractor" />        
                 </methods>
             </class>
         </classes>
     </test>
--->
-<!--
+
+
     <test name="QueryingAndExploration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.QueryingAndExploration">
@@ -88,7 +89,7 @@
                     <parameter name="bookGraphResult" value="http://purl.org/ontology/bibo/Periodical" />  
                     <parameter name="specialResult" value="http://www.openlinksw.com/virtrdf-data-formats#default-iid" />
                     
-                    <exclude name="ontoWikiSparql" />
+                    <include name="ontoWikiSparql" />
                     <include name="virtuosoSparql" />                    
                     <include name="virtuosoInteractiveSparql" />
                     <include name="siren" />
@@ -96,8 +97,7 @@
             </class>
         </classes>
     </test>
--->
-<!--
+
      <test name="Authoring" preserve-order="true">
         <parameter name="knowledgeBaseTitle" value="Test Knowledge Base" />
         <parameter name="knowledgeBaseUri" value="http://example.com/empty/" />
@@ -122,21 +122,22 @@
             </class>
         </classes>
     </test>
--->
-<!--
+
      <test name="Linking" preserve-order="true">
         <classes>
+            
+            <parameter name="sameAsURI" value="http://dbpedia.org/resource/Culture_of_the_Soviet_Union" />
+            
             <class name="eu.lod2.lod2testsuite.testcases.Linking">
                 <methods>
                     <include name="silk" />
-                    <exclude name="limes" />
-                    <exclude name="sameAsLinking" />
+                    <include name="limes" />
+                    <include name="sameAsLinking" />
                 </methods>
             </class>
         </classes>
     </test>
--->
-<!--
+
      <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
             <parameter name="pipeline.name" value="Testpipe" />
@@ -147,6 +148,7 @@
                 <methods>
                     <include name="logIntoUnifiedViews" />
                     <include name="createPipeline" />
+                    <include name="deletePipeline" />
                 </methods>
             </class>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
@@ -159,8 +161,7 @@
             </class>
         </classes>
     </test>
--->
-<!--
+
     <test name="OnlineToolsAndServices" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.OnlineToolsAndServices">
@@ -181,8 +182,8 @@
             </class>
         </classes>
     </test>
--->
-<!--
+
+
     <test name="Configuration" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.Configuration">
@@ -193,5 +194,5 @@
             </class>
         </classes>
     </test>
--->
+
 </suite>

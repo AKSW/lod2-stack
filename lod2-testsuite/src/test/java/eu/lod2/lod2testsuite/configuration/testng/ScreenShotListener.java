@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -34,12 +36,48 @@ public class ScreenShotListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult tr) {    
         super.onTestFailure(tr);
+        TestCase tc = (TestCase)tr.getInstance();
+        WebDriver driver = tc.getDriver(); 
+        try { 
+            if(driver != null)  {
+                Alert a =  driver.switchTo().alert();
+                logger.error("Alert is present!");
+                logger.error("Text of alert: "+a.getText());
+                logger.info("Accepting alert:");
+                a.accept();
+            } 
+        } catch (NoAlertPresentException Ex) { 
+            logger.debug("no alert present.");
+        } catch (Exception e)  {
+            logger.error("Alert produced Exception!");
+            logger.error("Message: "+e.getMessage());
+            logger.error("Continuing ignoring exception.");
+        }
+        
         Reporter.log(takeScreenShot(tr));
     }
 
     @Override
     public void onTestSkipped(ITestResult tr) {
         super.onTestSkipped(tr);
+        
+        TestCase tc = (TestCase)tr.getInstance();
+        WebDriver driver = tc.getDriver(); 
+        try { 
+            if(driver != null)  {
+                Alert a =  driver.switchTo().alert();
+                logger.error("Alert is present!");
+                logger.error("Text of alert: "+a.getText());
+                logger.info("Accepting alert:");
+                a.accept();
+            } 
+        } catch (NoAlertPresentException Ex) { 
+            logger.debug("no alert present.");
+        } catch (Exception e)  {
+            logger.error("Alert produced Exception!");
+            logger.error("Message: "+e.getMessage());
+            logger.error("Continuing ignoring exception.");
+        }
         if (skipCount == 0) {
             Reporter.log(takeScreenShot(tr));
         }
