@@ -86,4 +86,55 @@ public class UnifiedViewsTestCases extends TestCase {
         unifiedviews.deletePipeline(name);
     }
     
+    /**
+     * TC 004.
+     * pre: Logged into unifiedviews; Pipeline to copy exists
+     * post: Pipeline is doubled
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
+    public void copyPipeline(String user, String pw, String name)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.copyPipeline(name);
+    }
+    
+ 
+    /**
+     * TC 005-02.
+     * pre: Logged into unifiedviews; Pipeline to copy exists
+     * post: Pipeline is doubled
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
+    public void schedulePipelineInInterval(String user, String pw, String name)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+    }    
+    
+    /**
+     * TC 005-01.
+     * pre: At least two pipelines exist
+     * post: Pipeline is doubled
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name","schedule.finishedPipeline"})    
+    public void schedulePipelineAfterAnotherPipeline(String user, String pw, String name, String nameOfFinishedPipeline)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.schedulePipelineAfterAnotherPipeline(name, nameOfFinishedPipeline);
+    }    
+    
+    /**
+     * TC 005-03.
+     * pre: At least two pipelines exist
+     * post: Pipeline is doubled
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name","schedule.ruleName"})    
+    public void deleteScheduleRule(String user, String pw, String name, String ruleName)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.deleteScheduleRule(name, ruleName);
+    }  
 }

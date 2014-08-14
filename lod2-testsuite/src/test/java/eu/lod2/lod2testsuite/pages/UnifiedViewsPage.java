@@ -38,6 +38,32 @@ public class UnifiedViewsPage extends Page {
         this.driverActions = TestCase.driverActions;
     }
     
+    
+    /**
+     * Copies an existing pipeline.
+     * 
+     * pre: Logged into unifiedviews; Pipeline to copy exists
+     * post: Pipeline is doubled 
+     * 
+     * @param name 
+     *          The name of the pipeline to copy.
+     */
+    public void copyPipeline(String name)  {
+        navigateToTopMenu("Pipelines");
+        
+        bf.waitUntilElementIsVisible("Could not find Pipeline to copy: "+name, 
+                By.xpath(getPipelineIdentifier(name)), frameIdentifier);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(name,"copy"))).click();
+        logger.info("Clicked copy");
+        bf.waitUntilElementIsVisible("Confirm copy dialog did not pop up.", 
+               bf.getInfoPopupLocator()).click();
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(name,"copy"))).click();
+        bf.waitUntilElementDisappears("Pipeline was not copied. Copy is not visible.", 
+                By.xpath("//table[@class='v-table-table']//td[@class='v-table-cell-content']"
+                        + "[contains(.,'" +name+ "')][contains(.,'Copy')]"));
+    }
+    
     /**
      * Creates a new pipeline.
      * 
@@ -102,6 +128,31 @@ public class UnifiedViewsPage extends Page {
     }
     
     /**
+     * Deletes a scheduler rule.
+     *
+     * pre: schedule rule exists.
+     * post: schedule rule is deleted; all schedules of this schedule rule are removed too.
+     * 
+     * @param pipeline 
+     *          The name of the pipeline
+     * @param schedulerRule 
+     *          The name of the scheduler rule or parts of it.
+     */
+    public void deleteScheduleRule(String pipeline, String schedulerRule)  {
+        navigateToTopMenu("Scheduler");
+        
+        bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
+                By.xpath(getRuleButtonIdentifier(pipeline,schedulerRule,"trash"))).click();
+        logger.info("Clicked delete");
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible("Confirm delete dialog did not pop up.", 
+                By.xpath("//*[@class='popupContent']"
+                        +getButtonIdentifier("Delete"))).click();
+        bf.waitUntilElementDisappears("Scheduler Rule was not deleted. It is still visible.", 
+                By.xpath(getSchedulerRuleIdentifier(pipeline,new String[]{schedulerRule}))); 
+    }
+    
+    /**
      * Logs into unified views.
      * 
      * @param user
@@ -129,19 +180,58 @@ public class UnifiedViewsPage extends Page {
     }
     
     /**
-     * Helper method. 
-     * Navigates to a top menu entry.
+     * Creates a schedule rule for a pipeline, to run after another pipeline.
+     * pre: At least two pipelines exist
+     * post: Pipeline is scheduled to run after another pipeline
      * 
-     * @param menuTitle 
-     *      The exact title of the top menu.
+     * @param pipelineToSchedule
+     *          The name of the pipeline to be scheduled.
+     * @param pipelineToRunBefore
+     *          The name of the pipeline that must run before the pipeline to be scheduled.
      */
-    private void navigateToTopMenu(String menuTitle)  {
-        bf.waitUntilElementIsVisibleFast("Could not find main menu entry: "+menuTitle, 
-                By.xpath("//span[contains(@class,'v-menubar-menuitem')][.='Pipelines']"), 
+     public void schedulePipelineAfterAnotherPipeline(String pipelineToSchedule, String pipelineToRunBefore) {
+        navigateToTopMenu("Pipelines");
+        bf.waitUntilElementIsVisible("Could not find Pipeline to schedule: " + pipelineToSchedule,
+                By.xpath(getPipelineIdentifier(pipelineToSchedule)), frameIdentifier);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(pipelineToSchedule, "schedule"))).click();
+        logger.info("Clicked schedule button");bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+                By.xpath("//*[@class='popupContent']//span[contains(@class,'v-select')]"
+                        + "[contains(.,'after selected pipeline')]")).click();
+        
+        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+                By.cssSelector("div.popupContent input.v-textfield")).sendKeys(pipelineToRunBefore);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+                By.cssSelector("div.popupContent  select.v-select-twincol-options :first-child")).click();
+        driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier(">>"))).click();                       
+        
+        bf.waitUntilElementIsVisible("Could not schedule pipeline after: "+ pipelineToRunBefore,
+                By.xpath("//*[@class='popupContent']//select[@class='v-select-twincol-selections']"
+                        + "//option[.='" +pipelineToRunBefore+ "']"));
+        
+        driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier("Save"))).click();
+        navigateToTopMenu("Scheduler");
+        
+        bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
+                By.xpath(getSchedulerRuleIdentifier(pipelineToSchedule, 
+                        new String[]{"Run after", pipelineToRunBefore})));
+     }
+     
+     
+    
+
+    /**
+     * Helper method. Navigates to a top menu entry.
+     *
+     * @param menuTitle The exact title of the top menu.
+     */
+    private void navigateToTopMenu(String menuTitle) {
+        bf.waitUntilElementIsVisibleFast("Could not find main menu entry: " + menuTitle,
+                By.xpath("//span[contains(@class,'v-menubar-menuitem')][.='" + menuTitle + "']"),
                 frameIdentifier).click();
         
     }
-    
     
     private String getButtonIdentifier(String caption)  {
         return "//span[@class='v-button-wrap'][.='" +caption +"']";
@@ -152,9 +242,22 @@ public class UnifiedViewsPage extends Page {
                         + "[.='" +name+ "']/..";
     }
     
+    private String getSchedulerRuleIdentifier(String pipeline, String[] ruleParts)  {
+        String start = "//table[@class='v-table-table']//td[@class='v-table-cell-content'][.='" 
+                +pipeline+ "']/..//td[@class='v-table-cell-content']";
+        for (String part : ruleParts)  {
+            start += "[contains(.,'" +part+ "')]";
+        }                                
+        return start+"/..";
+    }
+    
     private String getPipelineButtonIdentifier(String pipeline, String pictureTitle)  {
         return getPipelineIdentifier(pipeline)+"//span[@class='v-button-wrap']/img[contains(@src,'"
                 + pictureTitle +"')]";
     }
+    
+    private String getRuleButtonIdentifier(String pipeline, String rule, String pictureTitle)  {
+        return getSchedulerRuleIdentifier(pipeline, new String[]{rule})+"//span[@class='v-button-wrap']/img[contains(@src,'"
+                + pictureTitle +"')]";
+    }
 }
-////table[@class='v-table-table']//td[@class='v-table-cell-content'][.='Testpipe']/..//span[@class='v-button-wrap']
