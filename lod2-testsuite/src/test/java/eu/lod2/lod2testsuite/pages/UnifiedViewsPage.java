@@ -4,9 +4,13 @@ package eu.lod2.lod2testsuite.pages;
 import eu.lod2.lod2testsuite.configuration.BasicFunctions;
 import eu.lod2.lod2testsuite.configuration.Navigator;
 import eu.lod2.lod2testsuite.configuration.TestCase;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import static org.testng.AssertJUnit.*;
 
 /**
@@ -58,8 +62,7 @@ public class UnifiedViewsPage extends Page {
         logger.info("Clicked copy");
         bf.waitUntilElementIsVisible("Confirm copy dialog did not pop up.", 
                bf.getInfoPopupLocator()).click();
-        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(name,"copy"))).click();
-        bf.waitUntilElementDisappears("Pipeline was not copied. Copy is not visible.", 
+        bf.waitUntilElementIsVisible("Pipeline was not copied. Copy is not visible.", 
                 By.xpath("//table[@class='v-table-table']//td[@class='v-table-cell-content']"
                         + "[contains(.,'" +name+ "')][contains(.,'Copy')]"));
     }
@@ -218,6 +221,72 @@ public class UnifiedViewsPage extends Page {
                         new String[]{"Run after", pipelineToRunBefore})));
      }
      
+     
+        /**
+     * Creates a schedule rule for a pipeline, to run after another pipeline.
+     * pre: Pipeline to schedule exists
+     * post: Pipeline is run an scheduled time
+     * 
+     * @param pipelineToSchedule
+     *          The name of the pipeline to be scheduled.
+     * @param datetime 
+     *          The date and time the pipeline will be scheduled.
+     */
+     public void schedulePipelineToRunOnce(String pipelineToSchedule, Calendar datetime) {
+        /*
+        navigateToTopMenu("Pipelines");
+        bf.waitUntilElementIsVisible("Could not find Pipeline to schedule: " + pipelineToSchedule,
+                By.xpath(getPipelineIdentifier(pipelineToSchedule)), frameIdentifier);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(pipelineToSchedule, "schedule"))).click();
+        logger.info("Clicked schedule button");bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+                By.xpath("//*[@class='popupContent']//span[contains(@class,'v-select')]"
+                        + "[contains(.,'fixed interval')]")).click();
+        
+        // Click just once button
+        bf.waitUntilElementIsVisible("Could not find run just once checkbox.",
+                By.xpath("//div[@class='popupContent']//span[contains(@class,'v-checkbox')]"
+                        + "[.='Just once']//input")).click();
+        
+        // Choose correct date and time
+        */
+        if(datetime == null)  {
+             datetime = Calendar.getInstance();        
+            // Add two minutes
+            logger.info(datetime);
+            int minutes = 120000;
+            long plusMinutes = datetime.getTimeInMillis() + minutes;
+            datetime.setTimeInMillis(plusMinutes);
+            logger.info(datetime);
+        } 
+        
+        // Correct date is already preselected
+        // Choose correct time:   
+        String hour = datetime.get(Calendar.HOUR_OF_DAY)+"";
+        String minute = datetime.get(Calendar.MINUTE)+"";
+
+        Select hourSelect = new Select(driver.findElement(
+                By.xpath("//td[@class='v-inline-datefield-calendarpanel-time']/descendant::select[1]")));
+        hourSelect.selectByValue(hour);
+        Select minuteSelect = new Select(driver.findElement(
+                By.xpath("//td[@class='v-inline-datefield-calendarpanel-time']/descendant::select[2]")));
+        minuteSelect.selectByValue(minute);
+        bf.bePatient(14000);
+        
+       
+         
+        navigateToTopMenu("Scheduler");
+        
+        //Example: Aug 19,2014 11:11:00 AM
+        DateFormat df = new SimpleDateFormat("MMM dd,yyyy h:mm:ss a");
+        df.setCalendar(datetime);
+        
+        logger.info("Looking for scheduled pipeline with the following time: "+df.format(datetime.getTime()));
+        
+        bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
+                By.xpath(getSchedulerRuleIdentifier(pipelineToSchedule, 
+                        new String[]{"Run on", df.format(datetime.getTime())})));
+     } 
      
     
 

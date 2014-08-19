@@ -107,9 +107,10 @@ public class UnifiedViewsTestCases extends TestCase {
      */
     @Test(groups={"unifiedviews"})
     @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
-    public void schedulePipelineInInterval(String user, String pw, String name)  {
+    public void schedulePipelineToRunOnce(String user, String pw, String name)  {
         UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
         unifiedviews.login(user, pw);   
+        unifiedviews.schedulePipelineToRunOnce(name, null);
     }    
     
     /**
