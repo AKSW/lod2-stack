@@ -198,22 +198,25 @@ public class UnifiedViewsPage extends Page {
                 By.xpath(getPipelineIdentifier(pipelineToSchedule)), frameIdentifier);
         bf.bePatient(1000);
         bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(pipelineToSchedule, "schedule"))).click();
-        logger.info("Clicked schedule button");bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+        logger.info("Clicked schedule button");
+        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
                 By.xpath("//*[@class='popupContent']//span[contains(@class,'v-select')]"
                         + "[contains(.,'after selected pipeline')]")).click();
-        
-        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
-                By.cssSelector("div.popupContent input.v-textfield")).sendKeys(pipelineToRunBefore);
-        bf.bePatient(1000);
-        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+        bf.waitUntilElementIsVisible(By.cssSelector("div.popupContent select.v-select-twincol-options"));
+        bf.waitUntilElementIsVisible("Could not find search field for other pipeline.",
+                By.cssSelector("div.popupContent input.v-textfield")).sendKeys(pipelineToRunBefore);        
+        bf.bePatient(1500);
+        bf.waitUntilElementIsVisible("Could not click search result in select field.",
                 By.cssSelector("div.popupContent  select.v-select-twincol-options :first-child")).click();
+       
         driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier(">>"))).click();                       
         
         bf.waitUntilElementIsVisible("Could not schedule pipeline after: "+ pipelineToRunBefore,
                 By.xpath("//*[@class='popupContent']//select[@class='v-select-twincol-selections']"
                         + "//option[.='" +pipelineToRunBefore+ "']"));
-        
         driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier("Save"))).click();
+        bf.waitUntilElementDisappears("Could not close schedule dialog.", 
+                By.xpath("//*[@class='popupContent']"));
         navigateToTopMenu("Scheduler");
         
         bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
@@ -233,7 +236,7 @@ public class UnifiedViewsPage extends Page {
      *          The date and time the pipeline will be scheduled.
      */
      public void schedulePipelineToRunOnce(String pipelineToSchedule, Calendar datetime) {
-        /*
+        
         navigateToTopMenu("Pipelines");
         bf.waitUntilElementIsVisible("Could not find Pipeline to schedule: " + pipelineToSchedule,
                 By.xpath(getPipelineIdentifier(pipelineToSchedule)), frameIdentifier);
@@ -249,7 +252,7 @@ public class UnifiedViewsPage extends Page {
                         + "[.='Just once']//input")).click();
         
         // Choose correct date and time
-        */
+        
         if(datetime == null)  {
              datetime = Calendar.getInstance();        
             // Add two minutes

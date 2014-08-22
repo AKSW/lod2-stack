@@ -31,7 +31,7 @@
     <parameter name="geoGraph" value="http://localhost/Geo" />  
     <parameter name="bookGraph" value="http://localhost/books" />  
     <parameter name="sparqlGraph" value="http://localhost:8890/sparql" />
-
+<!--
     <test name="ExtractionAndLoading" preserve-order="true"> 
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.ExtractionAndLoading">
@@ -137,17 +137,25 @@
             </class>
         </classes>
     </test>
-
+-->
+<!--
      <test name="EnrichmentAndDataCleaning" preserve-order="true">
         <classes>
             <parameter name="pipeline.name" value="Testpipe" />
             <parameter name="pipeline.description" value="A pipeline for testing" />
             <parameter name="pipeline.visibility" value="Public" />
+            <parameter name="schedule.finishedPipeline" value="DBpedia" />
+            <parameter name="schedule.ruleName" value="DBpedia" />
+            
             
             <class name="eu.lod2.lod2testsuite.testcases.UnifiedViewsTestCases">
                 <methods>
                     <include name="logIntoUnifiedViews" />
                     <include name="createPipeline" />
+                    <include name="copyPipeline" />
+                    <include name="schedulePipelineAfterAnotherPipeline" />
+                    <include name="schedulePipelineToRunOnce" />
+                    <include name="deleteScheduleRule" />
                     <include name="deletePipeline" />
                 </methods>
             </class>
@@ -161,7 +169,8 @@
             </class>
         </classes>
     </test>
-
+-->
+<!--
     <test name="OnlineToolsAndServices" preserve-order="true">
         <classes>
             <class name="eu.lod2.lod2testsuite.testcases.OnlineToolsAndServices">
@@ -194,5 +203,5 @@
             </class>
         </classes>
     </test>
-
+-->
 </suite>
