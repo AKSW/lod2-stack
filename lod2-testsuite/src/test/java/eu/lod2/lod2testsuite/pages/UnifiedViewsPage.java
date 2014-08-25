@@ -5,6 +5,7 @@ import eu.lod2.lod2testsuite.configuration.BasicFunctions;
 import eu.lod2.lod2testsuite.configuration.Navigator;
 import eu.lod2.lod2testsuite.configuration.TestCase;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.openqa.selenium.By;
@@ -167,7 +168,7 @@ public class UnifiedViewsPage extends Page {
             logger.info("Already logged into unifiedviews. Skipping login.");
             return;
         }
-        
+        bf.bePatient();
         bf.waitUntilElementIsVisible("Could not find username input field for logging into unified views.",
                 By.xpath("//input[@type='text']"),frameIdentifier).sendKeys(user);
         bf.waitUntilElementIsVisible("Could not find username input field for logging into unified views.",
@@ -216,7 +217,7 @@ public class UnifiedViewsPage extends Page {
                         + "//option[.='" +pipelineToRunBefore+ "']"));
         driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier("Save"))).click();
         bf.waitUntilElementDisappears("Could not close schedule dialog.", 
-                By.xpath("//*[@class='popupContent']"));
+                By.xpath("//div[@class='v-window-contents']"));
         navigateToTopMenu("Scheduler");
         
         bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
@@ -236,13 +237,13 @@ public class UnifiedViewsPage extends Page {
      *          The date and time the pipeline will be scheduled.
      */
      public void schedulePipelineToRunOnce(String pipelineToSchedule, Calendar datetime) {
-        
         navigateToTopMenu("Pipelines");
         bf.waitUntilElementIsVisible("Could not find Pipeline to schedule: " + pipelineToSchedule,
                 By.xpath(getPipelineIdentifier(pipelineToSchedule)), frameIdentifier);
         bf.bePatient(1000);
         bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(pipelineToSchedule, "schedule"))).click();
-        logger.info("Clicked schedule button");bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+        logger.info("Clicked schedule button");
+        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
                 By.xpath("//*[@class='popupContent']//span[contains(@class,'v-select')]"
                         + "[contains(.,'fixed interval')]")).click();
         
@@ -251,22 +252,22 @@ public class UnifiedViewsPage extends Page {
                 By.xpath("//div[@class='popupContent']//span[contains(@class,'v-checkbox')]"
                         + "[.='Just once']//input")).click();
         
+        // Add 30 secs
         // Choose correct date and time
-        
+        int minutesMillis = 30000;
         if(datetime == null)  {
-             datetime = Calendar.getInstance();        
-            // Add two minutes
+            datetime = Calendar.getInstance();        
             logger.info(datetime);
-            int minutes = 120000;
-            long plusMinutes = datetime.getTimeInMillis() + minutes;
+            long plusMinutes = datetime.getTimeInMillis() + minutesMillis;
             datetime.setTimeInMillis(plusMinutes);
             logger.info(datetime);
         } 
         
         // Correct date is already preselected
         // Choose correct time:   
-        String hour = datetime.get(Calendar.HOUR_OF_DAY)+"";
-        String minute = datetime.get(Calendar.MINUTE)+"";
+        DecimalFormat timeFormatter = new DecimalFormat("00");
+        String hour = timeFormatter.format(datetime.get(Calendar.HOUR_OF_DAY));
+        String minute = timeFormatter.format(datetime.get(Calendar.MINUTE));
 
         Select hourSelect = new Select(driver.findElement(
                 By.xpath("//td[@class='v-inline-datefield-calendarpanel-time']/descendant::select[1]")));
@@ -274,14 +275,16 @@ public class UnifiedViewsPage extends Page {
         Select minuteSelect = new Select(driver.findElement(
                 By.xpath("//td[@class='v-inline-datefield-calendarpanel-time']/descendant::select[2]")));
         minuteSelect.selectByValue(minute);
-        bf.bePatient(14000);
         
-       
-         
+        // Click save
+        driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier("Save"))).click();
+        bf.waitUntilElementDisappears("Could not close schedule dialog.", 
+                By.xpath("//div[@class='v-window-contents']"));
+        
         navigateToTopMenu("Scheduler");
         
-        //Example: Aug 19,2014 11:11:00 AM
-        DateFormat df = new SimpleDateFormat("MMM dd,yyyy h:mm:ss a");
+        //Example: Aug 19,2014 11:11
+        DateFormat df = new SimpleDateFormat("MMM dd, yyyy hh:mm");
         df.setCalendar(datetime);
         
         logger.info("Looking for scheduled pipeline with the following time: "+df.format(datetime.getTime()));
@@ -289,8 +292,34 @@ public class UnifiedViewsPage extends Page {
         bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
                 By.xpath(getSchedulerRuleIdentifier(pipelineToSchedule, 
                         new String[]{"Run on", df.format(datetime.getTime())})));
+        
+        navigateToTopMenu("Execution Monitor");
+        bf.bePatient(minutesMillis);
+        bf.waitUntilElementIsVisible("Could not find running pipeline",
+                By.xpath(getExecutedPipeIdentifier(pipelineToSchedule, datetime)));
+        
      } 
      
+    /**
+     * Runs a pipeline directly from pipelines view, by clicking the
+     * run button.
+     * 
+     * @param pipelineToRun 
+     *        The name of the pipeline to run.
+     */
+     public void runPipelineManually(String pipelineToRun)  {
+        navigateToTopMenu("Pipelines");
+        bf.waitUntilElementIsVisible("Could not find Pipeline to run: " + pipelineToRun,
+                By.xpath(getPipelineIdentifier(pipelineToRun)), frameIdentifier);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(pipelineToRun, "running"))).click();
+        logger.info("Clicked run button");
+        bf.bePatient();
+        navigateToTopMenu("Execution Monitor");
+        Calendar now = Calendar.getInstance(); 
+        bf.waitUntilElementIsVisible("Could not find running pipeline",
+                By.xpath(getExecutedPipeIdentifier(pipelineToRun, now)));
+     }
     
 
     /**
@@ -332,4 +361,15 @@ public class UnifiedViewsPage extends Page {
         return getSchedulerRuleIdentifier(pipeline, new String[]{rule})+"//span[@class='v-button-wrap']/img[contains(@src,'"
                 + pictureTitle +"')]";
     }
+    
+
+    private String getExecutedPipeIdentifier(String pipeline, Calendar startedDateTime)  {
+        //25-Aug-2014 12:11
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH");
+        df.setCalendar(startedDateTime);
+        return getPipelineButtonIdentifier(pipeline,"cancelled")
+                +"/ancestor::tr//td[starts-with(normalize-space(.),'" 
+                +df.format(startedDateTime.getTime())+ "')]";
+    }
+    //table[@class='v-table-table']//td[@class='v-table-cell-content'][.='Testpipe']/..//td[starts-with(normalize-space(.),'25-Aug-2014 12:11')]/../..//span[@class='v-button-wrap']/img[contains(@src,'cancelled')]
 }

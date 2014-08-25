@@ -7,7 +7,7 @@
     <parameter name="selenium.url" value="http://test.stack.lod2.eu/lod2demo" />
     <parameter name="selenium.url" value="http://lod2-stack.semantic-web.at/lod2demo" />
     
-    <parameter name="browser.type" value="chrome" /> 
+    <parameter name="browser.type" value="firefox" /> 
     <parameter name="system.architecture" value="64" />
     
     
@@ -155,16 +155,17 @@
                     <include name="copyPipeline" />
                     <include name="schedulePipelineAfterAnotherPipeline" />
                     <include name="schedulePipelineToRunOnce" />
+                    <include name="runPipelineManually" />
                     <include name="deleteScheduleRule" />
                     <include name="deletePipeline" />
                 </methods>
             </class>
             <class name="eu.lod2.lod2testsuite.testcases.EnrichmentAndDataCleaning">
                 <methods>
-                    <exclude name="ore" />
-                    <exclude name="lodRefine" />
-                    <exclude name="dbpediaSpotlight" />
-                    <exclude name="lodManager" />
+                    <include name="ore" />
+                    <include name="lodRefine" />
+                    <include name="dbpediaSpotlight" />
+                    <include name="lodManager" />
                 </methods>
             </class>
         </classes>

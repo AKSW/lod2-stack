@@ -99,7 +99,19 @@ public class UnifiedViewsTestCases extends TestCase {
         unifiedviews.copyPipeline(name);
     }
     
- 
+    /**
+     * TC 007.
+     * pre: Pipeline to run exists.
+     * post: Pipeline is executed
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
+    public void runPipelineManually(String user, String pw, String name)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.runPipelineManually(name);
+    }    
+    
     /**
      * TC 005-02.
      * pre: Logged into unifiedviews; Pipeline to copy exists
