@@ -33,4 +33,18 @@ public class DsdRepoQueries {
         return query.replace("@prop", property).replace("@gSource", sourceGraph).replace("@gTarget", targetGraph);
     }
     
+    public static String qPropertyTypes(String property, String sourceGraph){
+        String query = "SELECT DISTINCT isiri(?val) datatype(?val) \n"
+                + "FROM <@gSource> \n"
+                + "WHERE { \n"
+                + "  ?obs a qb:Observation . \n"
+                + "  ?obs <@prop> ?val . \n"
+                + "}";
+        return query.replace("@prop", property).replace("@gSource", sourceGraph);
+    }
+    
+    public static void main (String [] args){
+        System.out.println(qPropertyTypes("http://elpo.stat.gov.rs/lod2/RS-DIC/rs/geo", "http://elpo.stat.gov.rs/test/cvmod/noDataSet/"));
+    }
+    
 }
