@@ -113,22 +113,9 @@ public class UnifiedViewsTestCases extends TestCase {
     }    
     
     /**
-     * TC 005-02.
-     * pre: Logged into unifiedviews; Pipeline to copy exists
-     * post: Pipeline is doubled
-     */
-    @Test(groups={"unifiedviews"})
-    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
-    public void schedulePipelineToRunOnce(String user, String pw, String name)  {
-        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
-        unifiedviews.login(user, pw);   
-        unifiedviews.schedulePipelineToRunOnce(name, null);
-    }    
-    
-    /**
      * TC 005-01.
      * pre: At least two pipelines exist
-     * post: Pipeline is doubled
+     * post: Pipeline is scheduled to run after another pipeline has run.
      */
     @Test(groups={"unifiedviews"})
     @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name","schedule.finishedPipeline"})    
@@ -139,7 +126,33 @@ public class UnifiedViewsTestCases extends TestCase {
     }    
     
     /**
+     * TC 005-02.
+     * pre: Pipeline to run exists.
+     * post: Pipeline is scheduled to run once, and is run once.
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
+    public void schedulePipelineToRunOnce(String user, String pw, String name)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.schedulePipelineToRunOnce(name, null);
+    }
+    
+    /**
      * TC 005-03.
+     * pre: Pipeline to run exists.
+     * post: Pipeline is scheduled in an interval.
+     */
+    @Test(groups={"unifiedviews"})
+    @Parameters({"unifiedviews.user","unifiedviews.pw","pipeline.name"})    
+    public void schedulePipelineToRunInInterval(String user, String pw, String name)  {
+        UnifiedViewsPage unifiedviews = new UnifiedViewsPage();
+        unifiedviews.login(user, pw);   
+        unifiedviews.schedulePipelineToRunInInterval(name, 1, "Minutes", 1);
+    }    
+    
+    /**
+     * TC 006.
      * pre: At least two pipelines exist
      * post: Pipeline is doubled
      */

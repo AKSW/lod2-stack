@@ -9,7 +9,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import static org.testng.AssertJUnit.*;
@@ -234,7 +236,8 @@ public class UnifiedViewsPage extends Page {
      * @param pipelineToSchedule
      *          The name of the pipeline to be scheduled.
      * @param datetime 
-     *          The date and time the pipeline will be scheduled.
+     *          The date and time the pipeline will be scheduled. If null
+     *          the current time plus 30 seconds will be scheduled.
      */
      public void schedulePipelineToRunOnce(String pipelineToSchedule, Calendar datetime) {
         navigateToTopMenu("Pipelines");
@@ -299,6 +302,90 @@ public class UnifiedViewsPage extends Page {
                 By.xpath(getExecutedPipeIdentifier(pipelineToSchedule, datetime)));
         
      } 
+     
+
+    /**
+     * Schedules a pipeline to run in an interval.
+     * pre: pipeline to schedule exists
+     * post: pipeline is scheduled.
+     * 
+     * 
+     * @param pipelineToSchedule
+     *          The pipeline to schedule
+     * @param interval
+     *          An integer which in combination with intervalType defines
+     *          the interval to run the pipeline. 
+     * @param intervalType
+     *          Can be one of the following values:
+     *          <ul>
+     *          <li>Minutes</li>
+     *          <li>Hours</li>
+     *          <li>Days</li>
+     *          <li>Months</li>
+     *          </ul>
+     * @param tolerance 
+     *          Defines the tolerance  in minutes to the starting time of the pipeline.
+     *          Min value is 1 minute.
+     */
+    public void schedulePipelineToRunInInterval(String pipelineToSchedule, int interval, String intervalType, int tolerance)  {
+        navigateToTopMenu("Pipelines");
+        bf.waitUntilElementIsVisible("Could not find Pipeline to schedule: " + pipelineToSchedule,
+                By.xpath(getPipelineIdentifier(pipelineToSchedule)), frameIdentifier);
+        bf.bePatient(1000);
+        bf.waitUntilElementIsVisible(By.xpath(getPipelineButtonIdentifier(pipelineToSchedule, "schedule"))).click();
+        logger.info("Clicked schedule button");
+        bf.waitUntilElementIsVisible("Could not choose to run pipline after another.",
+                By.xpath("//*[@class='popupContent']//span[contains(@class,'v-select')]"
+                        + "[contains(.,'fixed interval')]")).click();       
+        
+           
+        // Click "every" radiobutton
+        bf.waitUntilElementIsVisible("Could not find interval radio button.",
+                By.xpath("//div[@class='popupContent']//label[.='every']/../input")).click();
+        bf.bePatient();
+        WebElement intervalInput = bf.waitUntilElementIsVisible("Could not find interval radio button.",
+                By.xpath("//div[@class='popupContent']//input"
+                        + "[@class='v-textfield v-widget v-has-width']"));
+        intervalInput.sendKeys(Keys.BACK_SPACE);
+        intervalInput.sendKeys(Keys.BACK_SPACE); 
+        intervalInput.sendKeys(interval+"");
+       
+        
+        bf.handleSelector(By.xpath("//div[@class='v-filterselect v-widget v-filterselect-no-input']"), 
+                intervalType, false);
+        
+        // Click strictly timed button
+        bf.waitUntilElementIsVisible("Could not find run strictly timed checkbox.",
+                By.xpath("//div[@class='popupContent']//span[contains(@class,'v-checkbox')]"
+                        + "[.='Strictly Timed']//input")).click();
+        bf.bePatient();
+        WebElement toleranceInput = driver.findElement(By.xpath("//div[@class='popupContent']"
+                + "/descendant::input[contains(@class,'v-textfield v-widget')][2]"));
+        toleranceInput.sendKeys(Keys.BACK_SPACE);
+        toleranceInput.sendKeys(Keys.BACK_SPACE);
+        toleranceInput.sendKeys(tolerance+"");
+        
+        
+        // Click save
+        driver.findElement(By.xpath("//*[@class='popupContent']" + getButtonIdentifier("Save"))).click();
+        bf.waitUntilElementDisappears("Could not close schedule dialog.", 
+                By.xpath("//div[@class='v-window-contents']"));
+        
+        navigateToTopMenu("Scheduler");
+        
+        //Only match first three characters of intervalType
+        bf.waitUntilElementIsVisible("Could not find scheduled pipeline",
+                By.xpath(getSchedulerRuleIdentifier(pipelineToSchedule, 
+                        new String[]{"Run on", "repeat every", intervalType.toLowerCase().substring(0, 3)})));
+        
+        // TODO: Maybe check if it is executed multiple times.
+        //navigateToTopMenu("Execution Monitor");
+        //for(int i=0; i<2; i++)  {
+        //    bf.waitUntilElementIsVisible("Could not find running pipeline",
+        //        By.xpath(getExecutedPipeIdentifier(pipelineToSchedule)));
+        //} 
+        
+    }
      
     /**
      * Runs a pipeline directly from pipelines view, by clicking the

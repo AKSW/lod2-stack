@@ -155,6 +155,7 @@
                     <include name="copyPipeline" />
                     <include name="schedulePipelineAfterAnotherPipeline" />
                     <include name="schedulePipelineToRunOnce" />
+                    <include name="schedulePipelineToRunInInterval" />
                     <include name="runPipelineManually" />
                     <include name="deleteScheduleRule" />
                     <include name="deletePipeline" />
