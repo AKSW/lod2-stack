@@ -33,6 +33,7 @@ import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.BaseTheme;
 import eu.lod2.*;
 import eu.lod2.stat.CustomComponentFactory.CompType;
+import eu.lod2.stat.dsdrepo.DSDRepoComponentWrapper;
 import org.openrdf.query.*;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -158,7 +159,15 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
 		
 		MenuBar.Command cmdOntoWikiCreateKB = getCustomComponentCommand(CompType.CreateKB);
         MenuBar.Command cmdOntoWikiImport = getCustomComponentCommand(CompType.ImportCSV);
-
+        
+        MenuBar.Command cmdSearchCubes = getCustomComponentCommand(CompType.SearchCubes);
+//        MenuBar.Command cmdConfigGUI = getCustomComponentCommand(CompType.ConfigGUIStat);
+        MenuBar.Command cmdManageDSD = new MenuBar.Command() {
+            public void menuSelected(MenuItem selectedItem) {
+                showInWorkspace(new DSDRepoComponentWrapper(state, workspace));
+//                showInWorkspace(new DSDRepoComponent(state.getRdfStore(), state.getCurrentGraph()));
+            }
+        };
         MenuBar.Command cmdValidation = new MenuBar.Command() {
 			public void menuSelected(MenuItem selectedItem) {
 				showInWorkspace(new Validation(state, workspace));
@@ -281,6 +290,8 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         //graph menu
         menuGraph.addItem("Select Default Graph", null, cmdDemoConfig);
         menuGraph.addItem("Create Graph", null, cmdOntoWikiCreateKB);
+        menuGraph.addItem("Search Cubes", cmdSearchCubes);
+//        menuGraph.addItem("Configure URIs", cmdConfigGUI);
         MenuBar.MenuItem menuImport=menuGraph.addItem("Import", null, null);
         menuImport.addItem("Import from CSV",null,cmdOntoWikiImport);
         MenuBar.MenuItem excelImport= menuImport.addItem("Import from XML", null, null);
@@ -293,6 +304,7 @@ public class StatLOD2Demo extends Application implements LOD2DemoState.CurrentGr
         menuExport.addItem("Export as Turtle", null, exportTurtle);
         menuExport.addItem("Export as RDF/JSON", null, exportRDFJson);
         menuExport.addItem("Export as Notation 3", null, exportRDFN3);
+        menuGraph.addItem("DSD Management", cmdManageDSD);
         menuGraph.addItem("Validate", null, cmdValidation);
         menuGraph.addItem("Remove Graphs", null, mDeleteGraphs);
 

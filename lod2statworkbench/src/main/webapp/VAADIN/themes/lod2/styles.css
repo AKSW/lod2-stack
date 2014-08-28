@@ -180,3 +180,37 @@
 	font-size: 14px;
 	text-decoration: none;
 }
+
+.v-menubar.v-menubar-dsd.dsd {
+    /*background: transparent;*/
+    color: whitesmoke;
+    height: 23px;
+    background-color: #323336;
+    background-image: url('common/img/vertical-sprites.png');
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    background-position: left -383px;
+    background-clip: border-box;
+    background-origin: padding-box;
+    background-size: auto auto;
+    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.9);
+}
+
+div#dsd-repo{
+    font-size: 12px;
+}
+
+#dsd-repo .v-icon{
+    height: 16px;
+}
+
+#dsd-repo .v-menubar-menuitem.v-menubar-menuitem-bleja {
+    background: transparent;
+}
+
+#dsd-repo .v-menubar-menuitem.v-menubar-menuitem-selected {
+    /*background: #2c96ff;*/
+    background: transparent;
+    color: white;
+    font-weight: bolder;
+}

@@ -32,6 +32,13 @@ public class ConfigurationBackend implements IConfiguration {
 		this.namespace = namespace;
 		this.confURI = confURI;
 	}
+        
+        public ConfigurationBackend(LOD2DemoState state){
+                this.state = state;
+		this.confGraph = "http://localhost/lod2statworkbenchconfiguration";
+		this.namespace = "http://lod2.eu/lod2statworkbench/";
+		this.confURI = "http://localhost/lod2statworkbenchconfiguration";
+        }
 	
 	protected TupleQueryResult executeTupleQuery(String query){
 		try {
