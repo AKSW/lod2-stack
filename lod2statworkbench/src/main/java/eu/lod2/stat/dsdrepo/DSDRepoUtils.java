@@ -50,8 +50,8 @@ public class DSDRepoUtils {
         builder.append("    GRAPH <@dataGraph> {  \n");
         builder.append("      ?obs qb:dataSet <@ds> . \n");
         builder.append("      ?obs ?comp [] . \n");
-        builder.append("      FILTER(NOT(regex(str(?comp),'^http://purl.org/linked-data/cube#')) \n");
-        builder.append("        AND NOT(regex(str(?comp),'^http://www.w3.org/'))) . \n");
+        builder.append("      FILTER(!(regex(str(?comp),'^http://purl.org/linked-data/cube#')) \n");
+        builder.append("        AND !(regex(str(?comp),'^http://www.w3.org/'))) . \n");
         builder.append("    } \n");
         builder.append("    FILTER NOT EXISTS { GRAPH <@repoGraph> { \n");
         builder.append("      ?dsd qb:component ?cs . \n");
@@ -85,7 +85,7 @@ public class DSDRepoUtils {
         builder.append("  ?obs ts:refArea ?val . \n");
         builder.append("  FILTER NOT EXISTS { \n");
         builder.append("    ?obs ts:refArea ?v2 . \n");
-        builder.append("    FILTER(NOT(isIRI(?v2))) \n");
+        builder.append("    FILTER(!(isIRI(?v2))) \n");
         builder.append("  } \n");
         builder.append("} \n");
         return builder.toString().replace("@g", graph).replace("@comp", compUri).replace("@ds", ds);

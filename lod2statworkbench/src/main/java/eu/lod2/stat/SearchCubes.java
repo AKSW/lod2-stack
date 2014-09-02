@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -311,10 +312,16 @@ public class SearchCubes extends CustomComponent {
 //		mainContainer.setExpandRatio(resultsTable, 2.0f);
 //		visualizer = new TableVisualization(resultsTable);
 		
+                Panel resultsPanel = new Panel();
+                resultsPanel.setStyleName(Reindeer.PANEL_LIGHT);
+                resultsPanel.setSizeFull();
+                
 		VerticalLayout resultsLayout = new VerticalLayout();
-		resultsLayout.setSizeFull();
-		mainContainer.addComponent(resultsLayout);
-		mainContainer.setExpandRatio(resultsLayout, 2.0f);
+		resultsLayout.setSizeUndefined();
+                resultsLayout.setWidth("100%");
+                resultsPanel.addComponent(resultsLayout);
+		mainContainer.addComponent(resultsPanel);
+		mainContainer.setExpandRatio(resultsPanel, 2.0f);
 		visualizer = new LabelVisualization(resultsLayout);
 	}
         

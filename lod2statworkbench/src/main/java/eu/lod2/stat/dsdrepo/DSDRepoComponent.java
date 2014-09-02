@@ -235,8 +235,9 @@ public class DSDRepoComponent extends CustomComponent {
         dcRepo = new SparqlDCRepository(repository);
         graph = new SparqlDCGraph(repository, dataGraph);
         
+        setSizeFull();
         VerticalLayout rootLayout = new VerticalLayout();
-        rootLayout.setWidth("100%");
+        rootLayout.setSizeFull();
         rootLayout.setSpacing(true);
         setDebugId("dsd-repo");
         
@@ -250,6 +251,7 @@ public class DSDRepoComponent extends CustomComponent {
         menuLayout.setSpacing(true);
         menuLayout.setWidth("100%");
         rootLayout.addComponent(menuLayout);
+        rootLayout.setExpandRatio(menuLayout, 0.0f);
         
         final MenuBar menu = new MenuBar();
         menu.addStyleName("dsd");
@@ -317,13 +319,14 @@ public class DSDRepoComponent extends CustomComponent {
         
         Panel mainPanel = new Panel(mainLayout);
         mainPanel.setSizeFull();
-        mainPanel.setWidth("100%");
-        mainPanel.setHeight("100%");
         mainPanel.setScrollable(true);
         mainPanel.setStyleName(Reindeer.PANEL_LIGHT);
         
-        rootLayout.addComponent(new Label("<hr/>", Label.CONTENT_XHTML));
+        Label hrLabel = new Label("<hr/>", Label.CONTENT_XHTML);
+        rootLayout.addComponent(hrLabel);
+        rootLayout.setExpandRatio(hrLabel, 0.0f);
         rootLayout.addComponent(mainPanel);
+        rootLayout.setExpandRatio(mainPanel, 2.0f);
         rootLayout.setMargin(true, false, true, false);
         
         setCompositionRoot(rootLayout);
@@ -334,6 +337,7 @@ public class DSDRepoComponent extends CustomComponent {
         
         contentLayout = new HorizontalLayout();
 //        contentLayout.setSizeFull();
+        contentLayout.setSizeUndefined();
         contentLayout.setWidth("100%");
         contentLayout.setSpacing(true);
         mainLayout.addComponent(contentLayout);
@@ -345,6 +349,7 @@ public class DSDRepoComponent extends CustomComponent {
         
         contentLayout = new HorizontalLayout();
 //        contentLayout.setSizeFull();
+        contentLayout.setSizeUndefined();
         contentLayout.setWidth("100%");
         contentLayout.setSpacing(true);
         mainLayout.addComponent(contentLayout);
@@ -356,6 +361,7 @@ public class DSDRepoComponent extends CustomComponent {
         
         contentLayout = new HorizontalLayout();
 //        contentLayout.setSizeFull();
+        contentLayout.setSizeUndefined();
         contentLayout.setWidth("100%");
         contentLayout.setSpacing(true);
         mainLayout.addComponent(contentLayout);
