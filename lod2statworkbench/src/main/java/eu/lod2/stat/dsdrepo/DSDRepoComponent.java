@@ -39,6 +39,7 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openrdf.model.Value;
@@ -124,6 +125,7 @@ public class DSDRepoComponent extends CustomComponent {
     private int numMissingCodeLists = 0;
     private Label lblMissingCodeLists;
     private Label lblUndefined;
+    private LinkedList<Structure> repoTreeItems;
     
     private void updateUndefinedAndMissing(){
         int num = 0;
@@ -592,13 +594,17 @@ public class DSDRepoComponent extends CustomComponent {
                 String e = (target instanceof String)?(String)target:null;
                 if (action == ACTION_SET_AS_DIM) {
                     dataTree.setParent(e, dim);
+                    refreshRepoTree();
                 }
                 else if (action == ACTION_SET_AS_MEAS){
                     dataTree.setParent(e, meas);
+                    refreshRepoTree();
                 } else if (action == ACTION_SET_AS_ATTR){
                     dataTree.setParent(e, attr);
+                    refreshRepoTree();
                 } else if (action == ACTION_SET_AS_UNDEF){
                     dataTree.setParent(e, undef);
+                    refreshRepoTree();
                 } else if (action == ACTION_HIGHLIGHT_MATCHING){
                     // notify repo tree about the change
 //                        highlighted = e;
@@ -903,8 +909,104 @@ public class DSDRepoComponent extends CustomComponent {
         });
     }
     
+    private boolean isListInDimensions(List<String> list, Collection<Dimension> props){
+        int numProps = (props==null)?0:props.size();
+        int numMems = (list==null)?0:list.size();
+        if (numMems>numProps) return false;
+        if (numMems == 0) return true;
+        for (String member: list){
+            boolean ind = false;
+            for (Dimension p: props){
+                if (p.getUri().equalsIgnoreCase(member)) ind = true;
+            }
+            if (!ind) return false;
+        }
+        return true;
+    }
+    
+    private boolean isListInMeasures(List<String> list, Collection<Measure> props){
+        int numProps = (props==null)?0:props.size();
+        int numMems = (list==null)?0:list.size();
+        if (numMems>numProps) return false;
+        if (numMems == 0) return true;
+        for (String member: list){
+            boolean ind = false;
+            for (Measure p: props){
+                if (p.getUri().equalsIgnoreCase(member)) ind = true;
+            }
+            if (!ind) return false;
+        }
+        return true;
+    }
+    
+    private boolean isListInAttributes(List<String> list, Collection<Attribute> props){
+        int numProps = (props==null)?0:props.size();
+        int numMems = (list==null)?0:list.size();
+        if (numMems>numProps) return false;
+        if (numMems == 0) return true;
+        for (String member: list){
+            boolean ind = false;
+            for (Attribute p: props){
+                if (p.getUri().equalsIgnoreCase(member)) ind = true;
+            }
+            if (!ind) return false;
+        }
+        return true;
+    }
+    
+    private void refreshRepoTree(){
+        repoTree.removeAllItems();
+        LinkedList<String> dList = new LinkedList<String>();
+        LinkedList<String> mList = new LinkedList<String>();
+        LinkedList<String> aList = new LinkedList<String>();
+        for (Object id: dataTree.rootItemIds()){
+            Collection<?> children = dataTree.getChildren(id);
+            if (children == null) continue;
+
+            Collection<String> list = null;
+            if (id.toString().startsWith("D")) list = dList;
+            else if (id.toString().startsWith("M")) list = mList;
+            else if (id.toString().startsWith("A")) list = aList;
+            else continue;
+
+            for (Object prop: dataTree.getChildren(id)){
+                list.add(prop.toString());
+            }
+        }
+        
+        for (Structure structure: repoTreeItems){
+            // if any of the dimensions, measures or attribs are not present skip
+            if (!isListInDimensions(dList, structure.getDimensions())) continue;
+            if (!isListInMeasures(mList, structure.getMeasures())) continue;
+            if (!isListInAttributes(aList, structure.getAttributes())) continue;
+            
+            // add structure to the tree
+            addItemStructure(repoTree, structure);
+            CountingTreeHeader dimCountHeader = createCountingTreeHeader(repoTree, "Dimensions");
+            repoTree.setParent(dimCountHeader, structure);
+            CountingTreeHeader measCountHeader = createCountingTreeHeader(repoTree, "Measures");
+            repoTree.setParent(measCountHeader, structure);
+            CountingTreeHeader attrCountHeader = createCountingTreeHeader(repoTree, "Attributes");
+            repoTree.setParent(attrCountHeader, structure);
+
+            for (Dimension dim: structure.getDimensions()){
+                addItemProperty(repoTree, dim);
+                repoTree.setParent(dim, dimCountHeader);
+            }
+            for (Attribute attr: structure.getAttributes()){
+                addItemProperty(repoTree, attr);
+                repoTree.setParent(attr, attrCountHeader);
+            }
+            for (Measure meas: structure.getMeasures()){
+                addItemProperty(repoTree, meas);
+                repoTree.setParent(meas, measCountHeader);
+            }
+        }
+    }
+    
     private void populateRepoTree(){
         repoTree.removeAllItems();
+        repoTreeItems.clear();
         try {
             RepositoryConnection con = repository.getConnection();
             TupleQuery q = con.prepareTupleQuery(QueryLanguage.SPARQL, DSDRepoUtils.qMatchingStructures(dataGraph, dataset, repoGraph));
@@ -915,6 +1017,7 @@ public class DSDRepoComponent extends CustomComponent {
                 String dsd = set.getValue("dsd").stringValue();
                 final Structure structure = new SparqlStructure(repository, dsd, repoGraph);
                 addItemStructure(repoTree, structure);
+                repoTreeItems.add(structure);
                 CountingTreeHeader dimCountHeader = createCountingTreeHeader(repoTree, "Dimensions");
                 repoTree.setParent(dimCountHeader, structure);
                 CountingTreeHeader measCountHeader = createCountingTreeHeader(repoTree, "Measures");
@@ -1103,6 +1206,7 @@ public class DSDRepoComponent extends CustomComponent {
         repoTree = new Tree("Matching Structures");
         repoTree.setNullSelectionAllowed(true);
         repoTree.setImmediate(true);
+        repoTreeItems = new LinkedList<Structure>();
         populateRepoTree();
         VerticalLayout v = new VerticalLayout();
         contentLayout.addComponent(v);
@@ -1135,6 +1239,7 @@ public class DSDRepoComponent extends CustomComponent {
         repoTree = new Tree("Matching Structures");
         repoTree.setNullSelectionAllowed(true);
         repoTree.setImmediate(true);
+        repoTreeItems = new LinkedList<Structure>();
     }
     
     private void refreshContentCreateDSD(DataSet ds){

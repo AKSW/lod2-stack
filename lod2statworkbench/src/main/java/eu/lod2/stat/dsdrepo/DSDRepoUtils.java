@@ -223,7 +223,10 @@ public class DSDRepoUtils {
             StringBuilder b = new StringBuilder();
             b.append("  <@dsd> qb:component <@dc> . \n");
             b.append("  <@dc> qb:componentProperty <@dim> . \n");
+            b.append("  <@dc> a qb:ComponentSpecification . \n");
+            b.append("  <@dc> qb:dimension <@dim> . \n");
             b.append("  <@dim> a qb:DimensionProperty . \n");
+            b.append("  <@dim> a qb:ComponentProperty . \n");
             builder.append(b.toString().replace("@dc", dc).replace("@dim", dim));
             count++;
         }
@@ -233,7 +236,10 @@ public class DSDRepoUtils {
             StringBuilder b = new StringBuilder();
             b.append("  <@dsd> qb:component <@mc> . \n");
             b.append("  <@mc> qb:componentProperty <@meas> . \n");
+            b.append("  <@mc> a qb:ComponentSpecification . \n");
+            b.append("  <@mc> qb:measure <@meas> . \n");
             b.append("  <@meas> a qb:MeasureProperty . \n");
+            b.append("  <@meas> a qb:ComponentProperty . \n");
             builder.append(b.toString().replace("@mc", mc).replace("@meas", meas));
             count++;
         }
@@ -242,8 +248,11 @@ public class DSDRepoUtils {
             String ac = "http://random_cs/ac/" + count + "/" + random + "/";
             StringBuilder b = new StringBuilder();
             b.append("  <@dsd> qb:component <@ac> . \n");
+            b.append("  <@ac> a qb:ComponentSpecification . \n");
             b.append("  <@ac> qb:componentProperty <@attr> . \n");
+            b.append("  <@ac> qb:attribute <@attr> . \n");
             b.append("  <@attr> a qb:AttributeProperty . \n");
+            b.append("  <@attr> a qb:ComponentProperty . \n");
             builder.append(b.toString().replace("@ac", ac).replace("@attr", attr));
             count++;
         }
@@ -305,6 +314,49 @@ public class DSDRepoUtils {
         builder.append("  ?code ?code_p ?code_o . \n");
         builder.append("} }");
         return builder.toString().replace("@cl", cl);
+    }
+    
+    public static String qDeleteDSD(String dsd, String graph){
+        StringBuilder builder = createBuilderWithPrefixes();
+        builder.append("delete from graph <@graph> { \n");
+        builder.append("  <@dsd> ?p ?o . \n");
+        builder.append("  ?ls ?lp <@dsd> . \n");
+        builder.append("  ?cs ?cs_p ?cs_o . \n");
+        builder.append("  ?cp ?cp_p ?cp_o .  \n");
+        builder.append("  ?cl ?cl_p ?cl_o . \n");
+        builder.append("  ?cl_ls ?cl_lp ?cl . \n");
+        builder.append("  ?code ?code_p ?code_o . \n");
+        builder.append("} \n");
+        builder.append("where { graph <@graph> { \n");
+        builder.append("  OPTIONAL { ?ls ?lp <@dsd> . } \n");
+        builder.append("  <@dsd> qb:component ?cs . \n");
+        builder.append("  <@dsd> ?p ?o . \n");
+        builder.append("  ?cs ?cs_p ?cs_o . \n");
+        builder.append("  OPTIONAL { \n");
+        builder.append("    { { ?cs qb:componentProperty ?cp } UNION { ?cs qb:dimension ?cp } UNION { ?cs qb:measure ?cp } UNION { ?cs qb:attribute ?cp } } \n");
+        builder.append("    ?cp ?cp_p ?cp_o . \n");
+        builder.append("    FILTER NOT EXISTS { \n");
+        builder.append("      ?dsd2 qb:component ?cs2 . \n");
+        builder.append("      ?cs2 ?cs2_p ?cp . \n");
+        builder.append("      FILTER (?dsd2 != <@dsd>) \n");
+        builder.append("    } \n");
+        builder.append("  } \n");
+        builder.append("  OPTIONAL { \n");
+        builder.append("    { { ?cs qb:componentProperty ?cp } UNION { ?cs qb:dimension ?cp } UNION { ?cs qb:measure ?cp } UNION { ?cs qb:attribute ?cp } } \n");
+        builder.append("    ?cp qb:codeList ?cl . \n");
+        builder.append("    ?cl ?cl_p ?cl_o . \n");
+        builder.append("    ?cl_ls ?cl_lp ?cl . \n");
+        builder.append("    ?code skos:inScheme ?cl . \n");
+        builder.append("    ?code ?code_p ?code_o . \n");
+        builder.append("    FILTER NOT EXISTS { \n");
+        builder.append("      ?dsd3 qb:component ?cs3 . \n");
+        builder.append("      { { ?cs3 qb:componentProperty ?cp3 } UNION { ?cs3 qb:dimension ?cp3 } UNION { ?cs3 qb:measure ?cp3 } UNION { ?cs3 qb:attribute ?cp3 } } \n");
+        builder.append("      ?cp3 qb:codeList ?cl . \n");
+        builder.append("      FILTER (?dsd3 != <@dsd>) \n");
+        builder.append("    } \n");
+        builder.append("  } \n");
+        builder.append("} } \n");
+        return builder.toString().replace("@dsd", dsd).replace("@graph", graph);
     }
     
 }
